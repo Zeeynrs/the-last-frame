@@ -1,6 +1,6 @@
 # Project Status
 
-**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 285/285 tests, 99 scripts, leak check clean (enforced by validate.ps1 since TLF-035)
+**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 291/291 tests, 112 scripts, leak check clean (enforced by validate.ps1 since TLF-035)
 
 This file states what the repository **actually** contains. Task-level detail lives in `ORCA_TASK_BOARD.md`; history lives in `PROGRESS.md`.
 
@@ -29,19 +29,19 @@ This file states what the repository **actually** contains. Task-level detail li
 | Story UI: `DialogueBox` (blocking/non-blocking, one-shot `heard.*` flags), `DocumentViewer` (paging, SimClock pause), `JournalScreen` (categories + fragments), `hint` action (H + joypad 10); all Ch1 Beats 01–10 wired | `scripts/ui/`, `scenes/ui/`, `scripts/chapters/ch01/` | `tests/ui/`, `tests/chapters/ch01/test_ch01_narrative_beats.gd` |
 | Real-input proofs: full Ch1 playthrough with input actions + physics only (PZ-001…005 incl. PZ-004 with Echo, Beats 09/10); negative test that PZ-004 fails without Echo (RISK-018 closed); PZ-004 geometric route/reach tests on real colliders | `tests/chapters/ch01/`, `tests/support/base_test.gd` | TLF-030/031/033 + `3df2583` |
 | Game flow: F5 → Boot → title screen (New Game / Continue / Quit, overwrite confirmation) → Chapter 1; Continue restores the last checkpoint; chapter complete → title. `SceneRouter` autoload | `scripts/core/`, `scenes/boot/`, `scenes/ui/title_screen.tscn` | `tests/core/`, `tests/ui/test_title_screen.gd`; Opus windowed screenshots |
-| Art (batches 1+2): art bible, Ch1 palette (32), Elias v2 8-dir idle/walk, 8 floor tiles, walls/pillar/archways/railing, shared props (bench, call box, reset console, lever, clipboard, 23:59 clock), 5 puzzle props (turnstile, fire shutter, gear, capacitor, pressure switch), placement sheet for all 10 rooms, 4 room mockups, batch 3 (route board, security gate, bridge, transit car, dispatch terminal, pocket watch, lever badges, PA speaker), generators in `tools/art/gen/` (byte-reproducible), CC0 pixel font | `design/art/`, `assets/`, `tools/art/check_assets.py` | Pixelorama re-export pixel-identical (tlf-lead 37/37, Lead 3/3), palette/alpha checks; **not yet placed in the rooms (TLF-041)** |
+| Art (batches 1+2): art bible, Ch1 palette (32), Elias v2 8-dir idle/walk, 8 floor tiles, walls/pillar/archways/railing, shared props (bench, call box, reset console, lever, clipboard, 23:59 clock), 5 puzzle props (turnstile, fire shutter, gear, capacitor, pressure switch), placement sheet for all 10 rooms, 4 room mockups, batch 3 (route board, security gate, bridge, transit car, dispatch terminal, pocket watch, lever badges, PA speaker), generators in `tools/art/gen/` (byte-reproducible), CC0 pixel font | `design/art/`, `assets/`, `tools/art/check_assets.py` | Pixelorama re-export pixel-identical (tlf-lead 37/37, Lead 3/3), palette/alpha checks; placed in all 10 rooms (TLF-041), collision unchanged |
 | Ch1 design: beat sheet (10 beats, 38 min), 5 puzzle specs with 27 given/when/then tests, room graph (10 rooms, boundary doors, placement metrics, kit list) | `design/ch01/` | Lead reviews in `docs/reviews/` |
 
 ## B. Partially implemented
 
 ## C. Implemented but not integrated
-- Art batches 2+3 are merged but not placed: rooms are still greybox polygons (TLF-041).
+- Art reproducibility check `verify_regen.py` is broken after the integration (ISSUE-036 -> TLF-045).
 
 ## D. Broken
 - Nothing known (validation green on `main`).
 
 ## E. Missing (next by priority)
-1. TLF-041 (Flash) art integration of batches 2+3 into all 10 rooms; TLF-044 (design-art) capacitor frozen states
+1. TLF-046 (Flash) barrier visual + capacitor frozen split; TLF-045 (design-art) art reproducibility snapshot; second playtest via F5 with the art
 2. Export smoke test (Windows build: theme font, translations, saves) once an export preset exists
 3. Human: physical controller spot-check (ISSUE-011, last item for M1); second playtest via F5
 4. Vertical-slice polish: audio, lighting/VFX, Beat 10 cinematic, accessibility pass
