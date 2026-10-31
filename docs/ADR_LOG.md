@@ -90,6 +90,9 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - Targets implement `can_interact(actor_id, interaction_id, payload) -> StringName` (`&""` = allowed, otherwise a reason such as `&"frozen"`) and `interact(actor_id, interaction_id, payload) -> void`.
   - Interactions flagged `progression = true` (pickups, story flags) reject echo actors with `&"echo_forbidden"`.
 - **Consequences:** The player and echoes share validation. The echo recorder just listens to `interaction_applied` and trigger events. The UI shows `reason` as feedback.
+- **Clarification 2026-10-31 (TLF-004 review):**
+  - `trigger_enter`/`trigger_exit` return nothing and carry no reasons. Each trigger's handler decides per actor what happens; completion triggers simply ignore `echo.*` actors.
+  - Pocket-watch abilities are requests with `interaction_id` `&"trace"`, `&"rewind"`, `&"freeze"`, `&"fast_forward"` (see ADR-015). An unsupported capability returns `&"unsupported"`.
 
 ## ADR-007 — Temporal objects and rewind history
 - **Date / status:** 2026-10-31 · Accepted
@@ -101,6 +104,12 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - An unsupported ability returns `&"unsupported"` with feedback, and state is unchanged.
 - **Consequences:** Objects opt in explicitly. No whole-scene snapshots.
 - **Amendment 2026-10-31 (authored pre-history):** Many Ch1 puzzles rewind objects to states from before the player arrived (TLF-003 Beats 02, 04, 07). `TemporalComponent` therefore exposes `@export var initial_history: Array[Dictionary]` (oldest first, each a full `state_fields` dict). On `_ready` these entries seed the ring buffer with negative ticks (`-N … -1`), ahead of the current state at tick 0. Rewind walks through them like any other entry. An object with an empty buffer returns `&"no_history"`. Save data stores the buffer cursor so a reload doesn't restore a consumed pre-history.
+- **Amendment 2 2026-10-31 (history commit semantics, freeze toggle):**
+  - History is a list of full snapshots plus a `cursor` (index of the snapshot the object currently embodies). At start-up: `initial_history` entries, then the tick-0 state, with `cursor` on the last entry.
+  - **Commit:** the parent calls `commit_history()` only on a **discrete transition** (e.g. `closed → raised`). Per-tick counters (`hold_ticks`, `decay_ticks`, `engage_ticks`) are captured inside snapshots, but changing them never commits by itself. A commit drops every entry after `cursor`, appends the new snapshot and moves `cursor` to it. The ring capacity (32) evicts the oldest entry.
+  - **Rewind:** if `cursor == 0` → `&"no_history"`; else `cursor -= 1` and apply that snapshot, counters included (so a rewound shutter comes back with `hold_ticks = 180`).
+  - **Freeze is a toggle** owned by the component (`is_frozen`, never part of `state_fields` or snapshots). Freeze on an unfrozen object freezes it; Freeze on a frozen object unfreezes it. While frozen, the parent's tick logic is skipped and state-changing requests (`use`, `rewind`) return `&"frozen"`. Cross-object rules (e.g. a frozen gear blocking the shutter) are the parent's `can_interact` logic.
+  - Worked check: PZ-001 `[open(-1), collapsed(0)]` → rewind → open → rewind → `no_history` ✓. PZ-002 `[raised180, closed]` → rewind → raised (no commits while counting) → commit closed (drops nothing after cursor, appends) → rewind → raised180 ✓ (TEST-PZ002-05).
 
 ## ADR-008 — Echo recording model
 - **Date / status:** 2026-10-31 · Accepted
@@ -112,6 +121,11 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - Missing, disabled or invalid target: the event is skipped, `echo_event_failed(tick, target_id, reason)` is emitted, and the UI flashes feedback. Playback continues.
   - Reset/delete clears the echo and its occupancy (trigger_exit is dispatched). Permanent progress is never touched.
 - **Consequences:** Resolves contradiction C5. Tests required: start, stop, replay, reset, invalid target, determinism across render FPS.
+- **Amendment 2026-10-31 (TLF-004 review):**
+  - The logic track records only `interact` events whose `interaction_id` is **not** a pocket-watch ability, plus `trigger_enter`/`trigger_exit`. Echoes never replay `trace`/`rewind`/`freeze`/`fast_forward` (an echo has no pocket watch).
+  - When recording starts, every trigger the player already occupies is seeded as a `trigger_enter` at `rel_tick 0`.
+  - The ghost spawns at the player's position at recording start. A room transition or reaching 1200 ticks stops the recording automatically.
+  - Playback dispatches as actor `&"echo.0"` through `InteractionService`. Failures emit `echo_event_failed(tick, target_id, reason)`.
 
 ## ADR-009 — Spatial graph
 - **Date / status:** 2026-10-31 · Accepted
@@ -120,6 +134,7 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - `apply(transform) -> Result`: validate (no duplicate or dangling edges, critical path reachable) → commit → emit `changed`. On failure, nothing changes.
   - Presenters (door visuals, collision, navigation, interaction anchors, camera) rebuild from the graph on `changed`. A player in an affected room is moved to a safe anchor.
   - **Ch1 supports doorway reassignment only.** Room rotation arrives with Ch3 under a follow-up ADR.
+  - **Clarification 2026-10-31:** Doorway IDs are room-local keys. A doorway is referenced as `(room_id, door_id)`, written `room_id:door_id` in docs, and is not registered in IdRegistry (doorway presenter nodes are). Every declared doorway must be paired exactly once. An edge may be flagged `traversable = false` (e.g. a grille); it's valid for pairing but ignored for reachability.
 - **Consequences:** Keeps the Ch1 spatial cost small while exercising the real architecture.
 
 ## ADR-010 — Save format
@@ -171,3 +186,29 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
 - **Date / status:** 2026-10-31 · **Accepted**: "Trace" (Argon's TLF-003 recommendation; "afterimage" and "imprint" allowed as prose synonyms only)
 - **Context:** "Echo" names two different mechanics (GDD §8 vs §9).
 - **Working decision:** "**Echo**" = record/replay of the player's own actions. The reveal-residual-traces ability uses the working name "**Trace**" until accepted. Code uses `echo` and `trace` identifiers accordingly.
+
+## ADR-015 — Pocket-watch UX, ability targeting and Echo controls
+- **Date / status:** 2026-10-31 · Accepted (tuning values provisional until playtest)
+- **Context:** The TLF-004 specs need watch abilities to pick between adjacent objects (PZ-002 shutter/gear, PZ-001 gate/pillar), and Echo needs record/stop/play/reset affordances. Neither was defined, and the input map had no reset action.
+- **Options:** (a) aim with a cursor or right stick; (b) cycle targets with an extra button; (c) automatic nearest target with a capability preference.
+- **Decision:** (c), plus one new action.
+  - `ability_next`/`ability_prev` cycle the unlocked abilities in the order Trace → Rewind → Freeze → Echo (→ Fast-Forward if unlocked). `watch` activates the selected ability.
+  - **Targeting (Trace/Rewind/Freeze/Fast-Forward):** candidates are Interactables within the watch radius (default 96 px, larger than the 36 px interact radius). If any candidate supports the selected ability, pick the nearest of those; otherwise pick the nearest overall (so `unsupported` feedback stays teachable). Ties use the TLF-007 rule (smallest `object_id`). The current watch target is always highlighted, with an ability icon over it, whenever an ability other than Echo is selected.
+  - **Echo** (no target) is a state machine driven by `watch`:
+    - `IDLE → RECORDING → READY → PLAYING`
+    - pressing `watch` while PLAYING or holding restarts playback
+    - new action **`echo_reset`** (R key, joypad Y / button 3) clears the echo from any state (ADR-008 reset semantics)
+    - to record again, reset first
+    - the HUD shows the state, elapsed and max ticks, and an icon for each state
+  - Abilities resolve instantly. There's no slow-motion or time scaling.
+- **Consequences:** Flash adds `echo_reset` to the input map and to the binding-conflict tests in TLF-008. The PZ-002 timing becomes reasonable without an aiming skill. Level layouts must keep supported targets within 96 px of where the player naturally stands.
+
+## ADR-016 — Puzzle completion and reset policy
+- **Date / status:** 2026-10-31 · Accepted
+- **Decision:**
+  - Each puzzle has one `PuzzleService` state: `UNSOLVED | SOLVED`. `SOLVED` is permanent progression, saved under ADR-010 and never rewound.
+  - Completion triggers accept only `&"player"`.
+  - A reset anchor resets only its own puzzle's dynamic objects plus the active echo.
+  - **After `SOLVED`, nothing may re-block the solved passage:** reset anchors, unfreezing, and echo resets all leave the route open. Optional objects may still reset.
+  - Any reset or spatial change that would overlap the player with newly enabled collision first moves the player to the puzzle's declared safe anchor.
+

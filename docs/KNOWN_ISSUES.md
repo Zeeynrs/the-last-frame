@@ -24,6 +24,9 @@ This file starts as a tracking template. Do not invent resolved status.
 | ISSUE-003 | 2026-10-31: agents used the Lead's primary checkout (created `tlf-003-…`/`tlf-006-…` branches, stray stub files); a Lead commit landed on an agent branch; during cleanup Lead briefly deleted a branch holding TLF-003 work (restored within ~1 min, also present on the Orca branch) | High | Resolved | Agent 1 | Workspace rule added to task files/template (ADR-002 amendment). Lead never deletes a branch without first checking its tip against the last observed SHA |
 | ISSUE-004 | Boot/UI text uses Godot's default anti-aliased font, not a pixel font, so it looks soft at ×3 | Low | Open | Argon / Flash | Pixel font in TLF-010 art target sheet, then a UI theme task |
 | ISSUE-005 | `pause` is P / Start only; Escape is `cancel`. Players often expect Esc to pause | Low | Open | Flash (menu task) | Pause menu logic: Esc with nothing to cancel opens pause (in code, not a shared binding) |
+| ISSUE-006 | Player discards `InteractionResult`; failed interactions give no feedback | Medium | Open | Flash (HUD/feedback task) | Show `reason` via `tr()` feedback keys from `design/ch01/puzzles/README.md` |
+| ISSUE-007 | Interaction prompt text hard-codes "[E]", English-only, no controller glyph | Low | Open | Flash (UI task) | `tr()` key + input-glyph lookup per active device |
+| RISK-017 | PZ-002 180-tick window may be tight even with ADR-015 auto-targeting | Medium | Open | Argon / Flash | Playtest in TLF-009; assist setting extends to 300 ticks |
 | RISK-016 | Project-local `pixel-art` MCP (`pxcli-mcp`) writes to `./assets/sprites`, outside ADR-001 layout and Argon ownership | Low | Open | Agent 1 | Not used (ADR-012). Remove from local config if it causes confusion |
 
 ## Issue template

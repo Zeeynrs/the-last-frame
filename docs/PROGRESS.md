@@ -37,6 +37,7 @@
 | 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
 | 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
 | 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
+| 2026-10-31 | Lead review TLF-004 (`52a563a`) + TLF-007 (`864339c`): both CHANGES REQUESTED (small); ADR-006/009 clarifications, ADR-007 am.2 (history commits, freeze toggle), ADR-008 am. (echo scope), new ADR-015 (watch UX/targeting, `echo_reset`) and ADR-016 (completion/reset policy) | Agent 1 |
 | 2026-10-31 | Re-review passed; merged TLF-006 (`c1492d8`) and TLF-003 (`db09cc2`); validate on main: import clean, 5/5 tests; README validation section; tag `m0-complete`; TLF-004/TLF-007 dispatched | Agent 1 |
 | 2026-10-31 | Lead review of TLF-003 (`33e25d5`) and TLF-006 (`a792438`): both CHANGES REQUESTED; ADR-007 pre-history amendment; ADR-014 accepted (Trace) | Agent 1 |
 | 2026-10-31 | Orca role worktrees created; TLF-003 and TLF-006 dispatched; Gemini models confirmed; Pixelorama 1.2.3 pinned; Godot MCP chosen and pinned (ADR-012 amendment) | Human + Agent 1 |
