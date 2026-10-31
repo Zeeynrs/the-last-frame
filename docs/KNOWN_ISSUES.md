@@ -32,6 +32,7 @@ This file starts as a tracking template. Do not invent resolved status.
 | ISSUE-009 | Flash's local TLF-017 test run left `user://test_settings_corrupt.cfg` in the shared Godot user data folder | Low | Resolved 2026-10-31 | Flash | Tests must write under a test-only folder and delete it (as `tests/save` does) |
 | ISSUE-010 | `Settings.remap_action(action, "keyboard", ev)` replaces **all** keyboard/mouse bindings of the action (e.g. `move_up` loses the Up arrow when W is remapped) | Low | Open | Flash (remap UI task) | Decide primary/secondary slots before the remap UI ships |
 | ISSUE-011 | Milestone 1 controller evidence is synthetic (scripted device-0 joypad events); no physical controller test yet | Low | Mitigated | Human | 1-minute spot-check: run TestRoom with a real gamepad, walk to a lever, press A. Remap behaviour already verified by Flash's script and the Lead's probe |
+| ISSUE-012 | Elias v1: the walk stride is very subtle (mid-stride frame ≈ idle), so feet may appear to slide in motion; the silhouette is blocky against the "Premium HD" target | Medium | Open | Argon | Next art batch: stronger leg separation + 1 px bob, more silhouette detail (coat flare, hands); re-check in motion in Godot |
 | RISK-016 | Project-local `pixel-art` MCP (`pxcli-mcp`) writes to `./assets/sprites`, outside ADR-001 layout and Argon ownership | Low | Open | Agent 1 | Not used (ADR-012). Remove from local config if it causes confusion |
 
 ## Issue template

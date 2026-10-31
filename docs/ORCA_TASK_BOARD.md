@@ -20,7 +20,7 @@
 | TLF-019 | COMPLETE | Opus PuzzleService + SaveService + NarrativeState merged `afa6929` (82/82, no leaks; real-scene save probe OK). Autoload registration → TLF-018 |
 | TLF-016 | COMPLETE | Opus EchoService + TriggerZone merged `9f55245` (validate 67/67; physics runtime probe OK) |
 | TLF-022 | NOT STARTED | Opus: HintService (FR-010 hint ladder), PuzzleDef resources (ADR-013), document/memory-fragment data model |
-| TLF-010 | READY | Argon: `docs/tasks/TLF-010.md` (art bible, palette, target sheet, first sprite batch; `.pxo` must pass Pixelorama CLI verification) |
+| TLF-010 | COMPLETE | Merged (Argon `68e299f`): all 10 `.pxo` pass the Pixelorama CLI open/export check; PNGs byte-identical to the re-exports; palette-only; 0 semi-alpha. Art polish notes → ISSUE-012 |
 | others | NOT STARTED | |
 
 Branch naming and merge flow: ADR-002 (incl. Orca naming amendment).
