@@ -42,7 +42,7 @@ This file states what the repository **actually** contains. Task-level detail li
 
 ## E. Missing (next by priority)
 1. TLF-039 art batch 2 (design-art, Sonnet 5.5), then a Flash integration task from its placement sheet
-2. UI theme with TLF Pixel Mono everywhere (ISSUE-004) + confirm glyph (ISSUE-033)
+2. TLF-040 (Flash): UI theme with TLF Pixel Mono everywhere (ISSUE-004) + confirm glyph (ISSUE-033)
 3. Human: physical controller spot-check (ISSUE-011, last item for M1); second playtest via F5
 4. Vertical-slice polish: audio, lighting/VFX, Beat 10 cinematic, accessibility pass
 5. External playtest (Gate C)
