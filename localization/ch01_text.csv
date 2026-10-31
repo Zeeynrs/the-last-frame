@@ -1,0 +1,106 @@
+keys,en
+EL_B01_01,Where... is this?
+EL_B01_02,Every clock says 23:59. None of them are moving.
+EL_B01_03,Time doesn't stop. It waits. Where did I hear that?
+EL_B01_04,"A pocket watch. Cracked glass. Still warm, like someone just put it down."
+EL_CLOCK_2359,"23:59. The seconds digit flickers, but it never turns over."
+OP_B03_01,"Easy. Don't hang up. You're in Elysium-09, under the old transit line."
+OP_B03_02,The station is under a containment lock. Every door you've seen was sealed at 23:59.
+OP_B03_03,That watch still remembers how things were. Use it. Time doesn't stop. It waits.
+EL_B03_01,Who is this? How do you know about the watch?
+OP_B03_04,Later. Restore auxiliary power at Signal Control. The street exit opens from there.
+OP_B03_05,This line won't hold much longer. Keep moving.
+OP_B05_01,Don't stare at it too long. An echo only does what you already chose to do.
+EL_B05_01,That was me. A minute ago. And it's still standing there.
+EL_B06_01,Two people on this bench. One of them sits the way I do.
+EL_B06_02,Mira. I know that voice. Why do I know that voice?
+OP_B07_01,Power's back. Good. Now go straight to the street exit.
+OP_B07_02,There's a dispatch terminal in the Atrium. Leave it alone. It won't help you.
+EL_B08_01,I walked north. I came out of the west arch. The building is lying to me.
+EL_B09_01,It knows my hand.
+EL_B09_02,Level-0 clearance. My clearance. I sealed this station.
+EL_B09_03,Why would I do that?
+EL_B09_04,"The same minute, over and over. Probably a clock fault. Probably."
+EL_B10_01,"The rain isn't falling. It's hanging in the air, waiting."
+OP_B10_01,Now you see why I told you to leave the terminal alone.
+OP_B10_02,"Keep moving. She's in the Central District, and the city remembers what you lost."
+SPK_ELIAS,Elias
+SPK_MIRA,Mira
+SPK_OPERATOR,VOICE
+JRN_CH1_TURNSTILE_TRACE,Someone else passed through the West Turnstile seconds before the station froze at 23:59.
+JRN_CH1_EVAC_2354,"An evacuation was ordered at 23:54. Five minutes later, every clock stopped."
+JRN_CH1_OPERATOR,"A voice on the call box knows the station, the lock, and the watch. It won't say who it is."
+JRN_CH1_BACKFLOW,"Days before the lock, technicians logged ""chronometric backflow"". The directors told them to ignore it."
+JRN_CH1_TWO_SILHOUETTES,"Two traces on the lounge bench: a woman, and a man who stands like me."
+JRN_CH1_MIRA_PLEA,Mira asked me not to come back for her if the stabilization failed.
+JRN_CH1_OPERATOR_WARNING,The voice on the intercom warned me away from the Atrium dispatch logs. What is it hiding?
+JRN_CH1_THRESHOLDS,"The ELYSIUM field indexes doorways. When time froze, some stopped leading where they should."
+JRN_CH1_SEAL_ELIAS,The containment lock was executed from the Atrium terminal with my Level-0 clearance.
+JRN_CH1_REPEATS,"The terminal log repeats one line: 23:59:00, USER: ELIAS. A fault?"
+FRAG_MIRA_DEPARTURE_TITLE,Memory: The Lounge Bench
+FRAG_MIRA_DEPARTURE_BODY,"Her hand on my sleeve. The departure board flickering. She was asking me for something, and I said no."
+PZ001_FB_GATE_JAMMED,The turnstile rotor is crushed shut. Force won't move it.
+PZ001_FB_GATE_REWIND_ONLY,Only Rewind can restore this fractured mechanism.
+PZ001_FB_PILLAR_UNSUPPORTED,Solid station concrete. No temporal fracture here.
+PZ002_FB_GEAR_LOCKED,The gear is frozen solid. Unfreeze it before rewinding the shutter.
+PZ002_FB_GEAR_NO_REWIND,The stripped gear has no memory to rewind. Try the shutter.
+PZ002_FB_SHUTTER_HEAVY,Too heavy to lift by hand.
+PZ002_FB_SHUTTER_NO_FREEZE,The shutter is too heavy to freeze. Target the counterweight gear.
+PZ003_FB_GATE_SWITCH_LOCKED,Locked by the floor pressure switch on the south deck.
+PZ003_FB_SHIELDED_GATE,Chrono-shielded security gate. It can't be frozen or rewound.
+PZ003_FB_SHIELDED_SWITCH,Chrono-shielded plate. It only responds to weight.
+PZ004_FB_BREAKER_ENGAGED,Breaker is already engaged.
+PZ004_FB_BREAKER_SHIELDED,Insulated high-voltage switch. The watch can't affect it.
+PZ004_FB_BUS_UNPOWERED,The power bus is dead. Stabilize the central capacitor first.
+PZ004_FB_DOOR_UNPOWERED,Bulkhead sealed. Engage both breakers at once to restore power.
+PZ005_FB_ATRIUM_LOCKED,The north arch is routed to the Atrium. The West Loop can't re-engage.
+PZ005_FB_LOOP_CONFLICT,Route conflict on the north arch. Uncouple the West Loop first.
+PZ005_FB_SPATIAL_ANCHORED,Spatial relays sit outside local time. Switch them by hand.
+DOC_EVAC_NOTICE_TITLE,TRANSIT BULLETIN 23:54
+DOC_EVAC_NOTICE_BODY_1,"ELYSIUM CIVIC STABILIZATION PROJECT
+Emergency evacuation of Elysium-09.
+All passengers proceed to street level.
+Do not use platform lifts.
+Staff: secure the lower concourse.
+This is not a drill."
+DOC_TECH_LOG_TITLE,MAINTENANCE CLIPBOARD
+DOC_TECH_LOG_BODY_1,"Day 3: grid shows chronometric backflow.
+Counters run, then un-run. Logged it.
+Day 4: worse. Shutter gear slipping.
+Day 5: directors say ignore the readings.
+""Within ELYSIUM tolerances.""
+Whose tolerances?"
+DOC_MIRA_01_TITLE,VOICE RECORDER - DAMAGED
+DOC_MIRA_01_BODY_1,"[static]
+Elias, if the stabilization fails,
+don't come back for me.
+Promise me you'll let the clock pass midnight.
+Promise me.
+[static]"
+DOC_INDEX_PLAQUE_TITLE,ELYSIUM THRESHOLD INDEX
+DOC_INDEX_PLAQUE_BODY_1,"Every threshold in this station is indexed.
+An archway leads where its index points.
+Should the field be interrupted,
+indices may decouple from their walls.
+Do not pass an unmarked arch.
+- ELYSIUM Facilities"
+DOC_TRANSIT_PASS_TITLE,STAFF TRANSIT PASS
+DOC_TRANSIT_PASS_BODY_1,"ELYSIUM SITE ACCESS
+Holder: [name scratched out]
+Clearance: LEVEL-0
+Valid until: 23:59
+
+The photo has been torn away."
+DOC_DISPATCH_TITLE,CENTRAL DISPATCH RECORDER
+DOC_DISPATCH_BODY_1,"BIOMETRIC MATCH - ACCESS GRANTED
+EVENT: CONTAINMENT PROTOCOL
+STATUS: EXECUTED 23:59:00
+AUTHORIZATION: LEVEL-0
+USER: ELIAS
+LOCATION: THIS TERMINAL"
+DOC_DISPATCH_BODY_2,"DIAGNOSTIC LOG
+23:59:00 - USER: ELIAS
+23:59:00 - USER: ELIAS
+23:59:00 - USER: ELIAS
+23:59:00 - USER: ELIAS
+23:59:00 - USER: ELIAS"

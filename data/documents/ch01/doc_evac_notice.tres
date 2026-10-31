@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DocumentDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/narrative/document_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+document_id = &"ch01.concourse_west.doc_evac_notice"
+kind = 0
+title_key = "DOC_EVAC_NOTICE_TITLE"
+body_key = "DOC_EVAC_NOTICE_BODY_1"
+flag_id = &"ch01.flag.evac_notice_read"
+fragment_id = &""
+journal_entry_key = "JRN_CH1_EVAC_2354"
+journal_category = "fact"

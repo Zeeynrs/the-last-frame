@@ -1,150 +1,102 @@
-# Chapter 1 text: documents, journal, Operator, Elias, feedback (TLF-024)
+# Chapter 1 Text — "The Forgotten Station"
 
-**Owner:** Argon · **Companion file:** `narrative/ch01/ch01_text.csv` (`keys,en`, UTF-8, LF, RFC-4180 quoting)
+**Task:** TLF-024 (re-assigned from Argon to Opus on 2026-10-31: Argon hit its usage limit) · **Status:** first pass, open for Argon's narrative review when available
+**Source of truth:** this file. `tools/content/gen_ch01_text.py` turns the two tables below into `localization/ch01_text.csv` and `data/documents/ch01/*.tres`. Don't hand-edit the generated files.
 
-**Key count:** 74 (document 6, audio log 2, plaque 2, terminal 3, fragment 2, journal 12, Elias 9, Operator 11, feedback 27).
+## Rules applied
+- **ASCII only** (TLF Pixel Mono covers ASCII 32-126): no em dashes, curly quotes or ellipsis characters.
+- Length: `OP_`/`EL_` lines ≤ 120 chars; `PZ00N_FB_` ≤ 80; document pages ≤ 6 lines × 48 chars (`<br>` = line break; one key per page).
+- Canon (Lead review, TLF-003): exactly **one** revelation (Beat 09, self-implication); the loop is only an **ambiguous seed** (an unnumbered column of identical timestamps, no "exit", no count, no memory wipe); the Operator speaks only through **old devices** (call box, PA, wired intercom, payphone); **one** subtle phrase is shared by Elias and the Operator ("Time doesn't stop. It waits." in EL_B01_03 and OP_B03_03); no Archivist foreshadowing.
+- Puzzle feedback text is from the specs, made ASCII and shortened where it exceeded 80 chars (listed under Deltas).
 
-Puzzle titles and hints are not repeated here; they stay in `localization/ch01_puzzles.csv`.
-
-## Conventions
-
-- **Character set:** printable ASCII only (U+0020..U+007E). `tlf_pixel_mono.ttf` (TLF-010) has exactly these glyphs, so em dashes, curly quotes and ellipsis characters are not used.
-- **Line breaks:** document, plaque, terminal, audio-log and fragment bodies use the two-character escape `\n` between lines. Godot's CSV translation import unescapes it into a newline. Every body is at most 6 lines of at most 48 characters; titles are at most 48 characters.
-- **Limits:** `OP_*` / `EL_*` lines at most 120 characters (one subtitle line each); `*_FB_*` at most 80; journal entries at most 120.
-- **Speaker / Beat / Object ID / Notes** are for implementers only and are not exported to the CSV.
-- **Readables:** `ReadableDocument` already sets `read.<document_id>` on every read, so `flag` is only filled in where the design names a story flag.
-
-## Master table
-
-| Key | Kind | Speaker | Beat | Object ID | Text | Notes |
+## Text table
+| key | kind | speaker | beat | object_id | text | notes |
 |---|---|---|---|---|---|---|
-| `EL_B01_01` | Elias | Elias | Beat 01 | `ch01.arrival_platform.safe_anchor_spawn` | Cold tiles. My head is pounding. The name inside my coat collar reads ELIAS. It's all I have. | Plays on first spawn (chapter start). |
-| `EL_B01_02` | Elias | Elias | Beat 01 | none | Every clock says 23:59. Nothing moves. Everything holds its breath at the edge of the minute. | On first look at a platform clock or the departure board. Contains the single shared phrase (see OP_B03_04). |
-| `EL_B01_03` | Elias | Elias | Beat 01 | none | The train doors are sealed. From the outside. | On inspecting the stalled transit car (no object ID in ROOM_GRAPH; scenery inspect). |
-| `EL_B01_04` | Elias | Elias | Beat 01 | none | A pocket watch, right beside me. The crystal is cracked, but the brass is still warm. | On picking up `global.pocket_watch` (sets `ch01.flag.watch_acquired`). |
-| `JRN_CH1_AWAKENING` | journal | Elias | Beat 01 | none | I woke on the arrival platform of Elysium-09. Every clock reads 23:59. A warm, cracked pocket watch lay beside me. | Journal category: observation. Added with `ch01.flag.watch_acquired`. |
-| `JRN_CH1_TURNSTILE_TRACE` | journal | Elias | Beat 02 | `ch01.concourse_west.turnstile_trace_anchor` | Someone else passed through the West Turnstile seconds before the station froze at 23:59. | Journal category: observation. Text verbatim from CH1-PZ-001 (narrative reward); added on `trace` at the anchor. |
-| `OP_B03_01` | Operator | The Operator | Beat 03 | `ch01.concourse_west.call_box_09` | Good, you picked up. Stay on the line, Elias. It won't hold for long. | Call box conversation 1/5, on `use` of the ringing call box. |
-| `OP_B03_02` | Operator | The Operator | Beat 03 | `ch01.concourse_west.call_box_09` | Elysium-09 is under a containment lock. Nothing in here moves past 23:59 unless you move it. | Call box 2/5. |
-| `OP_B03_03` | Operator | The Operator | Beat 03 | `ch01.concourse_west.call_box_09` | That watch can't turn back the whole station. Only the pieces that broke when it stopped. | Call box 3/5. Shows he knows how the watch works (Beat 03). |
-| `OP_B03_04` | Operator | The Operator | Beat 03 | `ch01.concourse_west.call_box_09` | Feels like the whole place is holding its breath at the edge of the minute, doesn't it? | Call box 4/5. The single shared phrase, echoing EL_B01_02. |
-| `OP_B03_05` | Operator | The Operator | Beat 03 | `ch01.concourse_west.call_box_09` | Restore auxiliary power in Signal Control. That unseals the street exit. Go through Maintenance. | Call box 5/5. On line end set `ch01.flag.operator_call_01` and add JRN_CH1_OPERATOR_CALL. |
-| `JRN_CH1_OPERATOR_CALL` | journal | Elias | Beat 03 | `ch01.concourse_west.call_box_09` | The man on Call Box 09 knows how my watch works. He sounds tired, and somehow familiar. | Journal category: theory. Added with `ch01.flag.operator_call_01`. |
-| `DOC_EVAC_NOTICE_TITLE` | document | Station Control | Beat 03 | `ch01.concourse_west.doc_evac_notice` | Station Bulletin: Emergency Evacuation | DocumentDef: kind `DOCUMENT`, title_key `DOC_EVAC_NOTICE_TITLE`, body_key `DOC_EVAC_NOTICE_BODY`; flag `none (auto `read.<document_id>`)`; fragment `none`; journal `JRN_CH1_EVAC_2354` (fact). |
-| `DOC_EVAC_NOTICE_BODY` | document | Station Control | Beat 03 | `ch01.concourse_west.doc_evac_notice` | ELYSIUM-09 STATION CONTROL // ISSUED 23:54\nAll passengers must leave the station now.\nExit by the street stairs in the Atrium.\nDo not wait for transit service to resume.\nELYSIUM civic stabilization works in progress.\nThank you for your patience. | DocumentDef: kind `DOCUMENT`, title_key `DOC_EVAC_NOTICE_TITLE`, body_key `DOC_EVAC_NOTICE_BODY`; flag `none (auto `read.<document_id>`)`; fragment `none`; journal `JRN_CH1_EVAC_2354` (fact). Reading it is half of the E2 gate (with the call box). |
-| `JRN_CH1_EVAC_2354` | journal | Elias | Beat 03 | `ch01.concourse_west.doc_evac_notice` | Station Control ordered an evacuation at 23:54, five minutes before every clock stopped. | Journal category: fact. From DOC_EVAC_NOTICE. |
-| `DOC_TECH_LOG_TITLE` | document | Maintenance technician | Beat 04 | `ch01.maintenance_bay.doc_tech_log` | Maintenance Clipboard: Shift Log | DocumentDef: kind `DOCUMENT`, title_key `DOC_TECH_LOG_TITLE`, body_key `DOC_TECH_LOG_BODY`; flag `none (auto `read.<document_id>`)`; fragment `none`; journal `JRN_CH1_CHRONO_BACKFLOW` (observation). |
-| `DOC_TECH_LOG_BODY` | document | Maintenance technician | Beat 04 | `ch01.maintenance_bay.doc_tech_log` | Day 1: Grid meters ran backward for 4 seconds.\nDay 2: Again. Calling it chronometric backflow.\nDay 3: Shutter gear slipped twice. Reported.\nDay 4: ELYSIUM directors say ignore the meters.\n'Expected field behavior.'\nI'm logging it anyway. | DocumentDef: kind `DOCUMENT`, title_key `DOC_TECH_LOG_TITLE`, body_key `DOC_TECH_LOG_BODY`; flag `none (auto `read.<document_id>`)`; fragment `none`; journal `JRN_CH1_CHRONO_BACKFLOW` (observation). |
-| `JRN_CH1_CHRONO_BACKFLOW` | journal | Elias | Beat 04 | `ch01.maintenance_bay.doc_tech_log` | A technician logged 'chronometric backflow' days before the incident. ELYSIUM's directors said to ignore it. | Journal category: observation. From DOC_TECH_LOG. |
-| `DOC_TRANSIT_PASS_TITLE` | document | Security booth guard | Beat 05 | `ch01.security_crossing.transit_pass_pickup` | Security Booth Log and Transit Pass | DocumentDef: kind `DOCUMENT`, title_key `DOC_TRANSIT_PASS_TITLE`, body_key `DOC_TRANSIT_PASS_BODY`; flag `none (auto `read.<document_id>`)`; fragment `none`; journal `JRN_CH1_TRANSIT_PASS` (observation). Progression object: echoes get UI_FB_ECHO_FORBIDDEN. |
-| `DOC_TRANSIT_PASS_BODY` | document | Security booth guard | Beat 05 | `ch01.security_crossing.transit_pass_pickup` | BOOTH LOG // SECURITY CROSSING // NIGHT\n23:50 Gate set to pressure-plate interlock.\n23:54 Evacuation bulletin received.\n23:56 Two passengers waved through to Lounge.\n23:58 Atrium not answering. Holding post.\nTransit pass SC-09 clipped to this page. | DocumentDef: kind `DOCUMENT`, title_key `DOC_TRANSIT_PASS_TITLE`, body_key `DOC_TRANSIT_PASS_BODY`; flag `none (auto `read.<document_id>`)`; fragment `none`; journal `JRN_CH1_TRANSIT_PASS` (observation). |
-| `JRN_CH1_TRANSIT_PASS` | journal | Elias | Beat 05 | `ch01.security_crossing.transit_pass_pickup` | The booth guard waved two passengers through to the Waiting Lounge at 23:56. | Journal category: observation. From DOC_TRANSIT_PASS; quietly sets up the two silhouettes of Beat 06. |
-| `OP_B05_01` | Operator | The Operator | Beat 05 | `ch01.security_crossing.pa_speaker` | Don't stare at it too long. An echo only does what you already chose to do. | Verbatim from the beat sheet. Wall PA, plays once on the first Echo playback in CH1-PZ-003. Object ID proposed (see Spec deltas). |
-| `DOC_MIRA_01_TITLE` | audio log | Mira | Beat 06 | `ch01.waiting_lounge.audio_mira_01` | Personal Recorder: Mira | DocumentDef: kind `AUDIO_LOG`, title_key `DOC_MIRA_01_TITLE`, body_key `DOC_MIRA_01_BODY`; flag `ch01.flag.mira_trace_seen`; fragment `ch01.fragment.mira_departure`; journal `JRN_CH1_MIRA_PLEA` (fact). Keys and wiring match tests/narrative/test_documents_journal.gd. |
-| `DOC_MIRA_01_BODY` | audio log | Mira | Beat 06 | `ch01.waiting_lounge.audio_mira_01` | [Static. A woman's voice, close to the mic.]\nElias, if the stabilization fails, don't come\nback for me. Promise me you'll let the clock\npass midnight.\n[A long breath. Footsteps. The tape ends.] | DocumentDef: kind `AUDIO_LOG`, title_key `DOC_MIRA_01_TITLE`, body_key `DOC_MIRA_01_BODY`; flag `ch01.flag.mira_trace_seen`; fragment `ch01.fragment.mira_departure`; journal `JRN_CH1_MIRA_PLEA` (fact). Spoken lines are the beat sheet quote, verbatim. |
-| `FRAG_MIRA_DEPARTURE_TITLE` | fragment | Elias | Beat 06 | `ch01.waiting_lounge.audio_mira_01` | Memory: The Bench by the Window | Memory fragment `ch01.fragment.mira_departure`, collected via DOC_MIRA_01. |
-| `FRAG_MIRA_DEPARTURE_BODY` | fragment | Elias | Beat 06 | `ch01.waiting_lounge.audio_mira_01` | Two shapes on the bench, minutes before 23:59.\nMira, holding my sleeve too tightly.\nMe, checking the clock again and again.\nShe asked me to promise.\nI don't remember if I did. | Memory fragment body. Matches the two Trace silhouettes (Mira and a man with Elias's posture). |
-| `EL_B06_01` | Elias | Elias | Beat 06 | `ch01.waiting_lounge.audio_mira_01` | That's me on the bench beside her. Mira. I know her name, but I can't hold on to her face. | After the recording ends (first read only). |
-| `JRN_CH1_MIRA_PLEA` | journal | Elias | Beat 06 | `ch01.waiting_lounge.audio_mira_01` | Mira begged me not to come back for her if the stabilization failed, and to let the clock pass midnight. | Journal category: fact. From DOC_MIRA_01 (key fixed by test_documents_journal.gd). |
-| `JRN_CH1_SUBSTATION_BOUNDARY` | journal | Elias | Beat 07 | `ch01.signal_control.substation_grid` | Elysium-09 isn't blocked by rubble. An artificial temporal boundary surrounds it, anchored to the Atrium. | Journal category: fact. Added when CH1-PZ-004 brings `substation_grid` online and the monitors boot. |
-| `OP_B07_01` | Operator | The Operator | Beat 07 | `ch01.signal_control.intercom` | Power's back. I can hear the relays from here. | Wired intercom 1/3, right after CH1-PZ-004 is solved. Object ID proposed (see Spec deltas). |
-| `OP_B07_02` | Operator | The Operator | Beat 07 | `ch01.signal_control.intercom` | Listen to me. The vestibule door is open. Go straight up to the street exit. | Wired intercom 2/3. |
-| `OP_B07_03` | Operator | The Operator | Beat 07 | `ch01.signal_control.intercom` | Don't waste time on the dispatch logs in the Atrium. There's nothing up there you need. | Wired intercom 3/3. On line end set `ch01.flag.operator_substation_warn` and add JRN_CH1_OPERATOR_WARNING. |
-| `JRN_CH1_OPERATOR_WARNING` | journal | Elias | Beat 07 | `ch01.signal_control.intercom` | The Operator wants me to skip the Atrium dispatch logs. What doesn't he want me to see? | Journal category: theory. Added with `ch01.flag.operator_substation_warn`. |
-| `DOC_INDEX_PLAQUE_TITLE` | plaque | ELYSIUM engineering | Beat 08 | `ch01.vestibule_niche.doc_index_plaque` | ELYSIUM Threshold Index: Sector 09 | DocumentDef: kind `PLAQUE`, title_key `DOC_INDEX_PLAQUE_TITLE`, body_key `DOC_INDEX_PLAQUE_BODY`; flag `none (auto `read.<document_id>`)`; fragment `none`; journal `JRN_CH1_THRESHOLD_INDEX` (observation). |
-| `DOC_INDEX_PLAQUE_BODY` | plaque | ELYSIUM engineering | Beat 08 | `ch01.vestibule_niche.doc_index_plaque` | Every threshold in this sector is an index node.\nDoorways link by index, not by adjacency.\nIn a field fault, nodes may pair wrongly.\nRe-route at the junction relays.\nScratched below: since 23:59 the north arch\nkeeps opening onto the west one. | DocumentDef: kind `PLAQUE`, title_key `DOC_INDEX_PLAQUE_TITLE`, body_key `DOC_INDEX_PLAQUE_BODY`; flag `none (auto `read.<document_id>`)`; fragment `none`; journal `JRN_CH1_THRESHOLD_INDEX` (observation). Lines 5-6 are the beat sheet's 'inspection note', folded into the plaque. |
-| `JRN_CH1_THRESHOLD_INDEX` | journal | Elias | Beat 08 | `ch01.vestibule_niche.doc_index_plaque` | Doorways here link by index, not by position. Since 23:59 some of them open onto the wrong place. | Journal category: observation. From DOC_INDEX_PLAQUE. |
-| `DOC_DISPATCH_2359_TITLE` | terminal | Central Dispatch Recorder | Beat 09 | `ch01.station_atrium.dispatch_terminal` | Central Dispatch Recorder | DocumentDef: kind `TERMINAL`, title_key `DOC_DISPATCH_2359_TITLE`, body_key `DOC_DISPATCH_2359_BODY_1`; flag `ch01.flag.ledger_2359_revealed`; fragment `none`; journal `JRN_CH1_LEDGER_2359` (fact). Page 2 = DOC_DISPATCH_2359_BODY_2. |
-| `DOC_DISPATCH_2359_BODY_1` | terminal | Central Dispatch Recorder | Beat 09 | `ch01.station_atrium.dispatch_terminal` | CONTAINMENT PROTOCOL: EXECUTED\nTIME: 23:59:00   SITE: ELYSIUM-09\nSTATION SEAL: ACTIVE\nAUTHORIZED BY: ELIAS\nCLEARANCE: LEVEL-0 ELYSIUM\nINPUT: THIS TERMINAL, PALM VERIFIED | DocumentDef: kind `TERMINAL`, title_key `DOC_DISPATCH_2359_TITLE`, body_key `DOC_DISPATCH_2359_BODY_1`; flag `ch01.flag.ledger_2359_revealed`; fragment `none`; journal `JRN_CH1_LEDGER_2359` (fact). Page 1: the chapter's single revelation (self-implication). |
-| `DOC_DISPATCH_2359_BODY_2` | terminal | Central Dispatch Recorder | Beat 09 | `ch01.station_atrium.dispatch_terminal` | DIAGNOSTIC // ACCESS LOG\n23:59:00 - USER: ELIAS\n23:59:00 - USER: ELIAS\n23:59:00 - USER: ELIAS\n23:59:00 - USER: ELIAS\n23:59:00 - USER: ELIAS | Page 2, the secondary corner pane: ambiguous seed only. No counter, no 'exit', no explanation. UI may scroll the identical rows. Wiring of JRN_CH1_TIMESTAMP_ANOMALY: see open question Q2. |
-| `EL_B09_01` | Elias | Elias | Beat 09 | `ch01.station_atrium.dispatch_terminal` | It knows my hand. The seal opened the moment I touched it. | On `trace` at the biometric seal, before page 1 opens. |
-| `EL_B09_02` | Elias | Elias | Beat 09 | `ch01.station_atrium.dispatch_terminal` | Authorized by Elias. Level-0 clearance. The lock that froze this station came from me. | After page 1. |
-| `EL_B09_03` | Elias | Elias | Beat 09 | `ch01.station_atrium.dispatch_terminal` | I sealed Elysium-09 at 23:59. Why would I do that? | After page 1 (the beat's emotional turn). |
-| `EL_B09_04` | Elias | Elias | Beat 09 | `ch01.station_atrium.dispatch_terminal` | And that corner log... the same line, over and over. 23:59:00. Me. | After page 2. Observation only; no interpretation. |
-| `JRN_CH1_LEDGER_2359` | journal | Elias | Beat 09 | `ch01.station_atrium.dispatch_terminal` | The 23:59 containment lock was executed from the Atrium terminal with my own Level-0 clearance. I sealed the station. | Journal category: fact. From DOC_DISPATCH_2359 (with `ch01.flag.ledger_2359_revealed`). |
-| `JRN_CH1_TIMESTAMP_ANOMALY` | journal | Elias | Beat 09 | `ch01.station_atrium.dispatch_terminal` | The terminal's access log repeats one line: 23:59:00, USER: ELIAS. A clock fault, or something else? | Journal category: theory. The loop seed stays a question (see open question Q2 for wiring). |
-| `OP_B10_01` | Operator | The Operator | Beat 10 | `ch01.street_exit.plaza_payphone` | Now you see why I told you to leave the terminal alone. | Payphone external speaker 1/2, after `ch01.street_exit.trigger_outro`. Verbatim from the beat sheet. |
-| `OP_B10_02` | Operator | The Operator | Beat 10 | `ch01.street_exit.plaza_payphone` | Keep moving. She's in the Central District, and the city remembers what you lost. | Payphone 2/2. Beat sheet line with the em dash replaced by a full stop (pixel font is ASCII-only). |
-| `UI_FB_CLOCK_2359` | feedback | none | all | none | 23:59. The display isn't broken. It just won't change. | Inspect flavor for every `prop_digital_clock_2359` instance (rooms 1, 2, 5, 7, 9, 10). Not an InteractionResult reason; see Q3. |
-| `UI_FB_MISSING_TARGET` | feedback | none | all | none | Target is no longer present. | Shared reason `missing_target` (puzzles README §2.3). Verbatim from spec. |
-| `UI_FB_ECHO_FORBIDDEN` | feedback | none | all | none | An echo cannot claim permanent items or records. | Shared reason `echo_forbidden` (README §2.3); first shown at `transit_pass_pickup` (Beat 05). Verbatim from spec. |
-| `UI_FB_UNSUPPORTED` | feedback | none | all | none | The pocket watch cannot affect this object. | Shared reason `unsupported` (README §2.3); object-specific overrides use their `PZ00N_FB_*` key. Verbatim from spec. |
-| `UI_FB_FROZEN` | feedback | none | all | none | Object is locked in time. Unfreeze it first. | Shared reason `frozen` (README §2.3). Tightened from spec (see Spec deltas). |
-| `UI_FB_NO_HISTORY` | feedback | none | all | none | No earlier temporal state recorded for this object. | Shared reason `no_history` (README §2.3). Verbatim from spec. |
-| `UI_FB_ALREADY_OPEN` | feedback | none | all | none | Already open. | Shared reason `already_open` (README §2.3). Verbatim from spec. |
-| `UI_FB_UNPOWERED` | feedback | none | all | none | No power to this mechanism. | Shared reason `unpowered` (README §2.3); also shown on dead fixtures in Beat 01. Verbatim from spec. |
-| `UI_FB_INVALID_GRAPH` | feedback | none | all | none | Route conflict. Clear the active loop on the paired junction first. | Shared reason `invalid_graph` (README §2.3, ADR-009). Tightened from spec (see Spec deltas). |
-| `UI_FB_CRITICAL_PATH` | feedback | none | all | none | Safety interlock: cannot sever the main entry route. | Shared reason `critical_path_unreachable` (README §2.3, ADR-009). Tightened from spec (see Spec deltas). |
-| `PZ001_FB_GATE_JAMMED` | feedback | none | Beat 02 | `ch01.concourse_west.turnstile_gate` | The turnstile rotor is crushed shut. Physical force won't budge it. | CH1-PZ-001: `use` while `arm_state == collapsed` (reason `jammed`). Verbatim from spec. |
-| `PZ001_FB_GATE_REWIND_ONLY` | feedback | none | Beat 02 | `ch01.concourse_west.turnstile_gate` | Only Rewind can restore this fractured mechanism. | CH1-PZ-001: `freeze` / `fast_forward` on the gate (reason `unsupported`). Verbatim from spec. |
-| `PZ001_FB_PILLAR_UNSUPPORTED` | feedback | none | Beat 02 | `ch01.concourse_west.support_pillar_01` | Solid station concrete. No temporal fracture to manipulate. | CH1-PZ-001: any watch ability on the pillar (reason `unsupported`). Tightened from spec (see Spec deltas). |
-| `PZ002_FB_GEAR_LOCKED` | feedback | none | Beat 04 | `ch01.maintenance_bay.fire_shutter` | The counterweight gear is frozen. Unfreeze it before rewinding the shutter. | CH1-PZ-002: `rewind` on the shutter while the gear is frozen (reason `frozen`). Tightened from spec (see Spec deltas). |
-| `PZ002_FB_SHUTTER_NO_FREEZE` | feedback | none | Beat 04 | `ch01.maintenance_bay.fire_shutter` | The shutter is too heavy to freeze directly. Target the counterweight gear. | CH1-PZ-002: `freeze` on the shutter (reason `unsupported`). Tightened from spec (see Spec deltas). |
-| `PZ002_FB_SHUTTER_HEAVY` | feedback | none | Beat 04 | `ch01.maintenance_bay.fire_shutter` | Too heavy to lift by hand. | CH1-PZ-002: `use` on the shutter (reason `jammed`). Verbatim from spec. |
-| `PZ002_FB_GEAR_NO_REWIND` | feedback | none | Beat 04 | `ch01.maintenance_bay.counterweight_gear` | The stripped gear has no spring memory. Rewind the fire shutter itself. | CH1-PZ-002: `rewind` on the gear (reason `unsupported`). Tightened from spec (see Spec deltas). |
-| `PZ003_FB_SHIELDED_SWITCH` | feedback | none | Beat 05 | `ch01.security_crossing.pressure_switch_01` | Chrono-shielded pressure plate. It only responds to physical weight. | CH1-PZ-003: `freeze` / `rewind` on the switch (reason `unsupported`). Tightened from spec (see Spec deltas). |
-| `PZ003_FB_GATE_SWITCH_LOCKED` | feedback | none | Beat 05 | `ch01.security_crossing.security_gate_01` | Locked by the floor pressure switch on the south deck. | CH1-PZ-003: `use` on the closed gate (reason `locked`). Verbatim from spec. |
-| `PZ003_FB_SHIELDED_GATE` | feedback | none | Beat 05 | `ch01.security_crossing.security_gate_01` | Chrono-shielded security gate. It cannot be frozen or rewound. | CH1-PZ-003: `freeze` / `rewind` on the gate (reason `unsupported`). Tightened from spec (see Spec deltas). |
-| `PZ004_FB_BUS_UNPOWERED` | feedback | none | Beat 07 | `ch01.signal_control.breaker_a` | Main power bus is dead. Stabilize the central surge capacitor first. | CH1-PZ-004: `use` on `breaker_a` / `breaker_b` while `bus_powered == false` (reason `unpowered`). Tightened from spec (see Spec deltas). |
-| `PZ004_FB_BREAKER_ENGAGED` | feedback | none | Beat 07 | `ch01.signal_control.breaker_a` | Breaker is already engaged. | CH1-PZ-004: `use` on an engaged breaker (`breaker_a` / `breaker_b`, reason `already_open`). Verbatim from spec. |
-| `PZ004_FB_BREAKER_SHIELDED` | feedback | none | Beat 07 | `ch01.signal_control.breaker_a` | High-voltage insulated switch. The pocket watch cannot affect it directly. | CH1-PZ-004: `freeze` / `rewind` on `breaker_a` / `breaker_b` (reason `unsupported`). Tightened from spec (see Spec deltas). |
-| `PZ004_FB_DOOR_UNPOWERED` | feedback | none | Beat 07 | `ch01.signal_control.vestibule_door` | Bulkhead sealed. Synchronize both substation breakers to restore power. | CH1-PZ-004: `use` on the door while `grid_online == false` (reason `unpowered`). Tightened from spec (see Spec deltas). |
-| `PZ005_FB_ATRIUM_LOCKED` | feedback | none | Beat 08 | `ch01.upper_vestibule.junction_lever_a` | Can't re-engage the West Loop while the North Archway leads to the Atrium. | CH1-PZ-005: `use` on lever A while lever B routes to the Atrium (reason `invalid_graph`). Tightened from spec (see Spec deltas). |
-| `PZ005_FB_LOOP_CONFLICT` | feedback | none | Beat 08 | `ch01.upper_vestibule.junction_lever_b` | Route conflict. Uncouple the West Loop at the west junction lever first. | CH1-PZ-005: `use` on lever B while lever A is still `loop` (reason `invalid_graph`). Player-facing name matches the hints ("west junction lever"). Tightened from spec (see Spec deltas). |
-| `PZ005_FB_SPATIAL_ANCHORED` | feedback | none | Beat 08 | `ch01.upper_vestibule.junction_lever_a` | Spatial index relays are anchored outside local time. Switch them by hand. | CH1-PZ-005: `rewind` / `freeze` on `junction_lever_a` / `_b` (reason `unsupported`). Tightened from spec (see Spec deltas). |
+| EL_B01_01 | monologue | Elias | 01 | | Where... is this? | waking |
+| EL_B01_02 | monologue | Elias | 01 | | Every clock says 23:59. None of them are moving. | first look at the boards |
+| EL_B01_03 | monologue | Elias | 01 | | Time doesn't stop. It waits. Where did I hear that? | shared phrase (see OP_B03_03) |
+| EL_B01_04 | monologue | Elias | 01 | global.pocket_watch | A pocket watch. Cracked glass. Still warm, like someone just put it down. | watch pickup |
+| EL_CLOCK_2359 | monologue | Elias | any | ch01.*.digital_clock_2359 | 23:59. The seconds digit flickers, but it never turns over. | clock inspect, reusable |
+| OP_B03_01 | operator | Operator (call box) | 03 | ch01.concourse_west.call_box_09 | Easy. Don't hang up. You're in Elysium-09, under the old transit line. | |
+| OP_B03_02 | operator | Operator (call box) | 03 | ch01.concourse_west.call_box_09 | The station is under a containment lock. Every door you've seen was sealed at 23:59. | |
+| OP_B03_03 | operator | Operator (call box) | 03 | ch01.concourse_west.call_box_09 | That watch still remembers how things were. Use it. Time doesn't stop. It waits. | shared phrase |
+| EL_B03_01 | dialogue | Elias | 03 | ch01.concourse_west.call_box_09 | Who is this? How do you know about the watch? | |
+| OP_B03_04 | operator | Operator (call box) | 03 | ch01.concourse_west.call_box_09 | Later. Restore auxiliary power at Signal Control. The street exit opens from there. | |
+| OP_B03_05 | operator | Operator (call box) | 03 | ch01.concourse_west.call_box_09 | This line won't hold much longer. Keep moving. | call ends |
+| OP_B05_01 | operator | Operator (PA) | 05 | ch01.security_crossing.pa_speaker | Don't stare at it too long. An echo only does what you already chose to do. | from beat sheet (proposed object ID) |
+| EL_B05_01 | monologue | Elias | 05 | | That was me. A minute ago. And it's still standing there. | first echo playback |
+| EL_B06_01 | monologue | Elias | 06 | ch01.waiting_lounge.trace_bench | Two people on this bench. One of them sits the way I do. | Trace on the bench |
+| EL_B06_02 | monologue | Elias | 06 | ch01.waiting_lounge.audio_mira_01 | Mira. I know that voice. Why do I know that voice? | after the audio log |
+| OP_B07_01 | operator | Operator (intercom) | 07 | ch01.signal_control.intercom | Power's back. Good. Now go straight to the street exit. | after PZ-004 (proposed object ID) |
+| OP_B07_02 | operator | Operator (intercom) | 07 | ch01.signal_control.intercom | There's a dispatch terminal in the Atrium. Leave it alone. It won't help you. | suspicion seed (proposed object ID) |
+| EL_B08_01 | monologue | Elias | 08 | ch01.upper_vestibule | I walked north. I came out of the west arch. The building is lying to me. | first loop |
+| EL_B09_01 | monologue | Elias | 09 | ch01.station_atrium.dispatch_terminal | It knows my hand. | terminal unlocks |
+| EL_B09_02 | monologue | Elias | 09 | ch01.station_atrium.dispatch_terminal | Level-0 clearance. My clearance. I sealed this station. | THE revelation |
+| EL_B09_03 | monologue | Elias | 09 | ch01.station_atrium.dispatch_terminal | Why would I do that? | |
+| EL_B09_04 | monologue | Elias | 09 | ch01.station_atrium.dispatch_terminal | The same minute, over and over. Probably a clock fault. Probably. | ambiguous seed only |
+| EL_B10_01 | monologue | Elias | 10 | ch01.street_exit | The rain isn't falling. It's hanging in the air, waiting. | cinematic |
+| OP_B10_01 | operator | Operator (payphone) | 10 | ch01.street_exit.plaza_payphone | Now you see why I told you to leave the terminal alone. | from beat sheet |
+| OP_B10_02 | operator | Operator (payphone) | 10 | ch01.street_exit.plaza_payphone | Keep moving. She's in the Central District, and the city remembers what you lost. | chapter hook |
+| SPK_ELIAS | speaker | System | any | | Elias | UI speaker label |
+| SPK_MIRA | speaker | System | any | | Mira | UI speaker label |
+| SPK_OPERATOR | speaker | System | any | | VOICE | UI speaker label (canon hides true identity) |
+| JRN_CH1_TURNSTILE_TRACE | journal | | 02 | ch01.concourse_west.turnstile_trace_anchor | Someone else passed through the West Turnstile seconds before the station froze at 23:59. | observation (spec) |
+| JRN_CH1_EVAC_2354 | journal | | 03 | ch01.concourse_west.doc_evac_notice | An evacuation was ordered at 23:54. Five minutes later, every clock stopped. | fact |
+| JRN_CH1_OPERATOR | journal | | 03 | ch01.concourse_west.call_box_09 | A voice on the call box knows the station, the lock, and the watch. It won't say who it is. | observation |
+| JRN_CH1_BACKFLOW | journal | | 04 | ch01.maintenance_bay.doc_tech_log | Days before the lock, technicians logged "chronometric backflow". The directors told them to ignore it. | observation |
+| JRN_CH1_TWO_SILHOUETTES | journal | | 06 | ch01.waiting_lounge.trace_bench | Two traces on the lounge bench: a woman, and a man who stands like me. | observation |
+| JRN_CH1_MIRA_PLEA | journal | | 06 | ch01.waiting_lounge.audio_mira_01 | Mira asked me not to come back for her if the stabilization failed. | fact |
+| JRN_CH1_OPERATOR_WARNING | journal | | 07 | ch01.signal_control.intercom | The voice on the intercom warned me away from the Atrium dispatch logs. What is it hiding? | theory, suspicion seed |
+| JRN_CH1_THRESHOLDS | journal | | 08 | ch01.vestibule_niche.doc_index_plaque | The ELYSIUM field indexes doorways. When time froze, some stopped leading where they should. | theory |
+| JRN_CH1_SEAL_ELIAS | journal | | 09 | ch01.station_atrium.dispatch_terminal | The containment lock was executed from the Atrium terminal with my Level-0 clearance. | fact |
+| JRN_CH1_REPEATS | journal | | 09 | ch01.station_atrium.dispatch_terminal | The terminal log repeats one line: 23:59:00, USER: ELIAS. A fault? | theory, ambiguous seed |
+| FRAG_MIRA_DEPARTURE_TITLE | fragment | | 06 | ch01.fragment.mira_departure | Memory: The Lounge Bench | |
+| FRAG_MIRA_DEPARTURE_BODY | fragment | | 06 | ch01.fragment.mira_departure | Her hand on my sleeve. The departure board flickering. She was asking me for something, and I said no. | |
+| PZ001_FB_GATE_JAMMED | feedback | | 02 | ch01.concourse_west.turnstile_gate | The turnstile rotor is crushed shut. Force won't move it. | |
+| PZ001_FB_GATE_REWIND_ONLY | feedback | | 02 | ch01.concourse_west.turnstile_gate | Only Rewind can restore this fractured mechanism. | |
+| PZ001_FB_PILLAR_UNSUPPORTED | feedback | | 02 | ch01.concourse_west.support_pillar_01 | Solid station concrete. No temporal fracture here. | |
+| PZ002_FB_GEAR_LOCKED | feedback | | 04 | ch01.maintenance_bay.fire_shutter | The gear is frozen solid. Unfreeze it before rewinding the shutter. | shortened |
+| PZ002_FB_GEAR_NO_REWIND | feedback | | 04 | ch01.maintenance_bay.counterweight_gear | The stripped gear has no memory to rewind. Try the shutter. | shortened |
+| PZ002_FB_SHUTTER_HEAVY | feedback | | 04 | ch01.maintenance_bay.fire_shutter | Too heavy to lift by hand. | |
+| PZ002_FB_SHUTTER_NO_FREEZE | feedback | | 04 | ch01.maintenance_bay.fire_shutter | The shutter is too heavy to freeze. Target the counterweight gear. | shortened |
+| PZ003_FB_GATE_SWITCH_LOCKED | feedback | | 05 | ch01.security_crossing.security_gate_01 | Locked by the floor pressure switch on the south deck. | |
+| PZ003_FB_SHIELDED_GATE | feedback | | 05 | ch01.security_crossing.security_gate_01 | Chrono-shielded security gate. It can't be frozen or rewound. | |
+| PZ003_FB_SHIELDED_SWITCH | feedback | | 05 | ch01.security_crossing.pressure_switch_01 | Chrono-shielded plate. It only responds to weight. | |
+| PZ004_FB_BREAKER_ENGAGED | feedback | | 07 | ch01.signal_control.breaker_a | Breaker is already engaged. | |
+| PZ004_FB_BREAKER_SHIELDED | feedback | | 07 | ch01.signal_control.breaker_a | Insulated high-voltage switch. The watch can't affect it. | |
+| PZ004_FB_BUS_UNPOWERED | feedback | | 07 | ch01.signal_control.breaker_a | The power bus is dead. Stabilize the central capacitor first. | |
+| PZ004_FB_DOOR_UNPOWERED | feedback | | 07 | ch01.signal_control.vestibule_door | Bulkhead sealed. Engage both breakers at once to restore power. | |
+| PZ005_FB_ATRIUM_LOCKED | feedback | | 08 | ch01.upper_vestibule.junction_lever_a | The north arch is routed to the Atrium. The West Loop can't re-engage. | shortened |
+| PZ005_FB_LOOP_CONFLICT | feedback | | 08 | ch01.upper_vestibule.junction_lever_b | Route conflict on the north arch. Uncouple the West Loop first. | |
+| PZ005_FB_SPATIAL_ANCHORED | feedback | | 08 | ch01.upper_vestibule.junction_lever_a | Spatial relays sit outside local time. Switch them by hand. | |
+| DOC_EVAC_NOTICE_TITLE | document | | 03 | ch01.concourse_west.doc_evac_notice | TRANSIT BULLETIN 23:54 | |
+| DOC_EVAC_NOTICE_BODY_1 | document | | 03 | ch01.concourse_west.doc_evac_notice | ELYSIUM CIVIC STABILIZATION PROJECT<br>Emergency evacuation of Elysium-09.<br>All passengers proceed to street level.<br>Do not use platform lifts.<br>Staff: secure the lower concourse.<br>This is not a drill. | |
+| DOC_TECH_LOG_TITLE | document | | 04 | ch01.maintenance_bay.doc_tech_log | MAINTENANCE CLIPBOARD | |
+| DOC_TECH_LOG_BODY_1 | document | | 04 | ch01.maintenance_bay.doc_tech_log | Day 3: grid shows chronometric backflow.<br>Counters run, then un-run. Logged it.<br>Day 4: worse. Shutter gear slipping.<br>Day 5: directors say ignore the readings.<br>"Within ELYSIUM tolerances."<br>Whose tolerances? | |
+| DOC_MIRA_01_TITLE | audio | Mira | 06 | ch01.waiting_lounge.audio_mira_01 | VOICE RECORDER - DAMAGED | |
+| DOC_MIRA_01_BODY_1 | audio | Mira | 06 | ch01.waiting_lounge.audio_mira_01 | [static]<br>Elias, if the stabilization fails,<br>don't come back for me.<br>Promise me you'll let the clock pass midnight.<br>Promise me.<br>[static] | from beat sheet |
+| DOC_INDEX_PLAQUE_TITLE | plaque | | 08 | ch01.vestibule_niche.doc_index_plaque | ELYSIUM THRESHOLD INDEX | |
+| DOC_INDEX_PLAQUE_BODY_1 | plaque | | 08 | ch01.vestibule_niche.doc_index_plaque | Every threshold in this station is indexed.<br>An archway leads where its index points.<br>Should the field be interrupted,<br>indices may decouple from their walls.<br>Do not pass an unmarked arch.<br>- ELYSIUM Facilities | |
+| DOC_TRANSIT_PASS_TITLE | document | | 05 | ch01.security_crossing.transit_pass_pickup | STAFF TRANSIT PASS | progression pickup |
+| DOC_TRANSIT_PASS_BODY_1 | document | | 05 | ch01.security_crossing.transit_pass_pickup | ELYSIUM SITE ACCESS<br>Holder: [name scratched out]<br>Clearance: LEVEL-0<br>Valid until: 23:59<br><br>The photo has been torn away. | |
+| DOC_DISPATCH_TITLE | terminal | | 09 | ch01.station_atrium.dispatch_terminal | CENTRAL DISPATCH RECORDER | the revelation |
+| DOC_DISPATCH_BODY_1 | terminal | | 09 | ch01.station_atrium.dispatch_terminal | BIOMETRIC MATCH - ACCESS GRANTED<br>EVENT: CONTAINMENT PROTOCOL<br>STATUS: EXECUTED 23:59:00<br>AUTHORIZATION: LEVEL-0<br>USER: ELIAS<br>LOCATION: THIS TERMINAL | |
+| DOC_DISPATCH_BODY_2 | terminal | | 09 | ch01.station_atrium.dispatch_terminal | DIAGNOSTIC LOG<br>23:59:00 - USER: ELIAS<br>23:59:00 - USER: ELIAS<br>23:59:00 - USER: ELIAS<br>23:59:00 - USER: ELIAS<br>23:59:00 - USER: ELIAS | unnumbered, no "exit" |
 
-## DocumentDef wiring
+## Documents
+| document_id | kind | title_key | body_keys | flag_id | fragment_id | journal_key | category |
+|---|---|---|---|---|---|---|---|
+| ch01.concourse_west.doc_evac_notice | DOCUMENT | DOC_EVAC_NOTICE_TITLE | DOC_EVAC_NOTICE_BODY_1 | ch01.flag.evac_notice_read | | JRN_CH1_EVAC_2354 | fact |
+| ch01.maintenance_bay.doc_tech_log | DOCUMENT | DOC_TECH_LOG_TITLE | DOC_TECH_LOG_BODY_1 | | | JRN_CH1_BACKFLOW | observation |
+| ch01.waiting_lounge.audio_mira_01 | AUDIO_LOG | DOC_MIRA_01_TITLE | DOC_MIRA_01_BODY_1 | ch01.flag.mira_trace_seen | ch01.fragment.mira_departure | JRN_CH1_MIRA_PLEA | fact |
+| ch01.vestibule_niche.doc_index_plaque | PLAQUE | DOC_INDEX_PLAQUE_TITLE | DOC_INDEX_PLAQUE_BODY_1 | | | JRN_CH1_THRESHOLDS | theory |
+| ch01.station_atrium.dispatch_terminal | TERMINAL | DOC_DISPATCH_TITLE | DOC_DISPATCH_BODY_1 | ch01.flag.ledger_2359_revealed | | JRN_CH1_SEAL_ELIAS | fact |
 
-- `ch01.concourse_west.doc_evac_notice`: kind `DOCUMENT`, title_key `DOC_EVAC_NOTICE_TITLE`, body_key `DOC_EVAC_NOTICE_BODY`, flag_id `""`, fragment_id `""`, journal_entry_key `JRN_CH1_EVAC_2354`, journal_category `fact`
-- `ch01.maintenance_bay.doc_tech_log`: kind `DOCUMENT`, title_key `DOC_TECH_LOG_TITLE`, body_key `DOC_TECH_LOG_BODY`, flag_id `""`, fragment_id `""`, journal_entry_key `JRN_CH1_CHRONO_BACKFLOW`, journal_category `observation`
-- `ch01.security_crossing.transit_pass_pickup`: kind `DOCUMENT`, title_key `DOC_TRANSIT_PASS_TITLE`, body_key `DOC_TRANSIT_PASS_BODY`, flag_id `""`, fragment_id `""`, journal_entry_key `JRN_CH1_TRANSIT_PASS`, journal_category `observation`
-- `ch01.waiting_lounge.audio_mira_01`: kind `AUDIO_LOG`, title_key `DOC_MIRA_01_TITLE`, body_key `DOC_MIRA_01_BODY`, flag_id `ch01.flag.mira_trace_seen`, fragment_id `ch01.fragment.mira_departure`, journal_entry_key `JRN_CH1_MIRA_PLEA`, journal_category `fact`
-- `ch01.vestibule_niche.doc_index_plaque`: kind `PLAQUE`, title_key `DOC_INDEX_PLAQUE_TITLE`, body_key `DOC_INDEX_PLAQUE_BODY`, flag_id `""`, fragment_id `""`, journal_entry_key `JRN_CH1_THRESHOLD_INDEX`, journal_category `observation`
-- `ch01.station_atrium.dispatch_terminal`: kind `TERMINAL`, title_key `DOC_DISPATCH_2359_TITLE`, body_key `DOC_DISPATCH_2359_BODY_1`, flag_id `ch01.flag.ledger_2359_revealed`, fragment_id `""`, journal_entry_key `JRN_CH1_LEDGER_2359`, journal_category `fact`
+## Deltas
+- Spec feedback text shortened to fit 80 characters and made ASCII: `PZ002_FB_GEAR_LOCKED`, `PZ002_FB_GEAR_NO_REWIND`, `PZ002_FB_SHUTTER_NO_FREEZE`, `PZ005_FB_ATRIUM_LOCKED`. Every em dash became a full stop.
+- `DocumentDef` has a single `body_key`, so the generator uses each document's first page. Multi-page bodies (`DOC_DISPATCH_BODY_2`) are shown by the document UI by key convention (`_BODY_2`, `_BODY_3` …). Adding a `page_keys` field to `DocumentDef` is a small follow-up if the UI needs it.
+- The Beat 09 terminal also yields `JRN_CH1_REPEATS` (theory). The UI/scene adds it when page 2 is viewed, since a DocumentDef only carries one journal entry.
 
-Journal entries that don't come from a readable are added by the dialogue or puzzle event named in their row: `JRN_CH1_AWAKENING` (watch pickup), `JRN_CH1_TURNSTILE_TRACE` (Trace at the turnstile anchor), `JRN_CH1_OPERATOR_CALL` (`ch01.flag.operator_call_01`), `JRN_CH1_SUBSTATION_BOUNDARY` (CH1-PZ-004 solved), `JRN_CH1_OPERATOR_WARNING` (`ch01.flag.operator_substation_warn`), `JRN_CH1_TIMESTAMP_ANOMALY` (see Q2).
-
-## Spec deltas (design/** not edited; for the Lead to apply or reject)
-
-**Feedback text.** 15 spec strings were changed because they break a limit. All other feedback keys are copied verbatim from the specs (the generator fails if an unneeded override exists).
-
-- `UI_FB_FROZEN` (README.md; glyph outside the font (em dash)): "Object is locked in time—unfreeze it first." becomes "Object is locked in time. Unfreeze it first."
-- `UI_FB_INVALID_GRAPH` (README.md; glyph outside the font (em dash)): "Route conflict—clear the active loop on the paired junction first." becomes "Route conflict. Clear the active loop on the paired junction first."
-- `UI_FB_CRITICAL_PATH` (README.md; glyph outside the font (em dash)): "Safety interlock—cannot sever main entry route." becomes "Safety interlock: cannot sever the main entry route."
-- `PZ001_FB_PILLAR_UNSUPPORTED` (CH1-PZ-001.md; glyph outside the font (em dash)): "Solid station concrete—no temporal fracture to manipulate." becomes "Solid station concrete. No temporal fracture to manipulate."
-- `PZ002_FB_GEAR_LOCKED` (CH1-PZ-002.md; 89 > 80 chars, glyph outside the font (em dash)): "The counterweight spindle is frozen solid—unfreeze the gear before rewinding the shutter." becomes "The counterweight gear is frozen. Unfreeze it before rewinding the shutter."
-- `PZ002_FB_SHUTTER_NO_FREEZE` (CH1-PZ-002.md; 82 > 80 chars, glyph outside the font (em dash)): "The shutter curtain is too heavy to freeze directly—target the counterweight gear." becomes "The shutter is too heavy to freeze directly. Target the counterweight gear."
-- `PZ002_FB_GEAR_NO_REWIND` (CH1-PZ-002.md; glyph outside the font (em dash)): "The stripped gear has no spring memory—rewind the fire shutter itself." becomes "The stripped gear has no spring memory. Rewind the fire shutter itself."
-- `PZ003_FB_SHIELDED_SWITCH` (CH1-PZ-003.md; glyph outside the font (em dash)): "Chrono-shielded pressure plate—it only responds to physical weight." becomes "Chrono-shielded pressure plate. It only responds to physical weight."
-- `PZ003_FB_SHIELDED_GATE` (CH1-PZ-003.md; glyph outside the font (em dash)): "Chrono-shielded security gate—cannot be frozen or rewound." becomes "Chrono-shielded security gate. It cannot be frozen or rewound."
-- `PZ004_FB_BUS_UNPOWERED` (CH1-PZ-004.md; glyph outside the font (em dash)): "Main power bus is dead—stabilize the central surge capacitor first." becomes "Main power bus is dead. Stabilize the central surge capacitor first."
-- `PZ004_FB_BREAKER_SHIELDED` (CH1-PZ-004.md; glyph outside the font (em dash)): "High-voltage insulated switch—the pocket watch cannot affect it directly." becomes "High-voltage insulated switch. The pocket watch cannot affect it directly."
-- `PZ004_FB_DOOR_UNPOWERED` (CH1-PZ-004.md; glyph outside the font (em dash)): "Bulkhead sealed—synchronize both substation breakers to restore power." becomes "Bulkhead sealed. Synchronize both substation breakers to restore power."
-- `PZ005_FB_ATRIUM_LOCKED` (CH1-PZ-005.md; 88 > 80 chars): "Cannot re-engage West Loop while North Archway is actively routed to the Station Atrium." becomes "Can't re-engage the West Loop while the North Archway leads to the Atrium."
-- `PZ005_FB_LOOP_CONFLICT` (CH1-PZ-005.md; glyph outside the font (em dash)): "Route conflict on North Archway—uncouple the West Loop at Lever A first." becomes "Route conflict. Uncouple the West Loop at the west junction lever first."
-- `PZ005_FB_SPATIAL_ANCHORED` (CH1-PZ-005.md; glyph outside the font (em dash)): "Spatial index relays are anchored outside local time—switch them manually." becomes "Spatial index relays are anchored outside local time. Switch them by hand."
-
-**Other deltas:**
-
-- **Object-specific variants of shared keys dropped.** The specs attach object-specific text to some shared keys, for example `UI_FB_ALREADY_OPEN` "The turnstile is already open." (PZ-001) or `UI_FB_NO_HISTORY` "Capacitor is already at peak recorded charge." (PZ-004). One key holds one string, so the CSV uses the generic README §2.3 text. If the variants are wanted, they need their own keys (for example `PZ004_FB_CAPACITOR_FULL`).
-- **Two new object IDs proposed** for the Operator's fixed devices, which `ROOM_GRAPH.md` describes but doesn't name: `ch01.security_crossing.pa_speaker` (wall PA, Beat 05) and `ch01.signal_control.intercom` (wired intercom, Beat 07; ROOM_GRAPH §7 already reuses `prop_call_box_phone` for it).
-- **New journal key** `JRN_CH1_OPERATOR_WARNING` (theory, Beat 07) for the beat sheet's "growing suspicion toward The Operator".
-- **Beat 01 has 4 monologue lines** (spawn, clocks, sealed train doors, watch pickup); the beat sheet names the facts but no line count.
-- **Beat 08 inspection note** is folded into the plaque (last two lines), so no new readable object is needed.
-- **Em dash in canon lines.** The Beat 10 payphone line and the Beat 09 log format (`23:59:00 — USER: ELIAS`) use an em dash in the beat sheet; here they use a full stop and a hyphen. Alternative: add U+2014 to the font in the next art batch.
-
-## Canon check
-
-- **Exactly one revelation (Beat 09, self-implication).** Only `DOC_DISPATCH_2359_BODY_1`, `EL_B09_01..03` and `JRN_CH1_LEDGER_2359` state that Elias's Level-0 clearance executed the 23:59 lock. Earlier text only sets up questions: sealed train doors (`EL_B01_03`), evacuation five minutes before the freeze, directors ignoring warnings, the Operator steering Elias away from the logs.
-- **Loop is only an ambiguous seed.** `DOC_DISPATCH_2359_BODY_2` is a column of identical `23:59:00 - USER: ELIAS` rows: no counter, no number, no "exit" label, no memory-wipe text. `EL_B09_04` and `JRN_CH1_TIMESTAMP_ANOMALY` only observe it and leave it as a question ("A clock fault, or something else?"). The generator rejects "47", "wipe" and "exit" in that pane.
-- **The Operator speaks only through old fixed devices.** Every `OP_*` row is bound to one of them: call box `ch01.concourse_west.call_box_09` (Beat 03), wall PA `ch01.security_crossing.pa_speaker` (Beat 05), wired intercom `ch01.signal_control.intercom` (Beat 07), and street payphone `ch01.street_exit.plaza_payphone` (Beat 10). No earpiece or radio appears anywhere (the generator checks for both words).
-- **At most one or two shared phrases.** Exactly one: "breath at the edge of the minute", in `EL_B01_02` (Elias, internal) and `OP_B03_04` (Operator, call box), as the beat sheet's "single subtle turn of phrase". The generator asserts that no other row contains it.
-- **No Archivist foreshadowing.** No mention of the Archivist, archives or any third party behind ELYSIUM (checked by the generator).
-- **Mira.** Her recording is the beat sheet quote verbatim. The fragment adds only what the Trace shows (two figures on the bench) and Elias not remembering whether he promised. It adds no new backstory.
-
-## Open questions for the Lead
-
-1. **Q1: multi-page readables.** `DocumentDef` has one `body_key`. The dispatch terminal uses `DOC_DISPATCH_2359_BODY_1` / `_BODY_2` as the task allows. Should the reader UI page through `_BODY_N` keys automatically, or should `DocumentDef` get a `body_keys` array?
-2. **Q2: second journal entry on one readable.** The terminal should add `JRN_CH1_LEDGER_2359` (fact) and `JRN_CH1_TIMESTAMP_ANOMALY` (theory), but `DocumentDef` holds one journal entry. Proposal: the theory entry is added when page 2 is shown (or with `EL_B09_04`).
-3. **Q3: clock flavor key.** The key scheme has no prefix for inspect flavor, so the clock line is `UI_FB_CLOCK_2359` (shown in the feedback toast, at most 80 characters). It is the only `UI_FB_*` key that isn't an InteractionResult reason. Rename if you prefer another prefix.
-4. **Q4: speaker name labels.** Subtitles will need speaker labels (Elias, the Operator, Mira) and the key scheme has no prefix for them. They aren't in this batch. Suggestion: `SPK_ELIAS`, `SPK_OPERATOR`, `SPK_MIRA`. Should the Operator be labelled "Unknown caller" until Beat 03 ends?
+## Open canon questions (for Argon's review when available)
+1. Is "Time doesn't stop. It waits." the right shared Elias/Operator phrase, or should it be subtler still?
+2. Should the transit pass's "Clearance: LEVEL-0" stay? It foreshadows Beat 09 without stating it.

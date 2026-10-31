@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DocumentDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/narrative/document_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+document_id = &"ch01.station_atrium.dispatch_terminal"
+kind = 3
+title_key = "DOC_DISPATCH_TITLE"
+body_key = "DOC_DISPATCH_BODY_1"
+flag_id = &"ch01.flag.ledger_2359_revealed"
+fragment_id = &""
+journal_entry_key = "JRN_CH1_SEAL_ELIAS"
+journal_category = "fact"

@@ -62,7 +62,7 @@ func test_journal_survives_save_and_load() -> void:
 	_reader(s)
 	s.interaction_service.request(&"player", &"ch01.waiting_lounge.audio_mira_01", &"use")
 	s.narrative_state.add_journal_entry("JRN_EXTRA", "observation")
-	var save := SaveService.new()
+	var save := SaveStore.new()
 	var data := save.capture(s, "ch01", "")
 	free_session(s)
 	var s2 := make_session()

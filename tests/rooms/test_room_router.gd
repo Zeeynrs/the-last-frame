@@ -91,8 +91,13 @@ func _rig() -> Dictionary:
 	router.session = s
 	router.room_container = container
 	router.player = player
+	# Own store so tests never touch the SaveService autoload's real save root.
+	var store := SaveStore.new()
+	store.name = "SaveService"
+	store.save_root = ROOT
+	router.add_child(store)
+	router.save_service = store
 	s.add_child(router)
-	router.save_service.save_root = ROOT
 	s.room_router = router
 	router.register_room(A, _room_a())
 	router.register_room(B, _room_b())
@@ -251,7 +256,7 @@ func test_relocation_to_anchor_in_another_room_loads_that_room() -> void:
 
 func test_restore_with_unknown_room_is_refused() -> void:
 	var rig := _rig()
-	var data := SaveService.default_save()
+	var data := SaveStore.default_save()
 	data["spatial"] = {"pairs": [], "actor_rooms": {"player": "ch01.nowhere"}}
 	_assert_eq(rig["router"].restore_from_save(data)["reason"], &"unknown_room", "refused")
 	_done(rig)
