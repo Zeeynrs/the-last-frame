@@ -8,6 +8,8 @@ extends Node
 @export var id_registry: IdRegistry
 @export var interaction_service: InteractionService
 @export var echo_service: EchoService
+@export var puzzle_service: PuzzleService
+@export var narrative_state: NarrativeState
 
 
 func _enter_tree() -> void:
@@ -23,3 +25,7 @@ func _ready() -> void:
 		interaction_service = get_node_or_null("InteractionService") as InteractionService
 	if echo_service == null:
 		echo_service = get_node_or_null("EchoService") as EchoService
+	if puzzle_service == null:
+		puzzle_service = get_node_or_null("PuzzleService") as PuzzleService
+	if narrative_state == null:
+		narrative_state = get_node_or_null("NarrativeState") as NarrativeState
