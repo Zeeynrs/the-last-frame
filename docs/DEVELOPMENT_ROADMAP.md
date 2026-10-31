@@ -10,7 +10,8 @@ Ordered by the master-prompt priorities and the dependencies that already exist 
 | 3 | TLF-017 Settings autoload, input remapping foundation, controller test evidence (M1 exit) | F | — | READY |
 | 4 | TLF-018 Pocket-watch controller (ADR-015 targeting, ability cycle, Echo controls, `echo_reset`) + HUD feedback (ISSUE-006/007) | F | 1, 2 | NOT STARTED |
 | 5 | TLF-005 Ch1 room graph and placement constraints | A | — | READY |
-| 6 | TLF-019 PuzzleService (ADR-016) + SaveService (ADR-010) with migration test | O | 1 | IN PROGRESS |
+| 6 | TLF-019 PuzzleService (ADR-016) + SaveService (ADR-010) with migration test | O | 1 | COMPLETE |
+| 7 | TLF-020 SpatialGraph (ADR-009) + doorway presenters + safe anchors | O | 6 | NEXT |
 
 ## Next: Milestones 3–4 (spatial + puzzle/narrative framework)
 - SpatialGraph (ADR-009) with doorway presenters and safe-anchor relocation (O)

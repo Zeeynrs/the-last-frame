@@ -1,6 +1,6 @@
 # Project Status
 
-**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 67/67 tests
+**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 82/82 tests
 
 This file states what the repository **actually** contains. Task-level detail lives in `ORCA_TASK_BOARD.md`; history lives in `PROGRESS.md`.
 
@@ -16,6 +16,8 @@ This file states what the repository **actually** contains. Task-level detail li
 | Greybox `TestRoom` (12×12 iso floor, walls, obstacle, 2 levers) | `scenes/test/TestRoom.tscn` | runtime probe: bounds hold |
 | Temporal core: `TemporalComponent` (history/cursor, commit-on-transition, freeze toggle, save export/import); abilities trace/rewind/freeze/fast_forward through `InteractionService` | `scripts/temporal/`, `scripts/interaction/interactable.gd` | `tests/temporal/` incl. TEST-PZ001-01..04, TEST-PZ002-01/02/03/05 |
 | Echo: `EchoService` record/playback (player-only logic track, watch abilities excluded, 1200-tick cap, persistent occupancy, reset) + `TriggerZone` occupancy | `scripts/echo/`, `scripts/interaction/trigger_zone.gd` | `tests/echo/` incl. TEST-PZ003-02/03/04, TEST-PZ004-04/05; physics runtime probe |
+| Puzzle progression: `PuzzleService` (permanent SOLVED, member resets), `PuzzleCompletionZone`, `ResetAnchor`; `NarrativeState` (flags, fragments) | `scripts/puzzle/`, `scripts/narrative/` | `tests/puzzle/` |
+| Save/load: `SaveService` (type-tagged JSON, atomic write, migrations, validation, temporal history) | `scripts/save/` | `tests/save/` incl. save → fresh scene → load loop |
 | Ch1 design: beat sheet (10 beats, 38 min), 5 puzzle specs with 27 given/when/then tests | `design/ch01/` | Lead reviews in `docs/reviews/` |
 
 ## B. Partially implemented
@@ -23,13 +25,14 @@ This file states what the repository **actually** contains. Task-level detail li
 - Boot scene: placeholder label only; `run/main_scene` is Boot, not a gameplay scene.
 
 ## C. Implemented but not integrated
-- Nothing yet.
+- `SaveService` is not yet an autoload, and nothing calls it from gameplay (checkpoints arrive with SceneRouter). Registration happens in TLF-018.
+- Flash's pocket watch exists only on its branch (`431d1c5`); it is being ported in TLF-018.
 
 ## D. Broken
 - Nothing known (validation green on `main`).
 
 ## E. Missing (next by priority)
-1. PuzzleService (ADR-016) and SaveService (ADR-010) (TLF-019, Opus, in progress)
+1. SpatialGraph + doorway presenters (TLF-020, Opus, next)
 2. Pocket-watch controller + Echo controls + HUD (TLF-018, Flash, after TLF-017)
 3. Ghost visuals and echo HUD (part of TLF-018)
 4. Settings autoload and input-remapping foundation (TLF-017, Flash)

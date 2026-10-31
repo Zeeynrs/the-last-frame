@@ -14,8 +14,9 @@
 | TLF-005 | CHANGES REQUESTED | `636d305` reviewed: PZ-004 solvable solo (breakers 132 ticks apart < 180 window), door tiles off boundary; see `docs/reviews/2026-10-31_TLF-005.md` |
 | TLF-008 | COMPLETE | Opus temporal core merged `fe3744a` (validate 51/51; TestRoom regression probe OK) |
 | TLF-017 | READY | Flash: `docs/tasks/TLF-017.md` (Settings autoload, remapping foundation, `echo_reset`, controller evidence) |
-| TLF-018 | READY (after TLF-017) | Flash: `docs/tasks/TLF-018.md` pocket-watch controller, TemporalTestRoom, feedback HUD |
-| TLF-019 | IN PROGRESS | Opus: PuzzleService (ADR-016) + SaveService (ADR-010) |
+| TLF-018 | READY (after TLF-017) | Flash: `docs/tasks/TLF-018.md`. **Start by porting `431d1c5`** per `docs/reviews/2026-10-31_TLF-008-flash-duplicate.md`; also register the SaveService autoload |
+| TLF-020 | NOT STARTED | Opus: SpatialGraph (ADR-009) + doorway presenters + safe-anchor relocation (PZ-005 core) |
+| TLF-019 | COMPLETE | Opus PuzzleService + SaveService + NarrativeState merged `afa6929` (82/82, no leaks; real-scene save probe OK). Autoload registration → TLF-018 |
 | TLF-016 | COMPLETE | Opus EchoService + TriggerZone merged `9f55245` (validate 67/67; physics runtime probe OK) |
 | TLF-010 | NOT STARTED | Argon, after TLF-005 |
 | others | NOT STARTED | |
