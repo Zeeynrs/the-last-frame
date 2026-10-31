@@ -37,6 +37,7 @@
 | 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
 | 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
 | 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
+| 2026-10-31 | TLF-022 implemented by Opus, merged `440a5be`: HintService (cooldown-gated 3-level ladder), PuzzleDef + Ch1 defs/CSV generated from specs, DocumentDef/ReadableDocument, journal categories; save sections journal/hints; 129/129 | Agent 1 |
 | 2026-10-31 | Lead review TLF-010 (Argon `68e299f`): every `.pxo` verified via Pixelorama CLI, PNGs byte-identical to the re-exports, palette/alpha clean, 8 directions + exact mirrors verified; merged. Integration: asset `.import` files committed, pixel-font import fixed (no AA), `docs/` and `assets/source/` given `.gdignore` | Agent 1 |
 | 2026-10-31 | Flash's TLF-017 handoff received and stored (`docs/handoffs/TLF-017/`, local paths removed). Its manual checks were scripted synthetic input; the Lead re-verified remap on `main` independently. TLF-017 COMPLETE with deviation; only a physical controller spot-check remains for Milestone 1 | Agent 1 |
 | 2026-10-31 | TLF-021 implemented by Opus, merged `5fda100`: RoomRouter (queued transitions, arrival grace, world memory, checkpoint autosave, restore, cross-room relocation), ChapterRoot.tscn, CheckpointZone, SafeAnchor; ADR-018; 118/118 | Agent 1 |

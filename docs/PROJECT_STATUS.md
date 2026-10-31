@@ -1,6 +1,6 @@
 # Project Status
 
-**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 118/118 tests
+**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 129/129 tests
 
 This file states what the repository **actually** contains. Task-level detail lives in `ORCA_TASK_BOARD.md`; history lives in `PROGRESS.md`.
 
@@ -21,6 +21,7 @@ This file states what the repository **actually** contains. Task-level detail li
 | Spatial: `SpatialGraph` (transactional doorway re-pairing, critical paths, reachability), `SpatialService` (relocation), `DoorwayPresenter` | `scripts/spatial/` | `tests/spatial/` incl. TEST-PZ005-01..05; physics doorway probe |
 | Settings autoload: volumes→buses, accessibility flags, assist timing window (180→300), input remapping with conflict check + persistence; `echo_reset` action | `scripts/settings/`, `project.godot` | `tests/settings/`; `docs/handoffs/TLF-017/` (scripted synthetic controller run); Lead remap probe |
 | Room routing: `ChapterRoot.tscn`, `RoomRouter` (doorway transitions, world memory, checkpoint autosave + restore), `CheckpointZone`, `SafeAnchor` | `scripts/rooms/`, `scenes/chapter/` | `tests/rooms/`; physics room-change probe |
+| Hints + content data: `HintService` (FR-010), `PuzzleDef` (5 Ch1 defs + English CSV from specs), `DocumentDef`/`ReadableDocument`, journal (observation/fact/theory) | `scripts/puzzle/`, `scripts/narrative/`, `data/puzzles/ch01/`, `localization/` | `tests/puzzle/test_hint_service.gd`, `tests/narrative/` |
 | Art v1: art bible, Ch1 palette (32), arrival platform target sheet, Elias 8-dir idle/walk, 3 floor tiles, 2 walls, archway, 23:59 clock, CC0 pixel font | `design/art/`, `assets/` | Lead verification (Pixelorama CLI, palette, alpha, mirrors); not yet placed in a scene |
 | Ch1 design: beat sheet (10 beats, 38 min), 5 puzzle specs with 27 given/when/then tests, room graph (10 rooms, boundary doors, placement metrics, kit list) | `design/ch01/` | Lead reviews in `docs/reviews/` |
 
@@ -37,7 +38,7 @@ This file states what the repository **actually** contains. Task-level detail li
 - Nothing known (validation green on `main`).
 
 ## E. Missing (next by priority)
-1. Hint ladder service, PuzzleDef data, documents/fragments (TLF-022, Opus, next)
+1. Ch1 document/dialogue text batch (Argon) and dialogue presentation data (Opus)
 2. Pocket-watch controller + Echo controls + HUD (TLF-018, Flash, after TLF-017)
 3. Ghost visuals and echo HUD (part of TLF-018)
 5. Camera per room (Flash)

@@ -162,6 +162,7 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - `temporal[object_id]` is `TemporalComponent.export_history()`: `{schema_version, cursor, entries[], is_frozen}`. A cursor alone is insufficient after runtime commits.
   - Writes go to `.tmp`, are verified by re-reading, then renamed. Reads return `{ok, reason, data}` with `reason ∈ {no_save, corrupt, unsupported_version, invalid}`. Migrations are `migrations[from_version] -> Callable`, and a gap in the chain is refused. Defaults are filled for missing fields; structure is validated before any write or apply. Unknown temporal IDs are skipped and reported, never fatal.
   - Optional `spatial` section (TLF-020): `SpatialService.export_state()`.
+  - Optional `journal` (array of `{key, category}`) and `hints` (`{puzzle_id: level}`) sections (TLF-022).
   - `SaveService` is implemented in `scripts/save/save_service.gd` (a Node). Its **autoload registration** in `project.godot` belongs to Flash (single owner) in TLF-018.
 
 ## ADR-011 — Global vs session services
@@ -200,6 +201,11 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - Typed custom `Resource` scripts saved as `.tres` under `data/` for content definitions: `PuzzleDef`, `RoomDef`, `InteractableCaps`, `ChapterDef`, `MemoryFragmentDef`.
   - Player-facing text uses translation keys via `tr()` with CSV tables in `localization/`.
   - Argon specs (Markdown) are the design source. Flash transcribes them into `.tres`.
+- **Amendment 2026-10-31 (TLF-022):**
+  - `PuzzleDef` (`puzzle_id`, `room_id`, `title_key`, 3 `hint_keys`) and `DocumentDef` (`document_id`, kind, title/body keys, optional flag/fragment/journal entry + category) are implemented.
+  - Ch1 PuzzleDefs (`data/puzzles/ch01/*.tres`) and `localization/ch01_puzzles.csv` are **generated from the merged specs by a script**: text is copied verbatim, never retyped. Re-run it when a spec changes, and don't hand-edit the generated files.
+  - Key scheme: `PZ00N_TITLE`, `PZ00N_HINT_{1..3}`; journal entries `JRN_…`; documents `DOC_…`.
+  - CSV translations are imported by Godot into `*.translation` files, which are derived and git-ignored. **Registering them in `project.godot` (internationalization/locale/translations) is Flash's job** (single owner); until then `tr()` returns the key.
 
 ## ADR-014 — Ability naming
 - **Date / status:** 2026-10-31 · **Accepted**: "Trace" (Argon's TLF-003 recommendation; "afterimage" and "imprint" allowed as prose synonyms only)
