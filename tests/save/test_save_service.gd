@@ -10,9 +10,9 @@ const GATE := &"ch01.test.gate"
 var _owned: Array[Node] = []
 
 
-func _service() -> SaveService:
+func _service() -> SaveStore:
 	_wipe()
-	var save := SaveService.new()
+	var save := SaveStore.new()
 	save.save_root = ROOT
 	_owned.append(save)
 	return save
@@ -37,7 +37,7 @@ func _gate(s: GameSession) -> TemporalTestGate:
 	return spawn(s, TemporalTestGate.new(), GATE, temporal) as TemporalTestGate
 
 
-func _write_raw(save: SaveService, slot: int, text: String) -> void:
+func _write_raw(save: SaveStore, slot: int, text: String) -> void:
 	DirAccess.make_dir_recursive_absolute(ROOT)
 	var file := FileAccess.open(save.slot_path(slot), FileAccess.WRITE)
 	file.store_string(text)
@@ -52,7 +52,7 @@ func test_capture_contains_every_section_and_temporal_history() -> void:
 	s.narrative_state.set_flag(&"ch01.flag.watch_acquired")
 	s.narrative_state.collect_fragment(&"ch01.fragment.mira_departure")
 	var data := _service().capture(s, "ch01", "ch01.cp.concourse_west")
-	_assert_eq(data["save_version"], SaveService.SAVE_VERSION, "version")
+	_assert_eq(data["save_version"], SaveStore.SAVE_VERSION, "version")
 	_assert_eq(data["checkpoint_id"], "ch01.cp.concourse_west", "checkpoint")
 	_assert_eq(data["puzzles"], {"CH1-PZ-001": "SOLVED"}, "puzzles")
 	_assert_eq(data["narrative_flags"], {"ch01.flag.watch_acquired": true}, "flags")
@@ -105,7 +105,7 @@ func test_full_loop_consumed_pre_history_stays_consumed_after_load() -> void:
 
 func test_unknown_temporal_ids_are_skipped_not_fatal() -> void:
 	var s := make_session()
-	var data := SaveService.default_save()
+	var data := SaveStore.default_save()
 	data["temporal"] = {"ch01.test.gone": {"cursor": 0, "entries": [{"x": 1}], "is_frozen": false}}
 	var result := _service().apply(s, data)
 	_assert_true(result["ok"], "apply still ok")
@@ -126,8 +126,8 @@ func test_missing_and_corrupt_files_fail_gracefully() -> void:
 
 func test_newer_version_is_rejected() -> void:
 	var save := _service()
-	var data := SaveService.default_save()
-	data["save_version"] = SaveService.SAVE_VERSION + 1
+	var data := SaveStore.default_save()
+	data["save_version"] = SaveStore.SAVE_VERSION + 1
 	_assert_eq(save.upgrade(data)["reason"], &"unsupported_version", "future save refused")
 	_wipe()
 
@@ -146,20 +146,20 @@ func test_migrations_run_in_order_up_to_current_version() -> void:
 	var save := _service()
 	save.current_version = 3
 	save.migrations = {1: _migrate_1_to_2, 2: _migrate_2_to_3}
-	var data := SaveService.default_save()
+	var data := SaveStore.default_save()
 	var result := save.upgrade(data)
 	_assert_true(result["ok"], "migrated")
 	_assert_eq(result["data"]["save_version"], 3, "version bumped")
 	_assert_eq(result["data"]["chapter"], "CH01", "migration 1 applied")
 	_assert_eq(result["data"]["narrative_flags"], {"migrated": true}, "migration 2 applied")
 	save.migrations.erase(2)
-	_assert_eq(save.upgrade(SaveService.default_save())["reason"], &"unsupported_version", "gap in chain refused")
+	_assert_eq(save.upgrade(SaveStore.default_save())["reason"], &"unsupported_version", "gap in chain refused")
 	_wipe()
 
 
 func test_invalid_structure_is_refused_for_read_and_write() -> void:
 	var save := _service()
-	var bad := SaveService.default_save()
+	var bad := SaveStore.default_save()
 	bad["puzzles"] = "not a dictionary"
 	_assert_eq(save.validate(bad)["reason"], &"invalid", "validate catches wrong type")
 	_assert_eq(save.write_slot(5, bad), ERR_INVALID_DATA, "invalid data never written")

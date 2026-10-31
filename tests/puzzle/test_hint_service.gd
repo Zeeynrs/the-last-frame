@@ -68,7 +68,7 @@ func test_hint_levels_survive_save_and_load() -> void:
 	s.hint_service.request_hint(PZ)
 	s.sim_clock.step(400)
 	s.hint_service.request_hint(PZ)
-	var save := SaveService.new()
+	var save := SaveStore.new()
 	var data := save.capture(s, "ch01", "")
 	free_session(s)
 	var s2 := make_session()

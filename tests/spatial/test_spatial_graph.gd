@@ -170,7 +170,7 @@ func test_spatial_state_survives_save_and_load() -> void:
 	a.spatial_service.set_graph(_graph(), SIG)
 	a.spatial_service.apply_transform(T_A_UNCOUPLE)
 	a.spatial_service.apply_transform(T_B_ATRIUM)
-	var save := SaveService.new()
+	var save := SaveStore.new()
 	var data := save.capture(a, "ch01", "ch01.cp.upper_vestibule")
 	var expected := a.spatial_service.graph.export_pairs()
 	free_session(a)
