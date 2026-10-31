@@ -1,0 +1,75 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/spatial/doorway_presenter.gd" id="1_door"]
+[ext_resource type="Script" path="res://scripts/rooms/safe_anchor.gd" id="2_anchor"]
+[ext_resource type="Script" path="res://scripts/rooms/checkpoint_zone.gd" id="3_checkpoint"]
+[ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png" id="4_archway"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_digital_clock_2359_idle.png" id="5_clock"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_door"]
+radius = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cp"]
+size = Vector2(28, 16)
+
+[node name="ArrivalPlatform" type="Node2D"]
+y_sort_enabled = true
+
+[node name="Floor" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.12, 0.16, 0.22, 1)
+polygon = PackedVector2Array(320, 64, 544, 176, 384, 256, 160, 144)
+
+[node name="FloorAccent" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.17, 0.22, 0.3, 1)
+polygon = PackedVector2Array(320, 80, 520, 180, 384, 248, 184, 148)
+
+[node name="PerimeterWalls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PerimeterWalls"]
+build_mode = 1
+polygon = PackedVector2Array(320, 60, 548, 174, 464, 216, 448, 224, 384, 260, 156, 142)
+
+[node name="Clock" type="Sprite2D" parent="."]
+position = Vector2(320, 50)
+texture = ExtResource("5_clock")
+
+[node name="Archway" type="Sprite2D" parent="."]
+position = Vector2(448, 208)
+texture = ExtResource("4_archway")
+offset = Vector2(0, -24)
+
+[node name="door_exit_east" type="Area2D" parent="."]
+position = Vector2(448, 208)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_door")
+room_id = &"ch01.arrival_platform"
+door_id = &"door_exit_east"
+object_id = &"ch01.arrival_platform.door_exit_east"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="door_exit_east"]
+shape = SubResource("CircleShape2D_door")
+
+[node name="Spawn" type="Marker2D" parent="door_exit_east"]
+position = Vector2(-16, -8)
+
+[node name="safe_anchor_spawn" type="Marker2D" parent="."]
+position = Vector2(352, 160)
+script = ExtResource("2_anchor")
+object_id = &"ch01.arrival_platform.safe_anchor_spawn"
+
+[node name="checkpoint" type="Area2D" parent="."]
+position = Vector2(352, 160)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("3_checkpoint")
+checkpoint_id = &"ch01.cp.arrival"
+spawn_anchor_id = &"ch01.arrival_platform.safe_anchor_spawn"
+object_id = &"ch01.arrival_platform.checkpoint"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoint"]
+shape = SubResource("RectangleShape2D_cp")
