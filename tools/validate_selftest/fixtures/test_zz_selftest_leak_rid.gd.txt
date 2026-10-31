@@ -1,0 +1,9 @@
+extends "res://tests/support/base_test.gd"
+
+## validate.ps1 self-test fixture (TLF-035): a physics body RID that is never freed.
+## Expected: "RID allocations of type ... were leaked at exit" -> test suite step fails.
+
+
+func test_selftest_leaks_a_rid() -> void:
+	var body := PhysicsServer2D.body_create()
+	_assert_true(body.is_valid(), "passes, but leaks")

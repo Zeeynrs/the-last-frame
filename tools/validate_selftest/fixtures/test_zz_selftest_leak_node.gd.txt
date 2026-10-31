@@ -1,0 +1,10 @@
+extends "res://tests/support/base_test.gd"
+
+## validate.ps1 self-test fixture (TLF-035): a passing test that never frees a Node.
+## Expected: "ObjectDB instance was leaked at exit" -> test suite step fails.
+
+
+func test_selftest_leaks_a_node() -> void:
+	var node := Node.new()
+	node.name = "SelftestDeliberatelyLeaked"
+	_assert_true(true, "passes, but leaks")
