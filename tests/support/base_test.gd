@@ -56,6 +56,10 @@ func make_session() -> GameSession:
 	narrative.name = "NarrativeState"
 	session.add_child(narrative)
 	session.narrative_state = narrative
+	var spatial := SpatialService.new()
+	spatial.name = "SpatialService"
+	session.add_child(spatial)
+	session.spatial_service = spatial
 	_tree().root.add_child(session)
 	return session
 
