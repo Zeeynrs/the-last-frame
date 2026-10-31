@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/spatial/doorway_presenter.gd" id="1_door"]
 [ext_resource type="Script" path="res://scripts/rooms/safe_anchor.gd" id="2_anchor"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/narrative/readable_document.gd" id="5_readable"]
 [ext_resource type="Resource" path="res://data/documents/ch01/dispatch_terminal.tres" id="6_doc_dispatch"]
 [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_digital_clock_2359_idle.png" id="7_clock"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_trigger.gd" id="8_diag_trigger"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_door"]
 radius = 10.0
@@ -114,4 +115,17 @@ object_id = &"ch01.station_atrium.dispatch_terminal"
 traceable = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="dispatch_terminal"]
+shape = SubResource("CircleShape2D_doc")
+
+[node name="digital_clock_2359" type="Area2D" parent="."]
+position = Vector2(320, 50)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("8_diag_trigger")
+sequence_id = &"ch01_clock_atrium"
+lines = [["SPK_ELIAS", "EL_CLOCK_2359"]]
+one_shot = false
+object_id = &"ch01.station_atrium.digital_clock_2359"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="digital_clock_2359"]
 shape = SubResource("CircleShape2D_doc")

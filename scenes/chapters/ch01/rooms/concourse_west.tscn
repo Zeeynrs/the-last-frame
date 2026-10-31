@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scripts/spatial/doorway_presenter.gd" id="1_door"]
 [ext_resource type="Script" path="res://scripts/rooms/safe_anchor.gd" id="2_anchor"]
@@ -11,6 +11,9 @@
 [ext_resource type="Script" path="res://scripts/temporal/temporal_component.gd" id="9_temporal"]
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png" id="10_archway"]
 [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_digital_clock_2359_idle.png" id="11_clock"]
+[ext_resource type="Script" path="res://scripts/ui/dialogue_trigger.gd" id="12_diag_trigger"]
+[ext_resource type="Script" path="res://scripts/narrative/readable_document.gd" id="13_readable"]
+[ext_resource type="Resource" path="res://data/documents/ch01/doc_evac_notice.tres" id="14_doc_evac"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_door"]
 radius = 10.0
@@ -25,6 +28,12 @@ radius = 16.0
 size = Vector2(24, 12)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_anchor"]
+radius = 12.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_callbox"]
+radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_doc"]
 radius = 12.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pillar"]
@@ -233,3 +242,42 @@ object_id = &"ch01.concourse_west.exit_trigger_concourse"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="exit_trigger_concourse"]
 shape = SubResource("RectangleShape2D_exit")
+
+[node name="call_box_09" type="Area2D" parent="."]
+position = Vector2(272, 96)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("12_diag_trigger")
+sequence_id = &"ch01_b03_call_box"
+lines = [["SPK_OPERATOR", "OP_B03_01"], ["SPK_OPERATOR", "OP_B03_02"], ["SPK_OPERATOR", "OP_B03_03"], ["SPK_ELIAS", "EL_B03_01"], ["SPK_OPERATOR", "OP_B03_04"], ["SPK_OPERATOR", "OP_B03_05"]]
+auto_advance_delay = 4.0
+journal_key = "JRN_CH1_OPERATOR"
+journal_category = "observation"
+object_id = &"ch01.concourse_west.call_box_09"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="call_box_09"]
+shape = SubResource("CircleShape2D_callbox")
+
+[node name="doc_evac_notice" type="Area2D" parent="."]
+position = Vector2(352, 176)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("13_readable")
+document = ExtResource("14_doc_evac")
+object_id = &"ch01.concourse_west.doc_evac_notice"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="doc_evac_notice"]
+shape = SubResource("CircleShape2D_doc")
+
+[node name="digital_clock_2359" type="Area2D" parent="."]
+position = Vector2(320, 50)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("12_diag_trigger")
+sequence_id = &"ch01_clock_concourse"
+lines = [["SPK_ELIAS", "EL_CLOCK_2359"]]
+one_shot = false
+object_id = &"ch01.concourse_west.digital_clock_2359"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="digital_clock_2359"]
+shape = SubResource("CircleShape2D_callbox")

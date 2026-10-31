@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://scripts/spatial/doorway_presenter.gd" id="1_door"]
 [ext_resource type="Script" path="res://scripts/rooms/safe_anchor.gd" id="2_anchor"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/puzzle/reset_anchor.gd" id="8_reset"]
 [ext_resource type="Script" path="res://scripts/puzzle/puzzle_completion_zone.gd" id="9_complete"]
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png" id="10_archway"]
+[ext_resource type="Script" path="res://scripts/interaction/interactable.gd" id="11_interactable"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_door"]
 radius = 10.0
@@ -239,3 +240,13 @@ object_id = &"ch01.security_crossing.exit_trigger_lounge"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="exit_trigger_lounge"]
 shape = SubResource("RectangleShape2D_exit")
+
+[node name="pa_speaker" type="Area2D" parent="."]
+position = Vector2(320, 60)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("11_interactable")
+object_id = &"ch01.security_crossing.pa_speaker"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pa_speaker"]
+shape = SubResource("CircleShape2D_door")

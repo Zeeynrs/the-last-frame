@@ -32,7 +32,26 @@ func trigger_warning() -> void:
 	if sess != null and sess.narrative_state != null:
 		sess.narrative_state.add_journal_entry("JRN_CH1_OPERATOR_WARNING", "theory")
 		sess.narrative_state.set_flag(&"ch01.flag.operator_substation_warn", true)
+
+	var diag = _find_dialogue_box()
+	if diag != null:
+		diag.play_sequence(
+			&"ch01_b07_intercom",
+			[["SPK_OPERATOR", "OP_B07_01"], ["SPK_OPERATOR", "OP_B07_02"]],
+			false,
+			4.0
+		)
+
 	warning_played.emit()
+
+
+func _find_dialogue_box() -> DialogueBox:
+	if not is_inside_tree():
+		return null
+	var candidate = get_tree().root.find_child("DialogueBox", true, false)
+	if candidate is DialogueBox:
+		return candidate
+	return null
 
 
 func _can_use(_actor_id: StringName, interaction_id: StringName, _payload: Dictionary) -> StringName:

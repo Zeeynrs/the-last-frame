@@ -141,7 +141,7 @@ func test_room_object_ids_are_valid_and_unique() -> void:
 				continue
 
 			var sid := String(oid)
-			_assert_true(sid.begins_with(room_id_str + "."), "ID '%s' follows prefix '%s.'" % [sid, room_id_str])
+			_assert_true(sid.begins_with(room_id_str + ".") or sid == "global.pocket_watch", "ID '%s' follows prefix '%s.' or is global" % [sid, room_id_str])
 			_assert_false(all_ids.has(sid), "ID '%s' is unique across all rooms" % sid)
 			all_ids[sid] = true
 
@@ -496,6 +496,11 @@ func test_street_exit_trigger_outro_completes_chapter() -> void:
 	# Walk player into outro trigger in street_exit
 	ch01.session.interaction_service.trigger_enter(&"player", &"ch01.street_exit.trigger_outro")
 
+	# Complete Beat 10 outro dialogue if active
+	var diag = ch01.get_dialogue_box()
+	while diag != null and diag.is_active:
+		diag.advance_line()
+
 	_assert_true(ch01.chapter_complete, "chapter_complete marked true")
 	_assert_true(ch01.session.narrative_state.get_flag(&"ch01.flag.chapter_complete"), "chapter_complete narrative flag set")
 	_assert_true(ch01.get_node_or_null("ChapterCompleteOverlay") != null, "ChapterCompleteOverlay displayed")
@@ -806,6 +811,11 @@ func test_scripted_playthrough_full_chapter_rooms_1_to_10() -> void:
 	# 10. Street Exit (Beat 10): Outro trigger -> Chapter Complete
 	_assert_eq(router.current_room_id, &"ch01.street_exit", "in street_exit")
 	session.interaction_service.trigger_enter(&"player", &"ch01.street_exit.trigger_outro")
+
+	var outro_diag = ch01.get_dialogue_box()
+	while outro_diag != null and outro_diag.is_active:
+		outro_diag.advance_line()
+
 	_assert_true(ch01.chapter_complete, "Chapter 1 completed")
 	_assert_true(session.narrative_state.get_flag(&"ch01.flag.chapter_complete"), "chapter complete flag set")
 

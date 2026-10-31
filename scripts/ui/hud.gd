@@ -8,6 +8,7 @@ extends CanvasLayer
 @onready var ability_icon: ColorRect = $AbilityPanel/Margin/HBox/AbilityIcon
 @onready var ability_label: Label = $AbilityPanel/Margin/HBox/AbilityLabel
 @onready var watch_prompt: Label = $AbilityPanel/Margin/HBox/WatchPrompt
+@onready var hint_prompt: Label = get_node_or_null("AbilityPanel/Margin/HBox/HintPrompt")
 
 @onready var echo_panel: PanelContainer = $EchoPanel
 @onready var echo_state_label: Label = $EchoPanel/Margin/VBox/StateLabel
@@ -22,6 +23,10 @@ extends CanvasLayer
 
 var pocket_watch: Node = null
 var echo_service: Node = null
+
+var dialogue_box: DialogueBox = null
+var document_viewer: DocumentViewer = null
+var journal_screen: JournalScreen = null
 
 var _toast_timer: float = 0.0
 
@@ -40,7 +45,40 @@ func _ready() -> void:
 		feedback_panel.visible = false
 	if target_highlight != null:
 		target_highlight.visible = false
+	_setup_sub_ui()
 	update_ability_ui()
+
+
+func _setup_sub_ui() -> void:
+	if dialogue_box == null:
+		var existing_diag = get_tree().root.find_child("DialogueBox", true, false)
+		if existing_diag is DialogueBox:
+			dialogue_box = existing_diag
+		else:
+			var diag_res = load("res://scenes/ui/DialogueBox.tscn")
+			if diag_res != null:
+				dialogue_box = diag_res.instantiate() as DialogueBox
+				add_child(dialogue_box)
+
+	if document_viewer == null:
+		var existing_doc = get_tree().root.find_child("DocumentViewer", true, false)
+		if existing_doc is DocumentViewer:
+			document_viewer = existing_doc
+		else:
+			var doc_res = load("res://scenes/ui/DocumentViewer.tscn")
+			if doc_res != null:
+				document_viewer = doc_res.instantiate() as DocumentViewer
+				add_child(document_viewer)
+
+	if journal_screen == null:
+		var existing_jrn = get_tree().root.find_child("JournalScreen", true, false)
+		if existing_jrn is JournalScreen:
+			journal_screen = existing_jrn
+		else:
+			var jrn_res = load("res://scenes/ui/JournalScreen.tscn")
+			if jrn_res != null:
+				journal_screen = jrn_res.instantiate() as JournalScreen
+				add_child(journal_screen)
 
 
 func _input(event: InputEvent) -> void:
@@ -52,6 +90,11 @@ func _input(event: InputEvent) -> void:
 		if InputPrompts.is_joypad_mode:
 			InputPrompts.set_joypad_mode(false)
 			update_ability_ui()
+
+	if event.is_action_pressed(&"hint"):
+		request_hint()
+	elif event.is_action_pressed(&"journal"):
+		toggle_journal()
 
 
 func _process(delta: float) -> void:
@@ -127,6 +170,10 @@ func update_ability_ui() -> void:
 		var watch_glyph = InputPrompts.get_action_glyph(&"watch")
 		watch_prompt.text = "%s %s" % [watch_glyph, tr("PROMPT_WATCH")]
 
+	if hint_prompt != null:
+		var hint_glyph = InputPrompts.get_action_glyph(&"hint")
+		hint_prompt.text = "%s %s" % [hint_glyph, tr("UI_PROMPT_HINT")]
+
 	if current_ability == &"echo":
 		if echo_panel != null:
 			echo_panel.visible = true
@@ -179,3 +226,47 @@ func _update_target_highlight_position() -> void:
 			target_icon.color = ABILITY_COLORS.get(pocket_watch.selected_ability, Color.WHITE)
 	else:
 		target_highlight.visible = false
+
+
+func show_message(msg: String, duration: float = 3.5) -> void:
+	if msg == "" or feedback_label == null or feedback_panel == null:
+		return
+	feedback_label.text = msg
+	feedback_panel.visible = true
+	_toast_timer = duration
+
+
+func request_hint() -> void:
+	var session = _find_session()
+	if session == null or session.hint_service == null:
+		return
+	var room_id: StringName = &""
+	if session.spatial_service != null:
+		room_id = session.spatial_service.get_actor_room(&"player")
+	var res = session.hint_service.request_hint_for_room(room_id)
+	if not res.get("ok", false) and res.get("reason", &"") == &"no_active_puzzle":
+		if session.puzzle_service != null and "_defs" in session.hint_service:
+			for p_def in session.hint_service._defs.values():
+				if p_def.room_id == room_id and session.puzzle_service.is_solved(p_def.puzzle_id):
+					res["reason"] = &"already_solved"
+					break
+	if res.get("ok", false):
+		var text_key = String(res.get("text_key", ""))
+		show_message(tr(text_key), 4.5)
+	else:
+		var reason = res.get("reason", &"")
+		show_feedback(reason)
+
+
+func toggle_journal() -> void:
+	if journal_screen != null:
+		journal_screen.toggle_journal()
+
+
+func _find_session() -> GameSession:
+	if not is_inside_tree():
+		return null
+	var sess = get_tree().get_first_node_in_group(&"game_session")
+	if sess is GameSession:
+		return sess
+	return get_tree().root.find_child("GameSession", true, false) as GameSession
