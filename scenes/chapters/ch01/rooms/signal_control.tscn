@@ -33,7 +33,7 @@ size = Vector2(24, 16)
 radius = 14.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
-size = Vector2(24, 16)
+size = Vector2(32, 24)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_intercom"]
 radius = 16.0
@@ -44,7 +44,7 @@ b = Vector2(384, 224)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_north_railing"]
 a = Vector2(320, 112)
-b = Vector2(512, 208)
+b = Vector2(532, 218)
 
 [node name="SignalControl" type="Node2D"]
 y_sort_enabled = true
@@ -77,13 +77,20 @@ shape = SubResource("SegmentShape2D_south_railing")
 [node name="NorthRailingCollision" type="CollisionShape2D" parent="TrenchRailings"]
 shape = SubResource("SegmentShape2D_north_railing")
 
+[node name="NorthBarrierCollision" type="CollisionPolygon2D" parent="TrenchRailings"]
+polygon = PackedVector2Array(476, 190, 540, 222, 540, 260, 476, 260)
+
 [node name="SouthRailingVisual" type="Line2D" parent="."]
 points = PackedVector2Array(192, 128, 384, 224)
 width = 3.0
 default_color = Color(0.3, 0.4, 0.55, 1)
 
+[node name="NorthBarrierVisual" type="Polygon2D" parent="."]
+color = Color(0.18, 0.24, 0.32, 1)
+polygon = PackedVector2Array(476, 190, 532, 218, 512, 246, 476, 236)
+
 [node name="NorthRailingVisual" type="Line2D" parent="."]
-points = PackedVector2Array(320, 112, 512, 208)
+points = PackedVector2Array(320, 112, 532, 218)
 width = 3.0
 default_color = Color(0.3, 0.4, 0.55, 1)
 
@@ -224,7 +231,7 @@ object_id = &"ch01.signal_control.reset_anchor_01"
 shape = SubResource("CircleShape2D_reset")
 
 [node name="exit_trigger_vestibule" type="Area2D" parent="."]
-position = Vector2(432, 136)
+position = Vector2(448, 128)
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("10_complete")
