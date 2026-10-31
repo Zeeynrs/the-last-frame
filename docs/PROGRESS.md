@@ -37,7 +37,7 @@
 | 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
 | 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
 | 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
-| 2026-10-31 | TLF-016 Echo implemented by Opus (`b0f…` on agent/opus-core), merged `9f55245`: EchoService, TriggerZone, trigger dispatch, null-safe service fallbacks; 67/67; runtime probe with physical trigger replays offsets exactly. TLF-018 extended with Echo controls | Agent 1 |
+| 2026-10-31 | TLF-016 Echo implemented by Opus (`3893b1c` on agent/opus-core), merged `9f55245`: EchoService, TriggerZone, trigger dispatch, null-safe service fallbacks; 67/67; runtime probe with physical trigger replays offsets exactly. TLF-018 extended with Echo controls | Agent 1 |
 | 2026-10-31 | Lead review TLF-005 (`636d305`): CHANGES REQUESTED (R1 PZ-004 breaker route too short, R2 door tiles/labels, R3 arithmetic) | Agent 1 |
 | 2026-10-31 | TLF-008 temporal core implemented by Opus (`682fb87`), merged `fe3744a`: TemporalComponent, ability delegation, PZ-001/002 spec tests, runner fix (first-frame execution); 51/51. TLF-018 spec written | Agent 1 |
 | 2026-10-31 | User master prompt v2 adopted (ADR-017): Opus implements core systems; TLF-008 re-assigned to Opus, Flash gets TLF-017; added PROJECT_STATUS / DEVELOPMENT_ROADMAP / TECHNICAL_DEBT / AGENT_HANDOFF | Agent 1 |
