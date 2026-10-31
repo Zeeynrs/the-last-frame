@@ -49,16 +49,16 @@ def main():
         by_ok = True
         if a.pixelorama:
             with tempfile.TemporaryDirectory() as td:
-                tmp_pxo = os.path.join(td, 'regen')
-                os.makedirs(tmp_pxo)
-                gp = os.path.join(tmp_pxo, asset.stem + '.pxo')
+                src_dir, work_dir = os.path.join(td, 'generated'), os.path.join(td, 'work')
+                os.makedirs(src_dir); os.makedirs(work_dir)
+                gp = os.path.join(src_dir, asset.stem + '.pxo')
                 open(gp, 'wb').write(want)
-                png, _, _ = gen_all.pixelorama_export(gp, tmp_pxo)
+                png, _, _ = gen_all.pixelorama_export(gp, work_dir)
                 by_ok = png is not None and read(png) == read(png_p)
                 res.append('pixelorama re-export png %s' % ('BYTE-IDENTICAL' if by_ok else 'DIFFERS'))
         good = pxo_ok and px_ok and by_ok
         ok_all &= good
-        print('%s %-48s %s' % ('ok  ' if good else 'FAIL', asset.stem, '; '.join(res)))
+        print('%s %-48s %s' % ('ok  ' if good else 'FAIL', asset.stem, '; '.join(res)), flush=True)
 
     # placement mockups + sheet
     import placement_render, placement_md
