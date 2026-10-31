@@ -73,7 +73,8 @@ Axis-run pieces (`wall_railing_iron`, `prop_station_bench`, `tile_cable_conduit_
 | `ch01_prop_turnstile_gate_collapsed / _open` | 32×40 | (16,34) | YSort_Actors 10 |
 | `ch01_prop_fire_shutter_closed / _raised` | 64×64 | (32,56) | YSort_Actors 10 |
 | `ch01_prop_counterweight_gear_idle / _slipping / _frozen` | 64×64 | (32,56) | YSort_Actors 10 |
-| `ch01_prop_surge_capacitor_discharged / _charged / _frozen` | 64×64 | (32,56) | YSort_Actors 10 |
+| `ch01_prop_surge_capacitor_discharged / _charged / _frozen_discharged / _frozen_charged` | 64×64 | (32,56) | YSort_Actors 10 |
+| `ch01_prop_surge_capacitor_frozen (**deprecated**, TLF-044)` | 64×64 | (32,56) | YSort_Actors 10 |
 | `ch01_prop_pressure_switch_released / _pressed` | 32×20 | (16,12) | YSort_Props 8 |
 | `ch01_prop_route_board_state0 / _state1 / _state2` | 48×56 | (24,50) | YSort_Actors 10 |
 | `ch01_prop_security_gate_closed / _open` | 40×52 | (20,42) | YSort_Actors 10 |
@@ -274,7 +275,7 @@ Footprint 16×12 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 ### 6.4 Props, fixtures and state mapping
 | Object ID | Sprite (file) | State → sprite state | Pivot position | Layer / `z` | Replaces greybox | Note |
 |---|---|---|---|---|---|---|
-| `ch01.signal_control.surge_capacitor` | `ch01_prop_surge_capacitor_discharged.png` / `ch01_prop_surge_capacitor_charged.png` / `ch01_prop_surge_capacitor_frozen.png` | discharged / charged / frozen | `(368, 168)` ((8, 5)) | YSort_Actors / 10 | none | Tier 2 `prop_surge_capacitor` (64×64) |
+| `ch01.signal_control.surge_capacitor` | `ch01_prop_surge_capacitor_discharged.png` / `ch01_prop_surge_capacitor_charged.png` / `ch01_prop_surge_capacitor_frozen_discharged.png` / `ch01_prop_surge_capacitor_frozen_charged.png` | `(charge_state, is_frozen())`: (`&"discharged"`, false) -> `_discharged`; (`&"charged"`, false) -> `_charged`; (`&"discharged"`, true) -> `_frozen_discharged`; (`&"charged"`, true) -> `_frozen_charged` (= `is_stabilized()` while `bus_powered`) | `(368, 168)` ((8, 5)) | YSort_Actors / 10 | none | `prop_surge_capacitor` (64×64). The old single `_frozen` file is deprecated (kept until TLF-041 has switched, do not use for new work) |
 | `ch01.signal_control.breaker_a` | `ch01_prop_lever_switch_off.png` (+ `_on`) | `lever_state` `&"open"` -> `_off`; `&"engaged"` -> `_on` (auto-releases after 180 ticks) | `(160, 144)` ((0, 10)) | Wall_Fixtures / 7 | none | stands at the foot of the W wall (`x = 0`): **wall-mounted, `Wall_Fixtures` 7**; badge A child at (3, -8) |
 | `ch01.signal_control.breaker_b` | `ch01_prop_lever_switch_off.png` (+ `_on`) | `lever_state` `&"open"` -> `_off`; `&"engaged"` -> `_on` | `(544, 192)` ((15, 1)) | YSort_Actors / 10 | none | free-standing at the E edge (`x = 15`, no wall drawn): **`YSort_Actors` 10** (ADR-019); badge B child at (3, -8) |
 | `ch01.signal_control.intercom` | `ch01_prop_call_box_phone_idle.png` | idle | `(528, 154)` (mount; node stays `(352, 160)`) | Wall_Fixtures / 7 | none | Operator intercom (shares `prop_call_box_phone`); node sits at the capacitor lane, so the sprite mounts on the N wall, module `k = 6`, offset (0, -14) (OQ-4) |
@@ -407,7 +408,7 @@ Source: `scripts/puzzle/objects/*.gd` (read-only). Per ADR-019 a presenter in `s
 | `turnstile_gate` (`TurnstileGate`) | `capture_state()` = `{"arm_state": &"collapsed"\|&"open", "passage_blocked": bool}` | `prop_turnstile_gate_collapsed` / `_open` | `arm_state` is the key; `passage_blocked` always follows it |
 | `fire_shutter` (`FireShutter`) | `capture_state()` = `{"shutter_state": &"closed"\|&"raised", "hold_ticks": int, "passage_blocked": bool}` | `prop_fire_shutter_closed` / `_raised` | `raised` is transient (counts down `hold_ticks`) |
 | `counterweight_gear` (`CounterweightGear`) | `capture_state()` = `{}`; presentation field `gear_state` = `&"idle"\|&"slipping"\|&"locked"` | `_idle` / `_slipping` / `_frozen` | **code name `locked` = sprite `_frozen`** (also true whenever `is_frozen()`); no rename |
-| `surge_capacitor` (`SurgeCapacitor`) | `capture_state()` = `{"charge_state": &"discharged"\|&"charged", "decay_ticks": int, "bus_powered": bool}` plus `is_frozen()` | `_discharged` / `_charged`; `_frozen` while `is_frozen()` | **frozen is a flag over `charge_state`, not a third value**: the `_frozen` sprite hides the charge colour, so a frozen charged vs frozen discharged capacitor look the same (see finding F-1) |
+| `surge_capacitor` (`SurgeCapacitor`) | `capture_state()` = `{"charge_state": &"discharged"\|&"charged", "decay_ticks": int, "bus_powered": bool}` plus `is_frozen()` | 4 sprites by `(charge_state, is_frozen())`: (`discharged`,false) `_discharged`; (`charged`,false) `_charged`; (`discharged`,true) `_frozen_discharged`; (`charged`,true) `_frozen_charged` | frozen is a flag over `charge_state`. The frozen pair is readable **without colour**: frost-white fill rising in all three cells + solid crystal hexagon + rigid bridge bar = charged (stabilised when `bus_powered`); empty dark tubes + hollow hexagon + no bridge = discharged. Old `_frozen` is deprecated. |
 | `pressure_switch_01` (`TriggerZone`) | `is_occupied()` (signal `occupancy_changed(occupied: bool)`) | `prop_pressure_switch_released` / `_pressed` | plate is a `TriggerZone`, not a PuzzleObject |
 | `security_gate_01` (`PlateLinkedGate`) | `gate_state` = `&"closed"\|&"open"`; `passage_blocked` = not open; no `TemporalComponent` (chrono-shielded) | `prop_security_gate_closed` / `_open` | latched `open` once PZ-003 is solved |
 | `bridge_platform_01` (`RetractableBridge`) | `platform_state` = `&"retracted"\|&"extended"`; `walkable` = extended | `prop_bridge_platform_retracted` / `_extended` | latched `extended` once solved |
@@ -445,7 +446,7 @@ All ROOM_GRAPH §7.3 hero set-pieces now have sprites: turnstile, fire shutter, 
 | OQ-10 | Archway naming | Accepted, no rename. |
 
 **Findings from reading the puzzle code (code is authoritative):**
-- **F-1** `SurgeCapacitor`: ROOM_GRAPH §7.3 lists `discharged / charged / frozen` as three states; the code has two `charge_state` values and a separate `is_frozen()` flag. The art keeps three sprites; the presenter shows `_frozen` whenever `is_frozen()` is true. A frozen-charged vs frozen-discharged distinction (`is_stabilized()`) would need two more sprites if the design wants it visible.
+- **F-1** `SurgeCapacitor`: ROOM_GRAPH §7.3 lists `discharged / charged / frozen` as three states; the code has two `charge_state` values and a separate `is_frozen()` flag. **Resolved in TLF-044 (ADR-019 amendment):** four sprites keyed by `(charge_state, is_frozen())`; `prop_surge_capacitor_frozen` is deprecated and stays until TLF-041 has switched over.
 - **F-2** `dispatch_terminal` is a `ReadableDocument`; there is no code state for the `_active` sprite, so it needs a narrative-flag presenter (or can ship as `_idle` only).
 - **F-3** `CounterweightGear.gear_state` uses `locked`; the sprite file keeps `frozen` (§11).
 
