@@ -1,6 +1,6 @@
 # Project Status
 
-**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 255/255 tests, 91 scripts, leak check clean (enforced by validate.ps1 since TLF-035)
+**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 273/273 tests, 95 scripts, leak check clean (enforced by validate.ps1 since TLF-035)
 
 This file states what the repository **actually** contains. Task-level detail lives in `ORCA_TASK_BOARD.md`; history lives in `PROGRESS.md`.
 
@@ -28,25 +28,23 @@ This file states what the repository **actually** contains. Task-level detail li
 | **Playable:** `scenes/chapters/ch01/Chapter01.tscn`: **all 10 rooms, start to `chapter_complete`**, PZ-001…005, Beat 09 revelation, Beat 10 outro, pocket watch (Trace/Rewind/Freeze/Echo), HUD feedback, hints, checkpoints/autosave, Elias sprite animations | `scenes/chapters/ch01/`, `scripts/player/`, `scripts/ui/` | `tests/chapters/ch01/`, `tests/player/`, `tests/ui/`; Lead real-input probe |
 | Story UI: `DialogueBox` (blocking/non-blocking, one-shot `heard.*` flags), `DocumentViewer` (paging, SimClock pause), `JournalScreen` (categories + fragments), `hint` action (H + joypad 10); all Ch1 Beats 01–10 wired | `scripts/ui/`, `scenes/ui/`, `scripts/chapters/ch01/` | `tests/ui/`, `tests/chapters/ch01/test_ch01_narrative_beats.gd` |
 | Real-input proofs: full Ch1 playthrough with input actions + physics only (PZ-001…005 incl. PZ-004 with Echo, Beats 09/10); negative test that PZ-004 fails without Echo (RISK-018 closed); PZ-004 geometric route/reach tests on real colliders | `tests/chapters/ch01/`, `tests/support/base_test.gd` | TLF-030/031/033 + `3df2583` |
+| Game flow: F5 → Boot → title screen (New Game / Continue / Quit, overwrite confirmation) → Chapter 1; Continue restores the last checkpoint; chapter complete → title. `SceneRouter` autoload | `scripts/core/`, `scenes/boot/`, `scenes/ui/title_screen.tscn` | `tests/core/`, `tests/ui/test_title_screen.gd`; Opus windowed screenshots |
 | Art v1: art bible, Ch1 palette (32), arrival platform target sheet, Elias 8-dir idle/walk, 3 floor tiles, 2 walls, archway, 23:59 clock, CC0 pixel font | `design/art/`, `assets/` | Lead verification (Pixelorama CLI, palette, alpha, mirrors); not yet placed in a scene |
 | Ch1 design: beat sheet (10 beats, 38 min), 5 puzzle specs with 27 given/when/then tests, room graph (10 rooms, boundary doors, placement metrics, kit list) | `design/ch01/` | Lead reviews in `docs/reviews/` |
 
 ## B. Partially implemented
-- Game entry: Chapter 1 is fully playable, but only via F6 on `Chapter01.tscn`; no title/menu flow (TLF-037).
+- UI font: only the title screen uses TLF Pixel Mono; HUD/dialogue/documents/journal use Godot's default font (ISSUE-004).
 
 ## C. Implemented but not integrated
 - Art v1 is barely placed in the Ch1 rooms: only the archway frame and the 23:59 clock appear (8 of 10 rooms); floors, walls and props are greybox polygons (ISSUE-012, Argon unavailable).
 
 ## D. Broken
-- First playtest: start feels stuck in the blocking Beat 01 monologue (ISSUE-029); cyan target marker floats over Elias (ISSUE-030); wrong feedback text for `use` (ISSUE-031). All → TLF-038.
-- F5 shows a black screen: `Boot.tscn` is a placeholder (ISSUE-027 → TLF-037).
-- F6 always starts fresh and the arrival autosave overwrites `slot_0` (ISSUE-032 → TLF-037).
 
 ## E. Missing (next by priority)
-1. TLF-038 (Flash) first-playtest fixes
-2. Human: physical controller spot-check (ISSUE-011, last item for M1)
-3. TLF-037 Boot → title → Chapter01 so F5 plays (ISSUE-027). Until then: open `Chapter01.tscn`, press F6
-4. Vertical-slice polish: art batch 2 (TLF-039, design-art Sonnet 5.5; ISSUE-012), audio, lighting/VFX, Beat 10 cinematic, accessibility pass
+1. TLF-039 art batch 2 (design-art, Sonnet 5.5), then a Flash integration task from its placement sheet
+2. UI theme with TLF Pixel Mono everywhere (ISSUE-004) + confirm glyph (ISSUE-033)
+3. Human: physical controller spot-check (ISSUE-011, last item for M1); second playtest via F5
+4. Vertical-slice polish: audio, lighting/VFX, Beat 10 cinematic, accessibility pass
 5. External playtest (Gate C)
 
 ## F. Should be improved
