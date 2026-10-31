@@ -1,6 +1,6 @@
 # Project Status
 
-**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 273/273 tests, 95 scripts, leak check clean (enforced by validate.ps1 since TLF-035)
+**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 278/278 tests, 97 scripts, leak check clean (enforced by validate.ps1 since TLF-035)
 
 This file states what the repository **actually** contains. Task-level detail lives in `ORCA_TASK_BOARD.md`; history lives in `PROGRESS.md`.
 
@@ -33,16 +33,17 @@ This file states what the repository **actually** contains. Task-level detail li
 | Ch1 design: beat sheet (10 beats, 38 min), 5 puzzle specs with 27 given/when/then tests, room graph (10 rooms, boundary doors, placement metrics, kit list) | `design/ch01/` | Lead reviews in `docs/reviews/` |
 
 ## B. Partially implemented
-- UI font: only the title screen uses TLF Pixel Mono; HUD/dialogue/documents/journal use Godot's default font (ISSUE-004).
+- UI theme: TLF Pixel Mono everywhere (TLF-040), but the theme silently drops all styling if the font import is not found (ISSUE-035 → TLF-043).
 
 ## C. Implemented but not integrated
 - Art batch 2 is merged but not placed: rooms are still greybox polygons (TLF-041, after TLF-040). Remaining puzzle props, pocket watch, lever badges in TLF-042.
 
 ## D. Broken
+- At spawn the invisible checkpoint is the watch/interact target: cyan marker above Elias, E says "Nothing happens." (ISSUE-034 → TLF-043).
 
 ## E. Missing (next by priority)
-1. TLF-041 (Flash) art integration into all 10 rooms; TLF-042 (design-art) art batch 3
-2. TLF-040 (Flash): UI theme with TLF Pixel Mono everywhere (ISSUE-004) + confirm glyph (ISSUE-033)
+1. TLF-043 (Flash) targeting + theme robustness, then TLF-041 (Flash) art integration; TLF-042 (design-art) art batch 3
+2. Export smoke test (Windows build: theme font, translations, saves) once an export preset exists
 3. Human: physical controller spot-check (ISSUE-011, last item for M1); second playtest via F5
 4. Vertical-slice polish: audio, lighting/VFX, Beat 10 cinematic, accessibility pass
 5. External playtest (Gate C)
