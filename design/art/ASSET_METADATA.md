@@ -231,7 +231,7 @@
 
 ## 3. Batch 2 Summary Inventory Table (`TLF-039`)
 
-**Task:** TLF-039 · **Author:** design-art agent (Claude Code, Sonnet 5.5, standing in for Argon, RISK-019) · **Palette:** `TLF-CH01-32`, `0` off-palette, `0` semi-transparent pixels · **Authoring:** every pixel is placed by a deterministic script using palette indices only, which writes layered `.pxo` files; every `.pxo` passes `Pixelorama.exe --headless --quit -- --size` and `--export --spritesheet`, and each committed PNG is the byte-identical re-export (raw logs in `design/art/TLF-039_VERIFICATION.txt`). **No AI-generated or third-party images.** Elias v2 replaces the batch-1 sheet in place (section 2.1).
+**Task:** TLF-039 · **Author:** design-art agent (Claude Code, Sonnet 5.5, standing in for Argon, RISK-019) · **Palette:** `TLF-CH01-32`, `0` off-palette, `0` semi-transparent pixels · **Authoring:** every pixel is placed by a deterministic script using palette indices only, which writes layered `.pxo` files; every `.pxo` passes `Pixelorama.exe --headless --quit -- --size` and `--export --spritesheet`, and each committed PNG is the byte-identical re-export (raw logs in `design/art/TLF-039_VERIFICATION.txt`). **No AI-generated or third-party images.** Elias v2 replaces the batch-1 sheet in place (section 2.1). Rows 27-38 are Tier 2 hero set-pieces (partial: route board, security gate, bridge, transit car and dispatch terminal are still open).
 
 | # | Asset ID | Category | Source `.pxo` (`assets/source/ch01/`) | Runtime Export (`res://assets/...`) | Canvas Size (`W×H px`) | Frames / FPS | Pivot `(px_x, px_y)` | Sorting / `z_index` | Palette Colors Used | QA State |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -250,6 +250,18 @@
 | **24** | `ch01.prop.lever_switch.off` | Prop (Fixture) | `ch01_prop_lever_switch_off.pxo` | `assets/props/ch01/ch01_prop_lever_switch_off.png` | `24 × 32 px` | `1f` (`static`) | `(12, 28)` | `Wall_Fixtures` (`z_index = 7`), see OQ-2 | `8 / 32` | **`exported`** |
 | **25** | `ch01.prop.lever_switch.on` | Prop (Fixture) | `ch01_prop_lever_switch_on.pxo` | `assets/props/ch01/ch01_prop_lever_switch_on.png` | `24 × 32 px` | `1f` (`static`) | `(12, 28)` | `Wall_Fixtures` (`z_index = 7`), see OQ-2 | `9 / 32` | **`exported`** |
 | **26** | `ch01.prop.document_clipboard` | Prop (Floor Pickup) | `ch01_prop_document_clipboard_idle.pxo` | `assets/props/ch01/ch01_prop_document_clipboard_idle.png` | `16 × 16 px` | `1f` (`static`) | `(8, 12)` | `YSort_Props` (`z_index = 8`) | `8 / 32` | **`exported`** |
+| **27** | `ch01.prop.turnstile_gate_collapsed` | Prop (Medium Floor Prop) | `ch01_prop_turnstile_gate_collapsed.pxo` | `assets/props/ch01/ch01_prop_turnstile_gate_collapsed.png` | `32 × 40 px` | `1f` (`static`) | `(16, 34)` | `YSort_Actors` (`z_index = 10`) | `8 / 32` | **`exported`** |
+| **28** | `ch01.prop.turnstile_gate_open` | Prop (Medium Floor Prop) | `ch01_prop_turnstile_gate_open.pxo` | `assets/props/ch01/ch01_prop_turnstile_gate_open.png` | `32 × 40 px` | `1f` (`static`) | `(16, 34)` | `YSort_Actors` (`z_index = 10`) | `8 / 32` | **`exported`** |
+| **29** | `ch01.prop.fire_shutter_closed` | Prop (Large Hero Mechanism) | `ch01_prop_fire_shutter_closed.pxo` | `assets/props/ch01/ch01_prop_fire_shutter_closed.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `8 / 32` | **`exported`** |
+| **30** | `ch01.prop.fire_shutter_raised` | Prop (Large Hero Mechanism) | `ch01_prop_fire_shutter_raised.pxo` | `assets/props/ch01/ch01_prop_fire_shutter_raised.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `7 / 32` | **`exported`** |
+| **31** | `ch01.prop.counterweight_gear_idle` | Prop (Large Hero Mechanism) | `ch01_prop_counterweight_gear_idle.pxo` | `assets/props/ch01/ch01_prop_counterweight_gear_idle.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `6 / 32` | **`exported`** |
+| **32** | `ch01.prop.counterweight_gear_slipping` | Prop (Large Hero Mechanism) | `ch01_prop_counterweight_gear_slipping.pxo` | `assets/props/ch01/ch01_prop_counterweight_gear_slipping.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `9 / 32` | **`exported`** |
+| **33** | `ch01.prop.counterweight_gear_frozen` | Prop (Large Hero Mechanism) | `ch01_prop_counterweight_gear_frozen.pxo` | `assets/props/ch01/ch01_prop_counterweight_gear_frozen.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `8 / 32` | **`exported`** |
+| **34** | `ch01.prop.surge_capacitor_discharged` | Prop (Large Hero Mechanism) | `ch01_prop_surge_capacitor_discharged.pxo` | `assets/props/ch01/ch01_prop_surge_capacitor_discharged.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `7 / 32` | **`exported`** |
+| **35** | `ch01.prop.surge_capacitor_charged` | Prop (Large Hero Mechanism) | `ch01_prop_surge_capacitor_charged.pxo` | `assets/props/ch01/ch01_prop_surge_capacitor_charged.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `9 / 32` | **`exported`** |
+| **36** | `ch01.prop.surge_capacitor_frozen` | Prop (Large Hero Mechanism) | `ch01_prop_surge_capacitor_frozen.pxo` | `assets/props/ch01/ch01_prop_surge_capacitor_frozen.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `8 / 32` | **`exported`** |
+| **37** | `ch01.prop.pressure_switch_released` | Prop (Floor Plate) | `ch01_prop_pressure_switch_released.pxo` | `assets/props/ch01/ch01_prop_pressure_switch_released.png` | `32 × 20 px` | `1f` (`static`) | `(16, 12)` | `YSort_Props` (`z_index = 8`) | `5 / 32` | **`exported`** |
+| **38** | `ch01.prop.pressure_switch_pressed` | Prop (Floor Plate) | `ch01_prop_pressure_switch_pressed.pxo` | `assets/props/ch01/ch01_prop_pressure_switch_pressed.png` | `32 × 20 px` | `1f` (`static`) | `(16, 12)` | `YSort_Props` (`z_index = 8`) | `7 / 32` | **`exported`** |
 
 ---
 
@@ -347,6 +359,78 @@ Common to all entries: **License / Attribution:** original production art by the
 - **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,25,31`
 - **Source / export:** `assets/source/ch01/ch01_prop_document_clipboard_idle.pxo` → `assets/props/ch01/ch01_prop_document_clipboard_idle.png`
 
+### `ch01.prop.turnstile_gate_collapsed`
+- **Filename:** `ch01_prop_turnstile_gate_collapsed.pxo` / `ch01_prop_turnstile_gate_collapsed.png` · **Category / use:** Prop (Medium Floor Prop) · Room 2 `turnstile_gate`, arm snapped, lamp dead (Tier 2)
+- **Pixel dimensions:** `32 × 40 px` (`1.0×`) · **Pivot / sorting:** `(16, 34)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,22,24`
+- **Source / export:** `assets/source/ch01/ch01_prop_turnstile_gate_collapsed.pxo` → `assets/props/ch01/ch01_prop_turnstile_gate_collapsed.png`
+
+### `ch01.prop.turnstile_gate_open`
+- **Filename:** `ch01_prop_turnstile_gate_open.pxo` / `ch01_prop_turnstile_gate_open.png` · **Category / use:** Prop (Medium Floor Prop) · arm folded up, lamp lit (Tier 2)
+- **Pixel dimensions:** `32 × 40 px` (`1.0×`) · **Pivot / sorting:** `(16, 34)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,25,26`
+- **Source / export:** `assets/source/ch01/ch01_prop_turnstile_gate_open.pxo` → `assets/props/ch01/ch01_prop_turnstile_gate_open.png`
+
+### `ch01.prop.fire_shutter_closed`
+- **Filename:** `ch01_prop_fire_shutter_closed.pxo` / `ch01_prop_fire_shutter_closed.png` · **Category / use:** Prop (Large Hero Mechanism) · Room 3 `fire_shutter`; spans 2 tiles on the +x axis; slats down (Tier 2)
+- **Pixel dimensions:** `64 × 64 px` (`1.0×`) · **Pivot / sorting:** `(32, 56)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,24,25`
+- **Source / export:** `assets/source/ch01/ch01_prop_fire_shutter_closed.pxo` → `assets/props/ch01/ch01_prop_fire_shutter_closed.png`
+
+### `ch01.prop.fire_shutter_raised`
+- **Filename:** `ch01_prop_fire_shutter_raised.pxo` / `ch01_prop_fire_shutter_raised.png` · **Category / use:** Prop (Large Hero Mechanism) · slats rolled into the housing, opening clear (Tier 2)
+- **Pixel dimensions:** `64 × 64 px` (`1.0×`) · **Pivot / sorting:** `(32, 56)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,24`
+- **Source / export:** `assets/source/ch01/ch01_prop_fire_shutter_raised.pxo` → `assets/props/ch01/ch01_prop_fire_shutter_raised.png`
+
+### `ch01.prop.counterweight_gear_idle`
+- **Filename:** `ch01_prop_counterweight_gear_idle.pxo` / `ch01_prop_counterweight_gear_idle.png` · **Category / use:** Prop (Large Hero Mechanism) · Room 3 `counterweight_gear` (Tier 2)
+- **Pixel dimensions:** `64 × 64 px` (`1.0×`) · **Pivot / sorting:** `(32, 56)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15`
+- **Source / export:** `assets/source/ch01/ch01_prop_counterweight_gear_idle.pxo` → `assets/props/ch01/ch01_prop_counterweight_gear_idle.png`
+
+### `ch01.prop.counterweight_gear_slipping`
+- **Filename:** `ch01_prop_counterweight_gear_slipping.pxo` / `ch01_prop_counterweight_gear_slipping.png` · **Category / use:** Prop (Large Hero Mechanism) · weight lowered 6 px, sparks + slip marks (Tier 2)
+- **Pixel dimensions:** `64 × 64 px` (`1.0×`) · **Pivot / sorting:** `(32, 56)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,24,25,26`
+- **Source / export:** `assets/source/ch01/ch01_prop_counterweight_gear_slipping.pxo` → `assets/props/ch01/ch01_prop_counterweight_gear_slipping.png`
+
+### `ch01.prop.counterweight_gear_frozen`
+- **Filename:** `ch01_prop_counterweight_gear_frozen.pxo` / `ch01_prop_counterweight_gear_frozen.png` · **Category / use:** Prop (Large Hero Mechanism) · Freeze language: 2 px corner L-brackets + teal dashes, no motion (Tier 2)
+- **Pixel dimensions:** `64 × 64 px` (`1.0×`) · **Pivot / sorting:** `(32, 56)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,27,31`
+- **Source / export:** `assets/source/ch01/ch01_prop_counterweight_gear_frozen.pxo` → `assets/props/ch01/ch01_prop_counterweight_gear_frozen.png`
+
+### `ch01.prop.surge_capacitor_discharged`
+- **Filename:** `ch01_prop_surge_capacitor_discharged.pxo` / `ch01_prop_surge_capacitor_discharged.png` · **Category / use:** Prop (Large Hero Mechanism) · Room 6 `surge_capacitor` (Tier 2)
+- **Pixel dimensions:** `64 × 64 px` (`1.0×`) · **Pivot / sorting:** `(32, 56)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,22`
+- **Source / export:** `assets/source/ch01/ch01_prop_surge_capacitor_discharged.pxo` → `assets/props/ch01/ch01_prop_surge_capacitor_discharged.png`
+
+### `ch01.prop.surge_capacitor_charged`
+- **Filename:** `ch01_prop_surge_capacitor_charged.pxo` / `ch01_prop_surge_capacitor_charged.png` · **Category / use:** Prop (Large Hero Mechanism) · lit bands + jagged arc between terminals (shape cue) (Tier 2)
+- **Pixel dimensions:** `64 × 64 px` (`1.0×`) · **Pivot / sorting:** `(32, 56)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,25,26,31`
+- **Source / export:** `assets/source/ch01/ch01_prop_surge_capacitor_charged.pxo` → `assets/props/ch01/ch01_prop_surge_capacitor_charged.png`
+
+### `ch01.prop.surge_capacitor_frozen`
+- **Filename:** `ch01_prop_surge_capacitor_frozen.pxo` / `ch01_prop_surge_capacitor_frozen.png` · **Category / use:** Prop (Large Hero Mechanism) · Freeze language (Tier 2)
+- **Pixel dimensions:** `64 × 64 px` (`1.0×`) · **Pivot / sorting:** `(32, 56)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,27,31`
+- **Source / export:** `assets/source/ch01/ch01_prop_surge_capacitor_frozen.pxo` → `assets/props/ch01/ch01_prop_surge_capacitor_frozen.png`
+
+### `ch01.prop.pressure_switch_released`
+- **Filename:** `ch01_prop_pressure_switch_released.pxo` / `ch01_prop_pressure_switch_released.png` · **Category / use:** Prop (Floor Plate) · Room 4 `pressure_switch_01`; raised plate, dead lamp (Tier 2)
+- **Pixel dimensions:** `32 × 20 px` (`1.0×`) · **Pivot / sorting:** `(16, 12)` · `YSort_Props` (`z_index = 8`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,12,13,14,22`
+- **Source / export:** `assets/source/ch01/ch01_prop_pressure_switch_released.pxo` → `assets/props/ch01/ch01_prop_pressure_switch_released.png`
+
+### `ch01.prop.pressure_switch_pressed`
+- **Filename:** `ch01_prop_pressure_switch_pressed.pxo` / `ch01_prop_pressure_switch_pressed.png` · **Category / use:** Prop (Floor Plate) · flush plate, lit amber ring (Tier 2)
+- **Pixel dimensions:** `32 × 20 px` (`1.0×`) · **Pivot / sorting:** `(16, 12)` · `YSort_Props` (`z_index = 8`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,24,25,26`
+- **Source / export:** `assets/source/ch01/ch01_prop_pressure_switch_pressed.pxo` → `assets/props/ch01/ch01_prop_pressure_switch_pressed.png`
+
 ### 4.1 Archway reconciliation (`archway_frame_e` vs `ROOM_GRAPH.md` §7.1)
 `ROOM_GRAPH` §7.1 names `wall_archway_frame_n` and `wall_archway_frame_w`; batch 1 shipped one file named `archway_frame_e`. Geometry decides the mapping, not the compass letter: E and W boundary edges both run *down-left* on screen, N and S edges both run *down-right* (`px_x = 320 + (x-y)*16`). So:
 
@@ -360,7 +444,7 @@ Common to all entries: **License / Attribution:** original production art by the
 ### 4.2 `flip_h` rule for axis-run assets
 `wall_railing_iron`, `prop_station_bench` and `tile_cable_conduit_*` are authored along the down-right (+x) axis. For the down-left (+y) axis set `flip_h = true`; the baked top-left light then falls on the screen-right side, the same compromise the bible accepts for Elias (§2.3 #4).
 
-### 4.3 Room mockups (`concept`, `640 × 360 px`, kit pieces only; not runtime assets)
+### 4.3 Room mockups (`concept`, `640 × 360 px`; kit + Tier 2 pieces, not runtime assets)
 
 | # | Mockup | File | Canvas Size | QA State |
 |---|---|---|---|---|
@@ -368,4 +452,4 @@ Common to all entries: **License / Attribution:** original production art by the
 | M2 | `ch01.concourse_west` | `design/art/mockups/ch01_concourse_west_mockup.png` | `640 × 360 px` | **`concept`** |
 | M3 | `ch01.signal_control` | `design/art/mockups/ch01_signal_control_mockup.png` | `640 × 360 px` | **`concept`** |
 
-Composited by script from the committed kit PNGs at the positions in `CH01_PLACEMENT_SHEET.md` (palette `TLF-CH01-32` only, background `#0A0D14`, Elias `idle_se` frame 2 at the safe anchor). No `.pxo` (derived images; regenerate from the sheet data).
+Composited by script from the committed PNGs at the positions in `CH01_PLACEMENT_SHEET.md` (palette `TLF-CH01-32` only, background `#0A0D14`, Elias `idle_se` frame 2 at the safe anchor; Tier 2 pieces shown in their default state). No `.pxo` (derived images).

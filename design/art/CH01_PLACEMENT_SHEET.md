@@ -2,7 +2,7 @@
 
 **Author:** design-art agent (Claude Code, Sonnet 5.5, standing in for Argon) · **Audience:** Flash (integration task, `TLF-018`/follow-up) · **Inputs:** `design/ch01/ROOM_GRAPH.md` §1/§5/§7, `design/art/ART_BIBLE.md`, `design/art/ASSET_METADATA.md`, and the greybox `scenes/chapters/ch01/rooms/*.tscn` (read-only; every node position below is copied from those files by script, not typed).
 
-**Scope of this sheet:** every Tier 1 kit piece (shipped in this batch) is placed room by room. Tier 2 hero set-pieces are listed with their planned file names so this sheet does not need to change when they land (§12). Pieces marked *(decor)* are optional dressing with no `.tscn` node yet.
+**Scope of this sheet:** every Tier 1 kit piece (shipped in this batch) is placed room by room. Five Tier 2 hero set-pieces are also placed (§12); the rest keep the greybox until TLF-040. Pieces marked *(decor)* are optional dressing with no `.tscn` node yet.
 
 Mockups (`640×360`, true scale, kit pieces only): `design/art/mockups/ch01_arrival_platform_mockup.png` (validation against the approved target sheet), `ch01_concourse_west_mockup.png`, `ch01_signal_control_mockup.png`.
 
@@ -133,7 +133,7 @@ Footprint 16×12 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 ### 2.4 Props, fixtures and state mapping
 | Object ID | Sprite (file) | State → sprite state | Pivot position | Layer / `z` | Replaces greybox | Note |
 |---|---|---|---|---|---|---|
-| `ch01.concourse_west.turnstile_gate` | *(none in this batch)* | collapsed / open | `(272, 120)` | - | none | Tier 2 `prop_turnstile_gate`; replaces nothing visual (Area2D + `Blocker`); sprite child at (0,0) |
+| `ch01.concourse_west.turnstile_gate` | `ch01_prop_turnstile_gate_collapsed.png` / `ch01_prop_turnstile_gate_open.png` | collapsed / open | `(272, 120)` ((2, 5)) | YSort_Actors / 10 | none | `prop_turnstile_gate` (Tier 2, delivered); pedestal footprint centred on the node; Area2D + `Blocker` stay |
 | `ch01.concourse_west.support_pillar_01` | `ch01_env_wall_corner_pillar_idle.png` | idle | `(384, 184)` (node `(384, 176)` + `(0, 8)`) | YSort_Walls / 5 | none (collision already in `PillarCollision`) | free-standing column; **sprite pivot = node position + (0, 8)** so the 0.75-tile footprint centres on the cell |
 | `ch01.concourse_west.reset_anchor_01` | `ch01_prop_reset_console_idle.png` | idle | `(256, 144)` ((3, 7)) | YSort_Actors / 10 | none | sole state; the `[E]` prompt provides feedback |
 | `ch01.concourse_west.call_box_09` | `ch01_prop_call_box_phone_idle.png` (+ `_ringing`) | idle -> ringing during Beat 03 call | `(272, 74)` (mount; node stays `(272, 96)`) | Wall_Fixtures / 7 | none | wall fixture on the W wall: module `j = 1` (y 2..3), mount offset (0, -14) |
@@ -164,8 +164,8 @@ Footprint 14×10 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 ### 3.4 Props, fixtures and state mapping
 | Object ID | Sprite (file) | State → sprite state | Pivot position | Layer / `z` | Replaces greybox | Note |
 |---|---|---|---|---|---|---|
-| `ch01.maintenance_bay.fire_shutter` | *(none in this batch)* | closed / raised | `(384, 160)` | - | none | Tier 2 `prop_fire_shutter` (64×64) |
-| `ch01.maintenance_bay.counterweight_gear` | *(none in this batch)* | idle / slipping / frozen | `(384, 112)` | - | none | Tier 2 `prop_counterweight_gear` |
+| `ch01.maintenance_bay.fire_shutter` | `ch01_prop_fire_shutter_closed.png` / `ch01_prop_fire_shutter_raised.png` | closed / raised | `(384, 160)` ((8, 4)) | YSort_Actors / 10 | none | Tier 2 `prop_fire_shutter` (64×64) |
+| `ch01.maintenance_bay.counterweight_gear` | `ch01_prop_counterweight_gear_idle.png` / `ch01_prop_counterweight_gear_slipping.png` / `ch01_prop_counterweight_gear_frozen.png` | idle / slipping / frozen | `(384, 112)` ((5, 1)) | YSort_Actors / 10 | none | Tier 2 `prop_counterweight_gear` |
 | `ch01.maintenance_bay.reset_anchor_01` | `ch01_prop_reset_console_idle.png` | idle | `(288, 144)` ((4, 6)) | YSort_Actors / 10 | none |  |
 | `ch01.maintenance_bay.doc_tech_log` | `ch01_prop_document_clipboard_idle.png` | idle | `(288, 192)` ((7, 9)) | YSort_Props / 8 | none | workbench pickup |
 
@@ -197,7 +197,7 @@ Footprint 16×12 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 ### 4.4 Props, fixtures and state mapping
 | Object ID | Sprite (file) | State → sprite state | Pivot position | Layer / `z` | Replaces greybox | Note |
 |---|---|---|---|---|---|---|
-| `ch01.security_crossing.pressure_switch_01` | *(none in this batch)* | released / pressed | `(256, 176)` | - | none | Tier 2 `prop_pressure_switch` |
+| `ch01.security_crossing.pressure_switch_01` | `ch01_prop_pressure_switch_released.png` / `ch01_prop_pressure_switch_pressed.png` | released / pressed | `(256, 176)` ((5, 9)) | YSort_Props / 8 | none | Tier 2 `prop_pressure_switch` |
 | `ch01.security_crossing.security_gate_01` | *(none in this batch)* | closed / open | `(416, 176)` | - | none | Tier 2 `prop_security_gate` |
 | `ch01.security_crossing.bridge_platform_01` | *(none in this batch)* | retracted / extended | `(368, 184)` | - | `TrenchVisual` stays as the void backing | Tier 2 `prop_bridge_platform`; spans trench tile `(9,6)` |
 | `ch01.security_crossing.transit_pass_pickup` | `ch01_prop_document_clipboard_idle.png` | idle | `(336, 104)` ((3, 2)) | YSort_Props / 8 | none | security desk pickup (progression) |
@@ -258,7 +258,7 @@ Footprint 16×12 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 ### 6.4 Props, fixtures and state mapping
 | Object ID | Sprite (file) | State → sprite state | Pivot position | Layer / `z` | Replaces greybox | Note |
 |---|---|---|---|---|---|---|
-| `ch01.signal_control.surge_capacitor` | *(none in this batch)* | discharged / charged / frozen | `(368, 168)` | - | none | Tier 2 `prop_surge_capacitor` (64×64) |
+| `ch01.signal_control.surge_capacitor` | `ch01_prop_surge_capacitor_discharged.png` / `ch01_prop_surge_capacitor_charged.png` / `ch01_prop_surge_capacitor_frozen.png` | discharged / charged / frozen | `(368, 168)` ((8, 5)) | YSort_Actors / 10 | none | Tier 2 `prop_surge_capacitor` (64×64) |
 | `ch01.signal_control.breaker_a` | `ch01_prop_lever_switch_off.png` (+ `_on`) | off -> on when pulled | `(160, 144)` ((0, 10)) | Wall_Fixtures / 7 | none | on the SW wall; diegetic badge `A` is a 3×3 px stamp (OQ-3) |
 | `ch01.signal_control.breaker_b` | `ch01_prop_lever_switch_off.png` (+ `_on`) | off -> on when pulled | `(544, 192)` ((15, 1)) | Wall_Fixtures / 7 | none | on the NE wall; badge `B` |
 | `ch01.signal_control.intercom` | `ch01_prop_call_box_phone_idle.png` | idle | `(528, 154)` (mount; node stays `(352, 160)`) | Wall_Fixtures / 7 | none | Operator intercom (shares `prop_call_box_phone`); node sits at the capacitor lane, so the sprite mounts on the N wall, module `k = 6`, offset (0, -14) (OQ-4) |
@@ -386,14 +386,14 @@ Footprint 12×10 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 
 | Puzzle / object | Source state (`TemporalComponent` / puzzle script) | Sprite file / state | Fallback if sprite missing |
 |---|---|---|---|
-| `turnstile_gate` (PZ-001) | `arm_state = collapsed`, `passage_blocked = true` → `open`, `false` (latched at SOLVED, ADR-016) | `prop_turnstile_gate_collapsed` → `_open` (Tier 2) | greybox |
-| `fire_shutter` (PZ-002) | closed → raised (latched open at SOLVED) | `prop_fire_shutter_closed` → `_raised` (Tier 2) | greybox |
-| `counterweight_gear` (PZ-002) | idle → slipping (while shutter falls) → frozen (`is_frozen = true`) | `prop_counterweight_gear_idle / _slipping / _frozen` (Tier 2) | greybox |
+| `turnstile_gate` (PZ-001) | `arm_state = collapsed`, `passage_blocked = true` → `open`, `false` (latched at SOLVED, ADR-016) | `prop_turnstile_gate_collapsed` → `_open` | greybox |
+| `fire_shutter` (PZ-002) | closed → raised (latched open at SOLVED) | `prop_fire_shutter_closed` → `_raised` | greybox |
+| `counterweight_gear` (PZ-002) | idle → slipping (while shutter falls) → frozen (`is_frozen = true`) | `prop_counterweight_gear_idle / _slipping / _frozen` | greybox |
 | `cable_conduit` feed, Room 3 | off until PZ-002 SOLVED | `tile_cable_conduit_off` → `_on` | stay `_off` |
-| `pressure_switch_01` (PZ-003) | released → pressed (Echo holds) | `prop_pressure_switch` (Tier 2, 2 states) | greybox |
+| `pressure_switch_01` (PZ-003) | released → pressed (Echo holds) | `prop_pressure_switch_released` → `_pressed` | greybox |
 | `security_gate_01`, `bridge_platform_01` (PZ-003) | closed/retracted → open/extended (latched at SOLVED) | `prop_security_gate`, `prop_bridge_platform` (Tier 2) | greybox |
 | `cable_conduit` feed, Room 4 | off → on while the switch is occupied / PZ-003 latched | `tile_cable_conduit_off` → `_on` | stay `_off` |
-| `surge_capacitor` (PZ-004 step 1) | discharged → charged (`bus_powered = true`); `is_frozen` overlays frozen | `prop_surge_capacitor_discharged / _charged / _frozen` (Tier 2) | greybox |
+| `surge_capacitor` (PZ-004 step 1) | discharged → charged (`bus_powered = true`); `is_frozen` overlays frozen | `prop_surge_capacitor_discharged / _charged / _frozen` | greybox |
 | `cable_conduit` feed, Room 6 | off → on when `bus_powered = true` | `tile_cable_conduit_off` → `_on` | stay `_off` |
 | `breaker_a`, `breaker_b` (PZ-004 step 2) | not pulled → pulled / held | `prop_lever_switch_off` → `_on` | `_off` only |
 | `vestibule_door` (PZ-004) | locked → open (latched) | `archway_frame_n` + `DoorwayPresenter` glyph `[■]` → `[▲]` | n/a |
@@ -407,9 +407,11 @@ Footprint 12×10 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 
 ---
 
-## 12. Tier 2 hero set-pieces (planned names, not in this batch unless the handoff says so)
+## 12. Tier 2 hero set-pieces
 
-Sizes/pivots per bible §1.3: `prop_turnstile_gate` 32×40 (pivot `(16,34)`, `YSort_Actors` 10), `prop_fire_shutter` 64×64 (`(32,56)`), `prop_counterweight_gear` and `prop_surge_capacitor` 64×64 (`(32,56)`), `prop_route_board` (state 0/1/2), `prop_pressure_switch`, `prop_security_gate`, `prop_bridge_platform`, `prop_transit_car_stalled` 128×80 (`(64,72)`), `prop_dispatch_terminal` 64×64 (`(32,56)`). File naming `ch01_prop_<name>_<state>.png`. Each is placed at its object node's `position` (pivot = node position), `YSort_Actors` 10, replacing nothing visual.
+**Delivered in this batch (12 files, all in `assets/props/ch01/`, pivot = the object node's `position`, hero pieces `YSort_Actors` 10, pressure switch `YSort_Props` 8):** `prop_turnstile_gate_collapsed|open` (32×40, pivot `(16,34)`), `prop_fire_shutter_closed|raised` (64×64, `(32,56)`, spans two tiles along the `+x` axis; use `flip_h` for a `y`-axis lane), `prop_counterweight_gear_idle|slipping|frozen` (64×64, `(32,56)`), `prop_surge_capacitor_discharged|charged|frozen` (64×64, `(32,56)`), `prop_pressure_switch_released|pressed` (32×20, `(16,12)`). State → file mapping is in §11.
+
+**Not delivered (open for TLF-040):** `prop_route_board` (state 0/1/2), `prop_security_gate`, `prop_bridge_platform`, `prop_transit_car_stalled` (128×80, `(64,72)`), `prop_dispatch_terminal` (64×64, `(32,56)`). Planned names `ch01_prop_<name>_<state>.png`; until they exist keep the greybox for those nodes (listed as *(none in this batch)* in the room tables).
 
 ---
 
