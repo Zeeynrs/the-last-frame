@@ -1,0 +1,63 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/dialogue_box.gd" id="1_diag"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.04, 0.06, 0.1, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.3, 0.45, 0.8)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="DialogueBox" type="CanvasLayer"]
+layer = 70
+script = ExtResource("1_diag")
+
+[node name="Panel" type="PanelContainer" parent="."]
+offset_left = 20.0
+offset_top = 276.0
+offset_right = 620.0
+offset_bottom = 348.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TopRow" type="HBoxContainer" parent="Panel/Margin/VBox"]
+layout_mode = 2
+
+[node name="SpeakerLabel" type="Label" parent="Panel/Margin/VBox/TopRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3, 0.75, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "SPEAKER"
+
+[node name="PromptLabel" type="Label" parent="Panel/Margin/VBox/TopRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.8)
+theme_override_font_sizes/font_size = 11
+text = "[E] Continue"
+horizontal_alignment = 2
+
+[node name="TextLabel" type="Label" parent="Panel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.93, 0.96, 0.98, 1)
+theme_override_font_sizes/font_size = 12
+text = "Dialogue line text goes here..."
+autowrap_mode = 3

@@ -199,6 +199,11 @@ func _play() -> void:
 	# 1. Arrival platform -> concourse (Lead probe: frame 50)
 	await physics_frames(2)
 	_assert_eq(_router.current_room_id, &"ch01.arrival_platform", "starts on the arrival platform")
+
+	var diag: DialogueBox = _tree().root.find_child("DialogueBox", true, false)
+	while diag != null and diag.is_active:
+		await _tap(&"interact")
+
 	if not await _walk_to("arrival -> door_exit_east", Vector2(448, 208), _in_room(&"ch01.concourse_west")):
 		return
 	await physics_frames(2)

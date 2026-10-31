@@ -16,6 +16,12 @@ func test_translations_registered_in_project_settings() -> void:
 	_assert_true(clock_text != "EL_CLOCK_2359" and not clock_text.is_empty(), "EL_CLOCK_2359 translates to English")
 	_assert_eq(clock_text, "23:59. The seconds digit flickers, but it never turns over.")
 
+	var hint_reason_text = tr("UI_FB_NO_ACTIVE_PUZZLE")
+	_assert_eq(hint_reason_text, "No active puzzle in this area.")
+
+	var ch_complete_text = tr("UI_CHAPTER_COMPLETE")
+	_assert_eq(ch_complete_text, "CHAPTER 1 COMPLETE")
+
 
 func test_feedback_text_resolves_all_standard_reasons() -> void:
 	UIFeedback.init_translations()
@@ -46,6 +52,9 @@ func test_prompt_glyphs_keyboard_vs_joypad() -> void:
 	var key_echo_reset = InputPrompts.get_action_glyph(&"echo_reset", false)
 	_assert_eq(key_echo_reset, "[R]", "Keyboard echo_reset glyph should be [R]")
 
+	var key_hint = InputPrompts.get_action_glyph(&"hint", false)
+	_assert_eq(key_hint, "[H]", "Keyboard hint glyph should be [H]")
+
 	var key_prompt = InputPrompts.format_prompt(&"interact", "PROMPT_USE", false)
 	_assert_eq(key_prompt, "[E] Use", "Keyboard formatted prompt should be '[E] Use'")
 
@@ -58,6 +67,9 @@ func test_prompt_glyphs_keyboard_vs_joypad() -> void:
 
 	var joy_echo_reset = InputPrompts.get_action_glyph(&"echo_reset", true)
 	_assert_eq(joy_echo_reset, "[Y]", "Joypad echo_reset glyph should be [Y]")
+
+	var joy_hint = InputPrompts.get_action_glyph(&"hint", true)
+	_assert_eq(joy_hint, "[RB]", "Joypad hint glyph should be [RB]")
 
 	var joy_prompt = InputPrompts.format_prompt(&"interact", "PROMPT_USE", true)
 	_assert_eq(joy_prompt, "[A] Use", "Joypad formatted prompt should be '[A] Use'")
