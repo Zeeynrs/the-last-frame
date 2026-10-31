@@ -1,0 +1,235 @@
+[gd_scene load_steps=17 format=3]
+
+[ext_resource type="Script" path="res://scripts/spatial/doorway_presenter.gd" id="1_door"]
+[ext_resource type="Script" path="res://scripts/rooms/safe_anchor.gd" id="2_anchor"]
+[ext_resource type="Script" path="res://scripts/rooms/checkpoint_zone.gd" id="3_checkpoint"]
+[ext_resource type="Script" path="res://scripts/puzzle/objects/turnstile_gate.gd" id="4_gate"]
+[ext_resource type="Script" path="res://scripts/interaction/trigger_zone.gd" id="5_trigger"]
+[ext_resource type="Script" path="res://scripts/interaction/interactable.gd" id="6_interactable"]
+[ext_resource type="Script" path="res://scripts/puzzle/reset_anchor.gd" id="7_reset"]
+[ext_resource type="Script" path="res://scripts/puzzle/puzzle_completion_zone.gd" id="8_complete"]
+[ext_resource type="Script" path="res://scripts/temporal/temporal_component.gd" id="9_temporal"]
+[ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png" id="10_archway"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_digital_clock_2359_idle.png" id="11_clock"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_door"]
+radius = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cp"]
+size = Vector2(28, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gate"]
+radius = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_blocker"]
+size = Vector2(24, 12)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_anchor"]
+radius = 12.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pillar"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pillar_col"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_reset"]
+radius = 14.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(24, 16)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_div1"]
+a = Vector2(352, 80)
+b = Vector2(284, 114)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_div2"]
+a = Vector2(260, 126)
+b = Vector2(176, 168)
+
+[node name="ConcourseWest" type="Node2D"]
+y_sort_enabled = true
+
+[node name="Floor" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.12, 0.16, 0.22, 1)
+polygon = PackedVector2Array(320, 64, 576, 192, 384, 288, 128, 160)
+
+[node name="FloorAccent" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.17, 0.22, 0.3, 1)
+polygon = PackedVector2Array(320, 80, 552, 196, 384, 280, 152, 164)
+
+[node name="PerimeterWalls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PerimeterWalls"]
+build_mode = 1
+polygon = PackedVector2Array(320, 60, 580, 190, 496, 232, 480, 240, 384, 292, 124, 158, 224, 108, 240, 100)
+
+[node name="TurnstileDividers" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="DividerNorth" type="CollisionShape2D" parent="TurnstileDividers"]
+shape = SubResource("SegmentShape2D_div1")
+
+[node name="DividerSouth" type="CollisionShape2D" parent="TurnstileDividers"]
+shape = SubResource("SegmentShape2D_div2")
+
+[node name="Clock" type="Sprite2D" parent="."]
+position = Vector2(320, 50)
+texture = ExtResource("11_clock")
+
+[node name="ArchwayWest" type="Sprite2D" parent="."]
+position = Vector2(240, 104)
+texture = ExtResource("10_archway")
+offset = Vector2(0, -24)
+
+[node name="ArchwayEast" type="Sprite2D" parent="."]
+position = Vector2(480, 224)
+texture = ExtResource("10_archway")
+offset = Vector2(0, -24)
+
+[node name="door_entry_west" type="Area2D" parent="."]
+position = Vector2(240, 104)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_door")
+room_id = &"ch01.concourse_west"
+door_id = &"door_entry_west"
+object_id = &"ch01.concourse_west.door_entry_west"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="door_entry_west"]
+shape = SubResource("CircleShape2D_door")
+
+[node name="Spawn" type="Marker2D" parent="door_entry_west"]
+position = Vector2(16, 8)
+
+[node name="door_exit_east" type="Area2D" parent="."]
+position = Vector2(480, 224)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_door")
+room_id = &"ch01.concourse_west"
+door_id = &"door_exit_east"
+object_id = &"ch01.concourse_west.door_exit_east"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="door_exit_east"]
+shape = SubResource("CircleShape2D_door")
+
+[node name="Spawn" type="Marker2D" parent="door_exit_east"]
+position = Vector2(-16, -8)
+
+[node name="safe_anchor_east" type="Marker2D" parent="."]
+position = Vector2(256, 112)
+script = ExtResource("2_anchor")
+object_id = &"ch01.concourse_west.safe_anchor_east"
+
+[node name="safe_anchor_west" type="Marker2D" parent="."]
+position = Vector2(304, 136)
+script = ExtResource("2_anchor")
+object_id = &"ch01.concourse_west.safe_anchor_west"
+
+[node name="checkpoint" type="Area2D" parent="."]
+position = Vector2(256, 112)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("3_checkpoint")
+checkpoint_id = &"ch01.cp.concourse_west"
+spawn_anchor_id = &"ch01.concourse_west.safe_anchor_east"
+object_id = &"ch01.concourse_west.checkpoint"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoint"]
+shape = SubResource("RectangleShape2D_cp")
+
+[node name="turnstile_gate" type="Area2D" parent="."]
+position = Vector2(272, 120)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("4_gate")
+puzzle_id = &"CH1-PZ-001"
+footprint_zone_id = &"ch01.concourse_west.turnstile_footprint"
+safe_anchor_id = &"ch01.concourse_west.safe_anchor_east"
+object_id = &"ch01.concourse_west.turnstile_gate"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="turnstile_gate"]
+shape = SubResource("CircleShape2D_gate")
+
+[node name="TemporalComponent" type="Node" parent="turnstile_gate"]
+script = ExtResource("9_temporal")
+capabilities = 1
+state_fields = PackedStringArray("arm_state", "passage_blocked")
+initial_history = [{
+"arm_state": &"open",
+"passage_blocked": false
+}]
+
+[node name="Blocker" type="StaticBody2D" parent="turnstile_gate"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="turnstile_gate/Blocker"]
+shape = SubResource("RectangleShape2D_blocker")
+
+[node name="turnstile_footprint" type="Area2D" parent="."]
+position = Vector2(272, 120)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("5_trigger")
+accepts_echoes = true
+object_id = &"ch01.concourse_west.turnstile_footprint"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="turnstile_footprint"]
+shape = SubResource("RectangleShape2D_cp")
+
+[node name="turnstile_trace_anchor" type="Area2D" parent="."]
+position = Vector2(280, 124)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("6_interactable")
+object_id = &"ch01.concourse_west.turnstile_trace_anchor"
+traceable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="turnstile_trace_anchor"]
+shape = SubResource("CircleShape2D_anchor")
+
+[node name="support_pillar_01" type="Area2D" parent="."]
+position = Vector2(384, 176)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("6_interactable")
+object_id = &"ch01.concourse_west.support_pillar_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="support_pillar_01"]
+shape = SubResource("CircleShape2D_pillar")
+
+[node name="PillarCollision" type="StaticBody2D" parent="support_pillar_01"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="support_pillar_01/PillarCollision"]
+shape = SubResource("CircleShape2D_pillar_col")
+
+[node name="reset_anchor_01" type="Area2D" parent="."]
+position = Vector2(256, 144)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("7_reset")
+puzzle_id = &"CH1-PZ-001"
+object_id = &"ch01.concourse_west.reset_anchor_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="reset_anchor_01"]
+shape = SubResource("CircleShape2D_reset")
+
+[node name="exit_trigger_concourse" type="Area2D" parent="."]
+position = Vector2(304, 136)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("8_complete")
+puzzle_id = &"CH1-PZ-001"
+object_id = &"ch01.concourse_west.exit_trigger_concourse"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="exit_trigger_concourse"]
+shape = SubResource("RectangleShape2D_exit")

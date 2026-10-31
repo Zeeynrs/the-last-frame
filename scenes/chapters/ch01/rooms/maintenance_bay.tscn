@@ -1,0 +1,214 @@
+[gd_scene load_steps=16 format=3]
+
+[ext_resource type="Script" path="res://scripts/spatial/doorway_presenter.gd" id="1_door"]
+[ext_resource type="Script" path="res://scripts/rooms/safe_anchor.gd" id="2_anchor"]
+[ext_resource type="Script" path="res://scripts/rooms/checkpoint_zone.gd" id="3_checkpoint"]
+[ext_resource type="Script" path="res://scripts/puzzle/objects/fire_shutter.gd" id="4_shutter"]
+[ext_resource type="Script" path="res://scripts/puzzle/objects/counterweight_gear.gd" id="5_gear"]
+[ext_resource type="Script" path="res://scripts/interaction/trigger_zone.gd" id="6_trigger"]
+[ext_resource type="Script" path="res://scripts/puzzle/reset_anchor.gd" id="7_reset"]
+[ext_resource type="Script" path="res://scripts/puzzle/puzzle_completion_zone.gd" id="8_complete"]
+[ext_resource type="Script" path="res://scripts/temporal/temporal_component.gd" id="9_temporal"]
+[ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png" id="10_archway"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_door"]
+radius = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cp"]
+size = Vector2(28, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_shutter"]
+radius = 18.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_blocker"]
+size = Vector2(24, 12)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gear"]
+radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_reset"]
+radius = 14.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(24, 16)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_shutter_n"]
+a = Vector2(448, 128)
+b = Vector2(396, 154)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_shutter_s"]
+a = Vector2(372, 166)
+b = Vector2(304, 200)
+
+[node name="MaintenanceBay" type="Node2D"]
+y_sort_enabled = true
+
+[node name="Floor" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.12, 0.16, 0.22, 1)
+polygon = PackedVector2Array(320, 64, 544, 176, 384, 256, 160, 144)
+
+[node name="FloorAccent" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.17, 0.22, 0.3, 1)
+polygon = PackedVector2Array(320, 80, 520, 180, 384, 248, 184, 148)
+
+[node name="PerimeterWalls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PerimeterWalls"]
+build_mode = 1
+polygon = PackedVector2Array(320, 60, 548, 174, 480, 208, 464, 216, 384, 260, 156, 142, 224, 108, 240, 100)
+
+[node name="ShutterDividers" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="DividerNorth" type="CollisionShape2D" parent="ShutterDividers"]
+shape = SubResource("SegmentShape2D_shutter_n")
+
+[node name="DividerSouth" type="CollisionShape2D" parent="ShutterDividers"]
+shape = SubResource("SegmentShape2D_shutter_s")
+
+[node name="ArchwayWest" type="Sprite2D" parent="."]
+position = Vector2(240, 104)
+texture = ExtResource("10_archway")
+offset = Vector2(0, -24)
+
+[node name="ArchwayEast" type="Sprite2D" parent="."]
+position = Vector2(464, 200)
+texture = ExtResource("10_archway")
+offset = Vector2(0, -24)
+
+[node name="door_entry_west" type="Area2D" parent="."]
+position = Vector2(240, 104)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_door")
+room_id = &"ch01.maintenance_bay"
+door_id = &"door_entry_west"
+object_id = &"ch01.maintenance_bay.door_entry_west"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="door_entry_west"]
+shape = SubResource("CircleShape2D_door")
+
+[node name="Spawn" type="Marker2D" parent="door_entry_west"]
+position = Vector2(16, 8)
+
+[node name="door_exit_east" type="Area2D" parent="."]
+position = Vector2(464, 200)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_door")
+room_id = &"ch01.maintenance_bay"
+door_id = &"door_exit_east"
+object_id = &"ch01.maintenance_bay.door_exit_east"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="door_exit_east"]
+shape = SubResource("CircleShape2D_door")
+
+[node name="Spawn" type="Marker2D" parent="door_exit_east"]
+position = Vector2(-16, -8)
+
+[node name="safe_anchor_west" type="Marker2D" parent="."]
+position = Vector2(336, 136)
+script = ExtResource("2_anchor")
+object_id = &"ch01.maintenance_bay.safe_anchor_west"
+
+[node name="safe_anchor_east" type="Marker2D" parent="."]
+position = Vector2(416, 176)
+script = ExtResource("2_anchor")
+object_id = &"ch01.maintenance_bay.safe_anchor_east"
+
+[node name="checkpoint" type="Area2D" parent="."]
+position = Vector2(256, 112)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("3_checkpoint")
+checkpoint_id = &"ch01.cp.maintenance_bay"
+spawn_anchor_id = &"ch01.maintenance_bay.safe_anchor_west"
+object_id = &"ch01.maintenance_bay.checkpoint"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoint"]
+shape = SubResource("RectangleShape2D_cp")
+
+[node name="fire_shutter" type="Area2D" parent="."]
+position = Vector2(384, 160)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("4_shutter")
+gear_id = &"ch01.maintenance_bay.counterweight_gear"
+threshold_zone_id = &"ch01.maintenance_bay.shutter_threshold_trigger"
+safe_anchor_id = &"ch01.maintenance_bay.safe_anchor_west"
+puzzle_id = &"CH1-PZ-002"
+object_id = &"ch01.maintenance_bay.fire_shutter"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="fire_shutter"]
+shape = SubResource("CircleShape2D_shutter")
+
+[node name="TemporalComponent" type="Node" parent="fire_shutter"]
+script = ExtResource("9_temporal")
+capabilities = 1
+state_fields = PackedStringArray("shutter_state", "hold_ticks", "passage_blocked")
+initial_history = [{
+"hold_ticks": 180,
+"passage_blocked": false,
+"shutter_state": &"raised"
+}]
+
+[node name="Blocker" type="StaticBody2D" parent="fire_shutter"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="fire_shutter/Blocker"]
+shape = SubResource("RectangleShape2D_blocker")
+
+[node name="counterweight_gear" type="Area2D" parent="."]
+position = Vector2(384, 112)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("5_gear")
+shutter_id = &"ch01.maintenance_bay.fire_shutter"
+puzzle_id = &"CH1-PZ-002"
+object_id = &"ch01.maintenance_bay.counterweight_gear"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="counterweight_gear"]
+shape = SubResource("CircleShape2D_gear")
+
+[node name="TemporalComponent" type="Node" parent="counterweight_gear"]
+script = ExtResource("9_temporal")
+capabilities = 2
+state_fields = PackedStringArray()
+
+[node name="shutter_threshold_trigger" type="Area2D" parent="."]
+position = Vector2(384, 160)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("6_trigger")
+object_id = &"ch01.maintenance_bay.shutter_threshold_trigger"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="shutter_threshold_trigger"]
+shape = SubResource("RectangleShape2D_cp")
+
+[node name="reset_anchor_01" type="Area2D" parent="."]
+position = Vector2(288, 144)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("7_reset")
+puzzle_id = &"CH1-PZ-002"
+object_id = &"ch01.maintenance_bay.reset_anchor_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="reset_anchor_01"]
+shape = SubResource("CircleShape2D_reset")
+
+[node name="exit_trigger_east" type="Area2D" parent="."]
+position = Vector2(416, 176)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("8_complete")
+puzzle_id = &"CH1-PZ-002"
+object_id = &"ch01.maintenance_bay.exit_trigger_east"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="exit_trigger_east"]
+shape = SubResource("RectangleShape2D_exit")

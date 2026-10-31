@@ -1,0 +1,71 @@
+class_name InputPrompts
+extends RefCounted
+
+## Dynamic input glyph and prompt resolution per ADR-015 and ISSUE-007.
+## Resolves action bindings into contextual glyphs for keyboard or joypad.
+
+static var is_joypad_mode: bool = false
+
+const JOY_GLYPHS: Dictionary = {
+	JOY_BUTTON_A: "A",
+	JOY_BUTTON_B: "B",
+	JOY_BUTTON_X: "X",
+	JOY_BUTTON_Y: "Y",
+	JOY_BUTTON_LEFT_SHOULDER: "LB",
+	JOY_BUTTON_RIGHT_SHOULDER: "RB",
+	JOY_BUTTON_BACK: "Back",
+	JOY_BUTTON_START: "Start",
+	JOY_BUTTON_LEFT_STICK: "LS",
+	JOY_BUTTON_RIGHT_STICK: "RS",
+	JOY_BUTTON_DPAD_UP: "D-Up",
+	JOY_BUTTON_DPAD_DOWN: "D-Down",
+	JOY_BUTTON_DPAD_LEFT: "D-Left",
+	JOY_BUTTON_DPAD_RIGHT: "D-Right",
+}
+
+
+static func set_joypad_mode(joypad: bool) -> void:
+	is_joypad_mode = joypad
+
+
+static func get_action_glyph(action: StringName, prefer_joypad: bool = false) -> String:
+	var use_joy = prefer_joypad or is_joypad_mode
+	if not InputMap.has_action(action):
+		return "[?]"
+
+	var events = InputMap.action_get_events(action)
+	var key_glyph := ""
+	var joy_glyph := ""
+
+	for ev in events:
+		if ev is InputEventKey:
+			var code = ev.physical_keycode if ev.physical_keycode != KEY_NONE else ev.keycode
+			if code != KEY_NONE:
+				key_glyph = "[" + OS.get_keycode_string(code) + "]"
+		elif ev is InputEventMouseButton:
+			match ev.button_index:
+				MOUSE_BUTTON_LEFT:
+					key_glyph = "[LMB]"
+				MOUSE_BUTTON_RIGHT:
+					key_glyph = "[RMB]"
+				MOUSE_BUTTON_MIDDLE:
+					key_glyph = "[MMB]"
+				MOUSE_BUTTON_WHEEL_UP:
+					key_glyph = "[WheelUp]"
+				MOUSE_BUTTON_WHEEL_DOWN:
+					key_glyph = "[WheelDown]"
+		elif ev is InputEventJoypadButton:
+			var label = JOY_GLYPHS.get(ev.button_index, "Btn%d" % ev.button_index)
+			joy_glyph = "[" + label + "]"
+
+	if use_joy:
+		return joy_glyph if joy_glyph != "" else key_glyph
+	else:
+		return key_glyph if key_glyph != "" else joy_glyph
+
+
+static func format_prompt(action: StringName, prompt_tr_key: String = "PROMPT_USE", prefer_joypad: bool = false) -> String:
+	UIFeedback.init_translations()
+	var glyph = get_action_glyph(action, prefer_joypad)
+	var label = String(TranslationServer.translate(StringName(prompt_tr_key)))
+	return "%s %s" % [glyph, label]
