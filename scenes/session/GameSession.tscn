@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://scripts/session/sim_clock.gd" id="2_clock"]
 [ext_resource type="Script" path="res://scripts/session/id_registry.gd" id="3_registry"]
 [ext_resource type="Script" path="res://scripts/session/interaction_service.gd" id="4_interaction"]
+[ext_resource type="Script" path="res://scripts/echo/echo_service.gd" id="5_echo"]
 
 [node name="GameSession" type="Node" groups=["game_session"]]
 script = ExtResource("1_session")
@@ -18,3 +19,8 @@ script = ExtResource("3_registry")
 script = ExtResource("4_interaction")
 id_registry = NodePath("../IdRegistry")
 sim_clock = NodePath("../SimClock")
+
+[node name="EchoService" type="Node" parent="." node_paths=PackedStringArray("sim_clock", "interaction_service")]
+script = ExtResource("5_echo")
+sim_clock = NodePath("../SimClock")
+interaction_service = NodePath("../InteractionService")

@@ -7,6 +7,7 @@ extends Node
 @export var sim_clock: SimClock
 @export var id_registry: IdRegistry
 @export var interaction_service: InteractionService
+@export var echo_service: EchoService
 
 
 func _enter_tree() -> void:
@@ -20,3 +21,5 @@ func _ready() -> void:
 		id_registry = get_node_or_null("IdRegistry") as IdRegistry
 	if interaction_service == null:
 		interaction_service = get_node_or_null("InteractionService") as InteractionService
+	if echo_service == null:
+		echo_service = get_node_or_null("EchoService") as EchoService
