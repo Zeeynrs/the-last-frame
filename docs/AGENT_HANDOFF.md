@@ -18,7 +18,8 @@ Shared contract files (`interactable.gd`, `game_session.gd`, `GameSession.tscn`,
 
 ## Current state
 - See `PROJECT_STATUS.md` (what works), `ORCA_TASK_BOARD.md` (task status), `DEVELOPMENT_ROADMAP.md` (order).
-- In flight: TLF-021 room router (Opus), TLF-018 ready for Flash, TLF-010 ready for Argon. Open: TLF-017 manual evidence (ISSUE-011).
+- In flight: TLF-018 ready for Flash, TLF-010 ready for Argon. Next for Opus: TLF-022 (hints, PuzzleDef, documents). Open: TLF-017 manual evidence (ISSUE-011).
+- Building Ch1 rooms: instance them under `ChapterRoot`, follow ADR-018 (Spawn markers off the presenter, IDs `ch01.<room>.<object>`).
 
 ## How to verify anything
 `$env:GODOT=<console exe>; ./tools/validate.ps1` (must exit 0). Review method: `git archive <sha>` into a scratch folder, then run validate plus runtime probes there. Never inside an agent's worktree.

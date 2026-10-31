@@ -12,7 +12,9 @@ Ordered by the master-prompt priorities and the dependencies that already exist 
 | 5 | TLF-005 Ch1 room graph and placement constraints | A | — | READY |
 | 6 | TLF-019 PuzzleService (ADR-016) + SaveService (ADR-010) with migration test | O | 1 | COMPLETE |
 | 7 | TLF-020 SpatialGraph (ADR-009) + doorway presenters + safe anchors | O | 6 | COMPLETE |
-| 8 | TLF-021 Room router: room scenes, doorway spawns, checkpoints → SaveService | O | 7 | NEXT |
+| 8 | TLF-021 Room router: room scenes, doorway spawns, checkpoints → SaveService | O | 7 | COMPLETE |
+| 9 | TLF-022 HintService + PuzzleDef (ADR-013) + documents/fragments data | O | 6 | NEXT |
+| 10 | TLF-009 Ch1 greybox rooms + PZ-001…005 implemented from specs (with their acceptance tests) | F (O reviews) | 8, 4 | after TLF-018 |
 
 ## Next: Milestones 3–4 (spatial + puzzle/narrative framework)
 - SpatialGraph (ADR-009) with doorway presenters and safe-anchor relocation (O)

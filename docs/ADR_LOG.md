@@ -244,3 +244,18 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - Unchanged: destructive or irreversible actions, external credentials and creative-direction changes still go to the user.
 - **Consequences:** Shared contract files get exactly one owner per task (named in the task file). Opus may edit `scripts/interaction/interactable.gd` and `scripts/session/*` during TLF-008/016; Flash must not touch them until merged.
 
+## ADR-018 — Room routing inside a chapter (world memory)
+- **Date / status:** 2026-10-31 · Accepted (implemented in TLF-021, `5fda100`)
+- **Context:** Ch1 is 10 room scenes (TLF-005). `GameSession` services and the player must persist across rooms. Puzzle state in a room you've left must not reset when you come back. Doorway traversal is triggered from inside a node of the room that is about to be freed.
+- **Options:** (a) one big scene with every room; (b) the `SceneRouter` autoload swaps whole scenes, including the session; (c) a `ChapterRoot` with a persistent session and player, plus a session-scoped `RoomRouter` that swaps only the room.
+- **Decision:** (c).
+  - `ChapterRoot.tscn` holds GameSession, RoomContainer, Player and RoomRouter, wired by node paths. The `SceneRouter` autoload (ADR-011) stays reserved for chapter/menu-level changes.
+  - Traversals and relocations are **queued** and run by `process_pending()` each physics frame, never inside the presenter callback.
+  - A same-room destination repositions the player without a reload. Placement uses the destination presenter's `Spawn` child, or a `SafeAnchor`.
+  - After every placement there's a 12-tick arrival grace during which doorway traversal is ignored.
+  - **World memory:** unloading a room caches each temporal object's `export_history()` by `object_id`, and it's restored on return. Autosaves merge the cache. `restore_from_save` parks the state of rooms that aren't loaded in the cache.
+  - An object's room is derived from its ADR-005 ID (`chNN.<room>.<object>`).
+  - The echo is reset on every room change.
+  - `CheckpointZone` (player-only) triggers the autosave to slot 0. The router owns a `SaveService` until the autoload is registered (TLF-018).
+- **Consequences:** Room scenes must follow the ID scheme and give each doorway a `Spawn` marker placed **off** the presenter's shape. Non-temporal room state that must persist belongs in PuzzleService/NarrativeState or a TemporalComponent.
+

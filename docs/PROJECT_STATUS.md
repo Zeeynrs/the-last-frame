@@ -1,6 +1,6 @@
 # Project Status
 
-**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 108/108 tests
+**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 118/118 tests
 
 This file states what the repository **actually** contains. Task-level detail lives in `ORCA_TASK_BOARD.md`; history lives in `PROGRESS.md`.
 
@@ -20,6 +20,7 @@ This file states what the repository **actually** contains. Task-level detail li
 | Save/load: `SaveService` (type-tagged JSON, atomic write, migrations, validation, temporal history) | `scripts/save/` | `tests/save/` incl. save → fresh scene → load loop |
 | Spatial: `SpatialGraph` (transactional doorway re-pairing, critical paths, reachability), `SpatialService` (relocation), `DoorwayPresenter` | `scripts/spatial/` | `tests/spatial/` incl. TEST-PZ005-01..05; physics doorway probe |
 | Settings autoload: volumes→buses, accessibility flags, assist timing window (180→300), input remapping with conflict check + persistence; `echo_reset` action | `scripts/settings/`, `project.godot` | `tests/settings/` (manual controller evidence pending) |
+| Room routing: `ChapterRoot.tscn`, `RoomRouter` (doorway transitions, world memory, checkpoint autosave + restore), `CheckpointZone`, `SafeAnchor` | `scripts/rooms/`, `scenes/chapter/` | `tests/rooms/`; physics room-change probe |
 | Ch1 design: beat sheet (10 beats, 38 min), 5 puzzle specs with 27 given/when/then tests, room graph (10 rooms, boundary doors, placement metrics, kit list) | `design/ch01/` | Lead reviews in `docs/reviews/` |
 
 ## B. Partially implemented
@@ -27,14 +28,15 @@ This file states what the repository **actually** contains. Task-level detail li
 - Boot scene: placeholder label only; `run/main_scene` is Boot, not a gameplay scene.
 
 ## C. Implemented but not integrated
-- `SaveService` is not yet an autoload, and nothing calls it from gameplay (checkpoints arrive with SceneRouter). Registration happens in TLF-018.
+- `SaveService` is not yet an autoload; `RoomRouter` owns one and uses it for checkpoint autosaves. Autoload registration happens in TLF-018.
+- No real Ch1 room scenes yet: router and ChapterRoot are proven with test rooms only (Ch1 rooms come with TLF-009 + TLF-010 art).
 - Flash's pocket watch exists only on its branch (`431d1c5`); it is being ported in TLF-018.
 
 ## D. Broken
 - Nothing known (validation green on `main`).
 
 ## E. Missing (next by priority)
-1. Room router: per-room scene loading, doorway spawn placement, checkpoints (TLF-021, Opus, next)
+1. Hint ladder service, PuzzleDef data, documents/fragments (TLF-022, Opus, next)
 2. Pocket-watch controller + Echo controls + HUD (TLF-018, Flash, after TLF-017)
 3. Ghost visuals and echo HUD (part of TLF-018)
 5. Camera per room (Flash)
