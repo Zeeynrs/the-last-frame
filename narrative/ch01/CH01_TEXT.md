@@ -23,12 +23,12 @@
 | EL_B03_01 | dialogue | Elias | 03 | ch01.concourse_west.call_box_09 | Who is this? How do you know about the watch? | |
 | OP_B03_04 | operator | Operator (call box) | 03 | ch01.concourse_west.call_box_09 | Later. Restore auxiliary power at Signal Control. The street exit opens from there. | |
 | OP_B03_05 | operator | Operator (call box) | 03 | ch01.concourse_west.call_box_09 | This line won't hold much longer. Keep moving. | call ends |
-| OP_B05_01 | operator | Operator (PA) | 05 | ch01.security_crossing | Don't stare at it too long. An echo only does what you already chose to do. | from beat sheet |
+| OP_B05_01 | operator | Operator (PA) | 05 | ch01.security_crossing.pa_speaker | Don't stare at it too long. An echo only does what you already chose to do. | from beat sheet (proposed object ID) |
 | EL_B05_01 | monologue | Elias | 05 | | That was me. A minute ago. And it's still standing there. | first echo playback |
 | EL_B06_01 | monologue | Elias | 06 | ch01.waiting_lounge.trace_bench | Two people on this bench. One of them sits the way I do. | Trace on the bench |
 | EL_B06_02 | monologue | Elias | 06 | ch01.waiting_lounge.audio_mira_01 | Mira. I know that voice. Why do I know that voice? | after the audio log |
-| OP_B07_01 | operator | Operator (intercom) | 07 | ch01.signal_control | Power's back. Good. Now go straight to the street exit. | after PZ-004 |
-| OP_B07_02 | operator | Operator (intercom) | 07 | ch01.signal_control | There's a dispatch terminal in the Atrium. Leave it alone. It won't help you. | suspicion seed |
+| OP_B07_01 | operator | Operator (intercom) | 07 | ch01.signal_control.intercom | Power's back. Good. Now go straight to the street exit. | after PZ-004 (proposed object ID) |
+| OP_B07_02 | operator | Operator (intercom) | 07 | ch01.signal_control.intercom | There's a dispatch terminal in the Atrium. Leave it alone. It won't help you. | suspicion seed (proposed object ID) |
 | EL_B08_01 | monologue | Elias | 08 | ch01.upper_vestibule | I walked north. I came out of the west arch. The building is lying to me. | first loop |
 | EL_B09_01 | monologue | Elias | 09 | ch01.station_atrium.dispatch_terminal | It knows my hand. | terminal unlocks |
 | EL_B09_02 | monologue | Elias | 09 | ch01.station_atrium.dispatch_terminal | Level-0 clearance. My clearance. I sealed this station. | THE revelation |
@@ -37,12 +37,16 @@
 | EL_B10_01 | monologue | Elias | 10 | ch01.street_exit | The rain isn't falling. It's hanging in the air, waiting. | cinematic |
 | OP_B10_01 | operator | Operator (payphone) | 10 | ch01.street_exit.plaza_payphone | Now you see why I told you to leave the terminal alone. | from beat sheet |
 | OP_B10_02 | operator | Operator (payphone) | 10 | ch01.street_exit.plaza_payphone | Keep moving. She's in the Central District, and the city remembers what you lost. | chapter hook |
+| SPK_ELIAS | speaker | System | any | | Elias | UI speaker label |
+| SPK_MIRA | speaker | System | any | | Mira | UI speaker label |
+| SPK_OPERATOR | speaker | System | any | | VOICE | UI speaker label (canon hides true identity) |
 | JRN_CH1_TURNSTILE_TRACE | journal | | 02 | ch01.concourse_west.turnstile_trace_anchor | Someone else passed through the West Turnstile seconds before the station froze at 23:59. | observation (spec) |
 | JRN_CH1_EVAC_2354 | journal | | 03 | ch01.concourse_west.doc_evac_notice | An evacuation was ordered at 23:54. Five minutes later, every clock stopped. | fact |
 | JRN_CH1_OPERATOR | journal | | 03 | ch01.concourse_west.call_box_09 | A voice on the call box knows the station, the lock, and the watch. It won't say who it is. | observation |
 | JRN_CH1_BACKFLOW | journal | | 04 | ch01.maintenance_bay.doc_tech_log | Days before the lock, technicians logged "chronometric backflow". The directors told them to ignore it. | observation |
 | JRN_CH1_TWO_SILHOUETTES | journal | | 06 | ch01.waiting_lounge.trace_bench | Two traces on the lounge bench: a woman, and a man who stands like me. | observation |
 | JRN_CH1_MIRA_PLEA | journal | | 06 | ch01.waiting_lounge.audio_mira_01 | Mira asked me not to come back for her if the stabilization failed. | fact |
+| JRN_CH1_OPERATOR_WARNING | journal | | 07 | ch01.signal_control.intercom | The voice on the intercom warned me away from the Atrium dispatch logs. What is it hiding? | theory, suspicion seed |
 | JRN_CH1_THRESHOLDS | journal | | 08 | ch01.vestibule_niche.doc_index_plaque | The ELYSIUM field indexes doorways. When time froze, some stopped leading where they should. | theory |
 | JRN_CH1_SEAL_ELIAS | journal | | 09 | ch01.station_atrium.dispatch_terminal | The containment lock was executed from the Atrium terminal with my Level-0 clearance. | fact |
 | JRN_CH1_REPEATS | journal | | 09 | ch01.station_atrium.dispatch_terminal | The terminal log repeats one line: 23:59:00, USER: ELIAS. A fault? | theory, ambiguous seed |

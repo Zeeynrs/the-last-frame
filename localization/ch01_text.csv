@@ -24,12 +24,16 @@ EL_B09_04,"The same minute, over and over. Probably a clock fault. Probably."
 EL_B10_01,"The rain isn't falling. It's hanging in the air, waiting."
 OP_B10_01,Now you see why I told you to leave the terminal alone.
 OP_B10_02,"Keep moving. She's in the Central District, and the city remembers what you lost."
+SPK_ELIAS,Elias
+SPK_MIRA,Mira
+SPK_OPERATOR,VOICE
 JRN_CH1_TURNSTILE_TRACE,Someone else passed through the West Turnstile seconds before the station froze at 23:59.
 JRN_CH1_EVAC_2354,"An evacuation was ordered at 23:54. Five minutes later, every clock stopped."
 JRN_CH1_OPERATOR,"A voice on the call box knows the station, the lock, and the watch. It won't say who it is."
 JRN_CH1_BACKFLOW,"Days before the lock, technicians logged ""chronometric backflow"". The directors told them to ignore it."
 JRN_CH1_TWO_SILHOUETTES,"Two traces on the lounge bench: a woman, and a man who stands like me."
 JRN_CH1_MIRA_PLEA,Mira asked me not to come back for her if the stabilization failed.
+JRN_CH1_OPERATOR_WARNING,The voice on the intercom warned me away from the Atrium dispatch logs. What is it hiding?
 JRN_CH1_THRESHOLDS,"The ELYSIUM field indexes doorways. When time froze, some stopped leading where they should."
 JRN_CH1_SEAL_ELIAS,The containment lock was executed from the Atrium terminal with my Level-0 clearance.
 JRN_CH1_REPEATS,"The terminal log repeats one line: 23:59:00, USER: ELIAS. A fault?"
