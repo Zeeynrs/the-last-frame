@@ -20,6 +20,9 @@ static var _instance: UITheme = null
 
 func _init() -> void:
 	_instance = self
+	var args := OS.get_cmdline_args()
+	if "--import" in args:
+		return
 	_setup_theme()
 	_connect_settings()
 
@@ -162,4 +165,6 @@ static func ensure_initialized() -> void:
 				th = res
 				_instance = res
 	if th != null:
+		if th.default_font == null:
+			th._setup_theme()
 		th._connect_settings()
