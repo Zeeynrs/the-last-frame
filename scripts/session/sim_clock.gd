@@ -18,11 +18,11 @@ func _physics_process(_delta: float) -> void:
 
 
 ## Advance clock by n ticks (used in deterministic tests and simulations).
+## Emits tick_advanced once per tick so step(N) and N x step(1) are identical (ADR-004).
 func step(n: int = 1) -> void:
-	if n <= 0:
-		return
-	tick += n
-	tick_advanced.emit(tick)
+	for i in range(maxi(n, 0)):
+		tick += 1
+		tick_advanced.emit(tick)
 
 
 ## Reset clock to zero or specified tick.
