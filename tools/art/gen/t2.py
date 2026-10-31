@@ -123,12 +123,26 @@ def capacitor(state):
     iso = Iso(L, (32, 56))
     iso.box(-0.85, -0.55, 0, 0.85, 0.55, 8, 13, 12, 11)           # plinth
     iso.box(-0.8, -0.5, 8, 0.8, -0.2, 40, 14, 13, 12)             # back cabinet wall
-    cols = {'discharged': (12, 13, 11), 'charged': (13, 14, 12), 'frozen': (13, 14, 12)}[state]
+    cols = {'discharged': (12, 13, 11), 'charged': (13, 14, 12), 'frozen': (13, 14, 12),
+            'frozen_charged': (13, 14, 12), 'frozen_discharged': (13, 14, 12)}[state]
+    fz = state.startswith('frozen_')
     for k, x in enumerate((-0.52, 0.0, 0.52)):
         iso.box(x - 0.16, -0.12, 8, x + 0.16, 0.2, 38, cols[1], cols[0], cols[2])
         # terminal cap
         t = iso.P(x, 0.04, 38)
         C.rect(t[0] - 1, t[1] - 2, t[0] + 1, t[1], 15)
+        if fz:
+            # fill-level gauge on the SW face of each cell (TLF-044): the charge reads from the FILL HEIGHT,
+            # not from colour. Dark inset tube; frost fill rises from the bottom: full (charged) vs a 2 px sliver.
+            top_fill = 34 if state == 'frozen_charged' else 11
+            tube = [iso.P(x - 0.12, 0.2, 10), iso.P(x + 0.12, 0.2, 10), iso.P(x + 0.12, 0.2, 35), iso.P(x - 0.12, 0.2, 35)]
+            fill_poly(C, tube, lambda xx, yy: 1)
+            lvl = [iso.P(x - 0.12, 0.2, 10), iso.P(x + 0.12, 0.2, 10), iso.P(x + 0.12, 0.2, top_fill), iso.P(x - 0.12, 0.2, top_fill)]
+            fill_poly(C, lvl, lambda xx, yy: 31 if xx % 2 == 0 else 15)
+            for z in (16, 22, 28):                      # gauge ticks (same in both states)
+                a = iso.P(x - 0.16, 0.2, z)
+                C.put(a[0], a[1], 15)
+            continue
         # glow bands
         for z in (16, 26, 34):
             a = iso.P(x - 0.16, 0.2, z); b = iso.P(x + 0.16, 0.2, z)
@@ -143,10 +157,24 @@ def capacitor(state):
             mx = (p0[0] + p1[0]) // 2
             F.line(p0[0], p0[1], mx, p0[1] - 4, 26); F.line(mx, p0[1] - 4, p1[0], p1[1], 26)
             F.put(mx, p0[1] - 5, 31)
-    if state == 'frozen':
+    if state in ('frozen', 'frozen_charged', 'frozen_discharged'):
         brackets(F, 2, 6, 61, 61, 31)
         for k in range(0, 60, 4):
             F.put(2 + k, 5, 27); F.put(2 + k, 62, 27)
+    if fz:
+        # crystal glyph above the terminals: SOLID hexagon = stabilised (charged), HOLLOW outline = empty
+        cx, cy = 32, 12
+        hexv = [(cx - 6, cy), (cx - 3, cy - 5), (cx + 3, cy - 5), (cx + 6, cy), (cx + 3, cy + 5), (cx - 3, cy + 5)]
+        if state == 'frozen_charged':
+            fill_poly(F, [(a + 0.0, b + 0.0) for a, b in hexv], lambda xx, yy: 31)
+            F.put(cx, cy, 27); F.put(cx - 1, cy, 27)
+        for i in range(6):
+            p0, p1 = hexv[i], hexv[(i + 1) % 6]
+            F.line(p0[0], p0[1], p1[0], p1[1], 31)
+        # bridge between the terminals: RIGID straight bar when charged, none (open gap) when discharged
+        if state == 'frozen_charged':
+            a = iso.P(-0.52, 0.04, 40); b = iso.P(0.0, 0.04, 40); c = iso.P(0.52, 0.04, 40)
+            F.line(a[0], a[1], c[0], c[1], 31); F.line(a[0], a[1] + 1, c[0], c[1] + 1, 15)
     ring(C, C.mask() | L.mask(), 0)
     return [L, C, F]
 
@@ -182,6 +210,8 @@ T2 = {
     'prop_counterweight_gear#frozen': (lambda: gear('frozen'), ['Housing', 'Gear_And_Weight', 'State_Overlay'], 64, 64, 'props', 'frozen'),
     'prop_surge_capacitor#discharged': (lambda: capacitor('discharged'), ['Base_And_Cabinet', 'Capacitor_Cells', 'State_Overlay'], 64, 64, 'props', 'discharged'),
     'prop_surge_capacitor#charged': (lambda: capacitor('charged'), ['Base_And_Cabinet', 'Capacitor_Cells', 'State_Overlay'], 64, 64, 'props', 'charged'),
+    'prop_surge_capacitor#frozen_charged': (lambda: capacitor('frozen_charged'), ['Base_And_Cabinet', 'Capacitor_Cells', 'State_Overlay'], 64, 64, 'props', 'frozen_charged'),
+    'prop_surge_capacitor#frozen_discharged': (lambda: capacitor('frozen_discharged'), ['Base_And_Cabinet', 'Capacitor_Cells', 'State_Overlay'], 64, 64, 'props', 'frozen_discharged'),
     'prop_surge_capacitor#frozen': (lambda: capacitor('frozen'), ['Base_And_Cabinet', 'Capacitor_Cells', 'State_Overlay'], 64, 64, 'props', 'frozen'),
     'prop_pressure_switch#released': (lambda: pswitch('released'), ['Plate', 'Lamp_Ring'], 32, 20, 'props', 'released'),
     'prop_pressure_switch#pressed': (lambda: pswitch('pressed'), ['Plate', 'Lamp_Ring'], 32, 20, 'props', 'pressed'),

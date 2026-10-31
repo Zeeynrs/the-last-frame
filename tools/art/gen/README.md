@@ -16,6 +16,7 @@ output is deterministic.
 | `placement.py`, `placement_render.py`, `placement_md.py` | placement data → `design/art/CH01_PLACEMENT_SHEET.md` + `design/art/mockups/*.png` (reads the room `.tscn` files, read-only) |
 | `gen_all.py` | writes the `.pxo` files (and, with `--export`, the runtime PNGs through Pixelorama) |
 | `verify_regen.py` | **the reproducibility check** |
+| `capacitor_compare.py` | TLF-044 review images: the 4 capacitor states side by side, colour and greyscale |
 | `verify_pxo.py` | raw Pixelorama `--size` / `--export` log for every `.pxo` plus the byte comparison (`design/art/TLF-0xx_VERIFICATION.txt`) |
 
 ## Calls (from the repo root)
@@ -45,3 +46,10 @@ here runs on a temp copy of the `.pxo`. Optional previews write to `$TLF_ART_SCR
   `verify_regen.py` lists them as *NOT COVERED*. `props.archway_n` and the mockups read some of them as inputs.
 * The `.pxo` author field is `TLF design-art agent (Claude Code, Sonnet 5.5)` in generated files; the batch-1 files
   still say Argon.
+
+## Idea for the 9 files marked NOT COVERED (not implemented, nothing changed)
+Treat the batch-1 `.pxo` and PNG as **fixed sources**: commit a manifest of their sha256 (for example
+`tools/art/gen/fixed_sources.sha256`) and let `verify_regen.py` check the hash instead of regenerating. That turns
+"not covered" into "pinned": any accidental edit fails the check, while Argon (or a later agent) can still replace a
+file deliberately by updating the manifest in the same commit. A generator is only worth writing for a file when its
+look has to change.

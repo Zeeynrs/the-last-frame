@@ -231,7 +231,7 @@
 
 ## 3. Batch 2 Summary Inventory Table (`TLF-039`)
 
-**Task:** TLF-039 · **Author:** design-art agent (Claude Code, Sonnet 5.5, standing in for Argon, RISK-019) · **Palette:** `TLF-CH01-32`, `0` off-palette, `0` semi-transparent pixels · **Authoring:** every pixel is placed by a deterministic script using palette indices only, which writes layered `.pxo` files; every `.pxo` passes `Pixelorama.exe --headless --quit -- --size` and `--export --spritesheet`, and each committed PNG is the byte-identical re-export (raw logs in `design/art/TLF-039_VERIFICATION.txt`). **No AI-generated or third-party images.** Elias v2 replaces the batch-1 sheet in place (section 2.1). Rows 27-38 are Tier 2 hero set-pieces (TLF-039); rows 39-52 are TLF-042 (route board, security gate, bridge, transit car, dispatch terminal, pocket watch, lever badges, PA horn), which completes every ROOM_GRAPH §7.3 piece.
+**Task:** TLF-039 · **Author:** design-art agent (Claude Code, Sonnet 5.5, standing in for Argon, RISK-019) · **Palette:** `TLF-CH01-32`, `0` off-palette, `0` semi-transparent pixels · **Authoring:** every pixel is placed by a deterministic script using palette indices only, which writes layered `.pxo` files; every `.pxo` passes `Pixelorama.exe --headless --quit -- --size` and `--export --spritesheet`, and each committed PNG is the byte-identical re-export (raw logs in `design/art/TLF-039_VERIFICATION.txt`). **No AI-generated or third-party images.** Elias v2 replaces the batch-1 sheet in place (section 2.1). Rows 27-38 are Tier 2 hero set-pieces (TLF-039); rows 39-52 are TLF-042, rows 53-54 are TLF-044 (frozen capacitor split) (route board, security gate, bridge, transit car, dispatch terminal, pocket watch, lever badges, PA horn), which completes every ROOM_GRAPH §7.3 piece.
 
 | # | Asset ID | Category | Source `.pxo` (`assets/source/ch01/`) | Runtime Export (`res://assets/...`) | Canvas Size (`W×H px`) | Frames / FPS | Pivot `(px_x, px_y)` | Sorting / `z_index` | Palette Colors Used | QA State |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -259,7 +259,7 @@
 | **33** | `ch01.prop.counterweight_gear_frozen` | Prop (Large Hero Mechanism) | `ch01_prop_counterweight_gear_frozen.pxo` | `assets/props/ch01/ch01_prop_counterweight_gear_frozen.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `8 / 32` | **`exported`** |
 | **34** | `ch01.prop.surge_capacitor_discharged` | Prop (Large Hero Mechanism) | `ch01_prop_surge_capacitor_discharged.pxo` | `assets/props/ch01/ch01_prop_surge_capacitor_discharged.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `7 / 32` | **`exported`** |
 | **35** | `ch01.prop.surge_capacitor_charged` | Prop (Large Hero Mechanism) | `ch01_prop_surge_capacitor_charged.pxo` | `assets/props/ch01/ch01_prop_surge_capacitor_charged.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `9 / 32` | **`exported`** |
-| **36** | `ch01.prop.surge_capacitor_frozen` | Prop (Large Hero Mechanism) | `ch01_prop_surge_capacitor_frozen.pxo` | `assets/props/ch01/ch01_prop_surge_capacitor_frozen.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `8 / 32` | **`exported`** |
+| **36** | `ch01.prop.surge_capacitor_frozen` **(deprecated, TLF-044)** | Prop (Large Hero Mechanism) | `ch01_prop_surge_capacitor_frozen.pxo` | `assets/props/ch01/ch01_prop_surge_capacitor_frozen.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `8 / 32` | **`exported`** |
 | **37** | `ch01.prop.pressure_switch_released` | Prop (Floor Plate) | `ch01_prop_pressure_switch_released.pxo` | `assets/props/ch01/ch01_prop_pressure_switch_released.png` | `32 × 20 px` | `1f` (`static`) | `(16, 12)` | `YSort_Props` (`z_index = 8`) | `5 / 32` | **`exported`** |
 | **38** | `ch01.prop.pressure_switch_pressed` | Prop (Floor Plate) | `ch01_prop_pressure_switch_pressed.pxo` | `assets/props/ch01/ch01_prop_pressure_switch_pressed.png` | `32 × 20 px` | `1f` (`static`) | `(16, 12)` | `YSort_Props` (`z_index = 8`) | `7 / 32` | **`exported`** |
 | **39** | `ch01.prop.route_board.state0` | Prop (Free-standing Sign) | `ch01_prop_route_board_state0.pxo` | `assets/props/ch01/ch01_prop_route_board_state0.png` | `48 × 56 px` | `1f` (`static`) | `(24, 50)` | `YSort_Actors` (`z_index = 10`) | `6 / 32` | **`exported`** |
@@ -276,6 +276,8 @@
 | **50** | `ch01.prop.lever_badge_a` | Prop (Overlay) | `ch01_prop_lever_badge_a_idle.pxo` | `assets/props/ch01/ch01_prop_lever_badge_a_idle.png` | `5 × 7 px` | `1f` (`static`) | `(2, 3)` | child of the lever, same `z_index` | `2 / 32` | **`exported`** |
 | **51** | `ch01.prop.lever_badge_b` | Prop (Overlay) | `ch01_prop_lever_badge_b_idle.pxo` | `assets/props/ch01/ch01_prop_lever_badge_b_idle.png` | `5 × 7 px` | `1f` (`static`) | `(2, 3)` | child of the lever, same `z_index` | `2 / 32` | **`exported`** |
 | **52** | `ch01.prop.pa_speaker` | Prop (Wall Fixture) | `ch01_prop_pa_speaker_idle.pxo` | `assets/props/ch01/ch01_prop_pa_speaker_idle.png` | `16 × 16 px` | `1f` (`static`) | `(8, 12)` | `Wall_Fixtures` (`z_index = 7`) | `6 / 32` | **`exported`** |
+| **53** | `ch01.prop.surge_capacitor.frozen_charged` | Prop (Large Hero Mechanism) | `ch01_prop_surge_capacitor_frozen_charged.pxo` | `assets/props/ch01/ch01_prop_surge_capacitor_frozen_charged.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `9 / 32` | **`exported`** |
+| **54** | `ch01.prop.surge_capacitor.frozen_discharged` | Prop (Large Hero Mechanism) | `ch01_prop_surge_capacitor_frozen_discharged.pxo` | `assets/props/ch01/ch01_prop_surge_capacitor_frozen_discharged.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `9 / 32` | **`exported`** |
 
 ---
 
@@ -427,7 +429,8 @@ Common to all entries: **License / Attribution:** original production art by the
 - **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,25,26,31`
 - **Source / export:** `assets/source/ch01/ch01_prop_surge_capacitor_charged.pxo` → `assets/props/ch01/ch01_prop_surge_capacitor_charged.png`
 
-### `ch01.prop.surge_capacitor_frozen`
+### `ch01.prop.surge_capacitor_frozen` **(deprecated, TLF-044)**
+- **Deprecated:** replaced by `surge_capacitor_frozen_charged` / `_frozen_discharged` (rows 53-54). The file is kept unchanged until TLF-041 has switched over; do not use it for new work.
 - **Filename:** `ch01_prop_surge_capacitor_frozen.pxo` / `ch01_prop_surge_capacitor_frozen.png` · **Category / use:** Prop (Large Hero Mechanism) · Freeze language (Tier 2)
 - **Pixel dimensions:** `64 × 64 px` (`1.0×`) · **Pivot / sorting:** `(32, 56)` · `YSort_Actors` (`z_index = 10`)
 - **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,27,31`
@@ -529,6 +532,18 @@ Common to all entries: **License / Attribution:** original production art by the
 - **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15`
 - **Source / export:** `assets/source/ch01/ch01_prop_pa_speaker_idle.pxo` → `assets/props/ch01/ch01_prop_pa_speaker_idle.png` · generator `tools/art/gen/t3.py`
 
+### `ch01.prop.surge_capacitor.frozen_charged`
+- **Filename:** `ch01_prop_surge_capacitor_frozen_charged.pxo` / `ch01_prop_surge_capacitor_frozen_charged.png` · **Category / use:** Prop (Large Hero Mechanism) · Room 6 `surge_capacitor` · `is_frozen()` and `charge_state = &"charged"` (`is_stabilized()` when `bus_powered`): frost fill in all three cells, solid crystal hexagon, rigid bridge bar between the terminals, corner L-brackets (no-colour cue: fill height + solid glyph) (TLF-044)
+- **Pixel dimensions:** `64 × 64 px` (`1.0×`) · **Pivot / sorting:** `(32, 56)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,01,11,12,13,14,15,27,31`
+- **Source / export:** `assets/source/ch01/ch01_prop_surge_capacitor_frozen_charged.pxo` → `assets/props/ch01/ch01_prop_surge_capacitor_frozen_charged.png` · generator `tools/art/gen/t2.py` (`capacitor('frozen_charged'|'frozen_discharged')`)
+
+### `ch01.prop.surge_capacitor.frozen_discharged`
+- **Filename:** `ch01_prop_surge_capacitor_frozen_discharged.pxo` / `ch01_prop_surge_capacitor_frozen_discharged.png` · **Category / use:** Prop (Large Hero Mechanism) · Room 6 `surge_capacitor` · `is_frozen()` and `charge_state = &"discharged"`: empty dark tubes (2 px sliver), hollow hexagon outline, no bridge, corner L-brackets (no-colour cue: hollow vs solid) (TLF-044)
+- **Pixel dimensions:** `64 × 64 px` (`1.0×`) · **Pivot / sorting:** `(32, 56)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,01,11,12,13,14,15,27,31`
+- **Source / export:** `assets/source/ch01/ch01_prop_surge_capacitor_frozen_discharged.pxo` → `assets/props/ch01/ch01_prop_surge_capacitor_frozen_discharged.png` · generator `tools/art/gen/t2.py` (`capacitor('frozen_charged'|'frozen_discharged')`)
+
 ### 4.1 Archway reconciliation (`archway_frame_e` vs `ROOM_GRAPH.md` §7.1)
 `ROOM_GRAPH` §7.1 names `wall_archway_frame_n` and `wall_archway_frame_w`; batch 1 shipped one file named `archway_frame_e`. Geometry decides the mapping, not the compass letter: E and W boundary edges both run *down-left* on screen, N and S edges both run *down-right* (`px_x = 320 + (x-y)*16`). So:
 
@@ -557,4 +572,4 @@ Composited by script from the committed PNGs at the positions in `CH01_PLACEMENT
 
 ## 5. Reproducibility (ADR-019)
 
-Rows 12-52 and the mockups/placement sheet are produced by `tools/art/gen/` (see its `README.md`). `python tools/art/gen/verify_regen.py` regenerates every generated `.pxo` (byte for byte), PNG (pixel for pixel; byte for byte against a fresh Pixelorama re-export with `--pixelorama`), mockup and the placement sheet, and compares with the committed files. Batch-1 files (rows 1-11, drawn by Argon in Pixelorama, plus the `.pxo` of the palette and target sheet) have no generator and are reported as *not covered*. Generated `.pxo` files carry the author `TLF design-art agent (Claude Code, Sonnet 5.5)`.
+Rows 12-54 and the mockups/placement sheet are produced by `tools/art/gen/` (see its `README.md`). `python tools/art/gen/verify_regen.py` regenerates every generated `.pxo` (byte for byte), PNG (pixel for pixel; byte for byte against a fresh Pixelorama re-export with `--pixelorama`), mockup and the placement sheet, and compares with the committed files. Batch-1 files (rows 1-11, drawn by Argon in Pixelorama, plus the `.pxo` of the palette and target sheet) have no generator and are reported as *not covered*. Generated `.pxo` files carry the author `TLF design-art agent (Claude Code, Sonnet 5.5)`.
