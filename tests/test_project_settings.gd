@@ -1,7 +1,7 @@
 extends RefCounted
 
 ## Verification tests for project settings, display configuration,
-## input action mappings, and boot scene initialization per TLF-006.
+## input action mappings, controller device bindings, and boot scene initialization per TLF-006.
 
 var assert_helper: RefCounted
 
@@ -16,6 +16,19 @@ const REQUIRED_ACTIONS: Array[String] = [
 	"ability_prev",
 	"confirm",
 	"cancel",
+	"journal",
+	"pause"
+]
+
+const GAMEPLAY_ACTIONS: Array[String] = [
+	"move_up",
+	"move_down",
+	"move_left",
+	"move_right",
+	"interact",
+	"watch",
+	"ability_next",
+	"ability_prev",
 	"journal",
 	"pause"
 ]
@@ -40,6 +53,22 @@ func _assert_not_null(val, msg: String = "") -> bool:
 		return assert_helper.assert_not_null(val, msg)
 	assert(val != null, msg)
 	return val != null
+
+
+func _events_conflict(ev1: InputEvent, ev2: InputEvent) -> bool:
+	if ev1 is InputEventKey and ev2 is InputEventKey:
+		var k1 = ev1.physical_keycode if ev1.physical_keycode != KEY_NONE else ev1.keycode
+		var k2 = ev2.physical_keycode if ev2.physical_keycode != KEY_NONE else ev2.keycode
+		return k1 == k2 and k1 != KEY_NONE
+	elif ev1 is InputEventMouseButton and ev2 is InputEventMouseButton:
+		return ev1.button_index == ev2.button_index
+	elif ev1 is InputEventJoypadButton and ev2 is InputEventJoypadButton:
+		return ev1.button_index == ev2.button_index
+	elif ev1 is InputEventJoypadMotion and ev2 is InputEventJoypadMotion:
+		var sign1 = 1 if ev1.axis_value > 0 else (-1 if ev1.axis_value < 0 else 0)
+		var sign2 = 1 if ev2.axis_value > 0 else (-1 if ev2.axis_value < 0 else 0)
+		return ev1.axis == ev2.axis and sign1 == sign2
+	return false
 
 
 func test_viewport_and_display_settings() -> void:
@@ -87,6 +116,44 @@ func test_input_actions() -> void:
 
 		_assert_true(key_event_count >= 1, "Action '%s' must have at least 1 keyboard/mouse event (found %d)" % [action, key_event_count])
 		_assert_true(joy_event_count >= 1, "Action '%s' must have at least 1 joypad event (found %d)" % [action, joy_event_count])
+
+
+func test_controller_device_configuration() -> void:
+	for action in REQUIRED_ACTIONS:
+		var events = InputMap.action_get_events(action)
+		for ev in events:
+			if ev is InputEventJoypadButton or ev is InputEventJoypadMotion:
+				_assert_eq(ev.device, -1, "Action '%s' joypad event must use device -1 (All Devices) to support multiple controllers, found device %d" % [action, ev.device])
+
+
+func test_no_input_binding_conflicts() -> void:
+	# 1. Gameplay actions must be pairwise disjoint
+	for i in range(GAMEPLAY_ACTIONS.size()):
+		var action_a = GAMEPLAY_ACTIONS[i]
+		var events_a = InputMap.action_get_events(action_a)
+		for j in range(i + 1, GAMEPLAY_ACTIONS.size()):
+			var action_b = GAMEPLAY_ACTIONS[j]
+			var events_b = InputMap.action_get_events(action_b)
+
+			for ev_a in events_a:
+				for ev_b in events_b:
+					var conflicts = _events_conflict(ev_a, ev_b)
+					_assert_true(not conflicts, "Binding conflict detected between gameplay actions '%s' and '%s': %s clashes with %s" % [action_a, action_b, ev_a.as_text(), ev_b.as_text()])
+
+	# 2. UI navigation actions confirm and cancel must be disjoint
+	var confirm_events = InputMap.action_get_events("confirm")
+	var cancel_events = InputMap.action_get_events("cancel")
+	for ev_c in confirm_events:
+		for ev_x in cancel_events:
+			var conflicts = _events_conflict(ev_c, ev_x)
+			_assert_true(not conflicts, "Binding conflict between UI actions 'confirm' and 'cancel': %s clashes with %s" % [ev_c.as_text(), ev_x.as_text()])
+
+	# 3. Cancel and pause must not share keys (Escape must not pause while cancelling)
+	var pause_events = InputMap.action_get_events("pause")
+	for ev_x in cancel_events:
+		for ev_p in pause_events:
+			var conflicts = _events_conflict(ev_x, ev_p)
+			_assert_true(not conflicts, "Binding conflict between 'cancel' and 'pause': %s clashes with %s" % [ev_x.as_text(), ev_p.as_text()])
 
 
 func test_main_scene() -> void:

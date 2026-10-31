@@ -5,12 +5,13 @@ param(
 $ErrorActionPreference = "Stop"
 
 if (-not $Godot) {
-    if (Test-Path "D:\Godot\Godot_v4.7.2-stable_win64_console.exe") {
-        $Godot = "D:\Godot\Godot_v4.7.2-stable_win64_console.exe"
-    } else {
-        Write-Error "Godot executable not found. Specify -Godot <path> or set `$env:GODOT."
-        exit 1
-    }
+    Write-Error "Godot executable not specified. Please set the GODOT environment variable or pass -Godot <path>."
+    exit 1
+}
+
+if (-not (Test-Path $Godot)) {
+    Write-Error "Godot executable not found at specified path: $Godot"
+    exit 1
 }
 
 Write-Host "=== Validating The Last Frame Project ==="
