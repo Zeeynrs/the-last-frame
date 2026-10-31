@@ -20,12 +20,13 @@
 | TLF-019 | COMPLETE | Opus PuzzleService + SaveService + NarrativeState merged `afa6929` (82/82, no leaks; real-scene save probe OK). Autoload registration → TLF-018 |
 | TLF-016 | COMPLETE | Opus EchoService + TriggerZone merged `9f55245` (validate 67/67; physics runtime probe OK) |
 | TLF-023 | COMPLETE | Opus Ch1 puzzle objects merged `e6de2b4`: all 27 spec tests + 10 extra, mutation-checked; 166/166 |
+| TLF-029 | READY (after TLF-028) | Opus impl agent: frame-stepping (await physics frames) tests in `tests/run_tests.gd`, so playthroughs can use real input + physics |
 | TLF-028 | READY | Opus impl agent: `docs/tasks/TLF-028.md` (`validate.ps1` dies on any Godot stderr line under PowerShell 5.1) |
 | TLF-027 | COMPLETE | Opus impl agent `aafb2bb`, merged: class `SaveStore`, autoload name `SaveService`; verified 180/180 with and without the autoload; router adopts the autoload. **TLF-018 R2b unblocked** |
 | TLF-026 | COMPLETE | Opus: Ch1 graph as `ChapterGraphDef` (`data/chapters/ch01/ch01_graph.tres`) generated from ROOM_GRAPH + PZ-005; 9 tests, mutation-checked; 180/180 |
 | TLF-024b | IN PROGRESS | Design worktree agent (now Opus): port improvements from `eecb822` into main's `CH01_TEXT.md` (main's keys, SPK_* labels); `eecb822` itself not merged (add/add conflict). Lead reviews + approves new IDs, then re-runs `gen_ch01_text.py` |
 | TLF-024 | COMPLETE (first pass) | Opus (re-assigned; Argon at usage limit): 66 keys in `narrative/ch01/CH01_TEXT.md` → CSV + 5 DocumentDefs via `tools/content/gen_ch01_text.py`; 171/171. Open for Argon's narrative review |
-| TLF-009 | BLOCKED (TLF-018) | Flash: `docs/tasks/TLF-009.md` (rooms 1–4 playable greybox); rooms 5–10 → TLF-025 |
+| TLF-009 | APPROVED, merge pending | `b157fd4` reviewed (`docs/reviews/2026-10-31_TLF-009.md`): 203/203, real-input probe rooms 1→3 + PZ-001 OK. Pre-merge: R1 test must not write the real autosave. Merges with TLF-018 after the ch01_text translation commit. Was: BLOCKED (TLF-018) | Flash: `docs/tasks/TLF-009.md` (rooms 1–4 playable greybox); rooms 5–10 → TLF-025 |
 | TLF-022 | COMPLETE | Opus HintService + PuzzleDef (5 Ch1 defs + CSV generated from specs) + DocumentDef/ReadableDocument + journal merged `440a5be` (129/129) |
 | TLF-010 | COMPLETE | Merged (Argon `68e299f`): all 10 `.pxo` pass the Pixelorama CLI open/export check; PNGs byte-identical to the re-exports; palette-only; 0 semi-alpha. Art polish notes → ISSUE-012 |
 | others | NOT STARTED | |
