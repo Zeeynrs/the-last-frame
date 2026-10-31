@@ -9,7 +9,6 @@ extends CharacterBody2D
 
 @onready var interaction_detector: Area2D = $InteractionDetector
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@onready var pocket_watch: PocketWatch = get_node_or_null("PocketWatch")
 
 var _candidates: Array[Interactable] = []
 var current_target: Interactable = null
@@ -19,11 +18,6 @@ func _ready() -> void:
 	if interaction_detector != null:
 		interaction_detector.area_entered.connect(_on_interaction_area_entered)
 		interaction_detector.area_exited.connect(_on_interaction_area_exited)
-
-	if pocket_watch == null:
-		pocket_watch = PocketWatch.new()
-		pocket_watch.name = "PocketWatch"
-		add_child(pocket_watch)
 
 
 func _physics_process(_delta: float) -> void:
@@ -111,15 +105,3 @@ func _handle_interaction() -> void:
 			var session = get_tree().get_first_node_in_group(&"game_session")
 			if session != null and "interaction_service" in session and session.interaction_service != null:
 				session.interaction_service.request(actor_id, current_target.object_id, &"use")
-
-	if Input.is_action_just_pressed(&"watch"):
-		if pocket_watch != null:
-			pocket_watch.activate_watch()
-
-	if Input.is_action_just_pressed(&"ability_next"):
-		if pocket_watch != null:
-			pocket_watch.next_ability()
-
-	if Input.is_action_just_pressed(&"ability_prev"):
-		if pocket_watch != null:
-			pocket_watch.prev_ability()
