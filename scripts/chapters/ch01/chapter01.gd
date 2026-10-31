@@ -17,6 +17,12 @@ const PUZZLE_DIR := "res://data/puzzles/ch01"
 
 var chapter_complete: bool = false
 var _complete_overlay: CanvasLayer = null
+var _movement_hint_timer: float = 0.0
+var _movement_hint_active: bool = false
+
+
+func _physics_process(delta: float) -> void:
+	_update_movement_hint(delta)
 
 
 func _ready() -> void:
@@ -105,8 +111,50 @@ func _trigger_beat01_start() -> void:
 		diag.play_sequence(
 			&"ch01_b01_start",
 			[["SPK_ELIAS", "EL_B01_01"], ["SPK_ELIAS", "EL_B01_02"], ["SPK_ELIAS", "EL_B01_03"]],
-			true
+			false,
+			4.0
 		)
+
+
+func _update_movement_hint(delta: float) -> void:
+	if session == null or session.narrative_state == null:
+		return
+
+	if session.narrative_state.get_flag(&"ch01.flag.movement_hint_shown", false):
+		if _movement_hint_active:
+			var move_input = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+			var is_moving = move_input.length_squared() > 0.01 or (player != null and player.velocity.length_squared() > 0.01)
+			if is_moving:
+				_movement_hint_active = false
+				var hud = _find_hud()
+				if hud != null:
+					hud.hide_feedback()
+		return
+
+	var move_input = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	var is_moving = move_input.length_squared() > 0.01 or (player != null and player.velocity.length_squared() > 0.01)
+	if is_moving:
+		session.narrative_state.set_flag(&"ch01.flag.movement_hint_shown", true)
+		return
+
+	_movement_hint_timer += delta
+	if _movement_hint_timer >= 3.0:
+		session.narrative_state.set_flag(&"ch01.flag.movement_hint_shown", true)
+		_movement_hint_active = true
+		var hud = _find_hud()
+		if hud != null:
+			hud.show_message(InputPrompts.format_movement_hint(), 10.0)
+
+
+func _find_hud() -> HUD:
+	for child in get_children():
+		if child is HUD:
+			return child
+	if is_inside_tree() and get_tree() != null and get_tree().root != null:
+		var h = get_tree().root.find_child("HUD", true, false)
+		if h is HUD:
+			return h
+	return null
 
 
 func _on_upper_vestibule_door_traversed(actor_id: StringName, destination: Dictionary) -> void:

@@ -139,17 +139,23 @@ func _on_target_changed(new_target: Interactable) -> void:
 
 func _on_watch_used(_ability: StringName, _target_id: StringName, result: InteractionResult) -> void:
 	if result != null and not result.ok:
-		show_feedback(result.reason)
+		show_feedback(result.reason, &"watch")
 
 
 ## Displays a temporary feedback toast for an interaction reason (closes ISSUE-006).
-func show_feedback(reason: StringName) -> void:
-	var msg = UIFeedback.get_feedback_text(reason)
+func show_feedback(reason: StringName, context: StringName = &"watch") -> void:
+	var msg = UIFeedback.get_feedback_text(reason, context)
 	if msg == "" or feedback_label == null or feedback_panel == null:
 		return
 	feedback_label.text = msg
 	feedback_panel.visible = true
 	_toast_timer = 2.0
+
+
+func hide_feedback() -> void:
+	_toast_timer = 0.0
+	if feedback_panel != null:
+		feedback_panel.visible = false
 
 
 func update_ability_ui() -> void:
@@ -221,7 +227,7 @@ func _update_target_highlight_position() -> void:
 
 	var target = pocket_watch.current_target
 	if target != null and is_instance_valid(target):
-		target_highlight.global_position = target.global_position + Vector2(0, -28)
+		target_highlight.global_position = target.get_global_transform_with_canvas().origin + Vector2(0, -28)
 		if target_icon != null:
 			target_icon.color = ABILITY_COLORS.get(pocket_watch.selected_ability, Color.WHITE)
 	else:

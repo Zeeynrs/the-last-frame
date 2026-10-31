@@ -69,3 +69,17 @@ static func format_prompt(action: StringName, prompt_tr_key: String = "PROMPT_US
 	var glyph = get_action_glyph(action, prefer_joypad)
 	var label = String(TranslationServer.translate(StringName(prompt_tr_key)))
 	return "%s %s" % [glyph, label]
+
+
+static func get_movement_glyph(prefer_joypad: bool = false) -> String:
+	var use_joy = prefer_joypad or is_joypad_mode
+	return "[LS]" if use_joy else "[WASD]"
+
+
+static func format_movement_hint(prefer_joypad: bool = false) -> String:
+	UIFeedback.init_translations()
+	var glyph = get_movement_glyph(prefer_joypad)
+	var template = String(TranslationServer.translate(&"UI_HINT_MOVE"))
+	if "%s" in template:
+		return template % glyph
+	return "%s %s" % [template, glyph]

@@ -158,13 +158,34 @@ func _update_prompt_on_target(target: Interactable) -> void:
 	if target == null:
 		return
 	var label_node = target.get_node_or_null("PromptLabel")
-	if label_node is Label:
+	if not (label_node is Label):
+		return
+
+	var can_use := (target.can_interact(actor_id, &"use") == &"")
+	if can_use:
 		var glyph = InputPrompts.get_action_glyph(&"interact")
 		var raw_text = target.prompt_text
 		if raw_text.begins_with("[E] "):
 			label_node.text = "%s %s" % [glyph, raw_text.substr(4)]
 		elif raw_text != "":
 			label_node.text = "%s %s" % [glyph, raw_text]
+		else:
+			label_node.text = "%s %s" % [glyph, tr("PROMPT_USE")]
+	else:
+		var watch_ability: StringName = &""
+		if pocket_watch != null and target.supports_ability(pocket_watch.selected_ability):
+			watch_ability = pocket_watch.selected_ability
+		else:
+			for ab in Interactable.WATCH_ABILITIES:
+				if target.supports_ability(ab):
+					watch_ability = ab
+					break
+		if watch_ability != &"":
+			var watch_glyph = InputPrompts.get_action_glyph(&"watch")
+			var ab_key = "ABILITY_" + String(watch_ability).to_upper()
+			label_node.text = "%s %s" % [watch_glyph, tr(ab_key)]
+		else:
+			label_node.text = ""
 
 
 ## Chooses the closest Interactable; breaks ties lexicographically by object_id.
@@ -203,13 +224,13 @@ func _handle_interaction() -> void:
 			if session != null and "interaction_service" in session and session.interaction_service != null:
 				var res = session.interaction_service.request(actor_id, current_target.object_id, &"use")
 				if res != null and not res.ok and hud != null:
-					hud.show_feedback(res.reason)
+					hud.show_feedback(res.reason, &"use")
 
 	if Input.is_action_just_pressed(&"watch"):
 		if pocket_watch != null:
 			var res = pocket_watch.activate_watch()
 			if res != null and not res.ok and hud != null:
-				hud.show_feedback(res.reason)
+				hud.show_feedback(res.reason, &"watch")
 
 	if Input.is_action_just_pressed(&"ability_next"):
 		if pocket_watch != null:

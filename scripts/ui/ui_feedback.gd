@@ -66,6 +66,8 @@ const DEFAULT_STRINGS: Dictionary = {
 	"UI_DIALOGUE_ADVANCE": "Continue",
 	"UI_CHAPTER_COMPLETE": "CHAPTER 1 COMPLETE",
 	"UI_CHAPTER_01_TITLE": "THE FORGOTTEN STATION",
+	"UI_FB_USE_UNSUPPORTED": "Nothing happens.",
+	"UI_HINT_MOVE": "Move: %s",
 }
 
 static var _initialized: bool = false
@@ -87,10 +89,13 @@ static func init_translations() -> void:
 
 
 ## Maps an InteractionResult reason code to localized feedback text via TranslationServer.
-static func get_feedback_text(reason: StringName) -> String:
+## Accepts optional context (&"watch" or &"use") to disambiguate unsupported feedback.
+static func get_feedback_text(reason: StringName, context: StringName = &"watch") -> String:
 	init_translations()
 	if reason == &"":
 		return ""
+	if context == &"use" and reason == &"unsupported":
+		return String(TranslationServer.translate(&"UI_FB_USE_UNSUPPORTED"))
 	var key = REASON_TO_KEY.get(reason, "")
 	if key != "":
 		return String(TranslationServer.translate(StringName(key)))
