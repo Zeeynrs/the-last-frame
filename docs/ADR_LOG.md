@@ -126,6 +126,11 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - When recording starts, every trigger the player already occupies is seeded as a `trigger_enter` at `rel_tick 0`.
   - The ghost spawns at the player's position at recording start. A room transition or reaching 1200 ticks stops the recording automatically.
   - Playback dispatches as actor `&"echo.0"` through `InteractionService`. Failures emit `echo_event_failed(tick, target_id, reason)`.
+- **Implementation notes 2026-10-31 (TLF-016):**
+  - `rel_tick 0` events dispatch at the moment `start_playback()` is called; later events dispatch on their tick.
+  - After the last event and the recorded length, the state becomes `HOLDING` (final occupancy kept). Restarting playback first releases the echo's occupancy.
+  - Occupancy uses one code path: physical bodies and the echo both go through `InteractionService.trigger_enter/exit`, which calls the trigger's `on_trigger_enter/exit`.
+  - `TriggerZone.accepts_echoes = false` implements the ADR-016 rule that completion triggers are player-only.
 
 ## ADR-009 — Spatial graph
 - **Date / status:** 2026-10-31 · Accepted

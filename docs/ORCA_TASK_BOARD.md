@@ -15,8 +15,8 @@
 | TLF-008 | COMPLETE | Opus temporal core merged `fe3744a` (validate 51/51; TestRoom regression probe OK) |
 | TLF-017 | READY | Flash: `docs/tasks/TLF-017.md` (Settings autoload, remapping foundation, `echo_reset`, controller evidence) |
 | TLF-018 | READY (after TLF-017) | Flash: `docs/tasks/TLF-018.md` pocket-watch controller, TemporalTestRoom, feedback HUD |
-| TLF-019 | NOT STARTED | Opus: PuzzleService (ADR-016) + SaveService (ADR-010) |
-| TLF-016 | IN PROGRESS | **Opus**: EchoService record/playback, occupancy, trigger dispatch (ADR-008 + am.) |
+| TLF-019 | IN PROGRESS | Opus: PuzzleService (ADR-016) + SaveService (ADR-010) |
+| TLF-016 | COMPLETE | Opus EchoService + TriggerZone merged `9f55245` (validate 67/67; physics runtime probe OK) |
 | TLF-010 | NOT STARTED | Argon, after TLF-005 |
 | others | NOT STARTED | |
 

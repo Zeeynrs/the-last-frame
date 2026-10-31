@@ -8,4 +8,4 @@ Only debt that exists in the repository now. Risks and gameplay issues stay in `
 | TD-002 | Older tests duplicate `_assert_*` wrapper helpers | `tests/session|player|interaction` | Boilerplate | `tests/support/base_test.gd` exists (TLF-008); migrate old tests opportunistically |
 | TD-003 | Prompt text is a hard-coded English string with a key name | `scripts/interaction/lever.gd` | Not localizable; wrong on controller | TLF-018 HUD task (ISSUE-007) |
 | TD-004 | `InteractionResult` ignored by the Player | `scripts/player/player.gd` | No failure feedback | TLF-018 (ISSUE-006) |
-| TD-005 | `trigger_enter/exit` only emit signals; there's no handler dispatch to the trigger node | `scripts/session/interaction_service.gd` | Triggers can't drive puzzle objects yet | TLF-016 (Opus) |
+| TD-005 | ~~Trigger handler dispatch missing~~ **Resolved in TLF-016** | — | — | — |
