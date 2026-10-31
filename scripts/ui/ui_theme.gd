@@ -16,6 +16,8 @@ const COLOR_TEXT_NORMAL := Color(0.9294, 0.9569, 0.9804, 1.0)     # #EDF4FA
 const COLOR_TEXT_MUTED := Color(0.5216, 0.5608, 0.6196, 1.0)      # #858F9E
 
 static var _instance: UITheme = null
+static var _warned_missing_font: bool = false
+static var font_path_override: String = ""
 
 
 func _init() -> void:
@@ -24,16 +26,8 @@ func _init() -> void:
 	_connect_settings()
 
 
-func _is_font_imported() -> bool:
-	if not DirAccess.dir_exists_absolute("res://.godot/imported"):
-		return false
-	var dir := DirAccess.open("res://.godot/imported")
-	if dir == null:
-		return false
-	for f in dir.get_files():
-		if f.begins_with("tlf_pixel_mono.ttf-") and f.ends_with(".fontdata"):
-			return true
-	return false
+static func reset_warning_flag() -> void:
+	_warned_missing_font = false
 
 
 func _make_stylebox(border_color: Color, bg_color: Color, padding: int = 4) -> StyleBoxFlat:
@@ -52,20 +46,35 @@ func _make_stylebox(border_color: Color, bg_color: Color, padding: int = 4) -> S
 
 
 func _setup_theme() -> void:
-	if not _is_font_imported():
+	_setup_styles_and_colors()
+	_setup_font()
+
+
+func _setup_font() -> void:
+	var is_import_mode := Engine.is_editor_hint() or "--import" in OS.get_cmdline_args()
+	if is_import_mode:
 		return
 
-	var font := load(FONT_PATH) as Font
-	if font != null:
-		default_font = font
-		set_font("font", "Label", font)
-		set_font("normal_font", "RichTextLabel", font)
-		set_font("font", "Button", font)
-		set_font("font", "LineEdit", font)
-		set_font("font", "TextEdit", font)
-		set_font("font", "TabBar", font)
-		set_font("font", "TabContainer", font)
+	var path := font_path_override if not font_path_override.is_empty() else FONT_PATH
+	if ResourceLoader.exists(path):
+		var font := load(path) as Font
+		if font != null:
+			default_font = font
+			set_font("font", "Label", font)
+			set_font("normal_font", "RichTextLabel", font)
+			set_font("font", "Button", font)
+			set_font("font", "LineEdit", font)
+			set_font("font", "TextEdit", font)
+			set_font("font", "TabBar", font)
+			set_font("font", "TabContainer", font)
+			return
 
+	if not _warned_missing_font:
+		_warned_missing_font = true
+		push_warning("UITheme: TLF Pixel Mono not available, using default font")
+
+
+func _setup_styles_and_colors() -> void:
 	# Setup type variations
 	set_type_variation(&"HeaderMedium", &"Label")
 	set_type_variation(&"HeaderLarge", &"Label")
@@ -178,5 +187,5 @@ static func ensure_initialized() -> void:
 				_instance = res
 	if th != null:
 		if th.default_font == null:
-			th._setup_theme()
+			th._setup_font()
 		th._connect_settings()

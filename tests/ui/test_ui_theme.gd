@@ -263,3 +263,32 @@ func test_panel_clipping_dialogue_and_documents() -> void:
 
 	doc.queue_free()
 	await physics_frames(1)
+
+
+func test_theme_fallback_when_font_unavailable() -> void:
+	UITheme.reset_warning_flag()
+	UITheme.font_path_override = "res://assets/ui/fonts/non_existent_font_probe.ttf"
+
+	var th := UITheme.new()
+
+	_assert_true(th.default_font == null, "default_font must be null when font file is unavailable")
+	_assert_true(th.has_stylebox("panel", "Panel"), "Panel stylebox must still be set when font is unavailable")
+	_assert_true(th.has_stylebox("panel", "PanelContainer"), "PanelContainer stylebox must still be set")
+	_assert_true(th.has_stylebox("normal", "Button"), "Button stylebox must still be set")
+	_assert_true(th.has_stylebox("panel", "TabContainer"), "TabContainer stylebox must still be set")
+	_assert_true(th.has_color("font_color", "Button"), "Button font_color must be set")
+	_assert_eq(th.get_color("font_color", "Button"), UITheme.COLOR_TEXT_NORMAL, "Button font_color matches theme")
+
+	# Font sizes {8, 16, 24} px must be set
+	_assert_eq(th.default_font_size, 8, "default_font_size must be 8")
+	_assert_eq(th.get_font_size("font_size", "Label"), 8, "Label font_size must be 8")
+	_assert_eq(th.get_font_size("font_size", "HeaderMedium"), 16, "HeaderMedium font_size must be 16")
+	_assert_eq(th.get_font_size("font_size", "HeaderLarge"), 24, "HeaderLarge font_size must be 24")
+
+	# Warning was logged exactly once
+	_assert_true(UITheme._warned_missing_font, "Warning was logged for missing font")
+
+	th = null
+	UITheme.font_path_override = ""
+	UITheme.reset_warning_flag()
+
