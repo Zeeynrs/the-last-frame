@@ -73,6 +73,9 @@
 1. **Zero Angular Foot-Sliding:** `Player.compute_movement_vector` (`scripts/player/player.gd`) maps `WASD`/stick input to 8 discrete vectors: 4 along the `2:1` isometric room axes (`SE`, `SW`, `NE`, `NW`) and 4 along the screen cardinal axes (`N`, `S`, `E`, `W`). A 4-direction sprite set creates a `26.6°` to `63.4°` angular mismatch whenever the player traverses a room horizontally (`E/W`) or vertically (`N/S`), making feet appear to skate sideways. Providing all 8 directions guarantees `0.0°` discrepancy between movement vector and stride orientation.
 2. **Bilateral Projection Symmetry (`37.5%` Scope Reduction):** In a `2:1` dimetric projection, the camera view plane is bilaterally symmetric across the vertical screen centerline (`x = 16`). Consequently, `SW`, `W`, and `NW` are exact geometric reflections of `SE`, `E`, and `NE`. Authoring `5` canonical directions and mirroring `3` saves `37.5%` of character frame production (`50` unique frames instead of `80`) while preserving full 8-way responsiveness.
 3. **Baked Spritesheet Convenience:** All `80` frames (`50` unique + `30` mirrored) are exported in `ch01_char_elias_base_sheet.png` (`2560 × 48 px`), allowing Flash's `AnimatedSprite2D` controller to look up `idle_<dir>` and `walk_<dir>` uniformly without conditional `flip_h` branching.
+4. **Documented Horizontal Mirror (`flip_h`) Compromises:**
+   - **Screen-Space Key-Light Flip on Mirrored Directions (`SW`, `W`, `NW`):** Because top-left key-light shading (`#7D614F` lit coat shoulder, `#E0B494` lit cheek) and the `1 px` floor-shadow offset are baked into the authored `SE`, `E`, and `NE` frames, horizontally flipping (`x' = 31 - x`) those frames to produce `SW`, `W`, and `NW` flips the baked highlight to the screen-right side of Elias on those three directions.
+   - **Asymmetric Costume Details Swap Sides:** Subtle asymmetric costume accents—specifically the `3 px` brass pocket-watch chain glint at the waist (`y = 26..27`) and coat lapel overlap—swap between Elias's left and right side when mirrored. At the `32 × 48 px` sprite scale (`14 × 42 px` active silhouette), this standard 2D isometric pixel-art compromise (`ADR-014`) is visually unobtrusive and saves `30` hand-drawn frames.
 
 ---
 
@@ -121,13 +124,18 @@ All Chapter 1 sprites, tiles, props, UI elements, and target compositions are st
 
 ## 4. Station Light Direction & Planar Value Hierarchy
 
-- **Single Station Light Direction:** **Top-North-West (`NW`, Screen Top-Left)** at **Azimuth `315°`**, **Elevation `60°`** above the floor plane (normalized 3D light direction vector $\mathbf{L} = (-0.354, -0.354, -0.866)$).
+- **2D Screen-Space Key Light (`Screen Top-Left`, Screen Azimuth `315°`, Elevation `60°`):**
+  - In 2D viewport coordinates, the primary directional key light originates from **Screen Top-Left (`-px_x, -px_y`)** at **`60°` elevation** above the floor plane and projects cast shadows **Screen Down-Right (`+2 px` X, `+1 px` Y)** along the `+x` (`SE`) isometric floor axis.
+  - Every standalone prop, floor tile bevel, and uniquely authored character direction (`S`, `SE`, `E`, `NE`, `N`) receives its brightest highlight on its top and screen-left surfaces. *(Note: per §2.3 #4, Elias's horizontally mirrored `SW`, `W`, and `NW` frames invert this baked screen-left highlight to the screen-right shoulder as an accepted `flip_h` compromise.)*
+- **Room-Axis Wall Convention vs. Physical Backface Lighting:**
+  - In `ROOM_GRAPH.md` §1 (`px_x = 320 + (x - y) * 16`, `px_y = 64 + (x + y) * 8`), the visible top-left room boundary is the **West (`W`, `x = 0`) wall** whose interior face points **screen down-right (`+x`, `SE`)**, and the visible top-right room boundary is the **North (`N`, `y = 0`) wall** whose interior face points **screen down-left (`+y`, `SW`)**.
+  - Rather than placing the `W` (`x = 0`) interior wall in physical backface shadow from an exterior top-left point light, Chapter 1 uses an **interior overhead planar value convention** (representing suspended station strip-luminaires inside the room volume biased toward the west ceiling): the screen-left `W` (`x = 0`) interior wall face is rendered at **Mid-Light (`Step 0`)** and the screen-right `N` (`y = 0`) interior wall face is rendered at **Mid-Dark (`Step -1`)**, guaranteeing a crisp `1`-step value contrast at the `(0, 0)` north-west room corner.
 - **Mandatory Planar Value Separation (Minimum `1` Ramp Step Between Adjacent Isometric Planes):**
-  1. **Horizontal Top Planes (Cornice Caps, Bench Seats, Console Tops, Character Head/Shoulders):** **Brightest (`Step +1`)** — e.g., `#6888A3` / `#4B667D` on walls, `#94A2B8` / `#677385` on steel, `#7D614F` on Elias's coat shoulder.
-  2. **North-West (`W`, `x = 0`) Wall Faces (facing South-East `+x`):** **Mid-Light (`Step 0`)** — e.g., `#364B5E` ceramic body with `#4B667D` / `#6888A3` top tile glaze (`ch01_env_wall_subterranean_w_idle.png`).
+  1. **Horizontal Top Planes (Cornice Caps, Bench Seats, Console Tops, Character Head/Shoulders):** **Brightest (`Step +1`)** — e.g., `#6888A3` / `#4B667D` on wall cornices, `#94A2B8` / `#677385` on steel, `#7D614F` on Elias's key-lit coat shoulder.
+  2. **West (`W`, `x = 0`, Screen-Left) Interior Wall Faces (facing South-East `+x`):** **Mid-Light (`Step 0`)** — e.g., `#364B5E` ceramic body with `#4B667D` / `#6888A3` top tile glaze (`ch01_env_wall_subterranean_w_idle.png`).
   3. **Horizontal Floor Slabs (`z_index = 0`):** **Controlled Dark-Mid (`#1F2838` / `#2D394F`)** — intentionally kept `2` value steps darker than character skin/coat highlights (`#E0B494` / `#7D614F`) and tactile amber (`#EB8A28`) so actors and puzzle cues pop with high contrast against the floor.
-  4. **North-East (`N`, `y = 0`) Wall Faces (facing South-West `+y`):** **Mid-Dark (`Step -1`)** — e.g., `#263545` ceramic body with `#19232E` grout (`ch01_env_wall_subterranean_n_idle.png`).
-  5. **Cast Shadows & Trenches:** **Darkest (`Step -2`, `#141A26` / `#0A0D14`)** — projected **`+2 px` X, `+1 px` Y** (down-right along the `SE` isometric axis) from every grounded actor and prop.
+  4. **North (`N`, `y = 0`, Screen-Right) Interior Wall Faces (facing South-West `+y`):** **Mid-Dark (`Step -1`)** — e.g., `#263545` ceramic body with `#19232E` grout (`ch01_env_wall_subterranean_n_idle.png`).
+  5. **Cast Shadows & Trenches:** **Darkest (`Step -2`, `#141A26` / `#0A0D14`)** — projected **`+2 px` X, `+1 px` Y** (screen down-right along the `SE` `+x` isometric axis) from every grounded actor and prop.
 
 ---
 
