@@ -80,7 +80,10 @@ func tap(action: StringName, frames: int = 1) -> void:
 	await physics_frames(1)
 
 
+## Called by the runner after every test (even a failed or timed-out one).
 func release_all_input() -> void:
+	# walk_context is usually a lambda capturing this test instance; clearing it breaks the cycle.
+	walk_context = Callable()
 	_held_moves.clear()
 	for action in _pressed_actions.duplicate():
 		release(action)
