@@ -11,14 +11,14 @@
 | TLF-006 | COMPLETE | Merged `c1492d8` (re-review of `846f806` passed; validate on main 5/5) |
 | TLF-004 | COMPLETE | Merged `eed7c4e` (re-review of `75dcb95` passed) |
 | TLF-007 | COMPLETE | Merged `99f6bb3` (re-review of `1801ed0` passed; validate on main 26/26) |
-| TLF-005 | CHANGES REQUESTED | `636d305` reviewed: PZ-004 solvable solo (breakers 132 ticks apart < 180 window), door tiles off boundary; see `docs/reviews/2026-10-31_TLF-005.md` |
+| TLF-005 | COMPLETE | Merged `e1c0816` (re-review of `41190e7`: PZ-004 forced route 318 ticks recomputed, boundary doors, arithmetic) |
 | TLF-008 | COMPLETE | Opus temporal core merged `fe3744a` (validate 51/51; TestRoom regression probe OK) |
-| TLF-017 | READY | Flash: `docs/tasks/TLF-017.md` (Settings autoload, remapping foundation, `echo_reset`, controller evidence) |
+| TLF-017 | IN PROGRESS | Flash (uncommitted WIP seen 11:12). **Before pushing: `git revert 431d1c5`, then `git pull origin main`**, or the branch can't be merged |
 | TLF-018 | READY (after TLF-017) | Flash: `docs/tasks/TLF-018.md`. **Start by porting `431d1c5`** per `docs/reviews/2026-10-31_TLF-008-flash-duplicate.md`; also register the SaveService autoload |
 | TLF-020 | NOT STARTED | Opus: SpatialGraph (ADR-009) + doorway presenters + safe-anchor relocation (PZ-005 core) |
 | TLF-019 | COMPLETE | Opus PuzzleService + SaveService + NarrativeState merged `afa6929` (82/82, no leaks; real-scene save probe OK). Autoload registration → TLF-018 |
 | TLF-016 | COMPLETE | Opus EchoService + TriggerZone merged `9f55245` (validate 67/67; physics runtime probe OK) |
-| TLF-010 | NOT STARTED | Argon, after TLF-005 |
+| TLF-010 | READY | Argon: `docs/tasks/TLF-010.md` (art bible, palette, target sheet, first sprite batch; `.pxo` must pass Pixelorama CLI verification) |
 | others | NOT STARTED | |
 
 Branch naming and merge flow: ADR-002 (incl. Orca naming amendment).

@@ -15,7 +15,7 @@ These files conflict directly with `main`: `scripts/interaction/interactable.gd`
 - **Retire or port as needed:** `scripts/test/test_gate|gear|shutter|pillar.gd` and `tests/temporal/test_puzzle_specs.gd`. `main` already has `TemporalTestGate/Shutter/Gear` and spec tests for PZ-001/002. Keep a spec test only if it covers something `main` doesn't (list those in the handoff).
 
 ## How Flash should port (non-destructive)
-1. In the `tlf-implementation-qa` worktree, after TLF-017 is pushed: `git revert --no-edit 431d1c5` (keeps history; nothing is deleted).
+1. In the `tlf-implementation-qa` worktree, **before pushing TLF-017**: `git revert --no-edit 431d1c5` (keeps history; nothing is deleted). Otherwise TLF-017 can't be merged.
 2. `git pull --ff-only origin main` (or merge if TLF-017 is ahead).
 3. Bring back the keepers: `git checkout 431d1c5 -- scripts/temporal/pocket_watch.gd scenes/test/TemporalTestRoom.tscn tests/temporal/test_pocket_watch.gd`, then re-apply the `player.gd`/`Player.tscn` hunks by hand.
 4. Move `pocket_watch.gd` to `scripts/player/` (TLF-018 allowed path), adapt it to `main`'s API, and draw the highlight in the watch/HUD rather than in `Interactable` (`main`'s hook is logic-only).

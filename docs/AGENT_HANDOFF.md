@@ -18,7 +18,7 @@ Shared contract files (`interactable.gd`, `game_session.gd`, `GameSession.tscn`,
 
 ## Current state
 - See `PROJECT_STATUS.md` (what works), `ORCA_TASK_BOARD.md` (task status), `DEVELOPMENT_ROADMAP.md` (order).
-- In flight: TLF-005 fixes (Argon), TLF-017 (Flash). Next: TLF-020 SpatialGraph (Opus); TLF-018 for Flash, starting with the port of `431d1c5`.
+- In flight: TLF-020 SpatialGraph (Opus), TLF-017 (Flash: revert `431d1c5` before pushing), TLF-010 ready for Argon. Then TLF-018 for Flash.
 
 ## How to verify anything
 `$env:GODOT=<console exe>; ./tools/validate.ps1` (must exit 0). Review method: `git archive <sha>` into a scratch folder, then run validate plus runtime probes there. Never inside an agent's worktree.

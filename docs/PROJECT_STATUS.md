@@ -18,7 +18,7 @@ This file states what the repository **actually** contains. Task-level detail li
 | Echo: `EchoService` record/playback (player-only logic track, watch abilities excluded, 1200-tick cap, persistent occupancy, reset) + `TriggerZone` occupancy | `scripts/echo/`, `scripts/interaction/trigger_zone.gd` | `tests/echo/` incl. TEST-PZ003-02/03/04, TEST-PZ004-04/05; physics runtime probe |
 | Puzzle progression: `PuzzleService` (permanent SOLVED, member resets), `PuzzleCompletionZone`, `ResetAnchor`; `NarrativeState` (flags, fragments) | `scripts/puzzle/`, `scripts/narrative/` | `tests/puzzle/` |
 | Save/load: `SaveService` (type-tagged JSON, atomic write, migrations, validation, temporal history) | `scripts/save/` | `tests/save/` incl. save → fresh scene → load loop |
-| Ch1 design: beat sheet (10 beats, 38 min), 5 puzzle specs with 27 given/when/then tests | `design/ch01/` | Lead reviews in `docs/reviews/` |
+| Ch1 design: beat sheet (10 beats, 38 min), 5 puzzle specs with 27 given/when/then tests, room graph (10 rooms, boundary doors, placement metrics, kit list) | `design/ch01/` | Lead reviews in `docs/reviews/` |
 
 ## B. Partially implemented
 - Interaction feedback: `InteractionResult.reason` exists, but the player ignores it, so no UI feedback (ISSUE-006).
@@ -37,7 +37,7 @@ This file states what the repository **actually** contains. Task-level detail li
 3. Ghost visuals and echo HUD (part of TLF-018)
 4. Settings autoload and input-remapping foundation (TLF-017, Flash)
 5. Camera, scene routing between rooms, SpatialGraph (doorway reassignment)
-6. Ch1 room graph (TLF-005, Argon, changes requested), then art target sheet (TLF-010)
+6. Art bible, palette, target sheet, first sprites (TLF-010, Argon, ready)
 7. All art, audio, UI, dialogue/narrative presentation and Ch1 content
 
 ## F. Should be improved
