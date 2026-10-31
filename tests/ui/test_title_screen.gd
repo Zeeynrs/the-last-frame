@@ -177,7 +177,10 @@ func test_continue_restores_the_signal_control_checkpoint() -> void:
 		for puzzle_id in [&"CH1-PZ-001", &"CH1-PZ-002", &"CH1-PZ-003"]:
 			_assert_true(session.puzzle_service.is_solved(puzzle_id), "%s SOLVED after restore" % puzzle_id)
 		_assert_true(session.narrative_state.get_flag(&"heard.ch01_b01_start"), "heard.* flags restored")
-		_assert_false(blocking_ui_open(), "no Beat 01 replay after Continue")
+		# Beat 01 may be blocking or not (TLF-038); either way its sequence must not start again.
+		await physics_frames(5)
+		var diag := _tree().root.find_child("DialogueBox", true, false) as DialogueBox
+		_assert_false(diag != null and diag.current_sequence_id == &"ch01_b01_start", "no Beat 01 replay after Continue")
 		var player := ch01.get_node("Player") as Node2D
 		var anchor := session.id_registry.resolve(&"ch01.signal_control.safe_anchor_center") as Node2D
 		_assert_true(player.global_position.distance_to(anchor.global_position) < 2.0,
