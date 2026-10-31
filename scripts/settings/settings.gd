@@ -6,6 +6,11 @@ extends Node
 signal setting_changed(key: StringName, value: Variant)
 
 const DEFAULT_SETTINGS_PATH: String = "user://settings.cfg"
+## Headless runs (tests, validate.ps1, -s probes) never touch the player's settings (ADR-011 am.,
+## ISSUE-026, TLF-036). The shipped game never runs headless.
+const HEADLESS_SETTINGS_PATH: String = "user://headless/settings.cfg"
+## Set to "1" to let a headless run use the real DEFAULT_SETTINGS_PATH.
+const ALLOW_REAL_USER_DATA_ENV: String = "TLF_ALLOW_REAL_USER_DATA"
 
 const GAMEPLAY_ACTIONS: Array[StringName] = [
 	&"move_up",
@@ -78,17 +83,29 @@ var screen_shake: float = 1.0:
 		screen_shake = clampf(val, 0.0, 1.0)
 		setting_changed.emit(&"screen_shake", screen_shake)
 
+## Resolved once in _init(); an explicit assignment (tests set their own paths) still wins.
 var settings_path: String = DEFAULT_SETTINGS_PATH
 
 var _default_bindings: Dictionary = {}   # Dictionary[StringName, Array[InputEvent]]
 var _custom_bindings: Dictionary = {}    # Dictionary[StringName, Dictionary[StringName, InputEvent]]
 
 
+## Default settings file for a display server name and the TLF_ALLOW_REAL_USER_DATA value.
+static func resolve_default_settings_path(display_name: String, env_override: String) -> String:
+	if display_name == "headless" and env_override != "1":
+		return HEADLESS_SETTINGS_PATH
+	return DEFAULT_SETTINGS_PATH
+
+
 func _init() -> void:
+	settings_path = resolve_default_settings_path(DisplayServer.get_name(), OS.get_environment(ALLOW_REAL_USER_DATA_ENV))
 	_cache_default_bindings()
 
 
 func _ready() -> void:
+	if DisplayServer.get_name() == "headless" and get_parent() == get_tree().root:
+		print("Settings: headless, path = %s (%s)%s" % [settings_path, ProjectSettings.globalize_path(settings_path),
+			" [%s=1]" % ALLOW_REAL_USER_DATA_ENV if OS.get_environment(ALLOW_REAL_USER_DATA_ENV) == "1" else ""])
 	load_settings()
 
 
@@ -117,7 +134,7 @@ func reset_to_defaults() -> void:
 	reset_all_bindings()
 
 
-## Saves settings to config file (user://settings.cfg by default).
+## Saves settings to `settings_path` (user://settings.cfg; user://headless/settings.cfg headless).
 func save_settings() -> Error:
 	var config = ConfigFile.new()
 
@@ -141,6 +158,8 @@ func save_settings() -> Error:
 			if not serialized.is_empty():
 				config.set_value("bindings", String(action) + "/" + String(slot), serialized)
 
+	# user://headless/ may not exist yet; ConfigFile.save() does not create folders.
+	DirAccess.make_dir_recursive_absolute(settings_path.get_base_dir())
 	return config.save(settings_path)
 
 

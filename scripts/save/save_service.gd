@@ -13,13 +13,36 @@ extends Node
 
 const SAVE_VERSION: int = 1
 const DEFAULT_ROOT: String = "user://saves"
+## Headless runs (tests, validate.ps1, -s probes) never touch the player's saves (ADR-011 am.,
+## ISSUE-026, TLF-036). The shipped game never runs headless.
+const HEADLESS_ROOT: String = "user://headless/saves"
+## Set to "1" to let a headless run use the real DEFAULT_ROOT.
+const ALLOW_REAL_USER_DATA_ENV: String = "TLF_ALLOW_REAL_USER_DATA"
 
-## Override in tests; never point at a real user directory from a test.
+## Resolved once in _init(); an explicit assignment (tests set their own roots) still wins.
 var save_root: String = DEFAULT_ROOT
 ## Target version for migrations (tests may raise it together with `migrations`).
 var current_version: int = SAVE_VERSION
 ## from_version (int) -> Callable taking and returning the save Dictionary at from_version + 1.
 var migrations: Dictionary = {}
+
+
+## Default save root for a display server name and the TLF_ALLOW_REAL_USER_DATA value.
+static func resolve_default_root(display_name: String, env_override: String) -> String:
+	if display_name == "headless" and env_override != "1":
+		return HEADLESS_ROOT
+	return DEFAULT_ROOT
+
+
+func _init() -> void:
+	save_root = resolve_default_root(DisplayServer.get_name(), OS.get_environment(ALLOW_REAL_USER_DATA_ENV))
+
+
+func _ready() -> void:
+	# One line per run, from the autoload only, so handoff logs show where saves go.
+	if DisplayServer.get_name() == "headless" and get_parent() == get_tree().root:
+		print("SaveStore: headless, root = %s (%s)%s" % [save_root, ProjectSettings.globalize_path(save_root),
+			" [%s=1]" % ALLOW_REAL_USER_DATA_ENV if OS.get_environment(ALLOW_REAL_USER_DATA_ENV) == "1" else ""])
 
 
 static func default_save() -> Dictionary:
