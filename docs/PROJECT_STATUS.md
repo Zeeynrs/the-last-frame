@@ -1,6 +1,6 @@
 # Project Status
 
-**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 242/242 tests, 89 scripts, leak check clean (enforced by validate.ps1 since TLF-035)
+**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 255/255 tests, 91 scripts, leak check clean (enforced by validate.ps1 since TLF-035)
 
 This file states what the repository **actually** contains. Task-level detail lives in `ORCA_TASK_BOARD.md`; history lives in `PROGRESS.md`.
 
@@ -38,20 +38,18 @@ This file states what the repository **actually** contains. Task-level detail li
 - Art v1 is barely placed in the Ch1 rooms: only the archway frame and the 23:59 clock appear (8 of 10 rooms); floors, walls and props are greybox polygons (ISSUE-012, Argon unavailable).
 
 ## D. Broken
-- `interact` that closes a document / the last blocking dialogue line also fires on the player in the same frame: the document reopens or a nearby object is used (ISSUE-023 → TLF-034).
-- PZ-004 barrier visual smaller than its collision (ISSUE-024 → TLF-034).
+- First playtest: start feels stuck in the blocking Beat 01 monologue (ISSUE-029); cyan target marker floats over Elias (ISSUE-030); wrong feedback text for `use` (ISSUE-031). All → TLF-038.
 - F5 shows a black screen: `Boot.tscn` is a placeholder (ISSUE-027 → TLF-037).
-- Headless runs without an explicit save root write the real `user://saves` (ISSUE-026 → TLF-036).
+- F6 always starts fresh and the arrival autosave overwrites `slot_0` (ISSUE-032 → TLF-037).
 
 ## E. Missing (next by priority)
-1. TLF-034 (Flash) input/visual fixes
+1. TLF-038 (Flash) first-playtest fixes
 2. Human: physical controller spot-check (ISSUE-011, last item for M1)
-3. TLF-036 headless save guard (ISSUE-026); TLF-037 Boot → title → Chapter01 so F5 plays (ISSUE-027). Until then: open `Chapter01.tscn`, press F6
+3. TLF-037 Boot → title → Chapter01 so F5 plays (ISSUE-027). Until then: open `Chapter01.tscn`, press F6
 4. Vertical-slice polish: art beyond v1 (Argon unavailable, ISSUE-012), audio, lighting/VFX, Beat 10 cinematic, accessibility pass
 5. External playtest (Gate C)
 
 ## F. Should be improved
-- The three UIs each carry a copy of the player-block lookup (consolidated in TLF-034).
 - Expected `push_error` output from negative tests shows up in logs; acceptable for now.
 
 ## G. Stable, don't rework without an ADR
