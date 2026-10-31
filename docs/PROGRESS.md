@@ -37,6 +37,7 @@
 | 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
 | 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
 | 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
+| 2026-10-31 | TLF-026 by Opus, merged: Ch1 ChapterGraphDef generated from the reviewed design docs (10 rooms, 20 doorways), layout checks as tests; TLF-009 now loads it instead of hand-building; 180/180 | Agent 1 |
 | 2026-10-31 | TLF-024 written by Opus (Argon unavailable), merged: Ch1 text (66 keys), 5 DocumentDefs, generators moved to `tools/content/`; ASCII-only text rule; 171/171 | Agent 1 |
 | 2026-10-31 | Lead review TLF-018 (Flash `6332fb6`): simulated merge 178/178, runtime probe through real input OK (rewind gate/shutter, Freeze auto-targets gear); CHANGES REQUESTED: ghost node leak + root parenting, missing SaveService autoload/translations. Argon hit usage limit → TLF-024 re-assigned to Opus | Agent 1 |
 | 2026-10-31 | TLF-023 implemented by Opus, merged `e6de2b4`: PuzzleObject base + 12 Ch1 puzzle classes; all 27 spec acceptance tests pass against production code; breaker window fixed to absolute ticks (echo == player); mutation-checked; 166/166. TLF-024 (Argon) and TLF-009 (Flash) specs written | Agent 1 |
