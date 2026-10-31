@@ -205,6 +205,8 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - `PuzzleDef` (`puzzle_id`, `room_id`, `title_key`, 3 `hint_keys`) and `DocumentDef` (`document_id`, kind, title/body keys, optional flag/fragment/journal entry + category) are implemented.
   - Ch1 PuzzleDefs (`data/puzzles/ch01/*.tres`) and `localization/ch01_puzzles.csv` are **generated from the merged specs by a script**: text is copied verbatim, never retyped. Re-run it when a spec changes, and don't hand-edit the generated files.
   - Key scheme: `PZ00N_TITLE`, `PZ00N_HINT_{1..3}`; journal entries `JRN_…`; documents `DOC_…`.
+  - **Player-facing text is ASCII-only** while the UI font (TLF Pixel Mono) covers ASCII 32-126 (tested for `ch01_text.csv` and `ch01_puzzles.csv`).
+  - Generators live in `tools/content/` (`gen_ch01_puzzle_data.py`, `gen_ch01_text.py`). Their markdown inputs are the source of truth: re-run them, don't edit generated files.
   - CSV translations are imported by Godot into `*.translation` files, which are derived and git-ignored. **Registering them in `project.godot` (internationalization/locale/translations) is Flash's job** (single owner); until then `tr()` returns the key.
 
 ## ADR-014 — Ability naming

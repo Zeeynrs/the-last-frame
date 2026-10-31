@@ -18,7 +18,8 @@ Shared contract files (`interactable.gd`, `game_session.gd`, `GameSession.tscn`,
 
 ## Current state
 - See `PROJECT_STATUS.md` (what works), `ORCA_TASK_BOARD.md` (task status), `DEVELOPMENT_ROADMAP.md` (order).
-- In flight: TLF-018 fixes (Flash, R1–R4), TLF-024 text (Opus; Argon unavailable, usage limit). Opus core systems + Ch1 puzzle logic are merged; TLF-009 (rooms 1–4) waits for TLF-018. Open: TLF-017 manual evidence (ISSUE-011).
+- In flight: TLF-018 fixes (Flash, R1–R5). Argon unavailable (usage limit). TLF-024 done by Opus, open for Argon's review later.
+- Content generators: `python tools/content/gen_ch01_text.py` and `gen_ch01_puzzle_data.py` (sources: `narrative/ch01/CH01_TEXT.md`, `design/ch01/puzzles/*.md`). Opus core systems + Ch1 puzzle logic are merged; TLF-009 (rooms 1–4) waits for TLF-018. Open: TLF-017 manual evidence (ISSUE-011).
 - Building Ch1 rooms: instance them under `ChapterRoot`, follow ADR-018 (Spawn markers off the presenter, IDs `ch01.<room>.<object>`).
 
 ## How to verify anything
