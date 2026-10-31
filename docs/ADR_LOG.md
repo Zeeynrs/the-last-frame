@@ -212,3 +212,16 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - **After `SOLVED`, nothing may re-block the solved passage:** reset anchors, unfreezing, and echo resets all leave the route open. Optional objects may still reset.
   - Any reset or spatial change that would overlap the player with newly enabled collision first moves the player to the puzzle's declared safe anchor.
 
+## ADR-017 — Team allocation and Opus implementation workflow
+- **Date / status:** 2026-10-31 · Accepted (from the user's continuous-development master prompt)
+- **Context:** The user's updated master prompt makes Opus an active core-systems programmer (~50%), with Flash on features/QA (~35%) and Argon on high-value creative batches (~15%). It also asks for continuous development without per-task approval, plus four status documents.
+- **Decision:**
+  - **Opus implements** the core systems: temporal (TemporalComponent/TemporalService), Echo, PuzzleService, SaveService, SpatialGraph, TimelineManager, and the session contracts.
+  - **Flash** owns player feel, UI/HUD/menus, settings, input, camera, audio/VFX integration, scene setup and regression tests. Flash is the single owner of `project.godot`.
+  - **Argon** owns design batches and `.pxo` sources.
+  - TLF-008 is split: the temporal core goes to Opus; the pocket-watch controller and HUD become TLF-018 (Flash).
+  - Opus works in its own worktree `D:\TheLastFrame\wt-opus-core` on branch `agent/opus-core`. Orca role branches stay as they are; the master prompt's suggested names are advisory, and existing branches are kept for compatibility. Opus's own work is self-verified (validate plus runtime probe) before merging to `main` with `--no-ff`.
+  - Status docs: `PROJECT_STATUS.md`, `DEVELOPMENT_ROADMAP.md`, `TECHNICAL_DEBT.md`, `AGENT_HANDOFF.md`.
+  - Unchanged: destructive or irreversible actions, external credentials and creative-direction changes still go to the user.
+- **Consequences:** Shared contract files get exactly one owner per task (named in the task file). Opus may edit `scripts/interaction/interactable.gd` and `scripts/session/*` during TLF-008/016; Flash must not touch them until merged.
+
