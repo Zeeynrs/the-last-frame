@@ -29,7 +29,7 @@ const PLAYER_ACTOR: StringName = &"player"
 ## Data-driven room table (ADR-013): room_id (StringName) -> PackedScene.
 @export var room_scenes: Dictionary = {}
 
-var save_service: SaveService = null
+var save_service: SaveStore = null
 var current_room_id: StringName = &""
 var current_room: Node = null
 var last_checkpoint_id: StringName = &""
@@ -48,8 +48,10 @@ func _ready() -> void:
 	for room_id in room_scenes.keys():
 		register_room(StringName(room_id), room_scenes[room_id])
 	if save_service == null:
-		# Until SaveService is registered as an autoload (TLF-018), the router owns one.
-		save_service = SaveService.new()
+		# Prefer the SaveService autoload (ADR-011); own a SaveStore only when it is not registered.
+		save_service = get_node_or_null("/root/SaveService") as SaveStore
+	if save_service == null:
+		save_service = SaveStore.new()
 		save_service.name = "SaveService"
 		add_child(save_service)
 

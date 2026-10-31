@@ -1,4 +1,4 @@
-class_name SaveService
+class_name SaveStore
 extends Node
 
 ## Versioned save/load per ADR-010 (+ TLF-019 amendment).
@@ -9,7 +9,7 @@ extends Node
 ## - Reads never crash: missing, corrupt, newer-version and malformed files return a reason.
 ## - Older versions are upgraded through `migrations` (from_version -> Callable(Dictionary) -> Dictionary).
 ## - Missing optional fields get defaults; data is validated before anything touches the world.
-## Intended as the SaveService autoload (ADR-011); registration in project.godot follows TLF-017.
+## Registered as the SaveService autoload (ADR-011); the class is SaveStore so the name does not hide it.
 
 const SAVE_VERSION: int = 1
 const DEFAULT_ROOT: String = "user://saves"
