@@ -95,3 +95,92 @@ func test_document_viewer_multipage_paging_and_beat09_journal() -> void:
 	viewer.close_document()
 	viewer.free()
 	session.free()
+
+
+func test_document_viewer_interact_does_not_reopen_on_close() -> void:
+	var orig_save_root := ""
+	var ss := scene_tree.root.get_node_or_null("SaveService")
+	if ss != null and "save_root" in ss:
+		orig_save_root = ss.save_root
+		ss.save_root = "user://tlf_test_ui_saves"
+
+	var sess_scene = load("res://scenes/session/GameSession.tscn")
+	var session = sess_scene.instantiate() as GameSession
+	scene_tree.root.add_child(session)
+
+	var doc_viewer_scene = load("res://scenes/ui/DocumentViewer.tscn")
+	var viewer = doc_viewer_scene.instantiate() as DocumentViewer
+	scene_tree.root.add_child(viewer)
+
+	var player_scene = load("res://scenes/player/Player.tscn")
+	var player = player_scene.instantiate() as Player
+	player.position = Vector2(100, 100)
+	player.add_to_group(&"player")
+	scene_tree.root.add_child(player)
+
+	# Set up a ReadableDocument at player position
+	var readable = Area2D.new()
+	readable.set_script(load("res://scripts/narrative/readable_document.gd"))
+	readable.object_id = &"ch01.test_readable_doc"
+	readable.prompt_text = "[E] Read"
+	readable.collision_layer = 4
+	readable.collision_mask = 0
+	readable.position = Vector2(100, 100)
+	var col = CollisionShape2D.new()
+	var shape = CircleShape2D.new()
+	shape.radius = 16.0
+	col.shape = shape
+	readable.add_child(col)
+
+	var doc = load("res://data/documents/ch01/doc_evac_notice.tres") as DocumentDef
+	readable.document = doc
+	scene_tree.root.add_child(readable)
+
+	var open_info = {"count": 0}
+	readable.opened.connect(func(d: DocumentDef) -> void:
+		open_info["count"] += 1
+		viewer.open_document(d)
+	)
+
+	# Step a few frames to let physics detect the interactable
+	await physics_frames(5)
+	_assert_eq(player.current_target, readable, "Player targets readable document")
+
+	# Step 1: Open 1-page document via interact
+	await tap(&"interact")
+	await physics_frames(2)
+	_assert_true(viewer.is_open, "DocumentViewer opened via interact")
+	_assert_eq(open_info["count"], 1, "opened emitted once on first open")
+
+	# Step 2: Press interact again to close
+	await tap(&"interact")
+	await physics_frames(3)
+
+	# DocumentViewer should be closed and NOT reopened
+	_assert_false(viewer.is_open, "DocumentViewer is closed after interact tap")
+	_assert_eq(open_info["count"], 1, "opened was NOT emitted again on close (no ghost reopen)")
+
+	# Step 3: Next separate interact press opens the document again (no lost input)
+	await tap(&"interact")
+	await physics_frames(2)
+	_assert_true(viewer.is_open, "DocumentViewer opens again on subsequent separate interact press")
+	_assert_eq(open_info["count"], 2, "opened emitted a second time on deliberate press")
+
+	# Clean up
+	if viewer.is_open:
+		await tap(&"cancel")
+		await physics_frames(2)
+	readable.free()
+	player.free()
+	viewer.free()
+	session.free()
+
+	if ss != null and "save_root" in ss and orig_save_root != "":
+		ss.save_root = orig_save_root
+	if DirAccess.dir_exists_absolute("user://tlf_test_ui_saves"):
+		var d = DirAccess.open("user://tlf_test_ui_saves")
+		if d != null:
+			for f in d.get_files():
+				d.remove(f)
+		DirAccess.remove_absolute("user://tlf_test_ui_saves")
+

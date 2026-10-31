@@ -189,23 +189,7 @@ func _populate_fragments(session: GameSession) -> void:
 
 
 func _set_player_blocked(blocked: bool) -> void:
-	if _player_ref == null or not is_instance_valid(_player_ref):
-		var session = _find_session()
-		if session != null and session.room_router != null and session.room_router.player != null:
-			_player_ref = session.room_router.player
-		elif is_inside_tree():
-			var p = get_tree().get_first_node_in_group(&"player")
-			if p is CharacterBody2D:
-				_player_ref = p
-			else:
-				var candidate = get_tree().root.find_child("Player", true, false)
-				if candidate is CharacterBody2D:
-					_player_ref = candidate
-
-	if _player_ref != null and is_instance_valid(_player_ref):
-		_player_ref.set_physics_process(not blocked)
-		if blocked:
-			_player_ref.velocity = Vector2.ZERO
+	_player_ref = Player.set_player_blocked(self, blocked, _player_ref)
 
 
 func _find_session() -> GameSession:
