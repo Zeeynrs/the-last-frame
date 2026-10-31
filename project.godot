@@ -22,6 +22,7 @@ buses/default_bus_layout="res://default_bus_layout.tres"
 [autoload]
 
 Settings="*res://scripts/settings/settings.gd"
+SaveService="*res://scripts/save/save_service.gd"
 
 [display]
 
