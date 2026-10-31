@@ -9,10 +9,12 @@
 | TLF-002 | COMPLETE | `docs/ADR_LOG.md` (ADR-014 accepted 2026-10-31) |
 | TLF-003 | COMPLETE | Merged `db09cc2` (re-review of `d5bfba6` passed) |
 | TLF-006 | COMPLETE | Merged `c1492d8` (re-review of `846f806` passed; validate on main 5/5) |
-| TLF-004 | CHANGES REQUESTED | `52a563a` reviewed; fix D1–D4 in `docs/reviews/2026-10-31_TLF-004_TLF-007.md` |
-| TLF-007 | CHANGES REQUESTED | `864339c` reviewed; 22/22 tests, runtime OK; fix B1 (duplicate-ID unregister bug) + B2 |
-| TLF-005, 010 | NOT STARTED | Argon, after TLF-004 (order: 004 → 005 → 010) |
-| TLF-008 | NOT STARTED | Flash, after TLF-007 merges; contracts ready: ADR-007 am.2, ADR-008 am., ADR-015, ADR-016 |
+| TLF-004 | COMPLETE | Merged `eed7c4e` (re-review of `75dcb95` passed) |
+| TLF-007 | COMPLETE | Merged `99f6bb3` (re-review of `1801ed0` passed; validate on main 26/26) |
+| TLF-005 | READY | Argon: `docs/tasks/TLF-005.md` (room graph, critical path, placement, kit list) |
+| TLF-008 | READY | Flash: `docs/tasks/TLF-008.md` (TemporalComponent, Rewind/Freeze/Trace, pocket-watch targeting) |
+| TLF-016 | NOT STARTED | Flash, after TLF-008: Echo record/playback (ADR-008 + am., ADR-015 Echo controls, `echo_reset` action) |
+| TLF-010 | NOT STARTED | Argon, after TLF-005 |
 | others | NOT STARTED | |
 
 Branch naming and merge flow: ADR-002 (incl. Orca naming amendment).
