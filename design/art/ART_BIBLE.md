@@ -210,3 +210,33 @@ Per `GDD.md` §15–16 and `ADR-014`/`ADR-015`, no temporal state may rely on co
     - **`16 px` (`2×` integer multiple):** Room title cards, Journal section headers, Pause/Settings menu headings.
     - **`24 px` (`3×` integer multiple):** Chapter title cards (`CHAPTER 1 — THE FORGOTTEN STATION`) and ending summary headers.
   - **Accessibility Text Size Multiplier (`SD-1` / `GDD.md` §16):** `Small/Default (100%) = 8 px`, `Large (200%) = 16 px` (maintaining strict integer pixel alignment on the `640 × 360` canvas).
+
+
+---
+
+## Appendix A — Additions from TLF-039 / TLF-042 (ADR-019)
+
+Added by the design-art agent (Claude Code, Sonnet 5.5). Nothing above is changed; this appendix only adds rules that production exposed.
+
+### A.1 Sorting rule for props (OQ-2, ADR-019)
+§1.3 puts small fixtures (`prop_call_box_phone`, `prop_lever_switch`) in `Wall_Fixtures` (`z_index = 7`). A fixture that is **mounted on a drawn wall** stays at `z_index = 7`. Anything that **stands free on the floor** (junction levers, mid-room breakers, reset consoles, benches, hero mechanisms, security gate, route board, dispatch terminal, transit car) goes into `YSort_Actors` (`z_index = 10`, Y-sorted by pivot), so Elias draws behind it when he stands north of it. Floor-level surfaces Elias walks over (`prop_bridge_platform`, `prop_pressure_switch`) stay in `YSort_Props` (`z_index = 8`), below Elias. The placement sheet lists the effective layer per object.
+
+### A.2 Elias palette index 03
+Elias v2 uses palette index `03` (`#2D394F`, *Terrazzo Mid*) as the trouser highlight (trousers are `02`/`03`, boots `16`/`17`). It belongs to `TLF-CH01-32`, so the 32-colour rule is unchanged; Elias now uses 12 of 32 colours.
+
+### A.3 Pivots of the sizes that §1.3 does not list
+| Asset class | Canvas | Pivot rule | Used by |
+|---|---|---|---|
+| Small wall fixture (frontal) | `W × H` | `(W/2, H - 4)` (bottom casing mount; matches the 32×24 clock at `(16,20)`) | `prop_call_box_phone` 24×36 → `(12,32)`, `prop_pa_speaker` 16×16 → `(8,12)` |
+| Free-standing small prop | `W × H` | `(W/2, H - 4)` | `prop_lever_switch` 24×32 → `(12,28)` |
+| Floor plate | `W × H` | footprint centre | `prop_pressure_switch` 32×20 → `(16,12)` |
+| Large hero mechanism / set-piece | any | **projected footprint centre at floor level** (the point the Y-sort and node position refer to) | gear/capacitor/shutter/terminal 64×64 → `(32,56)`, `prop_transit_car_stalled` 128×80 → `(64,52)`, `prop_bridge_platform` 48×32 → `(24,18)` |
+| Overlay | `W × H` | glyph centre | `prop_lever_badge_{a,b}` 5×7 → `(2,3)` |
+
+The `(W/2, H - 8)` rule of §1.3 only fits footprints up to about two tiles: a footprint of length `L` tiles along one axis needs `L * 8` px below the centre inside the canvas (2:1 projection), so `prop_transit_car_stalled` (5 tiles long) cannot keep its centre 8 px above the bottom edge in `128 × 80`. For such pieces the pivot is the footprint centre and the canvas is sized around it.
+
+### A.4 Axis-run pieces and `flip_h`
+`wall_railing_iron`, `prop_station_bench`, `tile_cable_conduit_*`, `prop_fire_shutter`, `prop_bridge_platform` are authored along the down-right (`+x`) axis; `prop_security_gate` spans the down-left (`y`) axis. The other axis is a `flip_h` of the sprite (baked light flips with it, the same accepted compromise as §2.3 #4).
+
+### A.5 Reproducibility
+Every generated asset can be rebuilt byte for byte: `python tools/art/gen/verify_regen.py` (see `tools/art/gen/README.md`). Files authored before TLF-039 (batch 1) have no generator and are reported as *not covered*.

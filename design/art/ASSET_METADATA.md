@@ -202,7 +202,7 @@
 - **Composition Contents Verified at True Scale:**
   - `14 × 10` floor grid assembled from `ch01_env_tile_terrazzo_dark_idle.png`, `ch01_env_tile_terrazzo_cracked_idle.png`, and `ch01_env_tile_tactile_amber_idle.png`
   - North-East (`7 × ch01_env_wall_subterranean_n_idle.png`) and North-West (`5 × ch01_env_wall_subterranean_w_idle.png`) walls meeting at `(320, 64)`
-  - East doorway frame (`ch01_env_archway_frame_e_idle.png`) at `ch01.arrival_platform:door_exit_east` (`(13, 5)` / `(448, 160)`)
+  - East doorway frame (`ch01_env_archway_frame_e_idle.png`) at `ch01.arrival_platform:door_exit_east` (`(13, 5)` / `(448, 208)`)
   - Two wall-mounted `ch01_prop_digital_clock_2359_idle.png` fixtures displaying `23:59`
   - Isometric stalled Mag-Transit car along the South-West trench (`y = 9`), platform bench at `(4, 2)`, and damaged pocket watch pickup (`global.pocket_watch`) at `(8, 5)`
   - Elias (`idle_se` frame 1 from `ch01_char_elias_base_sheet.png`) placed at `ch01.arrival_platform.safe_anchor_spawn` (`(7, 5)` / foot pivot `(352, 168)`)
@@ -231,7 +231,7 @@
 
 ## 3. Batch 2 Summary Inventory Table (`TLF-039`)
 
-**Task:** TLF-039 · **Author:** design-art agent (Claude Code, Sonnet 5.5, standing in for Argon, RISK-019) · **Palette:** `TLF-CH01-32`, `0` off-palette, `0` semi-transparent pixels · **Authoring:** every pixel is placed by a deterministic script using palette indices only, which writes layered `.pxo` files; every `.pxo` passes `Pixelorama.exe --headless --quit -- --size` and `--export --spritesheet`, and each committed PNG is the byte-identical re-export (raw logs in `design/art/TLF-039_VERIFICATION.txt`). **No AI-generated or third-party images.** Elias v2 replaces the batch-1 sheet in place (section 2.1). Rows 27-38 are Tier 2 hero set-pieces (partial: route board, security gate, bridge, transit car and dispatch terminal are still open).
+**Task:** TLF-039 · **Author:** design-art agent (Claude Code, Sonnet 5.5, standing in for Argon, RISK-019) · **Palette:** `TLF-CH01-32`, `0` off-palette, `0` semi-transparent pixels · **Authoring:** every pixel is placed by a deterministic script using palette indices only, which writes layered `.pxo` files; every `.pxo` passes `Pixelorama.exe --headless --quit -- --size` and `--export --spritesheet`, and each committed PNG is the byte-identical re-export (raw logs in `design/art/TLF-039_VERIFICATION.txt`). **No AI-generated or third-party images.** Elias v2 replaces the batch-1 sheet in place (section 2.1). Rows 27-38 are Tier 2 hero set-pieces (TLF-039); rows 39-52 are TLF-042 (route board, security gate, bridge, transit car, dispatch terminal, pocket watch, lever badges, PA horn), which completes every ROOM_GRAPH §7.3 piece.
 
 | # | Asset ID | Category | Source `.pxo` (`assets/source/ch01/`) | Runtime Export (`res://assets/...`) | Canvas Size (`W×H px`) | Frames / FPS | Pivot `(px_x, px_y)` | Sorting / `z_index` | Palette Colors Used | QA State |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -262,6 +262,20 @@
 | **36** | `ch01.prop.surge_capacitor_frozen` | Prop (Large Hero Mechanism) | `ch01_prop_surge_capacitor_frozen.pxo` | `assets/props/ch01/ch01_prop_surge_capacitor_frozen.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `8 / 32` | **`exported`** |
 | **37** | `ch01.prop.pressure_switch_released` | Prop (Floor Plate) | `ch01_prop_pressure_switch_released.pxo` | `assets/props/ch01/ch01_prop_pressure_switch_released.png` | `32 × 20 px` | `1f` (`static`) | `(16, 12)` | `YSort_Props` (`z_index = 8`) | `5 / 32` | **`exported`** |
 | **38** | `ch01.prop.pressure_switch_pressed` | Prop (Floor Plate) | `ch01_prop_pressure_switch_pressed.pxo` | `assets/props/ch01/ch01_prop_pressure_switch_pressed.png` | `32 × 20 px` | `1f` (`static`) | `(16, 12)` | `YSort_Props` (`z_index = 8`) | `7 / 32` | **`exported`** |
+| **39** | `ch01.prop.route_board.state0` | Prop (Free-standing Sign) | `ch01_prop_route_board_state0.pxo` | `assets/props/ch01/ch01_prop_route_board_state0.png` | `48 × 56 px` | `1f` (`static`) | `(24, 50)` | `YSort_Actors` (`z_index = 10`) | `6 / 32` | **`exported`** |
+| **40** | `ch01.prop.route_board.state1` | Prop (Free-standing Sign) | `ch01_prop_route_board_state1.pxo` | `assets/props/ch01/ch01_prop_route_board_state1.png` | `48 × 56 px` | `1f` (`static`) | `(24, 50)` | `YSort_Actors` (`z_index = 10`) | `6 / 32` | **`exported`** |
+| **41** | `ch01.prop.route_board.state2` | Prop (Free-standing Sign) | `ch01_prop_route_board_state2.pxo` | `assets/props/ch01/ch01_prop_route_board_state2.png` | `48 × 56 px` | `1f` (`static`) | `(24, 50)` | `YSort_Actors` (`z_index = 10`) | `6 / 32` | **`exported`** |
+| **42** | `ch01.prop.security_gate.closed` | Prop (Large Hero Mechanism) | `ch01_prop_security_gate_closed.pxo` | `assets/props/ch01/ch01_prop_security_gate_closed.png` | `40 × 52 px` | `1f` (`static`) | `(20, 42)` | `YSort_Actors` (`z_index = 10`) | `8 / 32` | **`exported`** |
+| **43** | `ch01.prop.security_gate.open` | Prop (Large Hero Mechanism) | `ch01_prop_security_gate_open.pxo` | `assets/props/ch01/ch01_prop_security_gate_open.png` | `40 × 52 px` | `1f` (`static`) | `(20, 42)` | `YSort_Actors` (`z_index = 10`) | `9 / 32` | **`exported`** |
+| **44** | `ch01.prop.bridge_platform.retracted` | Prop (Floor Deck) | `ch01_prop_bridge_platform_retracted.pxo` | `assets/props/ch01/ch01_prop_bridge_platform_retracted.png` | `48 × 32 px` | `1f` (`static`) | `(24, 18)` | `YSort_Props` (`z_index = 8`) | `6 / 32` | **`exported`** |
+| **45** | `ch01.prop.bridge_platform.extended` | Prop (Floor Deck) | `ch01_prop_bridge_platform_extended.pxo` | `assets/props/ch01/ch01_prop_bridge_platform_extended.png` | `48 × 32 px` | `1f` (`static`) | `(24, 18)` | `YSort_Props` (`z_index = 8`) | `6 / 32` | **`exported`** |
+| **46** | `ch01.prop.transit_car_stalled` | Prop (Large Set-piece) | `ch01_prop_transit_car_stalled_idle.pxo` | `assets/props/ch01/ch01_prop_transit_car_stalled_idle.png` | `128 × 80 px` | `1f` (`static`) | `(64, 52)` | `YSort_Actors` (`z_index = 10`) | `11 / 32` | **`exported`** |
+| **47** | `ch01.prop.dispatch_terminal.idle` | Prop (Large Hero Mechanism) | `ch01_prop_dispatch_terminal_idle.pxo` | `assets/props/ch01/ch01_prop_dispatch_terminal_idle.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `7 / 32` | **`exported`** |
+| **48** | `ch01.prop.dispatch_terminal.active` | Prop (Large Hero Mechanism) | `ch01_prop_dispatch_terminal_active.pxo` | `assets/props/ch01/ch01_prop_dispatch_terminal_active.png` | `64 × 64 px` | `1f` (`static`) | `(32, 56)` | `YSort_Actors` (`z_index = 10`) | `10 / 32` | **`exported`** |
+| **49** | `ch01.prop.pocket_watch` | Prop (Floor Pickup) | `ch01_prop_pocket_watch_idle.pxo` | `assets/props/ch01/ch01_prop_pocket_watch_idle.png` | `16 × 16 px` | `1f` (`static`) | `(8, 12)` | `YSort_Props` (`z_index = 8`) | `4 / 32` | **`exported`** |
+| **50** | `ch01.prop.lever_badge_a` | Prop (Overlay) | `ch01_prop_lever_badge_a_idle.pxo` | `assets/props/ch01/ch01_prop_lever_badge_a_idle.png` | `5 × 7 px` | `1f` (`static`) | `(2, 3)` | child of the lever, same `z_index` | `2 / 32` | **`exported`** |
+| **51** | `ch01.prop.lever_badge_b` | Prop (Overlay) | `ch01_prop_lever_badge_b_idle.pxo` | `assets/props/ch01/ch01_prop_lever_badge_b_idle.png` | `5 × 7 px` | `1f` (`static`) | `(2, 3)` | child of the lever, same `z_index` | `2 / 32` | **`exported`** |
+| **52** | `ch01.prop.pa_speaker` | Prop (Wall Fixture) | `ch01_prop_pa_speaker_idle.pxo` | `assets/props/ch01/ch01_prop_pa_speaker_idle.png` | `16 × 16 px` | `1f` (`static`) | `(8, 12)` | `Wall_Fixtures` (`z_index = 7`) | `6 / 32` | **`exported`** |
 
 ---
 
@@ -431,6 +445,90 @@ Common to all entries: **License / Attribution:** original production art by the
 - **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,24,25,26`
 - **Source / export:** `assets/source/ch01/ch01_prop_pressure_switch_pressed.pxo` → `assets/props/ch01/ch01_prop_pressure_switch_pressed.png`
 
+### `ch01.prop.route_board.state0`
+- **Filename:** `ch01_prop_route_board_state0.pxo` / `ch01_prop_route_board_state0.png` · **Category / use:** Prop (Free-standing Sign) · Room 7 `route_board`; derived state 0 = lever A `loop` + lever B `niche`; 1 lit pip, links N-W and E-S (TLF-042)
+- **Pixel dimensions:** `48 × 56 px` (`1.0×`) · **Pivot / sorting:** `(24, 50)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,12,13,15,25,26`
+- **Source / export:** `assets/source/ch01/ch01_prop_route_board_state0.pxo` → `assets/props/ch01/ch01_prop_route_board_state0.png` · generator `tools/art/gen/t3.py`
+
+### `ch01.prop.route_board.state1`
+- **Filename:** `ch01_prop_route_board_state1.pxo` / `ch01_prop_route_board_state1.png` · **Category / use:** Prop (Free-standing Sign) · state 1 = A `uncoupled` + B `niche`; 2 lit pips, cross pattern (TLF-042)
+- **Pixel dimensions:** `48 × 56 px` (`1.0×`) · **Pivot / sorting:** `(24, 50)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,12,13,15,25,26`
+- **Source / export:** `assets/source/ch01/ch01_prop_route_board_state1.pxo` → `assets/props/ch01/ch01_prop_route_board_state1.png` · generator `tools/art/gen/t3.py`
+
+### `ch01.prop.route_board.state2`
+- **Filename:** `ch01_prop_route_board_state2.pxo` / `ch01_prop_route_board_state2.png` · **Category / use:** Prop (Free-standing Sign) · state 2 = A `uncoupled` + B `atrium` (solved); 3 lit pips, single N-S line (TLF-042)
+- **Pixel dimensions:** `48 × 56 px` (`1.0×`) · **Pivot / sorting:** `(24, 50)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,12,13,15,25,26`
+- **Source / export:** `assets/source/ch01/ch01_prop_route_board_state2.pxo` → `assets/props/ch01/ch01_prop_route_board_state2.png` · generator `tools/art/gen/t3.py`
+
+### `ch01.prop.security_gate.closed`
+- **Filename:** `ch01_prop_security_gate_closed.pxo` / `ch01_prop_security_gate_closed.png` · **Category / use:** Prop (Large Hero Mechanism) · Room 4 `security_gate_01`, `gate_state = &"closed"`; barrier spans the lane along the y axis (TLF-042)
+- **Pixel dimensions:** `40 × 52 px` (`1.0×`) · **Pivot / sorting:** `(20, 42)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,22,24`
+- **Source / export:** `assets/source/ch01/ch01_prop_security_gate_closed.pxo` → `assets/props/ch01/ch01_prop_security_gate_closed.png` · generator `tools/art/gen/t3.py`
+
+### `ch01.prop.security_gate.open`
+- **Filename:** `ch01_prop_security_gate_open.pxo` / `ch01_prop_security_gate_open.png` · **Category / use:** Prop (Large Hero Mechanism) · `gate_state = &"open"`; bars retracted to stubs, lamp lit (TLF-042)
+- **Pixel dimensions:** `40 × 52 px` (`1.0×`) · **Pivot / sorting:** `(20, 42)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,24,25,26`
+- **Source / export:** `assets/source/ch01/ch01_prop_security_gate_open.pxo` → `assets/props/ch01/ch01_prop_security_gate_open.png` · generator `tools/art/gen/t3.py`
+
+### `ch01.prop.bridge_platform.retracted`
+- **Filename:** `ch01_prop_bridge_platform_retracted.pxo` / `ch01_prop_bridge_platform_retracted.png` · **Category / use:** Prop (Floor Deck) · Room 4 `bridge_platform_01`, `platform_state = &"retracted"`; only the two hazard-striped lip stubs (TLF-042)
+- **Pixel dimensions:** `48 × 32 px` (`1.0×`) · **Pivot / sorting:** `(24, 18)` · `YSort_Props` (`z_index = 8`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,22,24`
+- **Source / export:** `assets/source/ch01/ch01_prop_bridge_platform_retracted.pxo` → `assets/props/ch01/ch01_prop_bridge_platform_retracted.png` · generator `tools/art/gen/t3.py`
+
+### `ch01.prop.bridge_platform.extended`
+- **Filename:** `ch01_prop_bridge_platform_extended.pxo` / `ch01_prop_bridge_platform_extended.png` · **Category / use:** Prop (Floor Deck) · `platform_state = &"extended"`; deck 2 tiles long, guide lights, hazard ends (TLF-042)
+- **Pixel dimensions:** `48 × 32 px` (`1.0×`) · **Pivot / sorting:** `(24, 18)` · `YSort_Props` (`z_index = 8`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,12,13,14,24,25`
+- **Source / export:** `assets/source/ch01/ch01_prop_bridge_platform_extended.pxo` → `assets/props/ch01/ch01_prop_bridge_platform_extended.png` · generator `tools/art/gen/t3.py`
+
+### `ch01.prop.transit_car_stalled`
+- **Filename:** `ch01_prop_transit_car_stalled_idle.pxo` / `ch01_prop_transit_car_stalled_idle.png` · **Category / use:** Prop (Large Set-piece) · Room 1 stalled Mag-Transit car (static, 5 tiles long along +x, dead headlights); pivot is the footprint centre because a 5-tile footprint cannot keep (W/2, H-8) in 128×80 (bible appendix A.3) (TLF-042)
+- **Pixel dimensions:** `128 × 80 px` (`1.0×`) · **Pivot / sorting:** `(64, 52)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,01,11,12,13,15,22,23,24,27,28`
+- **Source / export:** `assets/source/ch01/ch01_prop_transit_car_stalled_idle.pxo` → `assets/props/ch01/ch01_prop_transit_car_stalled_idle.png` · generator `tools/art/gen/t3.py`
+
+### `ch01.prop.dispatch_terminal.idle`
+- **Filename:** `ch01_prop_dispatch_terminal_idle.pxo` / `ch01_prop_dispatch_terminal_idle.png` · **Category / use:** Prop (Large Hero Mechanism) · Room 9 `dispatch_terminal`; dark screen, unlit seal pad (TLF-042)
+- **Pixel dimensions:** `64 × 64 px` (`1.0×`) · **Pivot / sorting:** `(32, 56)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,22`
+- **Source / export:** `assets/source/ch01/ch01_prop_dispatch_terminal_idle.pxo` → `assets/props/ch01/ch01_prop_dispatch_terminal_idle.png` · generator `tools/art/gen/t3.py`
+
+### `ch01.prop.dispatch_terminal.active`
+- **Filename:** `ch01_prop_dispatch_terminal_active.pxo` / `ch01_prop_dispatch_terminal_active.png` · **Category / use:** Prop (Large Hero Mechanism) · lit amber text rows, teal concentric-diamond seal pad (shape cue); no code state, keyed to flag `ch01.flag.ledger_2359_revealed` (TLF-042)
+- **Pixel dimensions:** `64 × 64 px` (`1.0×`) · **Pivot / sorting:** `(32, 56)` · `YSort_Actors` (`z_index = 10`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15,25,26,29,31`
+- **Source / export:** `assets/source/ch01/ch01_prop_dispatch_terminal_active.pxo` → `assets/props/ch01/ch01_prop_dispatch_terminal_active.png` · generator `tools/art/gen/t3.py`
+
+### `ch01.prop.pocket_watch`
+- **Filename:** `ch01_prop_pocket_watch_idle.pxo` / `ch01_prop_pocket_watch_idle.png` · **Category / use:** Prop (Floor Pickup) · `global.pocket_watch` at `(368, 168)` in Room 1; damaged brass watch with cracked glass and loose chain (TLF-042)
+- **Pixel dimensions:** `16 × 16 px` (`1.0×`) · **Pivot / sorting:** `(8, 12)` · `YSort_Props` (`z_index = 8`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,22,25,26`
+- **Source / export:** `assets/source/ch01/ch01_prop_pocket_watch_idle.pxo` → `assets/props/ch01/ch01_prop_pocket_watch_idle.png` · generator `tools/art/gen/t3.py`
+
+### `ch01.prop.lever_badge_a`
+- **Filename:** `ch01_prop_lever_badge_a_idle.pxo` / `ch01_prop_lever_badge_a_idle.png` · **Category / use:** Prop (Overlay) · gold `A` on a dark plate; child offset `(3, -8)` from the lever pivot (`breaker_a`, `junction_lever_a`) (TLF-042)
+- **Pixel dimensions:** `5 × 7 px` (`1.0×`) · **Pivot / sorting:** `(2, 3)` · child of the lever, same `z_index`
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `11,26`
+- **Source / export:** `assets/source/ch01/ch01_prop_lever_badge_a_idle.pxo` → `assets/props/ch01/ch01_prop_lever_badge_a_idle.png` · generator `tools/art/gen/t3.py`
+
+### `ch01.prop.lever_badge_b`
+- **Filename:** `ch01_prop_lever_badge_b_idle.pxo` / `ch01_prop_lever_badge_b_idle.png` · **Category / use:** Prop (Overlay) · gold `B` on a dark plate (`breaker_b`, `junction_lever_b`) (TLF-042)
+- **Pixel dimensions:** `5 × 7 px` (`1.0×`) · **Pivot / sorting:** `(2, 3)` · child of the lever, same `z_index`
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `11,26`
+- **Source / export:** `assets/source/ch01/ch01_prop_lever_badge_b_idle.pxo` → `assets/props/ch01/ch01_prop_lever_badge_b_idle.png` · generator `tools/art/gen/t3.py`
+
+### `ch01.prop.pa_speaker`
+- **Filename:** `ch01_prop_pa_speaker_idle.pxo` / `ch01_prop_pa_speaker_idle.png` · **Category / use:** Prop (Wall Fixture) · optional wall horn for `security_crossing.pa_speaker` (node at `(320, 60)`) (TLF-042)
+- **Pixel dimensions:** `16 × 16 px` (`1.0×`) · **Pivot / sorting:** `(8, 12)` · `Wall_Fixtures` (`z_index = 7`)
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,11,12,13,14,15`
+- **Source / export:** `assets/source/ch01/ch01_prop_pa_speaker_idle.pxo` → `assets/props/ch01/ch01_prop_pa_speaker_idle.png` · generator `tools/art/gen/t3.py`
+
 ### 4.1 Archway reconciliation (`archway_frame_e` vs `ROOM_GRAPH.md` §7.1)
 `ROOM_GRAPH` §7.1 names `wall_archway_frame_n` and `wall_archway_frame_w`; batch 1 shipped one file named `archway_frame_e`. Geometry decides the mapping, not the compass letter: E and W boundary edges both run *down-left* on screen, N and S edges both run *down-right* (`px_x = 320 + (x-y)*16`). So:
 
@@ -444,12 +542,19 @@ Common to all entries: **License / Attribution:** original production art by the
 ### 4.2 `flip_h` rule for axis-run assets
 `wall_railing_iron`, `prop_station_bench` and `tile_cable_conduit_*` are authored along the down-right (+x) axis. For the down-left (+y) axis set `flip_h = true`; the baked top-left light then falls on the screen-right side, the same compromise the bible accepts for Elias (§2.3 #4).
 
-### 4.3 Room mockups (`concept`, `640 × 360 px`; kit + Tier 2 pieces, not runtime assets)
+### 4.3 Room mockups (`concept`, `640 × 360 px`; kit + puzzle props, not runtime assets)
 
 | # | Mockup | File | Canvas Size | QA State |
 |---|---|---|---|---|
 | M1 | `ch01.arrival_platform` (validation against the approved target sheet) | `design/art/mockups/ch01_arrival_platform_mockup.png` | `640 × 360 px` | **`concept`** |
 | M2 | `ch01.concourse_west` | `design/art/mockups/ch01_concourse_west_mockup.png` | `640 × 360 px` | **`concept`** |
 | M3 | `ch01.signal_control` | `design/art/mockups/ch01_signal_control_mockup.png` | `640 × 360 px` | **`concept`** |
+| M4 | `ch01.security_crossing` | `design/art/mockups/ch01_security_crossing_mockup.png` | `640 × 360 px` | **`concept`** |
 
 Composited by script from the committed PNGs at the positions in `CH01_PLACEMENT_SHEET.md` (palette `TLF-CH01-32` only, background `#0A0D14`, Elias `idle_se` frame 2 at the safe anchor; Tier 2 pieces shown in their default state). No `.pxo` (derived images).
+
+---
+
+## 5. Reproducibility (ADR-019)
+
+Rows 12-52 and the mockups/placement sheet are produced by `tools/art/gen/` (see its `README.md`). `python tools/art/gen/verify_regen.py` regenerates every generated `.pxo` (byte for byte), PNG (pixel for pixel; byte for byte against a fresh Pixelorama re-export with `--pixelorama`), mockup and the placement sheet, and compares with the committed files. Batch-1 files (rows 1-11, drawn by Argon in Pixelorama, plus the `.pxo` of the palette and target sheet) have no generator and are reported as *not covered*. Generated `.pxo` files carry the author `TLF design-art agent (Claude Code, Sonnet 5.5)`.
