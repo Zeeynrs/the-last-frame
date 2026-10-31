@@ -142,7 +142,7 @@ func _update_targeting() -> void:
 	# Filter out any candidates that became invalid or queued for deletion
 	_candidates = _candidates.filter(func(c): return is_instance_valid(c) and c.is_inside_tree())
 
-	var best = choose_best_interactable(global_position, _candidates)
+	var best = choose_best_interactable(global_position, _candidates, actor_id)
 	if best != current_target:
 		if current_target != null and is_instance_valid(current_target):
 			current_target.set_focused(false)
@@ -188,8 +188,21 @@ func _update_prompt_on_target(target: Interactable) -> void:
 			label_node.text = ""
 
 
-## Chooses the closest Interactable; breaks ties lexicographically by object_id.
-static func choose_best_interactable(from_pos: Vector2, candidates: Array) -> Interactable:
+## Returns true if an interactable can be targeted (supports 'use' or any watch ability).
+## Checkpoints, trigger zones, and safe anchors return false.
+static func is_targetable(interactable: Interactable, actor: StringName = &"player") -> bool:
+	if interactable == null or not is_instance_valid(interactable):
+		return false
+	if interactable.can_interact(actor, &"use") != &"unsupported":
+		return true
+	for ability in Interactable.WATCH_ABILITIES:
+		if interactable.supports_ability(ability):
+			return true
+	return false
+
+
+## Chooses the closest targetable Interactable; breaks ties lexicographically by object_id.
+static func choose_best_interactable(from_pos: Vector2, candidates: Array, actor: StringName = &"player") -> Interactable:
 	if candidates.is_empty():
 		return null
 
@@ -198,6 +211,10 @@ static func choose_best_interactable(from_pos: Vector2, candidates: Array) -> In
 
 	for c in candidates:
 		if not (c is Interactable):
+			continue
+		if not is_instance_valid(c):
+			continue
+		if not is_targetable(c, actor):
 			continue
 		var dist = from_pos.distance_to(c.global_position)
 		if dist < best_dist - 0.001:

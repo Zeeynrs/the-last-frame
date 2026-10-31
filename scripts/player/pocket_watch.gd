@@ -125,12 +125,25 @@ func set_selected_ability(ability: StringName) -> bool:
 	return false
 
 
+## Returns true if an interactable can be targeted (supports 'use' or any watch ability).
+## Checkpoints, trigger zones, and safe anchors return false.
+static func is_targetable(interactable: Interactable, actor: StringName = &"player") -> bool:
+	if interactable == null or not is_instance_valid(interactable):
+		return false
+	if interactable.can_interact(actor, &"use") != &"unsupported":
+		return true
+	for ability in Interactable.WATCH_ABILITIES:
+		if interactable.supports_ability(ability):
+			return true
+	return false
+
+
 ## Selects the best watch target per ADR-015:
-## 1. Filter candidates within watch_radius (default 96 px).
+## 1. Filter targetable candidates within watch_radius (default 96 px).
 ## 2. If any candidate supports the selected ability, pick the nearest of those.
-## 3. Otherwise pick the nearest candidate overall so unsupported feedback stays teachable.
+## 3. Otherwise pick the nearest targetable candidate overall so unsupported feedback stays teachable.
 ## 4. Break ties lexicographically by object_id.
-static func choose_watch_target(from_pos: Vector2, candidates: Array, p_selected_ability: StringName, max_radius: float = WATCH_RADIUS) -> Interactable:
+static func choose_watch_target(from_pos: Vector2, candidates: Array, p_selected_ability: StringName, max_radius: float = WATCH_RADIUS, actor: StringName = &"player") -> Interactable:
 	if p_selected_ability == &"echo":
 		return null
 
@@ -138,7 +151,11 @@ static func choose_watch_target(from_pos: Vector2, candidates: Array, p_selected
 	for c in candidates:
 		if not (c is Interactable):
 			continue
-		if is_instance_valid(c) and from_pos.distance_to(c.global_position) <= max_radius:
+		if not is_instance_valid(c):
+			continue
+		if not is_targetable(c, actor):
+			continue
+		if from_pos.distance_to(c.global_position) <= max_radius:
 			in_range.append(c)
 
 	if in_range.is_empty():
@@ -184,7 +201,12 @@ func update_targeting() -> void:
 	if is_inside_tree():
 		candidates = get_tree().get_nodes_in_group(&"interactable")
 
-	var best = choose_watch_target(global_position, candidates, selected_ability, watch_radius)
+	var actor := &"player"
+	var p = get_parent()
+	if p != null and "actor_id" in p:
+		actor = p.actor_id
+
+	var best = choose_watch_target(global_position, candidates, selected_ability, watch_radius, actor)
 	if best != current_target:
 		if current_target != null and is_instance_valid(current_target):
 			current_target.set_watch_focused(false)
