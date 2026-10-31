@@ -7,13 +7,13 @@
 | TLF-000 | COMPLETE | Repo, relocation, baseline tag `m0-base` |
 | TLF-001 | COMPLETE | `docs/TLF-001_AUDIT_REPORT.md` |
 | TLF-002 | COMPLETE | `docs/ADR_LOG.md` (ADR-014 still Proposed, closes with TLF-003) |
-| TLF-003 | READY | Dispatch to Argon: `docs/tasks/TLF-003.md` |
-| TLF-006 | READY | Dispatch to Flash: `docs/tasks/TLF-006.md` (re-scoped: project exists) |
+| TLF-003 | IN PROGRESS | Argon, worktree `tlf-design-art`, spec `docs/tasks/TLF-003.md` |
+| TLF-006 | IN PROGRESS | Flash, worktree `tlf-implementation-qa`, spec `docs/tasks/TLF-006.md` |
 | TLF-004, 005, 010 | NOT STARTED | Wait for TLF-003 review |
 | TLF-007, 008 | NOT STARTED | Wait for TLF-006 |
 | others | NOT STARTED | |
 
-Branch naming and merge flow: ADR-002.
+Branch naming and merge flow: ADR-002 (incl. Orca naming amendment).
 
 Use this as the initial task list. Each task must run in its assigned worktree. Agent 1 controls dependencies and integration.
 

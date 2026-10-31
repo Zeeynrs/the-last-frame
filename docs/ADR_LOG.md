@@ -41,6 +41,10 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - Milestone tags: `m0-base`, `m1-…`, `gate-a`, etc.
   - Commit messages: Conventional Commits prefixes (`feat:`, `fix:`, `docs:`, `chore:`, `test:`).
 - **Consequences:** Agents push task branches only. Merges are serialized through Opus.
+- **Amendment 2026-10-31 (Orca naming):** Orca creates per-role workspace branches `adityadaffa522/tlf-lead`, `…/tlf-design-art`, `…/tlf-implementation-qa` (worktrees under the user's Orca workspace folder). These are accepted as the task branches. Rules:
+  - One task at a time per role worktree.
+  - The commit subject starts with the task ID (e.g. `feat(TLF-006): …`).
+  - After Opus merges, the role starts its next task with `git switch -c tlf-<id>-<slug> origin/main` (or Orca creates a fresh workspace). Never reset a worktree that has unmerged work.
 
 ## ADR-003 — Rendering, resolution and pixel density
 - **Date / status:** 2026-10-31 · Accepted (provisional numbers; final after TLF-010 target sheet)
@@ -143,6 +147,16 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
     - Tests: `Godot_v4.7.2-stable_win64_console.exe --headless --path . -s res://tests/run_tests.gd`
   - Adopting GdUnit4/GUT later needs a new ADR plus human approval for the install.
   - **MCP tool policy:** the Lead uses Godot MCP read-only. Only the agent assigned as Godot owner for a task may use write tools (`create_scene`, `add_node`, `save_scene`, `update_project_uids`). Godot CLI is preferred for validation. Godot AI Workbench is not adopted for now (not installed).
+- **Amendment 2026-10-31 (MCP server chosen):** The project's Godot MCP is **`@coding-solo/godot-mcp`**, pinned to **0.1.1** (`npx -y @coding-solo/godot-mcp@0.1.1`, Claude Code user scope). Godot AI Workbench is **not adopted**. Upgrades need a version bump recorded here.
+  - Verified read-only: `get_godot_version`, `get_project_info`, `list_projects`, `get_uid` (see ISSUE-002).
+  - Tool tiers:
+    | Tier | Tools | Who |
+    |---|---|---|
+    | Read | `get_godot_version`, `get_project_info`, `list_projects`, `get_uid`, `get_debug_output` | anyone |
+    | Run | `run_project`, `stop_project`, `launch_editor` | Godot owner; Lead for QA review |
+    | Write | `create_scene`, `add_node`, `load_sprite`, `save_scene`, `export_mesh_library`, `update_project_uids` | assigned Godot owner only |
+  - Gemini CLI (Flash) has **no** Godot MCP configured. That's deliberate: TLF-006 uses the Godot CLI. Add the same pinned entry to Gemini's `mcpServers` only when a task needs scene tooling.
+  - The project-local `pixel-art` MCP (`pxcli-mcp`, exporting to `./assets/sprites`) is **not part of the pipeline**. It conflicts with ADR-001 folders and Argon's art ownership, so it must not be used.
 
 ## ADR-013 — Data-driven content format
 - **Date / status:** 2026-10-31 · Accepted

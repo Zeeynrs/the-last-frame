@@ -2,6 +2,8 @@
 
 This is a cautious setup guide for **Orca from Onorca**. Orca launches agent CLIs; MCP configuration belongs to the relevant CLI runtime. These snippets are templates, not a verified universal Orca configuration file.
 
+> **Project decision (ADR-012 amendment, 2026-10-31):** THE LAST FRAME uses `@coding-solo/godot-mcp` pinned to 0.1.1, not Godot AI Workbench. Section B is kept as reference only.
+
 ## Prerequisites
 
 - Windows 10/11 x64

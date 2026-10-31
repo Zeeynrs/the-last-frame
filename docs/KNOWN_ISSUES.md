@@ -16,9 +16,12 @@ This file starts as a tracking template. Do not invent resolved status.
 | RISK-010 | Vertical-slice P0 list too large | High | Mitigating | Agent 1 | SD-1 tiering; review after TLF-003/004 |
 | RISK-011 | Lead session sees Godot MCP write tools; two Godot writers could clash | High | Open | Agent 1 | ADR-012 tool policy: only assigned Godot owner writes |
 | RISK-012 | Docs location drift | Medium | Resolved 2026-10-31 | Agent 1 | Pack relocated to root (ADR-001) |
-| RISK-013 | Pixelorama version unpinned; `.pxo` format may change between versions | Low | Open | Human | Record version in TOOLCHAIN_VERSIONS |
-| RISK-014 | Gemini model labels (Argon/Flash) unverified | Medium | Open | Human | Verify in Gemini CLI; record result |
-| ISSUE-001 | Docs specify Godot AI Workbench; it is not installed and a different `godot` MCP server is connected | Low | Open | Human / Agent 1 | Decide install vs adopt existing server; until then use Godot CLI |
+| RISK-013 | Pixelorama version unpinned; `.pxo` format may change between versions | Low | Resolved 2026-10-31 | Human | Pinned to 1.2.3; all `.pxo` work uses this version |
+| RISK-014 | Gemini model labels (Argon/Flash) unverified | Medium | Resolved 2026-10-31 | Human | User confirmed both models are available |
+| ISSUE-001 | Docs specify Godot AI Workbench; it is not installed and a different `godot` MCP server is connected | Low | Resolved 2026-10-31 | Agent 1 | Adopted `@coding-solo/godot-mcp` 0.1.1 (ADR-012 amendment) |
+| ISSUE-002 | godot-mcp `get_uid` only reads `<file>.uid` sidecars; for imported assets (e.g. `icon.svg`) it reports "does not exist" and suggests `resave_resources`, but the UID actually lives in `<file>.import` | Low | Open (workaround) | Agent 1 | Don't run resave on that message. Read the UID from the `.import` file instead |
+| RISK-015 | Godot MCP launched via unpinned `npx` would auto-run any newly published version | Medium | Resolved 2026-10-31 | Agent 1 | Pinned to `@0.1.1` |
+| RISK-016 | Project-local `pixel-art` MCP (`pxcli-mcp`) writes to `./assets/sprites`, outside ADR-001 layout and Argon ownership | Low | Open | Agent 1 | Not used (ADR-012). Remove from local config if it causes confusion |
 
 ## Issue template
 

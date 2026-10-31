@@ -37,6 +37,7 @@
 | 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
 | 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
 | 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
+| 2026-10-31 | Orca role worktrees created; TLF-003 and TLF-006 dispatched; Gemini models confirmed; Pixelorama 1.2.3 pinned; Godot MCP chosen and pinned (ADR-012 amendment) | Human + Agent 1 |
 
 ## Update instructions
 
@@ -54,5 +55,5 @@ Do not mark work complete based only on generated code or an agent's assertion.
 ## Pack baseline update (2026-10-30)
 - [x] Correct Orca product identified as Onorca Orca IDE.
 - [x] Added Windows MCP templates, worktree ownership, task board, bootstrap and QA gates.
-- [x] Verify actual installed versions and MCP connections on the user machine (2026-10-31; Gemini model access still open).
+- [x] Verify actual installed versions and MCP connections on the user machine (2026-10-31).
 - [ ] Create Godot project skeleton and complete first vertical-slice milestone.
