@@ -14,7 +14,7 @@
 | TLF-005 | COMPLETE | Merged `e1c0816` (re-review of `41190e7`: PZ-004 forced route 318 ticks recomputed, boundary doors, arithmetic) |
 | TLF-008 | COMPLETE | Opus temporal core merged `fe3744a` (validate 51/51; TestRoom regression probe OK) |
 | TLF-017 | COMPLETE (with noted deviation) | Merged `c72f272`. Evidence: `docs/handoffs/TLF-017/` (scripted synthetic controller + remap run) + Lead's independent remap probe on `main`. Deviation: no physical controller used, so a human spot-check is outstanding (ISSUE-011) |
-| TLF-018 | CHANGES REQUESTED | `6332fb6` reviewed (`docs/reviews/2026-10-31_TLF-018.md`): works in runtime; fix R1 ghost leak/parenting, R2 SaveService autoload + translations, R3/R4 minor. Was: READY | Flash: `docs/tasks/TLF-018.md`. **Start by porting `431d1c5`** per `docs/reviews/2026-10-31_TLF-008-flash-duplicate.md`; also register the SaveService autoload |
+| TLF-018 | COMPLETE | Merged `7fb8aec` (Flash): pocket watch, HUD feedback, Elias SpriteFrames (`7dafc5a`), translations + SaveService autoload; ui_feedback translation committed `4476e0e` |
 | TLF-020 | COMPLETE | Opus SpatialGraph + SpatialService + DoorwayPresenter merged `3740531` (94/94; physics doorway probe) |
 | TLF-021 | COMPLETE | Opus RoomRouter + ChapterRoot + world memory merged `5fda100` (118/118, mutation-checked, physics probe). Was: room router (scene loading per room, doorway spawn placement, checkpoints → SaveService), Echo stop on room change |
 | TLF-019 | COMPLETE | Opus PuzzleService + SaveService + NarrativeState merged `afa6929` (82/82, no leaks; real-scene save probe OK). Autoload registration → TLF-018 |
