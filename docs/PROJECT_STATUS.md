@@ -1,6 +1,6 @@
 # Project Status
 
-**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 216/216 tests, 78 scripts
+**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 242/242 tests, 89 scripts, no leaks (checked by hand until TLF-035)
 
 This file states what the repository **actually** contains. Task-level detail lives in `ORCA_TASK_BOARD.md`; history lives in `PROGRESS.md`.
 
@@ -26,29 +26,30 @@ This file states what the repository **actually** contains. Task-level detail li
 | Ch1 text: Elias, Operator, journal, fragment, puzzle feedback, 6 readables (66 keys) + 5 DocumentDefs, generated from `narrative/ch01/CH01_TEXT.md` | `narrative/ch01/`, `localization/ch01_text.csv`, `data/documents/ch01/`, `tools/content/` | `tests/narrative/test_ch01_text.gd` |
 | Ch1 graph data: `ChapterGraphDef` (rooms, doors, sides/tiles, safe anchors, pairs, critical pairs, relocation) from ROOM_GRAPH + PZ-005 | `data/chapters/ch01/`, `scripts/spatial/chapter_graph_def.gd`, `tools/content/gen_ch01_graph.py` | `tests/spatial/test_ch01_graph.gd` |
 | **Playable:** `scenes/chapters/ch01/Chapter01.tscn`: **all 10 rooms, start to `chapter_complete`**, PZ-001…005, Beat 09 revelation, Beat 10 outro, pocket watch (Trace/Rewind/Freeze/Echo), HUD feedback, hints, checkpoints/autosave, Elias sprite animations | `scenes/chapters/ch01/`, `scripts/player/`, `scripts/ui/` | `tests/chapters/ch01/`, `tests/player/`, `tests/ui/`; Lead real-input probe |
+| Story UI: `DialogueBox` (blocking/non-blocking, one-shot `heard.*` flags), `DocumentViewer` (paging, SimClock pause), `JournalScreen` (categories + fragments), `hint` action (H + joypad 10); all Ch1 Beats 01–10 wired | `scripts/ui/`, `scenes/ui/`, `scripts/chapters/ch01/` | `tests/ui/`, `tests/chapters/ch01/test_ch01_narrative_beats.gd` |
+| Real-input proofs: full Ch1 playthrough with input actions + physics only (PZ-001…005 incl. PZ-004 with Echo, Beats 09/10); negative test that PZ-004 fails without Echo (RISK-018 closed); PZ-004 geometric route/reach tests on real colliders | `tests/chapters/ch01/`, `tests/support/base_test.gd` | TLF-030/031/033 + `3df2583` |
 | Art v1: art bible, Ch1 palette (32), arrival platform target sheet, Elias 8-dir idle/walk, 3 floor tiles, 2 walls, archway, 23:59 clock, CC0 pixel font | `design/art/`, `assets/` | Lead verification (Pixelorama CLI, palette, alpha, mirrors); not yet placed in a scene |
 | Ch1 design: beat sheet (10 beats, 38 min), 5 puzzle specs with 27 given/when/then tests, room graph (10 rooms, boundary doors, placement metrics, kit list) | `design/ch01/` | Lead reviews in `docs/reviews/` |
 
 ## B. Partially implemented
-- Interaction feedback: `InteractionResult.reason` exists, but the player ignores it, so no UI feedback (ISSUE-006).
 - Boot scene: placeholder label only; `run/main_scene` is Boot, not a gameplay scene.
 
 ## C. Implemented but not integrated
-- `SaveService` is not yet an autoload; `RoomRouter` owns one and uses it for checkpoint autosaves. Autoload registration happens in TLF-018.
-- No real Ch1 room scenes yet: router and ChapterRoot are proven with test rooms only (Ch1 rooms come with TLF-009 + TLF-010 art).
-- Flash's pocket watch exists only on its branch (`431d1c5`); it is being ported in TLF-018.
+- Art v1 is barely placed in the Ch1 rooms: only the archway frame and the 23:59 clock appear (8 of 10 rooms); floors, walls and props are greybox polygons (ISSUE-012, Argon unavailable).
 
 ## D. Broken
-- Nothing known (validation green on `main`).
+- `interact` that closes a document / the last blocking dialogue line also fires on the player in the same frame: the document reopens or a nearby object is used (ISSUE-023 → TLF-034).
+- PZ-004 barrier visual smaller than its collision (ISSUE-024 → TLF-034).
 
 ## E. Missing (next by priority)
-1. Real-input proof of PZ-004 as a test (TLF-031, Opus impl)
-2. Dialogue/document/journal presentation UI (Milestone 4)
-3. Vertical-slice polish: art beyond v1 (Argon unavailable, ISSUE-012), audio, lighting/VFX, Beat 10 cinematic, accessibility pass
-4. External playtest (Gate C)
+1. TLF-034 (Flash) input/visual fixes; TLF-035 (Opus impl) leak gate in `validate.ps1`
+2. Human: physical controller spot-check (ISSUE-011, last item for M1)
+3. Boot → main menu → Chapter01 flow (`run/main_scene` is still the Boot placeholder)
+4. Vertical-slice polish: art beyond v1 (Argon unavailable, ISSUE-012), audio, lighting/VFX, Beat 10 cinematic, accessibility pass
+5. External playtest (Gate C)
 
 ## F. Should be improved
-- Prompt text is hard-coded `[E]` and English-only (ISSUE-007).
+- The three UIs each carry a copy of the player-block lookup (consolidated in TLF-034).
 - Expected `push_error` output from negative tests shows up in logs; acceptable for now.
 
 ## G. Stable, don't rework without an ADR

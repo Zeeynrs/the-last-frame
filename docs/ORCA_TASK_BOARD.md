@@ -22,9 +22,11 @@
 | TLF-023 | COMPLETE | Opus Ch1 puzzle objects merged `e6de2b4`: all 27 spec tests + 10 extra, mutation-checked; 166/166 |
 | TLF-029 | COMPLETE (runner) | Merged `2eb5272` (Opus impl): awaitable frame-stepping tests + 6 self-tests. Follow-up TLF-030: real-input Ch1 playthrough test |
 | TLF-030 | COMPLETE | Merged `0ddf131` (Opus impl): real-input playthrough PZ-001…003, ~524 physics frames |
-| TLF-033 | READY | Flash: `docs/tasks/TLF-033.md` (PZ-004 layout: no reach through railing, seal the gap, unskippable exit trigger, real geometric route test) |
+| TLF-035 | READY | Opus impl: `docs/tasks/TLF-035.md` (validate.ps1 fails on leaks at exit; mutation-proven) |
+| TLF-034 | READY | Flash: `docs/tasks/TLF-034.md` (interact closes and then reopens a document / uses an object after a blocking dialogue: one player block API that swallows just-pressed on the unblock frame; PZ-004 barrier visual = collision) |
+| TLF-033 | COMPLETE | Merged `66677d9` (Flash `73df531`): PZ-004 layout, railing reach sealed, exit trigger spans the north approach, geometric route + reach tests on real scene colliders. Opus negative real-input test green (no-Echo attempt 411 ticks > 180 window) |
 | TLF-032 | COMPLETE | Merged (Flash `dcdb67e`): dialogue box, document viewer, journal, hint (H + joypad 10), Ch1 Beat wiring. Lead spec review item by item + runtime probes |
-| TLF-031 | CHANGES REQUESTED | Opus impl `af95b40`: passes on old main, fails on main+TLF-032 (Beat 01 blocking monologue not dismissed). Rebase on main, add dismiss steps for Beats 01/09/10, and fix `tests/support/base_test.gd::tap()` (can drop a press when 2 physics steps run in one idle frame; allowed). The RISK-018 negative test (`agent/opus-core-risk018`) is merged together with TLF-033 |
+| TLF-031 | COMPLETE | Merged `0c0006f` (Opus impl `e60cf3f`): real-input playthrough rooms 5–10 incl. PZ-004 with Echo, dismisses TLF-032 dialogue, robust `tap()`/walk helpers. RISK-018 negative test merged `3df2583` (`1bebf50`) |
 | TLF-025 | COMPLETE | Merged `a39be53` (Flash): rooms 5–10, PZ-004/005, Beat 09/10, intercom journal hook. Lead real-input probe: PZ-005 levers → atrium → terminal → outro (`chapter_complete`) |
 | TLF-028 | COMPLETE | Merged `2eb5272` (Opus impl): validate.ps1 robust on PowerShell 5.1; fresh clone validates on first run |
 | TLF-027 | COMPLETE | Opus impl agent `aafb2bb`, merged: class `SaveStore`, autoload name `SaveService`; verified 180/180 with and without the autoload; router adopts the autoload. **TLF-018 R2b unblocked** |
