@@ -29,7 +29,9 @@ This file starts as a tracking template. Do not invent resolved status.
 | RISK-017 | PZ-002 180-tick window may be tight even with ADR-015 auto-targeting | Medium | Open | Argon / Flash | Playtest in TLF-009; assist setting extends to 300 ticks |
 | RISK-018 | PZ-004 breaker sync puzzle can be solved without Echo if the breaker route is shorter than the engage window | High | Open | Argon | TLF-005 R1: route ≥ window + 120 ticks |
 | ISSUE-008 | Duplicate work: Flash finished TLF-008 (`431d1c5`) in parallel with Opus's core after the ADR-017 re-assignment | Medium | Mitigated | Agent 1 | Port the keepers in TLF-018. Process rule: before re-assigning, ask the user whether the task was already sent |
-| ISSUE-009 | Flash's local TLF-017 test run left `user://test_settings_corrupt.cfg` in the shared Godot user data folder | Low | Open | Flash | Tests must write under a test-only folder and delete it (as `tests/save` does) |
+| ISSUE-009 | Flash's local TLF-017 test run left `user://test_settings_corrupt.cfg` in the shared Godot user data folder | Low | Resolved 2026-10-31 | Flash | Tests must write under a test-only folder and delete it (as `tests/save` does) |
+| ISSUE-010 | `Settings.remap_action(action, "keyboard", ev)` replaces **all** keyboard/mouse bindings of the action (e.g. `move_up` loses the Up arrow when W is remapped) | Low | Open | Flash (remap UI task) | Decide primary/secondary slots before the remap UI ships |
+| ISSUE-011 | TLF-017 manual controller and remap evidence (Milestone 1 exit) not provided in the commit or repo | Medium | Open | Flash / Human | Attach the handoff report or perform the manual check |
 | RISK-016 | Project-local `pixel-art` MCP (`pxcli-mcp`) writes to `./assets/sprites`, outside ADR-001 layout and Argon ownership | Low | Open | Agent 1 | Not used (ADR-012). Remove from local config if it causes confusion |
 
 ## Issue template

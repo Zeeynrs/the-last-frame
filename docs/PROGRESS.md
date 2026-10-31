@@ -37,6 +37,7 @@
 | 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
 | 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
 | 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
+| 2026-10-31 | Lead review of Flash TLF-017 (`19436f9`, after reverting duplicate `431d1c5`): net diff in scope, simulated merge 108/108, merged `c72f272`; manual controller evidence still missing (ISSUE-011); remap single-slot note (ISSUE-010) | Agent 1 |
 | 2026-10-31 | TLF-020 implemented by Opus, merged `3740531`: SpatialGraph (transactional re-pairing, critical paths), SpatialService (relocation), DoorwayPresenter, spatial save section, GameSession refs via node paths; 94/94 | Agent 1 |
 | 2026-10-31 | TLF-005 re-review passed, merged `e1c0816`; TLF-010 written (Pixelorama CLI verified: export-only, so `.pxo` must pass a CLI open/export check). Flash's revert of `431d1c5` moved to before the TLF-017 push | Agent 1 |
 | 2026-10-31 | TLF-019 implemented by Opus, merged `afa6929`: PuzzleService, PuzzleCompletionZone, ResetAnchor, NarrativeState, SaveService (type-tagged JSON, atomic, migrations, validation), IdRegistry.get_ids, watch-focus hook; 82/82, no leaks. Flash's duplicate TLF-008 `431d1c5` reviewed: not merged, keepers ported in TLF-018 | Agent 1 |

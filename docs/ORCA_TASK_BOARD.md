@@ -13,10 +13,10 @@
 | TLF-007 | COMPLETE | Merged `99f6bb3` (re-review of `1801ed0` passed; validate on main 26/26) |
 | TLF-005 | COMPLETE | Merged `e1c0816` (re-review of `41190e7`: PZ-004 forced route 318 ticks recomputed, boundary doors, arithmetic) |
 | TLF-008 | COMPLETE | Opus temporal core merged `fe3744a` (validate 51/51; TestRoom regression probe OK) |
-| TLF-017 | IN PROGRESS | Flash (uncommitted WIP seen 11:12). **Before pushing: `git revert 431d1c5`, then `git pull origin main`**, or the branch can't be merged |
-| TLF-018 | READY (after TLF-017) | Flash: `docs/tasks/TLF-018.md`. **Start by porting `431d1c5`** per `docs/reviews/2026-10-31_TLF-008-flash-duplicate.md`; also register the SaveService autoload |
+| TLF-017 | TESTED (merged `c72f272`) | Code merged: 14 settings tests, 108/108 on merge result. **Manual controller + remap evidence not provided yet**, so not COMPLETE (Milestone 1 exit criterion) |
+| TLF-018 | READY | Flash: `docs/tasks/TLF-018.md`. **Start by porting `431d1c5`** per `docs/reviews/2026-10-31_TLF-008-flash-duplicate.md`; also register the SaveService autoload |
 | TLF-020 | COMPLETE | Opus SpatialGraph + SpatialService + DoorwayPresenter merged `3740531` (94/94; physics doorway probe) |
-| TLF-021 | NOT STARTED | Opus: room router (scene loading per room, doorway spawn placement, checkpoints → SaveService), Echo stop on room change |
+| TLF-021 | IN PROGRESS | Opus: room router (scene loading per room, doorway spawn placement, checkpoints → SaveService), Echo stop on room change |
 | TLF-019 | COMPLETE | Opus PuzzleService + SaveService + NarrativeState merged `afa6929` (82/82, no leaks; real-scene save probe OK). Autoload registration → TLF-018 |
 | TLF-016 | COMPLETE | Opus EchoService + TriggerZone merged `9f55245` (validate 67/67; physics runtime probe OK) |
 | TLF-010 | READY | Argon: `docs/tasks/TLF-010.md` (art bible, palette, target sheet, first sprite batch; `.pxo` must pass Pixelorama CLI verification) |
