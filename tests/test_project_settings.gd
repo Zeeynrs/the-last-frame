@@ -173,9 +173,23 @@ func test_main_scene() -> void:
 		_assert_not_null(instance, "Boot scene must instantiate")
 		_assert_true(instance is Control, "Boot scene root must be a Control node")
 
-		var label = instance.get_node_or_null("Label")
-		_assert_not_null(label, "Boot scene must contain a Label node")
-		if label is Label:
-			_assert_eq(label.text, "THE LAST FRAME — boot", "Label text must be 'THE LAST FRAME — boot'")
+		# TLF-037: the placeholder label is gone; Boot routes to the title screen.
+		_assert_true(instance.get_node_or_null("Label") == null, "Boot has no placeholder Label")
+		_assert_eq((instance.get_script() as Script).resource_path, "res://scripts/core/boot.gd", "Boot runs boot.gd")
 
 		instance.free()
+
+
+func test_autoloads() -> void:
+	# ADR-011 (+ TLF-037): Settings, SaveService, SceneRouter. Autoload names must not be hidden
+	# by a class_name (SaveService's class is SaveStore; SceneRouter has none).
+	var expected := {
+		"Settings": "*res://scripts/settings/settings.gd",
+		"SaveService": "*res://scripts/save/save_service.gd",
+		"SceneRouter": "*res://scripts/core/scene_router.gd",
+	}
+	for autoload_name in expected.keys():
+		_assert_eq(ProjectSettings.get_setting("autoload/" + autoload_name), expected[autoload_name],
+			"autoload %s registered" % autoload_name)
+	var tree := Engine.get_main_loop() as SceneTree
+	_assert_true(tree.root.has_node("SceneRouter"), "SceneRouter autoload is instantiated under /root")
