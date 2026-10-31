@@ -31,6 +31,7 @@ static func default_save() -> Dictionary:
 		"narrative_flags": {},
 		"fragments": [],
 		"temporal": {},
+		"spatial": {},
 		"settings_ref": "user://settings.cfg",
 	}
 
@@ -56,6 +57,8 @@ func capture(session: GameSession, chapter: String, checkpoint_id: String) -> Di
 			if component != null:
 				temporal[String(id)] = component.export_history()
 	data["temporal"] = temporal
+	if session.spatial_service != null:
+		data["spatial"] = session.spatial_service.export_state()
 	return data
 
 
@@ -69,6 +72,10 @@ func apply(session: GameSession, data: Dictionary) -> Dictionary:
 		session.puzzle_service.import_state(data["puzzles"])
 	if session.narrative_state != null:
 		session.narrative_state.import_state(data["narrative_flags"], data["fragments"])
+	if session.spatial_service != null and not data["spatial"].is_empty():
+		var spatial_result := session.spatial_service.import_state(data["spatial"])
+		if not spatial_result["ok"]:
+			return {"ok": false, "reason": spatial_result["reason"], "skipped": []}
 	var skipped: Array[String] = []
 	for key in data["temporal"].keys():
 		var node = session.id_registry.resolve(StringName(key))
@@ -158,7 +165,8 @@ func validate(data: Dictionary) -> Dictionary:
 	var expected := {
 		"save_version": TYPE_INT, "chapter": TYPE_STRING, "checkpoint_id": TYPE_STRING,
 		"puzzles": TYPE_DICTIONARY, "narrative_flags": TYPE_DICTIONARY,
-		"fragments": TYPE_ARRAY, "temporal": TYPE_DICTIONARY, "settings_ref": TYPE_STRING,
+		"fragments": TYPE_ARRAY, "temporal": TYPE_DICTIONARY, "spatial": TYPE_DICTIONARY,
+		"settings_ref": TYPE_STRING,
 	}
 	for key in expected.keys():
 		if not data.has(key) or typeof(data[key]) != expected[key]:

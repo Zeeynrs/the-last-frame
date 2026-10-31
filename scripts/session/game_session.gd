@@ -10,6 +10,7 @@ extends Node
 @export var echo_service: EchoService
 @export var puzzle_service: PuzzleService
 @export var narrative_state: NarrativeState
+@export var spatial_service: SpatialService
 
 
 func _enter_tree() -> void:
@@ -29,3 +30,5 @@ func _ready() -> void:
 		puzzle_service = get_node_or_null("PuzzleService") as PuzzleService
 	if narrative_state == null:
 		narrative_state = get_node_or_null("NarrativeState") as NarrativeState
+	if spatial_service == null:
+		spatial_service = get_node_or_null("SpatialService") as SpatialService
