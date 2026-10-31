@@ -1,6 +1,6 @@
 # Project Status
 
-**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 82/82 tests
+**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 94/94 tests
 
 This file states what the repository **actually** contains. Task-level detail lives in `ORCA_TASK_BOARD.md`; history lives in `PROGRESS.md`.
 
@@ -18,6 +18,7 @@ This file states what the repository **actually** contains. Task-level detail li
 | Echo: `EchoService` record/playback (player-only logic track, watch abilities excluded, 1200-tick cap, persistent occupancy, reset) + `TriggerZone` occupancy | `scripts/echo/`, `scripts/interaction/trigger_zone.gd` | `tests/echo/` incl. TEST-PZ003-02/03/04, TEST-PZ004-04/05; physics runtime probe |
 | Puzzle progression: `PuzzleService` (permanent SOLVED, member resets), `PuzzleCompletionZone`, `ResetAnchor`; `NarrativeState` (flags, fragments) | `scripts/puzzle/`, `scripts/narrative/` | `tests/puzzle/` |
 | Save/load: `SaveService` (type-tagged JSON, atomic write, migrations, validation, temporal history) | `scripts/save/` | `tests/save/` incl. save → fresh scene → load loop |
+| Spatial: `SpatialGraph` (transactional doorway re-pairing, critical paths, reachability), `SpatialService` (relocation), `DoorwayPresenter` | `scripts/spatial/` | `tests/spatial/` incl. TEST-PZ005-01..05; physics doorway probe |
 | Ch1 design: beat sheet (10 beats, 38 min), 5 puzzle specs with 27 given/when/then tests, room graph (10 rooms, boundary doors, placement metrics, kit list) | `design/ch01/` | Lead reviews in `docs/reviews/` |
 
 ## B. Partially implemented
@@ -32,11 +33,11 @@ This file states what the repository **actually** contains. Task-level detail li
 - Nothing known (validation green on `main`).
 
 ## E. Missing (next by priority)
-1. SpatialGraph + doorway presenters (TLF-020, Opus, next)
+1. Room router: per-room scene loading, doorway spawn placement, checkpoints (TLF-021, Opus, next)
 2. Pocket-watch controller + Echo controls + HUD (TLF-018, Flash, after TLF-017)
 3. Ghost visuals and echo HUD (part of TLF-018)
 4. Settings autoload and input-remapping foundation (TLF-017, Flash)
-5. Camera, scene routing between rooms, SpatialGraph (doorway reassignment)
+5. Camera per room (Flash)
 6. Art bible, palette, target sheet, first sprites (TLF-010, Argon, ready)
 7. All art, audio, UI, dialogue/narrative presentation and Ch1 content
 

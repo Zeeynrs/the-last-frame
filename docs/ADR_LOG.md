@@ -140,6 +140,13 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - Presenters (door visuals, collision, navigation, interaction anchors, camera) rebuild from the graph on `changed`. A player in an affected room is moved to a safe anchor.
   - **Ch1 supports doorway reassignment only.** Room rotation arrives with Ch3 under a follow-up ADR.
   - **Clarification 2026-10-31:** Doorway IDs are room-local keys. A doorway is referenced as `(room_id, door_id)`, written `room_id:door_id` in docs, and is not registered in IdRegistry (doorway presenter nodes are). Every declared doorway must be paired exactly once. An edge may be flagged `traversable = false` (e.g. a grille); it's valid for pairing but ignored for reachability.
+  - **Implementation notes 2026-10-31 (TLF-020):**
+    - A transform is a list of new pairings. Every doorway it names is first detached from its current partner, so any partner left unpaired fails validation. This rejects PZ-005 I-1 and I-2 with no special cases.
+    - A doorway may pair with itself (a dead-end loop).
+    - Validation order: unknown, duplicate or dangling doorway → `invalid_graph`; then the registered critical room pairs → `critical_path_unreachable`.
+    - **Relocation rule:** after a committed change, actors whose current room can't be reached from the session's anchor room (via traversable edges) get `relocate_requested(actor, anchor)`. Actors in rooms that are still reachable are not moved.
+    - `DoorwayPresenter` only reports `traversed/blocked` from the graph; loading and positioning rooms is the room router's job (next task). Echoes never traverse doorways.
+    - Saves carry `spatial = {pairs, actor_rooms}` (optional section); invalid imports leave the graph untouched.
 - **Consequences:** Keeps the Ch1 spatial cost small while exercising the real architecture.
 
 ## ADR-010 — Save format
@@ -154,6 +161,7 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - Encoding: `JSON.stringify(JSON.from_native(data))` / `JSON.to_native(JSON.parse_string(text))`. Verified on 4.7.2 that StringName/int/nested values round-trip exactly and that Objects encode as `null`, so live Nodes can't be serialized.
   - `temporal[object_id]` is `TemporalComponent.export_history()`: `{schema_version, cursor, entries[], is_frozen}`. A cursor alone is insufficient after runtime commits.
   - Writes go to `.tmp`, are verified by re-reading, then renamed. Reads return `{ok, reason, data}` with `reason ∈ {no_save, corrupt, unsupported_version, invalid}`. Migrations are `migrations[from_version] -> Callable`, and a gap in the chain is refused. Defaults are filled for missing fields; structure is validated before any write or apply. Unknown temporal IDs are skipped and reported, never fatal.
+  - Optional `spatial` section (TLF-020): `SpatialService.export_state()`.
   - `SaveService` is implemented in `scripts/save/save_service.gd` (a Node). Its **autoload registration** in `project.godot` belongs to Flash (single owner) in TLF-018.
 
 ## ADR-011 — Global vs session services

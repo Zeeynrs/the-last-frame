@@ -10,9 +10,9 @@
 |---|---|---|
 | 0 — Project setup | COMPLETE | Tag `m0-complete`: repo, ADRs, folder structure, input map, pixel-art display, headless validation (5/5) documented in README |
 | 1 — Isometric foundation | IN PROGRESS | TLF-007 merged (session core, iso movement, interaction in greybox). Remaining for exit: controller manual test evidence, input remapping foundation |
-| 2 — Temporal prototype | IN PROGRESS | TLF-008 (temporal + watch) dispatched; TLF-016 (Echo) next |
-| 3 — Spatial prototype | NOT STARTED | |
-| 4 — Puzzle/narrative framework | NOT STARTED | |
+| 2 — Temporal prototype | IN PROGRESS | Core done (TLF-008 temporal, TLF-016 Echo); player-facing pocket watch/HUD pending (TLF-018) |
+| 3 — Spatial prototype | IN PROGRESS | SpatialGraph core merged (TLF-020); room router next (TLF-021) |
+| 4 — Puzzle/narrative framework | IN PROGRESS | PuzzleService, NarrativeState, SaveService merged (TLF-019); dialogue/journal UI pending |
 | 5 — Chapter 1 vertical slice | NOT STARTED | |
 | 6 — Full content production | NOT STARTED | |
 | 7 — Beta and release | NOT STARTED | |
@@ -37,6 +37,7 @@
 | 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
 | 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
 | 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
+| 2026-10-31 | TLF-020 implemented by Opus, merged `3740531`: SpatialGraph (transactional re-pairing, critical paths), SpatialService (relocation), DoorwayPresenter, spatial save section, GameSession refs via node paths; 94/94 | Agent 1 |
 | 2026-10-31 | TLF-005 re-review passed, merged `e1c0816`; TLF-010 written (Pixelorama CLI verified: export-only, so `.pxo` must pass a CLI open/export check). Flash's revert of `431d1c5` moved to before the TLF-017 push | Agent 1 |
 | 2026-10-31 | TLF-019 implemented by Opus, merged `afa6929`: PuzzleService, PuzzleCompletionZone, ResetAnchor, NarrativeState, SaveService (type-tagged JSON, atomic, migrations, validation), IdRegistry.get_ids, watch-focus hook; 82/82, no leaks. Flash's duplicate TLF-008 `431d1c5` reviewed: not merged, keepers ported in TLF-018 | Agent 1 |
 | 2026-10-31 | TLF-016 Echo implemented by Opus (`3893b1c` on agent/opus-core), merged `9f55245`: EchoService, TriggerZone, trigger dispatch, null-safe service fallbacks; 67/67; runtime probe with physical trigger replays offsets exactly. TLF-018 extended with Echo controls | Agent 1 |
