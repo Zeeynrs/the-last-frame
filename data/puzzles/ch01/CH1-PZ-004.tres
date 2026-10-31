@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PuzzleDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/puzzle/puzzle_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+puzzle_id = &"CH1-PZ-004"
+room_id = &"ch01.signal_control"
+title_key = "PZ004_TITLE"
+hint_keys = PackedStringArray("PZ004_HINT_1", "PZ004_HINT_2", "PZ004_HINT_3")

@@ -1,0 +1,21 @@
+keys,en
+PZ001_TITLE,The Fractured Turnstile
+PZ001_HINT_1,The turnstile wasn't always crushed. Check what the pocket watch senses around the gate.
+PZ001_HINT_2,"Use Trace to inspect the distortion on the turnstile, then switch the pocket watch to Rewind."
+PZ001_HINT_3,"Select Rewind on the pocket watch and activate it on the crushed turnstile barrier to restore its open state, then walk through."
+PZ002_TITLE,The Runaway Shutter
+PZ002_HINT_1,"Rewinding the shutter lifts it, but something on the wall is letting it slip back down."
+PZ002_HINT_2,"The shutter and its counterweight gear respond to different watch abilities. Lift the shutter first, then stop the gear from turning."
+PZ002_HINT_3,"Use Rewind on the dropped fire shutter to lift it, then switch to Freeze and lock the counterweight gear on the wall beside it before the shutter slides shut."
+PZ003_TITLE,The Delayed Platform
+PZ003_HINT_1,"The switch reacts to weight, not identity."
+PZ003_HINT_2,Something can remain on the switch while Elias moves away. An Echo stays at its final recorded position until you reset it.
+PZ003_HINT_3,"Start Echo recording, step onto the floor pressure switch on the south deck, stop recording while still standing on the switch, then walk to the security gate and replay the Echo."
+PZ004_TITLE,The Synchronized Substation
+PZ004_HINT_1,The two mezzanine breakers have no power while the central surge capacitor is dark. Solve the center console first.
+PZ004_HINT_2,"Step 1: Rewind the central surge capacitor to restore its charge, then Freeze it so the power bus stays on. Step 2: Use an Echo to pull one breaker while you pull the other."
+PZ004_HINT_3,"Rewind and Freeze the central surge capacitor. Then record an Echo pulling the west mezzanine breaker, walk to the east mezzanine breaker, replay the Echo, and pull the east breaker at the same time."
+PZ005_TITLE,The Displaced Corridor
+PZ005_HINT_1,Walking north brings you back from the west. Look at the route board in the center of the vestibule with Trace.
+PZ005_HINT_2,The North Archway cannot connect to the Station Atrium while it is still looped to the West Archway. Uncouple the loop first.
+PZ005_HINT_3,"Pull the West Junction Relay Lever first to break the archway loop, then pull the East Junction Relay Lever to route the North Archway directly to the Station Atrium."

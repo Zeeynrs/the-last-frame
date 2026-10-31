@@ -60,6 +60,12 @@ func make_session() -> GameSession:
 	spatial.name = "SpatialService"
 	session.add_child(spatial)
 	session.spatial_service = spatial
+	var hints := HintService.new()
+	hints.name = "HintService"
+	hints.sim_clock = clock
+	hints.puzzle_service = puzzles
+	session.add_child(hints)
+	session.hint_service = hints
 	_tree().root.add_child(session)
 	return session
 
