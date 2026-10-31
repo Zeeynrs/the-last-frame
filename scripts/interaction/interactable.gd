@@ -5,11 +5,21 @@ extends Area2D
 ## Registers with session IdRegistry and implements interaction contract.
 
 signal focused_changed(is_focused: bool)
+signal traced(object_id: StringName)
+
+## Pocket-watch ability interaction ids (ADR-006 clarification, ADR-015).
+const ABILITY_TRACE: StringName = &"trace"
+const ABILITY_REWIND: StringName = &"rewind"
+const ABILITY_FREEZE: StringName = &"freeze"
+const ABILITY_FAST_FORWARD: StringName = &"fast_forward"
+const WATCH_ABILITIES: Array[StringName] = [ABILITY_TRACE, ABILITY_REWIND, ABILITY_FREEZE, ABILITY_FAST_FORWARD]
 
 @export var object_id: StringName = &""
 @export var progression: bool = false
 @export var prompt_text: String = "[E] Interact"
 @export var session: GameSession
+## True when this object carries a residual trace the Trace ability can reveal.
+@export var traceable: bool = false
 
 var is_focused: bool = false
 
@@ -67,13 +77,76 @@ func _unregister_from_session() -> void:
 		sess.id_registry.unregister(object_id, self)
 
 
-## Check if the actor can interact. Returns &"" if allowed, or failure reason (e.g. &"frozen").
-func can_interact(_actor_id: StringName, _interaction_id: StringName, _payload: Dictionary = {}) -> StringName:
+## First TemporalComponent child, or null when the object has no temporal behaviour.
+func get_temporal() -> TemporalComponent:
+	for child in get_children():
+		if child is TemporalComponent:
+			return child as TemporalComponent
+	return null
+
+
+static func is_watch_ability(interaction_id: StringName) -> bool:
+	return interaction_id in WATCH_ABILITIES
+
+
+## Whether a pocket-watch ability can ever apply to this object (used by watch targeting, ADR-015).
+func supports_ability(ability_id: StringName) -> bool:
+	if ability_id == ABILITY_TRACE:
+		return traceable
+	var temporal := get_temporal()
+	return temporal != null and temporal.supports_ability(ability_id)
+
+
+## Contract entry point called by InteractionService (ADR-006). Subclasses override
+## _can_use() / _can_use_ability() instead of this method.
+func can_interact(actor_id: StringName, interaction_id: StringName, payload: Dictionary = {}) -> StringName:
+	var temporal := get_temporal()
+	if is_watch_ability(interaction_id):
+		if not supports_ability(interaction_id):
+			return &"unsupported"
+		if temporal != null and temporal.is_frozen and interaction_id in [ABILITY_REWIND, ABILITY_FAST_FORWARD]:
+			return &"frozen"
+		if interaction_id == ABILITY_REWIND and not temporal.can_rewind():
+			return &"no_history"
+		return _can_use_ability(actor_id, interaction_id, payload)
+	if temporal != null and temporal.is_frozen:
+		return &"frozen"
+	return _can_use(actor_id, interaction_id, payload)
+
+
+## Contract entry point called by InteractionService after can_interact() allowed it.
+func interact(actor_id: StringName, interaction_id: StringName, payload: Dictionary = {}) -> void:
+	match interaction_id:
+		ABILITY_TRACE:
+			traced.emit(object_id)
+			_on_traced(actor_id)
+		ABILITY_REWIND:
+			get_temporal().rewind()
+		ABILITY_FREEZE:
+			get_temporal().toggle_freeze()
+		ABILITY_FAST_FORWARD:
+			get_temporal().fast_forward()
+		_:
+			_on_use(actor_id, interaction_id, payload)
+
+
+## Override: extra rules for non-ability interactions. Return &"" to allow.
+func _can_use(_actor_id: StringName, _interaction_id: StringName, _payload: Dictionary) -> StringName:
 	return &""
 
 
-## Execute the interaction.
-func interact(_actor_id: StringName, _interaction_id: StringName, _payload: Dictionary = {}) -> void:
+## Override: cross-object rules for pocket-watch abilities (e.g. a frozen gear blocking a shutter).
+func _can_use_ability(_actor_id: StringName, _ability_id: StringName, _payload: Dictionary) -> StringName:
+	return &""
+
+
+## Override: perform a non-ability interaction.
+func _on_use(_actor_id: StringName, _interaction_id: StringName, _payload: Dictionary) -> void:
+	pass
+
+
+## Override: react to being traced (reveal visuals, journal hooks).
+func _on_traced(_actor_id: StringName) -> void:
 	pass
 
 

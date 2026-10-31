@@ -22,11 +22,7 @@ func _ready() -> void:
 	_update_prompt()
 
 
-func can_interact(_actor_id: StringName, _interaction_id: StringName, _payload: Dictionary = {}) -> StringName:
-	return &""
-
-
-func interact(_actor_id: StringName, _interaction_id: StringName, _payload: Dictionary = {}) -> void:
+func _on_use(_actor_id: StringName, _interaction_id: StringName, _payload: Dictionary) -> void:
 	is_on = not is_on
 	toggled.emit(is_on)
 	_update_visuals()

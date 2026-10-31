@@ -63,7 +63,19 @@ class AssertHelper extends RefCounted:
 		print("  FAIL: [%s::%s] %s" % [current_file, current_method, msg])
 
 
-func _init() -> void:
+var _has_run: bool = false
+
+
+## Tests run on the first frame: during _init()/_initialize() the root is not yet inside the
+## tree, so nodes added by tests would never receive _ready().
+func _process(_delta: float) -> bool:
+	if not _has_run:
+		_has_run = true
+		_run_all()
+	return false
+
+
+func _run_all() -> void:
 	print("--- Running Test Suite ---")
 	var test_files: Array[String] = []
 	_discover_test_files("res://tests", test_files)
