@@ -295,4 +295,9 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - **Palette:** Elias may use palette index 03 (trouser highlight); it is in TLF-CH01-32, the bible appendix records it.
   - **Reproducibility:** art produced by scripts must be regenerable: generator scripts are committed under `tools/art/gen/` and a check reproduces the committed `.pxo`/PNG byte for byte.
 - **Consequences:** Integration tasks guard collision geometry with a before/after hash test. ISSUE-012 (Elias walk) closes only after an in-motion check in Godot, not from stills.
+- **Amendment 2026-11-01 (TLF-042 findings):**
+  - **Surge capacitor:** "frozen" is a flag over `charge_state`, and the stabilised state (`bus_powered and is_frozen()`, `is_stabilized()`) is the PZ-004 success readout, so it must be visible. The single `_frozen` sprite is split into `_frozen_charged` and `_frozen_discharged` (TLF-044). Until then the presenter maps both to `_frozen`.
+  - **Dispatch terminal:** `_active` is shown once `ch01.flag.ledger_2359_revealed` is set (the DocumentDef flag set on reading), `_idle` before.
+  - **Counterweight gear:** file suffix `_frozen` maps to code `gear_state = locked`; no rename (the code is authoritative, the mapping lives in the placement sheet).
+  - **Stalled transit car:** pivot at the footprint centre (64,52) instead of `(W/2, H-8)`, accepted for this large background piece (bible appendix).
 
