@@ -1,0 +1,170 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/session/GameSession.tscn" id="1_session"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/test/temporal_test_gate.gd" id="3_gate"]
+[ext_resource type="Script" path="res://scripts/interaction/interactable.gd" id="4_interactable"]
+[ext_resource type="Script" path="res://scripts/test/temporal_test_shutter.gd" id="5_shutter"]
+[ext_resource type="Script" path="res://scripts/test/temporal_test_gear.gd" id="6_gear"]
+[ext_resource type="Script" path="res://scripts/interaction/trigger_zone.gd" id="7_trigger"]
+[ext_resource type="Script" path="res://scripts/temporal/temporal_component.gd" id="8_temporal"]
+
+[sub_resource type="GDScript" id="GDScript_room"]
+script/source = "extends Node2D
+
+@onready var plate: TriggerZone = $PressurePlate
+@onready var echo_gate: TemporalTestGate = $EchoGate
+
+func _ready() -> void:
+	if plate != null and echo_gate != null:
+		plate.occupancy_changed.connect(_on_plate_occupancy_changed)
+
+func _on_plate_occupancy_changed(is_occupied: bool) -> void:
+	if echo_gate != null:
+		echo_gate.apply_state({
+			\"arm_state\": &\"open\" if is_occupied else &\"collapsed\",
+			\"passage_blocked\": not is_occupied
+		})
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gate"]
+radius = 18.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pillar"]
+radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_anchor"]
+radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_shutter"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gear"]
+radius = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_plate"]
+size = Vector2(32, 24)
+
+[node name="TemporalTestRoom" type="Node2D"]
+y_sort_enabled = true
+script = SubResource("GDScript_room")
+
+[node name="GameSession" parent="." instance=ExtResource("1_session")]
+
+[node name="Floor" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.14, 0.16, 0.2, 1)
+polygon = PackedVector2Array(320, 60, 560, 180, 320, 300, 80, 180)
+
+[node name="GridLines" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.2, 0.23, 0.28, 1)
+polygon = PackedVector2Array(320, 80, 520, 180, 320, 280, 120, 180)
+
+[node name="PerimeterWalls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PerimeterWalls"]
+build_mode = 1
+polygon = PackedVector2Array(320, 60, 560, 180, 320, 300, 80, 180)
+
+[node name="Gate" type="Area2D" parent="."]
+position = Vector2(180, 180)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_gate")
+object_id = &"ch01.test.gate"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gate"]
+shape = SubResource("CircleShape2D_gate")
+
+[node name="TemporalComponent" type="Node" parent="Gate"]
+script = ExtResource("8_temporal")
+capabilities = 1
+state_fields = PackedStringArray("arm_state", "passage_blocked")
+initial_history = [{
+"arm_state": &"open",
+"passage_blocked": false
+}]
+
+[node name="Pillar" type="Area2D" parent="."]
+position = Vector2(180, 130)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("4_interactable")
+object_id = &"ch01.test.pillar"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pillar"]
+shape = SubResource("CircleShape2D_pillar")
+
+[node name="TraceAnchor" type="Area2D" parent="."]
+position = Vector2(180, 230)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("4_interactable")
+object_id = &"ch01.test.anchor"
+traceable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraceAnchor"]
+shape = SubResource("CircleShape2D_anchor")
+
+[node name="Shutter" type="Area2D" parent="."]
+position = Vector2(330, 180)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("5_shutter")
+gear_id = &"ch01.test.gear"
+object_id = &"ch01.test.shutter"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shutter"]
+shape = SubResource("CircleShape2D_shutter")
+
+[node name="TemporalComponent" type="Node" parent="Shutter"]
+script = ExtResource("8_temporal")
+capabilities = 1
+state_fields = PackedStringArray("shutter_state", "hold_ticks", "passage_blocked")
+initial_history = [{
+"hold_ticks": 180,
+"passage_blocked": false,
+"shutter_state": &"raised"
+}]
+
+[node name="Gear" type="Area2D" parent="."]
+position = Vector2(360, 150)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("6_gear")
+object_id = &"ch01.test.gear"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gear"]
+shape = SubResource("CircleShape2D_gear")
+
+[node name="TemporalComponent" type="Node" parent="Gear"]
+script = ExtResource("8_temporal")
+capabilities = 2
+state_fields = PackedStringArray()
+
+[node name="PressurePlate" type="Area2D" parent="."]
+position = Vector2(440, 180)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("7_trigger")
+accepts_echoes = true
+object_id = &"ch01.test.plate"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PressurePlate"]
+shape = SubResource("RectangleShape2D_plate")
+
+[node name="EchoGate" type="Area2D" parent="."]
+position = Vector2(480, 140)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_gate")
+object_id = &"ch01.test.echo_gate"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EchoGate"]
+shape = SubResource("CircleShape2D_gate")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(250, 180)
