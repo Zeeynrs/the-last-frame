@@ -21,8 +21,9 @@
 | TLF-016 | COMPLETE | Opus EchoService + TriggerZone merged `9f55245` (validate 67/67; physics runtime probe OK) |
 | TLF-023 | COMPLETE | Opus Ch1 puzzle objects merged `e6de2b4`: all 27 spec tests + 10 extra, mutation-checked; 166/166 |
 | TLF-029 | COMPLETE (runner) | Merged `2eb5272` (Opus impl): awaitable frame-stepping tests + 6 self-tests. Follow-up TLF-030: real-input Ch1 playthrough test |
-| TLF-030 | READY | Opus impl agent: `tests/chapters/ch01/test_ch01_real_playthrough.gd` (real input + physics via TLF-029, test save root; PZ-001…003) |
-| TLF-025 | NOT STARTED | Flash: Ch1 rooms 5–10 (waiting lounge → street exit, PZ-004/005, Beat 09/10, intercom hook for JRN_CH1_OPERATOR_WARNING) |
+| TLF-030 | COMPLETE | Merged `0ddf131` (Opus impl): real-input playthrough PZ-001…003, ~524 physics frames |
+| TLF-031 | READY | Opus impl agent: `docs/tasks/TLF-031.md` (real-input PZ-004 with Echo + Z-route incl. the no-Echo negative check, then rooms 7–10) |
+| TLF-025 | COMPLETE | Merged `a39be53` (Flash): rooms 5–10, PZ-004/005, Beat 09/10, intercom journal hook. Lead real-input probe: PZ-005 levers → atrium → terminal → outro (`chapter_complete`) |
 | TLF-028 | COMPLETE | Merged `2eb5272` (Opus impl): validate.ps1 robust on PowerShell 5.1; fresh clone validates on first run |
 | TLF-027 | COMPLETE | Opus impl agent `aafb2bb`, merged: class `SaveStore`, autoload name `SaveService`; verified 180/180 with and without the autoload; router adopts the autoload. **TLF-018 R2b unblocked** |
 | TLF-026 | COMPLETE | Opus: Ch1 graph as `ChapterGraphDef` (`data/chapters/ch01/ch01_graph.tres`) generated from ROOM_GRAPH + PZ-005; 9 tests, mutation-checked; 180/180 |

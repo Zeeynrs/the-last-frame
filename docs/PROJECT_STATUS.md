@@ -1,6 +1,6 @@
 # Project Status
 
-**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 209/209 tests, 76 scripts
+**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 216/216 tests, 78 scripts
 
 This file states what the repository **actually** contains. Task-level detail lives in `ORCA_TASK_BOARD.md`; history lives in `PROGRESS.md`.
 
@@ -25,7 +25,7 @@ This file states what the repository **actually** contains. Task-level detail li
 | Ch1 puzzle logic: `PuzzleObject` + TurnstileGate, FireShutter, CounterweightGear, PlateLinkedGate, RetractableBridge, ProgressionPickup, SurgeCapacitor, TimedBreaker, SubstationGrid, PoweredDoor, JunctionLever, SpatialStateResetter | `scripts/puzzle/objects/` | `tests/puzzle/test_ch01_puzzles.gd`: all 27 spec tests (TEST-PZ001…005) |
 | Ch1 text: Elias, Operator, journal, fragment, puzzle feedback, 6 readables (66 keys) + 5 DocumentDefs, generated from `narrative/ch01/CH01_TEXT.md` | `narrative/ch01/`, `localization/ch01_text.csv`, `data/documents/ch01/`, `tools/content/` | `tests/narrative/test_ch01_text.gd` |
 | Ch1 graph data: `ChapterGraphDef` (rooms, doors, sides/tiles, safe anchors, pairs, critical pairs, relocation) from ROOM_GRAPH + PZ-005 | `data/chapters/ch01/`, `scripts/spatial/chapter_graph_def.gd`, `tools/content/gen_ch01_graph.py` | `tests/spatial/test_ch01_graph.gd` |
-| **Playable:** `scenes/chapters/ch01/Chapter01.tscn`: rooms 1–4 (arrival → security crossing), PZ-001…003, pocket watch (Trace/Rewind/Freeze/Echo), HUD feedback, hints, checkpoints/autosave, Elias sprite animations | `scenes/chapters/ch01/`, `scripts/player/`, `scripts/ui/` | `tests/chapters/ch01/`, `tests/player/`, `tests/ui/`; Lead real-input probe |
+| **Playable:** `scenes/chapters/ch01/Chapter01.tscn`: **all 10 rooms, start to `chapter_complete`**, PZ-001…005, Beat 09 revelation, Beat 10 outro, pocket watch (Trace/Rewind/Freeze/Echo), HUD feedback, hints, checkpoints/autosave, Elias sprite animations | `scenes/chapters/ch01/`, `scripts/player/`, `scripts/ui/` | `tests/chapters/ch01/`, `tests/player/`, `tests/ui/`; Lead real-input probe |
 | Art v1: art bible, Ch1 palette (32), arrival platform target sheet, Elias 8-dir idle/walk, 3 floor tiles, 2 walls, archway, 23:59 clock, CC0 pixel font | `design/art/`, `assets/` | Lead verification (Pixelorama CLI, palette, alpha, mirrors); not yet placed in a scene |
 | Ch1 design: beat sheet (10 beats, 38 min), 5 puzzle specs with 27 given/when/then tests, room graph (10 rooms, boundary doors, placement metrics, kit list) | `design/ch01/` | Lead reviews in `docs/reviews/` |
 
@@ -42,10 +42,10 @@ This file states what the repository **actually** contains. Task-level detail li
 - Nothing known (validation green on `main`).
 
 ## E. Missing (next by priority)
-1. Ch1 rooms 5–10 (TLF-025, Flash): PZ-004/005, Beat 09 revelation, Beat 10 cinematic
-2. Real-input playthrough test (TLF-030, Opus impl)
-3. Dialogue/document/journal UI on top of NarrativeState + DocumentDef
-4. Audio, lighting/VFX, remaining art (Argon unavailable: ISSUE-012)
+1. Real-input proof of PZ-004 as a test (TLF-031, Opus impl)
+2. Dialogue/document/journal presentation UI (Milestone 4)
+3. Vertical-slice polish: art beyond v1 (Argon unavailable, ISSUE-012), audio, lighting/VFX, Beat 10 cinematic, accessibility pass
+4. External playtest (Gate C)
 
 ## F. Should be improved
 - Prompt text is hard-coded `[E]` and English-only (ISSUE-007).

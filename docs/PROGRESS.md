@@ -11,9 +11,9 @@
 | 0 — Project setup | COMPLETE | Tag `m0-complete`: repo, ADRs, folder structure, input map, pixel-art display, headless validation (5/5) documented in README |
 | 1 — Isometric foundation | IN PROGRESS (exit criteria met except one item) | Movement, collision, interaction, settings and remapping are merged and verified. Remaining: a physical controller spot-check by a human (ISSUE-011) |
 | 2 — Temporal prototype | COMPLETE | Exit criteria met: unit tests for state transitions, echo holds a switch while the player acts (tests + playable PZ-003), invalid targets fail gracefully; pocket watch + HUD merged (TLF-018) |
-| 3 — Spatial prototype | IN PROGRESS | SpatialGraph (TLF-020) + room routing (TLF-021) merged; exit needs a playable PZ-005 room (TLF-009 content) |
-| 4 — Puzzle/narrative framework | IN PROGRESS | PuzzleService, NarrativeState, SaveService merged (TLF-019); dialogue/journal UI pending |
-| 5 — Chapter 1 vertical slice | NOT STARTED | |
+| 3 — Spatial prototype | COMPLETE | Graph validation tests pass; PZ-005 doorway reassignment works in play (real-input probe), presenters derive from the graph, relocation from the sealed niche. Room rotation remains Ch3 scope |
+| 4 — Puzzle/narrative framework | IN PROGRESS | Data-driven puzzles (5 Ch1 puzzles from PuzzleDefs + reusable classes), save/load of checkpoint + progression, hints, documents, journal data: done. Pending: dialogue/document/journal **presentation UI** |
+| 5 — Chapter 1 vertical slice | IN PROGRESS | Whole path playable in greybox (rooms 1–10, PZ-001…005, revelation, outro). Missing for Gate C: art/audio/VFX pass, dialogue/journal UI, cinematic, accessibility pass, external playtest |
 | 6 — Full content production | NOT STARTED | |
 | 7 — Beta and release | NOT STARTED | |
 
@@ -37,6 +37,7 @@
 | 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
 | 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
 | 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
+| 2026-10-31 | Merged Flash TLF-025 (`a39be53`) and Opus TLF-030 (`0ddf131`); main tree == verified combined tree (fresh archive 78 scripts, 216/216). **Chapter 1 playable start to finish (greybox).** Lead real-input probe rooms 7–10: PZ-005 levers, atrium terminal (Beat 09), outro → chapter_complete; test save root, real saves untouched. PZ-004 real-input → TLF-031. ISSUE-018 repro recorded (2/15). Process note: Flash handoffs must paste raw validate output, not a paraphrase | Agent 1 |
 | 2026-10-31 | tlf-lead confirmed origin/main == verified tree (fresh archive 209/209); TLF-025 → Flash, TLF-030 → Opus impl relayed. ISSUE-018 recorded (intermittent 0xC0000005 during fresh CSV import, not reproduced) | Agent 1 |
 | 2026-10-31 | Integrated Flash TLF-018 + TLF-009 (`7fb8aec`) and Opus TLF-028 + TLF-029 (`2eb5272`); committed ui_feedback translation (`4476e0e`). Independent check: fresh clone without the file fails as reported, with it passes on first run (76 scripts, 209/209, no leaks); real user://saves untouched. Ch1 rooms 1–4 playable on main. (Docs commit `100aab2` was partial; completed in the next commit.) | Agent 1 |
 | 2026-10-31 | Lead review TLF-009 (`b157fd4`): approved with pre-merge fix R1 (tests wrote the real autosave; artifact removed). Real-input probe: Chapter01 rooms 1→3, PZ-001 via pocket watch, checkpoint autosave. TLF-029 (frame-stepping tests) added. ISSUE-017 recorded (agent takeover attempt; main history clean) | Agent 1 |
