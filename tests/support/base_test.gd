@@ -46,6 +46,16 @@ func make_session() -> GameSession:
 	session.id_registry = registry
 	session.interaction_service = service
 	session.echo_service = echo
+	var puzzles := PuzzleService.new()
+	puzzles.name = "PuzzleService"
+	puzzles.sim_clock = clock
+	puzzles.echo_service = echo
+	session.add_child(puzzles)
+	session.puzzle_service = puzzles
+	var narrative := NarrativeState.new()
+	narrative.name = "NarrativeState"
+	session.add_child(narrative)
+	session.narrative_state = narrative
 	_tree().root.add_child(session)
 	return session
 

@@ -6,6 +6,8 @@ extends Area2D
 
 signal focused_changed(is_focused: bool)
 signal traced(object_id: StringName)
+## Pocket-watch target highlight (ADR-015). Visuals are the HUD's job; this is state only.
+signal watch_focused_changed(is_watch_focused: bool, ability_name: StringName)
 
 ## Pocket-watch ability interaction ids (ADR-006 clarification, ADR-015).
 const ABILITY_TRACE: StringName = &"trace"
@@ -22,6 +24,8 @@ const WATCH_ABILITIES: Array[StringName] = [ABILITY_TRACE, ABILITY_REWIND, ABILI
 @export var traceable: bool = false
 
 var is_focused: bool = false
+var is_watch_focused: bool = false
+var watch_ability_name: StringName = &""
 
 
 func _enter_tree() -> void:
@@ -160,3 +164,19 @@ func set_focused(p_focused: bool) -> void:
 
 func _on_focus_changed(_focused: bool) -> void:
 	pass
+
+
+## Called by the pocket watch when this object becomes (or stops being) its target.
+func set_watch_focused(p_watch_focused: bool, p_ability_name: StringName = &"") -> void:
+	if is_watch_focused == p_watch_focused and watch_ability_name == p_ability_name:
+		return
+	is_watch_focused = p_watch_focused
+	watch_ability_name = p_ability_name
+	watch_focused_changed.emit(is_watch_focused, watch_ability_name)
+	_on_watch_focus_changed(is_watch_focused, watch_ability_name)
+
+
+## Override: react to watch targeting (e.g. outline). Default does nothing.
+func _on_watch_focus_changed(_focused: bool, _ability_name: StringName) -> void:
+	pass
+

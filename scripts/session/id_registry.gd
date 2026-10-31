@@ -64,6 +64,15 @@ func resolve(id: StringName) -> Node:
 	return _nodes_by_id.get(id, null)
 
 
+## All registered IDs, sorted for deterministic iteration (saves, debug).
+func get_ids() -> Array[StringName]:
+	var ids: Array[StringName] = []
+	for id in _nodes_by_id.keys():
+		ids.append(id)
+	ids.sort_custom(func(a, b): return String(a) < String(b))
+	return ids
+
+
 ## Check if an ID is currently registered.
 func has_id(id: StringName) -> bool:
 	return _nodes_by_id.has(id)
