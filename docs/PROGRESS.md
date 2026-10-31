@@ -37,6 +37,7 @@
 | 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
 | 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
 | 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
+| 2026-10-31 | TLF-008 temporal core implemented by Opus (`682fb87`), merged `fe3744a`: TemporalComponent, ability delegation, PZ-001/002 spec tests, runner fix (first-frame execution); 51/51. TLF-018 spec written | Agent 1 |
 | 2026-10-31 | User master prompt v2 adopted (ADR-017): Opus implements core systems; TLF-008 re-assigned to Opus, Flash gets TLF-017; added PROJECT_STATUS / DEVELOPMENT_ROADMAP / TECHNICAL_DEBT / AGENT_HANDOFF | Agent 1 |
 | 2026-10-31 | Re-review passed; merged TLF-007 (`99f6bb3`) and TLF-004 (`eed7c4e`); validate on main 26/26; TLF-005 + TLF-008 dispatched; Echo split out as TLF-016 | Agent 1 |
 | 2026-10-31 | Lead review TLF-004 (`52a563a`) + TLF-007 (`864339c`): both CHANGES REQUESTED (small); ADR-006/009 clarifications, ADR-007 am.2 (history commits, freeze toggle), ADR-008 am. (echo scope), new ADR-015 (watch UX/targeting, `echo_reset`) and ADR-016 (completion/reset policy) | Agent 1 |

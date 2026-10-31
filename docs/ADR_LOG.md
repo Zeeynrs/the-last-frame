@@ -163,6 +163,7 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
     - Import check: `Godot_v4.7.2-stable_win64_console.exe --headless --path . --import`
     - Tests: `Godot_v4.7.2-stable_win64_console.exe --headless --path . -s res://tests/run_tests.gd`
   - Adopting GdUnit4/GUT later needs a new ADR plus human approval for the install.
+  - **Amendment 2026-10-31 (TLF-008):** the runner executes tests on the **first `_process` frame**, not in `_init()`. Measured: during `_init`/`_initialize` the root isn't inside the tree, so nodes added by tests never got `_ready()`. The runner injects `scene_tree`. New tests extend `res://tests/support/base_test.gd` (shared asserts plus a `make_session()` fixture).
   - **MCP tool policy:** the Lead uses Godot MCP read-only. Only the agent assigned as Godot owner for a task may use write tools (`create_scene`, `add_node`, `save_scene`, `update_project_uids`). Godot CLI is preferred for validation. Godot AI Workbench is not adopted for now (not installed).
 - **Amendment 2026-10-31 (MCP server chosen):** The project's Godot MCP is **`@coding-solo/godot-mcp`**, pinned to **0.1.1** (`npx -y @coding-solo/godot-mcp@0.1.1`, Claude Code user scope). Godot AI Workbench is **not adopted**. Upgrades need a version bump recorded here.
   - Verified read-only: `get_godot_version`, `get_project_info`, `list_projects`, `get_uid` (see ISSUE-002).

@@ -5,8 +5,8 @@ Ordered by the master-prompt priorities and the dependencies that already exist 
 ## Now: Milestones 1–2 (foundation + temporal prototype)
 | # | Work | Owner | Depends | Status |
 |---|---|---|---|---|
-| 1 | TLF-008 TemporalComponent, Rewind/Freeze/Trace, Interactable ability delegation | O | — | IN PROGRESS |
-| 2 | TLF-016 EchoService: record/playback, occupancy, trigger dispatch | O | 1 | NOT STARTED |
+| 1 | TLF-008 TemporalComponent, Rewind/Freeze/Trace, Interactable ability delegation | O | — | COMPLETE |
+| 2 | TLF-016 EchoService: record/playback, occupancy, trigger dispatch | O | 1 | IN PROGRESS |
 | 3 | TLF-017 Settings autoload, input remapping foundation, controller test evidence (M1 exit) | F | — | READY |
 | 4 | TLF-018 Pocket-watch controller (ADR-015 targeting, ability cycle, Echo controls, `echo_reset`) + HUD feedback (ISSUE-006/007) | F | 1, 2 | NOT STARTED |
 | 5 | TLF-005 Ch1 room graph and placement constraints | A | — | READY |

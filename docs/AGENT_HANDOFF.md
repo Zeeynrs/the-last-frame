@@ -18,7 +18,7 @@ Shared contract files (`interactable.gd`, `game_session.gd`, `GameSession.tscn`,
 
 ## Current state
 - See `PROJECT_STATUS.md` (what works), `ORCA_TASK_BOARD.md` (task status), `DEVELOPMENT_ROADMAP.md` (order).
-- In flight: TLF-008 (Opus), TLF-005 (Argon), TLF-017 (Flash).
+- In flight: TLF-016 Echo (Opus), TLF-005 (Argon, pushed, awaiting review), TLF-017 (Flash). Next for Flash: TLF-018.
 
 ## How to verify anything
 `$env:GODOT=<console exe>; ./tools/validate.ps1` (must exit 0). Review method: `git archive <sha>` into a scratch folder, then run validate plus runtime probes there. Never inside an agent's worktree.

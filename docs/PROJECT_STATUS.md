@@ -1,6 +1,6 @@
 # Project Status
 
-**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 26/26 tests
+**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 51/51 tests
 
 This file states what the repository **actually** contains. Task-level detail lives in `ORCA_TASK_BOARD.md`; history lives in `PROGRESS.md`.
 
@@ -14,6 +14,7 @@ This file states what the repository **actually** contains. Task-level detail li
 | Player: 8-dir isometric movement (2:1 diagonals, 120 px/s), deterministic nearest-target interaction | `scripts/player/`, `scenes/player/` | unit tests + Lead runtime probe |
 | Interactable base + test Lever | `scripts/interaction/` | lifecycle tests |
 | Greybox `TestRoom` (12×12 iso floor, walls, obstacle, 2 levers) | `scenes/test/TestRoom.tscn` | runtime probe: bounds hold |
+| Temporal core: `TemporalComponent` (history/cursor, commit-on-transition, freeze toggle, save export/import); abilities trace/rewind/freeze/fast_forward through `InteractionService` | `scripts/temporal/`, `scripts/interaction/interactable.gd` | `tests/temporal/` incl. TEST-PZ001-01..04, TEST-PZ002-01/02/03/05 |
 | Ch1 design: beat sheet (10 beats, 38 min), 5 puzzle specs with 27 given/when/then tests | `design/ch01/` | Lead reviews in `docs/reviews/` |
 
 ## B. Partially implemented
@@ -27,10 +28,9 @@ This file states what the repository **actually** contains. Task-level detail li
 - Nothing known (validation green on `main`).
 
 ## E. Missing (next by priority)
-1. TemporalComponent, Rewind/Freeze/Trace (TLF-008, Opus, in progress)
-2. Echo record/playback (TLF-016, Opus)
+1. Echo record/playback (TLF-016, Opus, in progress)
+2. Pocket-watch controller + HUD (TLF-018, Flash, after TLF-017)
 3. PuzzleService (ADR-016) and SaveService (ADR-010) (Opus)
-4. Pocket-watch controller, targeting and HUD (Flash, after TLF-008)
 5. Settings autoload and input-remapping foundation (TLF-017, Flash)
 6. Camera, scene routing between rooms, SpatialGraph (doorway reassignment)
 7. Ch1 room graph (TLF-005, Argon, in progress), then art target sheet (TLF-010)

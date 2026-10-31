@@ -12,11 +12,11 @@
 | TLF-004 | COMPLETE | Merged `eed7c4e` (re-review of `75dcb95` passed) |
 | TLF-007 | COMPLETE | Merged `99f6bb3` (re-review of `1801ed0` passed; validate on main 26/26) |
 | TLF-005 | READY | Argon: `docs/tasks/TLF-005.md` (room graph, critical path, placement, kit list) |
-| TLF-008 | IN PROGRESS | **Opus** (ADR-017): temporal core in `agent/opus-core` |
+| TLF-008 | COMPLETE | Opus temporal core merged `fe3744a` (validate 51/51; TestRoom regression probe OK) |
 | TLF-017 | READY | Flash: `docs/tasks/TLF-017.md` (Settings autoload, remapping foundation, `echo_reset`, controller evidence) |
-| TLF-018 | NOT STARTED | Flash, after TLF-008 + TLF-016 merge: pocket-watch controller (ADR-015), HUD feedback (ISSUE-006/007) |
+| TLF-018 | READY (after TLF-017) | Flash: `docs/tasks/TLF-018.md` pocket-watch controller, TemporalTestRoom, feedback HUD |
 | TLF-019 | NOT STARTED | Opus: PuzzleService (ADR-016) + SaveService (ADR-010) |
-| TLF-016 | NOT STARTED | **Opus**, after TLF-008: EchoService record/playback, occupancy, trigger dispatch (ADR-008 + am.) |
+| TLF-016 | IN PROGRESS | **Opus**: EchoService record/playback, occupancy, trigger dispatch (ADR-008 + am.) |
 | TLF-010 | NOT STARTED | Argon, after TLF-005 |
 | others | NOT STARTED | |
 
