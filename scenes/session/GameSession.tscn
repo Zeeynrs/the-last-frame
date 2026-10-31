@@ -1,0 +1,20 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/session/game_session.gd" id="1_session"]
+[ext_resource type="Script" path="res://scripts/session/sim_clock.gd" id="2_clock"]
+[ext_resource type="Script" path="res://scripts/session/id_registry.gd" id="3_registry"]
+[ext_resource type="Script" path="res://scripts/session/interaction_service.gd" id="4_interaction"]
+
+[node name="GameSession" type="Node" groups=["game_session"]]
+script = ExtResource("1_session")
+
+[node name="SimClock" type="Node" parent="."]
+script = ExtResource("2_clock")
+
+[node name="IdRegistry" type="Node" parent="."]
+script = ExtResource("3_registry")
+
+[node name="InteractionService" type="Node" parent="." node_paths=PackedStringArray("id_registry", "sim_clock")]
+script = ExtResource("4_interaction")
+id_registry = NodePath("../IdRegistry")
+sim_clock = NodePath("../SimClock")
