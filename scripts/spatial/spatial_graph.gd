@@ -69,17 +69,34 @@ func get_destination(room_id: StringName, door_id: StringName) -> Dictionary:
 	return {"room_id": partner["room"], "door_id": partner["door"], "traversable": partner["traversable"]}
 
 
+## Dry run of apply(): same validation, no side effects. Returns {ok, reason}.
+func validate_transform(pairs: Array) -> Dictionary:
+	var built := _build_candidate(pairs)
+	return {"ok": built["ok"], "reason": built["reason"]}
+
+
 ## Transactional re-pairing. Returns {ok, reason}; emits `changed(affected_rooms)` on success.
 func apply(pairs: Array) -> Dictionary:
+	var built := _build_candidate(pairs)
+	if not built["ok"]:
+		return {"ok": false, "reason": built["reason"]}
+	var candidate: Dictionary = built["candidate"]
+	var affected := _affected_rooms(_partners, candidate)
+	_partners = candidate
+	changed.emit(affected)
+	return {"ok": true, "reason": &""}
+
+
+func _build_candidate(pairs: Array) -> Dictionary:
 	var candidate := _partners.duplicate(true)
 	var mentioned := {}
 	for pair in pairs:
 		if not (pair is Array) or pair.size() < 4:
-			return {"ok": false, "reason": &"invalid_graph"}
+			return {"ok": false, "reason": &"invalid_graph", "candidate": {}}
 		for side in [[pair[0], pair[1]], [pair[2], pair[3]]]:
 			var k := key(StringName(side[0]), StringName(side[1]))
 			if mentioned.has(k) and not (pair[0] == pair[2] and pair[1] == pair[3]):
-				return {"ok": false, "reason": &"invalid_graph"}  # same doorway re-paired twice
+				return {"ok": false, "reason": &"invalid_graph", "candidate": {}}  # same doorway re-paired twice
 			mentioned[k] = true
 	# Detach every mentioned doorway from its current partner (both directions).
 	for k in mentioned.keys():
@@ -90,14 +107,9 @@ func apply(pairs: Array) -> Dictionary:
 	for pair in pairs:
 		var problem := _write_pair(candidate, pair)
 		if problem != &"":
-			return {"ok": false, "reason": problem}
+			return {"ok": false, "reason": problem, "candidate": {}}
 	var check := _validate(candidate)
-	if not check["ok"]:
-		return check
-	var affected := _affected_rooms(_partners, candidate)
-	_partners = candidate
-	changed.emit(affected)
-	return {"ok": true, "reason": &""}
+	return {"ok": check["ok"], "reason": check["reason"], "candidate": candidate}
 
 
 func is_reachable(from_room: StringName, to_room: StringName) -> bool:
