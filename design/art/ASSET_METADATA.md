@@ -360,3 +360,12 @@ Common to all entries: **License / Attribution:** original production art by the
 ### 4.2 `flip_h` rule for axis-run assets
 `wall_railing_iron`, `prop_station_bench` and `tile_cable_conduit_*` are authored along the down-right (+x) axis. For the down-left (+y) axis set `flip_h = true`; the baked top-left light then falls on the screen-right side, the same compromise the bible accepts for Elias (§2.3 #4).
 
+### 4.3 Room mockups (`concept`, `640 × 360 px`, kit pieces only; not runtime assets)
+
+| # | Mockup | File | Canvas Size | QA State |
+|---|---|---|---|---|
+| M1 | `ch01.arrival_platform` (validation against the approved target sheet) | `design/art/mockups/ch01_arrival_platform_mockup.png` | `640 × 360 px` | **`concept`** |
+| M2 | `ch01.concourse_west` | `design/art/mockups/ch01_concourse_west_mockup.png` | `640 × 360 px` | **`concept`** |
+| M3 | `ch01.signal_control` | `design/art/mockups/ch01_signal_control_mockup.png` | `640 × 360 px` | **`concept`** |
+
+Composited by script from the committed kit PNGs at the positions in `CH01_PLACEMENT_SHEET.md` (palette `TLF-CH01-32` only, background `#0A0D14`, Elias `idle_se` frame 2 at the safe anchor). No `.pxo` (derived images; regenerate from the sheet data).

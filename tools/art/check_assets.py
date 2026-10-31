@@ -46,13 +46,13 @@ def load_palette(path):
 
 
 def load_metadata_sizes(path):
-    """Map export path -> (w, h) from every markdown table row that names a .png under assets/."""
+    """Map export path -> (w, h) from every markdown table row that names a .png under assets/ or design/."""
     sizes = {}
     with open(path, encoding="utf-8") as fh:
         for line in fh:
             if not line.lstrip().startswith("|"):
                 continue
-            for pm in re.finditer(r"assets/[\w/.\-]+\.png", line):
+            for pm in re.finditer(r"(?:assets|design)/[\w/.\-]+\.png", line):
                 tail = line[pm.end():]
                 sm = re.search(r"(\d+)\s*[×x]\s*(\d+)\s*px", tail)
                 if sm:
