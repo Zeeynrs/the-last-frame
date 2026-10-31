@@ -1,0 +1,89 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/spatial/doorway_presenter.gd" id="1_door"]
+[ext_resource type="Script" path="res://scripts/rooms/safe_anchor.gd" id="2_anchor"]
+[ext_resource type="Script" path="res://scripts/narrative/readable_document.gd" id="3_readable"]
+[ext_resource type="Resource" path="res://data/documents/ch01/doc_index_plaque.tres" id="4_doc_plaque"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_door"]
+radius = 10.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_doc"]
+radius = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_grille"]
+size = Vector2(24, 12)
+
+[node name="VestibuleNiche" type="Node2D"]
+y_sort_enabled = true
+
+[node name="Floor" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.12, 0.16, 0.22, 1)
+polygon = PackedVector2Array(320, 64, 416, 112, 320, 160, 224, 112)
+
+[node name="FloorAccent" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.17, 0.22, 0.3, 1)
+polygon = PackedVector2Array(320, 76, 400, 116, 320, 152, 240, 116)
+
+[node name="PerimeterWalls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PerimeterWalls"]
+build_mode = 1
+polygon = PackedVector2Array(320, 60, 420, 110, 320, 164, 220, 110)
+
+[node name="door_in" type="Area2D" parent="."]
+position = Vector2(272, 88)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_door")
+room_id = &"ch01.vestibule_niche"
+door_id = &"door_in"
+object_id = &"ch01.vestibule_niche.door_in"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="door_in"]
+shape = SubResource("CircleShape2D_door")
+
+[node name="Spawn" type="Marker2D" parent="door_in"]
+position = Vector2(16, 8)
+
+[node name="door_out" type="Area2D" parent="."]
+position = Vector2(368, 88)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_door")
+room_id = &"ch01.vestibule_niche"
+door_id = &"door_out"
+object_id = &"ch01.vestibule_niche.door_out"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="door_out"]
+shape = SubResource("CircleShape2D_door")
+
+[node name="Spawn" type="Marker2D" parent="door_out"]
+position = Vector2(-16, 8)
+
+[node name="GrilleBlocker" type="StaticBody2D" parent="door_out"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="door_out/GrilleBlocker"]
+shape = SubResource("RectangleShape2D_grille")
+
+[node name="safe_anchor_niche" type="Marker2D" parent="."]
+position = Vector2(320, 112)
+script = ExtResource("2_anchor")
+object_id = &"ch01.vestibule_niche.safe_anchor_niche"
+
+[node name="doc_index_plaque" type="Area2D" parent="."]
+position = Vector2(336, 104)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("3_readable")
+document = ExtResource("4_doc_plaque")
+object_id = &"ch01.vestibule_niche.doc_index_plaque"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="doc_index_plaque"]
+shape = SubResource("CircleShape2D_doc")

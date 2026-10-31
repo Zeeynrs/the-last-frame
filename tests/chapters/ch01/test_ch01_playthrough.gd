@@ -1,15 +1,22 @@
 extends "res://tests/support/base_test.gd"
 
-## Chapter 1 Rooms 1-4 & Playthrough Test Suite (TLF-009).
-## Verifies room scenes, IDs, door spawns, SpatialGraph configuration,
-## passage collision blockers, and end-to-end scripted playthrough solving PZ-001..003.
+## Chapter 1 Rooms 1-10 & Playthrough Test Suite (TLF-009 / TLF-025).
+## Verifies all 10 room scenes, IDs, door spawns, SpatialGraph configuration,
+## passage collision blockers, PZ-004 switchback route, PZ-005 spatial levers/resetter,
+## readables, intercom warning, and full scripted playthrough solving PZ-001..005 to outro.
 
 const DEF_PATH := "res://data/chapters/ch01/ch01_graph.tres"
 const ROOM_PATHS := {
 	&"ch01.arrival_platform": "res://scenes/chapters/ch01/rooms/arrival_platform.tscn",
 	&"ch01.concourse_west": "res://scenes/chapters/ch01/rooms/concourse_west.tscn",
 	&"ch01.maintenance_bay": "res://scenes/chapters/ch01/rooms/maintenance_bay.tscn",
-	&"ch01.security_crossing": "res://scenes/chapters/ch01/rooms/security_crossing.tscn"
+	&"ch01.security_crossing": "res://scenes/chapters/ch01/rooms/security_crossing.tscn",
+	&"ch01.waiting_lounge": "res://scenes/chapters/ch01/rooms/waiting_lounge.tscn",
+	&"ch01.signal_control": "res://scenes/chapters/ch01/rooms/signal_control.tscn",
+	&"ch01.upper_vestibule": "res://scenes/chapters/ch01/rooms/upper_vestibule.tscn",
+	&"ch01.vestibule_niche": "res://scenes/chapters/ch01/rooms/vestibule_niche.tscn",
+	&"ch01.station_atrium": "res://scenes/chapters/ch01/rooms/station_atrium.tscn",
+	&"ch01.street_exit": "res://scenes/chapters/ch01/rooms/street_exit.tscn"
 }
 const CH01_SCENE_PATH := "res://scenes/chapters/ch01/Chapter01.tscn"
 const TEST_SAVE_ROOT := "user://tlf_test_ch01_saves"
@@ -84,6 +91,23 @@ func _descendants(root: Node) -> Array[Node]:
 	return out
 
 
+func _has_journal_entry(journal: Array, key: String) -> bool:
+	for entry in journal:
+		if entry.get("key") == key:
+			return true
+	return false
+
+
+func _segments_cross(a: Vector2, b: Vector2, c: Vector2, d: Vector2) -> bool:
+	var ccw = func(p1: Vector2, p2: Vector2, p3: Vector2) -> float:
+		return (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x)
+	var d1: float = ccw.call(c, d, a)
+	var d2: float = ccw.call(c, d, b)
+	var d3: float = ccw.call(a, b, c)
+	var d4: float = ccw.call(a, b, d)
+	return ((d1 > 0.0 and d2 < 0.0) or (d1 < 0.0 and d2 > 0.0)) and ((d3 > 0.0 and d4 < 0.0) or (d3 < 0.0 and d4 > 0.0))
+
+
 func test_room_scenes_exist_and_instantiate() -> void:
 	for room_id in ROOM_PATHS.keys():
 		var path: String = ROOM_PATHS[room_id]
@@ -135,7 +159,6 @@ func test_every_door_has_spawn_outside_presenter_shape() -> void:
 				var spawn := presenter.get_node_or_null("Spawn") as Node2D
 				_assert_true(spawn != null, "%s:%s has Spawn child" % [room_id, presenter.door_id])
 				if spawn != null:
-					# presenter collision shape radius/extent
 					var col := presenter.get_node_or_null("CollisionShape2D") as CollisionShape2D
 					_assert_true(col != null and col.shape != null, "%s:%s has collision shape" % [room_id, presenter.door_id])
 					var threshold_radius: float = 10.0
@@ -203,7 +226,8 @@ func test_safe_anchors_and_checkpoints_match_specs() -> void:
 				_assert_false(String(cp.checkpoint_id).is_empty(), "CheckpointZone has checkpoint_id in %s" % room_id)
 				_assert_false(String(cp.spawn_anchor_id).is_empty(), "CheckpointZone has spawn_anchor_id in %s" % room_id)
 
-		_assert_true(checkpoint_found, "CheckpointZone present in %s" % room_id)
+		if room_id != &"ch01.vestibule_niche":
+			_assert_true(checkpoint_found, "CheckpointZone present in %s" % room_id)
 		inst.free()
 
 
@@ -247,6 +271,45 @@ func test_puzzle_objects_configured_with_correct_exports() -> void:
 	_assert_true(bridge.get_node_or_null("Blocker") is CollisionObject2D, "bridge has Blocker child")
 	crossing.free()
 
+	# Signal Control: PZ-004 objects
+	var sig := (load(ROOM_PATHS[&"ch01.signal_control"]) as PackedScene).instantiate()
+	var cap = sig.get_node_or_null("surge_capacitor") as SurgeCapacitor
+	var ba = sig.get_node_or_null("breaker_a") as TimedBreaker
+	var bb = sig.get_node_or_null("breaker_b") as TimedBreaker
+	var grid = sig.get_node_or_null("substation_grid") as SubstationGrid
+	var vdoor = sig.get_node_or_null("vestibule_door") as PoweredDoor
+	_assert_true(cap != null, "surge_capacitor exists")
+	_assert_true(ba != null and bb != null, "breaker_a and breaker_b exist")
+	_assert_true(grid != null, "substation_grid exists")
+	_assert_true(vdoor != null, "vestibule_door exists")
+	_assert_eq(cap.puzzle_id, &"CH1-PZ-004", "cap puzzle_id")
+	_assert_eq(ba.puzzle_id, &"CH1-PZ-004", "ba puzzle_id")
+	_assert_eq(bb.puzzle_id, &"CH1-PZ-004", "bb puzzle_id")
+	_assert_eq(grid.puzzle_id, &"CH1-PZ-004", "grid puzzle_id")
+	_assert_eq(vdoor.puzzle_id, &"CH1-PZ-004", "vdoor puzzle_id")
+	_assert_eq(ba.capacitor_id, &"ch01.signal_control.surge_capacitor", "ba capacitor_id")
+	_assert_eq(bb.capacitor_id, &"ch01.signal_control.surge_capacitor", "bb capacitor_id")
+	_assert_eq(grid.capacitor_id, &"ch01.signal_control.surge_capacitor", "grid capacitor_id")
+	_assert_eq(grid.breaker_a_id, &"ch01.signal_control.breaker_a", "grid breaker_a_id")
+	_assert_eq(grid.breaker_b_id, &"ch01.signal_control.breaker_b", "grid breaker_b_id")
+	_assert_eq(vdoor.grid_id, &"ch01.signal_control.substation_grid", "vdoor grid_id")
+	_assert_true(vdoor.get_node_or_null("Blocker") is CollisionObject2D, "vdoor has Blocker child")
+	sig.free()
+
+	# Upper Vestibule: PZ-005 objects
+	var vest := (load(ROOM_PATHS[&"ch01.upper_vestibule"]) as PackedScene).instantiate()
+	var la = vest.get_node_or_null("junction_lever_a") as JunctionLever
+	var lb = vest.get_node_or_null("junction_lever_b") as JunctionLever
+	var resetter = vest.get_node_or_null("spatial_resetter") as SpatialStateResetter
+	var board = vest.get_node_or_null("route_board") as Interactable
+	_assert_true(la != null and lb != null, "junction levers exist")
+	_assert_true(resetter != null, "spatial_resetter exists")
+	_assert_true(board != null and board.traceable, "route_board exists and is traceable")
+	_assert_eq(la.puzzle_id, &"CH1-PZ-005", "la puzzle_id")
+	_assert_eq(lb.puzzle_id, &"CH1-PZ-005", "lb puzzle_id")
+	_assert_eq(resetter.puzzle_id, &"CH1-PZ-005", "resetter puzzle_id")
+	vest.free()
+
 
 func test_passage_blockers_toggle_with_puzzle_state() -> void:
 	var s := make_session()
@@ -281,7 +344,164 @@ func test_passage_blockers_toggle_with_puzzle_state() -> void:
 	s.remove_child(crossing)
 	crossing.free()
 
+	# 4. PoweredDoor in signal_control starts blocked; unblocked when opened
+	var sig := (load(ROOM_PATHS[&"ch01.signal_control"]) as PackedScene).instantiate()
+	s.add_child(sig)
+	var vdoor := sig.get_node_or_null("vestibule_door") as PoweredDoor
+	_assert_true(vdoor.passage_blocked, "vestibule door initially blocked")
+	vdoor._open()
+	_assert_false(vdoor.passage_blocked, "vestibule door unblocked when open")
+	s.remove_child(sig)
+	sig.free()
+
 	free_session(s)
+
+
+func test_pz004_route_is_at_least_600_px() -> void:
+	var signal_scene := (load(ROOM_PATHS[&"ch01.signal_control"]) as PackedScene).instantiate()
+	var railings := signal_scene.get_node_or_null("TrenchRailings") as StaticBody2D
+	_assert_true(railings != null, "TrenchRailings StaticBody2D exists in signal_control")
+
+	# Waypoint coordinates from ROOM_GRAPH.md §5.4
+	var w0 := Vector2(176, 152)  # Breaker A standing spot (1, 10)
+	var w1 := Vector2(400, 232)  # South-East crossover bridge (13, 8)
+	var w2 := Vector2(304, 104)  # North-West crossover bridge (2, 3)
+	var w3 := Vector2(528, 184)  # Breaker B standing spot (14, 1)
+
+	var d01 := (w1 - w0).length()
+	var d12 := (w2 - w1).length()
+	var d23 := (w3 - w2).length()
+	var total_walk := d01 + d12 + d23
+
+	_assert_true(total_walk >= 600.0, "Shortest switchback walk (%.1f px) is >= 600 px (300 ticks)" % total_walk)
+	_assert_true(absf(total_walk - 635.8) < 1.0, "Total walk matches spec calculation (~635.8 px)")
+
+	# Confirm railings block the direct path between W0 and W3
+	var south_col := railings.get_node_or_null("SouthRailingCollision") as CollisionShape2D
+	var north_col := railings.get_node_or_null("NorthRailingCollision") as CollisionShape2D
+	_assert_true(south_col != null and south_col.shape is SegmentShape2D, "South railing collision segment exists")
+	_assert_true(north_col != null and north_col.shape is SegmentShape2D, "North railing collision segment exists")
+
+	var s_seg := south_col.shape as SegmentShape2D
+	var n_seg := north_col.shape as SegmentShape2D
+	_assert_true(_segments_cross(w0, w3, s_seg.a, s_seg.b), "Direct path W0 -> W3 intersects South Railing")
+	_assert_true(_segments_cross(w0, w3, n_seg.a, n_seg.b), "Direct path W0 -> W3 intersects North Railing")
+
+	signal_scene.free()
+
+
+func test_pz005_levers_and_resetter_configuration() -> void:
+	var s := make_session()
+	var vestibule := (load(ROOM_PATHS[&"ch01.upper_vestibule"]) as PackedScene).instantiate()
+	s.add_child(vestibule)
+
+	var lever_a := vestibule.get_node_or_null("junction_lever_a") as JunctionLever
+	var lever_b := vestibule.get_node_or_null("junction_lever_b") as JunctionLever
+	var resetter := vestibule.get_node_or_null("spatial_resetter") as SpatialStateResetter
+	var board := vestibule.get_node_or_null("route_board") as Interactable
+
+	_assert_true(lever_a != null, "junction_lever_a exists")
+	_assert_true(lever_b != null, "junction_lever_b exists")
+	_assert_true(resetter != null, "spatial_resetter exists")
+	_assert_true(board != null and board.traceable, "route_board exists and is traceable")
+
+	_assert_eq(lever_a.state_a, &"loop", "lever_a state_a is loop")
+	_assert_eq(lever_a.state_b, &"uncoupled", "lever_a state_b is uncoupled")
+	_assert_eq(lever_b.state_a, &"niche", "lever_b state_a is niche")
+	_assert_eq(lever_b.state_b, &"atrium", "lever_b state_b is atrium")
+
+	# Verify pairs match test_ch01_puzzles.gd::_pz5 spec
+	var expected_a_b := [["ch01.upper_vestibule", "door_west", "ch01.upper_vestibule", "door_east"], ["ch01.upper_vestibule", "door_north", "ch01.vestibule_niche", "door_in"]]
+	var expected_b_b := [["ch01.upper_vestibule", "door_north", "ch01.station_atrium", "door_entry_south"], ["ch01.vestibule_niche", "door_in", "ch01.vestibule_niche", "door_out", false]]
+	_assert_eq(lever_a.pairs_to_b, expected_a_b, "lever_a pairs_to_b matches spec")
+	_assert_eq(lever_b.pairs_to_b, expected_b_b, "lever_b pairs_to_b matches spec")
+
+	# Verify resetter has State 0 initial pairs
+	var expected_reset := [["ch01.upper_vestibule", "door_north", "ch01.upper_vestibule", "door_west"], ["ch01.upper_vestibule", "door_east", "ch01.vestibule_niche", "door_in"], ["ch01.vestibule_niche", "door_out", "ch01.station_atrium", "door_entry_south", false]]
+	_assert_eq(resetter.initial_pairs, expected_reset, "resetter initial_pairs matches State 0")
+
+	s.remove_child(vestibule)
+	vestibule.free()
+	free_session(s)
+
+
+func test_readables_apply_flags_fragments_and_journal() -> void:
+	var s := make_session()
+
+	# 1. Waiting Lounge: audio_mira_01
+	var lounge := (load(ROOM_PATHS[&"ch01.waiting_lounge"]) as PackedScene).instantiate()
+	s.add_child(lounge)
+	var mira_log := lounge.get_node_or_null("audio_mira_01") as ReadableDocument
+	_assert_true(mira_log != null, "audio_mira_01 exists")
+	var res1 := s.interaction_service.request(&"player", &"ch01.waiting_lounge.audio_mira_01", &"use")
+	_assert_true(res1.ok, "read audio_mira_01 ok")
+	_assert_true(s.narrative_state.get_flag(&"ch01.flag.mira_trace_seen"), "mira_trace_seen flag set")
+	_assert_eq(s.narrative_state.export_fragments(), ["ch01.fragment.mira_departure"], "mira_departure fragment acquired")
+	_assert_true(_has_journal_entry(s.narrative_state.get_journal(), "JRN_CH1_MIRA_PLEA"), "JRN_CH1_MIRA_PLEA journal added")
+	s.remove_child(lounge)
+	lounge.free()
+
+	# 2. Vestibule Niche: doc_index_plaque
+	var niche := (load(ROOM_PATHS[&"ch01.vestibule_niche"]) as PackedScene).instantiate()
+	s.add_child(niche)
+	var plaque := niche.get_node_or_null("doc_index_plaque") as ReadableDocument
+	_assert_true(plaque != null, "doc_index_plaque exists")
+	var res2 := s.interaction_service.request(&"player", &"ch01.vestibule_niche.doc_index_plaque", &"use")
+	_assert_true(res2.ok, "read doc_index_plaque ok")
+	_assert_true(_has_journal_entry(s.narrative_state.get_journal(), "JRN_CH1_THRESHOLDS"), "JRN_CH1_THRESHOLDS journal added")
+	s.remove_child(niche)
+	niche.free()
+
+	# 3. Station Atrium: dispatch_terminal (Beat 09 revelation)
+	var atrium := (load(ROOM_PATHS[&"ch01.station_atrium"]) as PackedScene).instantiate()
+	s.add_child(atrium)
+	var term := atrium.get_node_or_null("dispatch_terminal") as ReadableDocument
+	_assert_true(term != null, "dispatch_terminal exists")
+	var res3 := s.interaction_service.request(&"player", &"ch01.station_atrium.dispatch_terminal", &"use")
+	_assert_true(res3.ok, "read dispatch_terminal ok")
+	_assert_true(s.narrative_state.get_flag(&"ch01.flag.ledger_2359_revealed"), "ledger_2359_revealed flag set")
+	_assert_true(_has_journal_entry(s.narrative_state.get_journal(), "JRN_CH1_SEAL_ELIAS"), "JRN_CH1_SEAL_ELIAS journal added")
+	s.remove_child(atrium)
+	atrium.free()
+
+	free_session(s)
+
+
+func test_intercom_adds_operator_warning_after_pz004() -> void:
+	var s := make_session()
+	var sig := (load(ROOM_PATHS[&"ch01.signal_control"]) as PackedScene).instantiate()
+	s.add_child(sig)
+
+	var intercom := sig.get_node_or_null("intercom") as SignalControlIntercom
+	_assert_true(intercom != null, "intercom exists in signal_control")
+	_assert_false(_has_journal_entry(s.narrative_state.get_journal(), "JRN_CH1_OPERATOR_WARNING"), "no warning initially")
+
+	# Solving PZ-004 triggers intercom hook
+	s.puzzle_service.mark_solved(&"CH1-PZ-004")
+	_assert_true(_has_journal_entry(s.narrative_state.get_journal(), "JRN_CH1_OPERATOR_WARNING"), "JRN_CH1_OPERATOR_WARNING added after PZ-004")
+	_assert_true(s.narrative_state.get_flag(&"ch01.flag.operator_substation_warn"), "operator_substation_warn flag set")
+
+	s.remove_child(sig)
+	sig.free()
+	free_session(s)
+
+
+func test_street_exit_trigger_outro_completes_chapter() -> void:
+	var real_save_before := _record_real_save_state()
+	var ch01 := _make_ch01()
+
+	_assert_false(ch01.chapter_complete, "chapter initially incomplete")
+	_assert_false(ch01.session.narrative_state.get_flag(&"ch01.flag.chapter_complete"), "no chapter_complete flag initially")
+
+	# Walk player into outro trigger in street_exit
+	ch01.session.interaction_service.trigger_enter(&"player", &"ch01.street_exit.trigger_outro")
+
+	_assert_true(ch01.chapter_complete, "chapter_complete marked true")
+	_assert_true(ch01.session.narrative_state.get_flag(&"ch01.flag.chapter_complete"), "chapter_complete narrative flag set")
+	_assert_true(ch01.get_node_or_null("ChapterCompleteOverlay") != null, "ChapterCompleteOverlay displayed")
+
+	_cleanup_ch01(ch01)
+	_assert_real_save_unchanged(real_save_before, "test_street_exit_trigger_outro_completes_chapter")
 
 
 func test_chapter01_scene_initialization_and_graph_validation() -> void:
@@ -296,13 +516,11 @@ func test_chapter01_scene_initialization_and_graph_validation() -> void:
 	_assert_true(router != null, "RoomRouter exists")
 	_assert_true(player != null, "Player exists")
 
-	# Graph is applied and valid
+	# Graph is applied and valid across all 10 rooms
 	_assert_true(session.spatial_service != null and session.spatial_service.graph != null, "SpatialGraph active")
 	var room_ids = session.spatial_service.graph.get_room_ids()
-	_assert_true(room_ids.has(&"ch01.arrival_platform"), "arrival_platform in graph")
-	_assert_true(room_ids.has(&"ch01.concourse_west"), "concourse_west in graph")
-	_assert_true(room_ids.has(&"ch01.maintenance_bay"), "maintenance_bay in graph")
-	_assert_true(room_ids.has(&"ch01.security_crossing"), "security_crossing in graph")
+	for r_id in ROOM_PATHS.keys():
+		_assert_true(room_ids.has(r_id), "Room '%s' in graph" % r_id)
 
 	# Initial room entered
 	_assert_eq(router.current_room_id, &"ch01.arrival_platform", "current room is arrival_platform")
@@ -440,4 +658,169 @@ func test_scripted_playthrough_rooms_1_to_4() -> void:
 
 	_cleanup_ch01(ch01)
 	_assert_real_save_unchanged(real_save_before, "test_scripted_playthrough_rooms_1_to_4")
+	_assert_false(DirAccess.dir_exists_absolute(TEST_SAVE_ROOT), "test save root cleaned up")
+
+
+func test_scripted_playthrough_full_chapter_rooms_1_to_10() -> void:
+	var real_save_before := _record_real_save_state()
+	var ch01 := _make_ch01()
+
+	var session: GameSession = ch01.get_node_or_null("GameSession")
+	var router: RoomRouter = ch01.get_node_or_null("RoomRouter")
+	var player: Player = ch01.get_node_or_null("Player")
+
+	# 1. Arrival Platform -> Concourse West
+	_assert_eq(router.current_room_id, &"ch01.arrival_platform", "starts in arrival_platform")
+	session.interaction_service.trigger_enter(&"player", &"ch01.arrival_platform.checkpoint")
+	session.sim_clock.step(20)
+	session.interaction_service.trigger_enter(&"player", &"ch01.arrival_platform.door_exit_east")
+	router.process_pending()
+
+	# 2. Concourse West -> Solve PZ-001 -> Maintenance Bay
+	_assert_eq(router.current_room_id, &"ch01.concourse_west", "in concourse_west")
+	player.pocket_watch.selected_ability = &"rewind"
+	session.sim_clock.step(10)
+	session.interaction_service.request(&"player", &"ch01.concourse_west.turnstile_gate", &"rewind")
+	session.interaction_service.trigger_enter(&"player", &"ch01.concourse_west.exit_trigger_concourse")
+	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-001"), "PZ-001 solved")
+	session.sim_clock.step(20)
+	session.interaction_service.trigger_enter(&"player", &"ch01.concourse_west.door_exit_east")
+	router.process_pending()
+
+	# 3. Maintenance Bay -> Solve PZ-002 -> Security Crossing
+	_assert_eq(router.current_room_id, &"ch01.maintenance_bay", "in maintenance_bay")
+	session.interaction_service.request(&"player", &"ch01.maintenance_bay.fire_shutter", &"rewind")
+	session.sim_clock.step(10)
+	session.interaction_service.request(&"player", &"ch01.maintenance_bay.counterweight_gear", &"freeze")
+	session.interaction_service.trigger_enter(&"player", &"ch01.maintenance_bay.exit_trigger_east")
+	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-002"), "PZ-002 solved")
+	session.sim_clock.step(20)
+	session.interaction_service.trigger_enter(&"player", &"ch01.maintenance_bay.door_exit_east")
+	router.process_pending()
+
+	# 4. Security Crossing -> Solve PZ-003 -> Waiting Lounge
+	_assert_eq(router.current_room_id, &"ch01.security_crossing", "in security_crossing")
+	var plate_id := &"ch01.security_crossing.pressure_switch_01"
+	session.echo_service.start_recording()
+	session.sim_clock.step(20)
+	session.interaction_service.trigger_enter(&"player", plate_id)
+	session.sim_clock.step(40)
+	session.echo_service.stop_recording()
+	session.sim_clock.step(10)
+	session.interaction_service.trigger_exit(&"player", plate_id)
+	session.echo_service.start_playback()
+	session.sim_clock.step(40)
+	session.interaction_service.trigger_enter(&"player", &"ch01.security_crossing.exit_trigger_lounge")
+	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-003"), "PZ-003 solved")
+	session.sim_clock.step(20)
+	session.interaction_service.trigger_enter(&"player", &"ch01.security_crossing.door_exit_east")
+	router.process_pending()
+
+	# 5. Waiting Lounge (Beat 06): Read Mira log -> Signal Control
+	_assert_eq(router.current_room_id, &"ch01.waiting_lounge", "in waiting_lounge")
+	var mira_read := session.interaction_service.request(&"player", &"ch01.waiting_lounge.audio_mira_01", &"use")
+	_assert_true(mira_read.ok, "read audio_mira_01 ok")
+	_assert_true(session.narrative_state.get_flag(&"ch01.flag.mira_trace_seen"), "mira flag set")
+	_assert_eq(session.narrative_state.export_fragments(), ["ch01.fragment.mira_departure"], "mira fragment acquired")
+	_assert_true(_has_journal_entry(session.narrative_state.get_journal(), "JRN_CH1_MIRA_PLEA"), "mira journal logged")
+	session.sim_clock.step(20)
+	session.interaction_service.trigger_enter(&"player", &"ch01.waiting_lounge.door_exit_north")
+	router.process_pending()
+
+	# 6. Signal Control (Beat 07): Solve PZ-004 -> Operator Warning -> Upper Vestibule
+	_assert_eq(router.current_room_id, &"ch01.signal_control", "in signal_control")
+	# Step 1: Rewind + Freeze capacitor
+	session.interaction_service.request(&"player", &"ch01.signal_control.surge_capacitor", &"rewind")
+	session.sim_clock.step(10)
+	session.interaction_service.request(&"player", &"ch01.signal_control.surge_capacitor", &"freeze")
+	var cap := session.id_registry.resolve(&"ch01.signal_control.surge_capacitor") as SurgeCapacitor
+	_assert_true(cap.is_stabilized(), "capacitor stabilized")
+
+	# Step 2: Echo pulls breaker A, player pulls breaker B
+	session.echo_service.start_recording()
+	session.sim_clock.step(20)
+	session.interaction_service.request(&"player", &"ch01.signal_control.breaker_a", &"use")
+	session.sim_clock.step(20)
+	session.echo_service.stop_recording()
+	session.sim_clock.step(200) # wait for breaker A to open
+	session.echo_service.start_playback()
+	session.sim_clock.step(20)
+	session.interaction_service.request(&"player", &"ch01.signal_control.breaker_b", &"use")
+	var vdoor := session.id_registry.resolve(&"ch01.signal_control.vestibule_door") as PoweredDoor
+	_assert_false(vdoor.passage_blocked, "vestibule door opened")
+
+	# Cross exit trigger -> PZ-004 SOLVED + Intercom warning
+	session.interaction_service.trigger_enter(&"player", &"ch01.signal_control.exit_trigger_vestibule")
+	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-004"), "PZ-004 is SOLVED")
+	_assert_true(_has_journal_entry(session.narrative_state.get_journal(), "JRN_CH1_OPERATOR_WARNING"), "intercom warning journal added")
+	_assert_true(session.narrative_state.get_flag(&"ch01.flag.operator_substation_warn"), "operator warning flag set")
+
+	session.sim_clock.step(20)
+	session.interaction_service.trigger_enter(&"player", &"ch01.signal_control.door_exit_north")
+	router.process_pending()
+
+	# 7. Upper Vestibule (Beat 08): Visit Niche (Room 8) -> Solve PZ-005 -> Station Atrium
+	_assert_eq(router.current_room_id, &"ch01.upper_vestibule", "in upper_vestibule")
+	# Route board is traceable
+	var trace_board := session.interaction_service.request(&"player", &"ch01.upper_vestibule.route_board", &"trace")
+	_assert_true(trace_board.ok, "trace route board ok")
+
+	# Inspect Niche through door_east
+	session.sim_clock.step(20)
+	session.interaction_service.trigger_enter(&"player", &"ch01.upper_vestibule.door_east")
+	router.process_pending()
+	_assert_eq(router.current_room_id, &"ch01.vestibule_niche", "in vestibule_niche")
+	var plaque_res := session.interaction_service.request(&"player", &"ch01.vestibule_niche.doc_index_plaque", &"use")
+	_assert_true(plaque_res.ok, "read doc_index_plaque ok")
+	_assert_true(_has_journal_entry(session.narrative_state.get_journal(), "JRN_CH1_THRESHOLDS"), "thresholds journal added")
+
+	# Return to Upper Vestibule through door_in
+	session.sim_clock.step(20)
+	session.interaction_service.trigger_enter(&"player", &"ch01.vestibule_niche.door_in")
+	router.process_pending()
+	_assert_eq(router.current_room_id, &"ch01.upper_vestibule", "returned to upper_vestibule")
+
+	# Pull levers to route door_north to Station Atrium
+	session.interaction_service.request(&"player", &"ch01.upper_vestibule.junction_lever_a", &"use")
+	session.interaction_service.request(&"player", &"ch01.upper_vestibule.junction_lever_b", &"use")
+
+	session.sim_clock.step(20)
+	session.interaction_service.trigger_enter(&"player", &"ch01.upper_vestibule.door_north")
+	router.process_pending()
+
+	# 9. Station Atrium (Beat 09): Solve PZ-005 -> Major Revelation -> Street Exit
+	_assert_eq(router.current_room_id, &"ch01.station_atrium", "in station_atrium")
+	session.interaction_service.trigger_enter(&"player", &"ch01.station_atrium.entry_trigger_atrium")
+	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-005"), "PZ-005 is SOLVED")
+
+	# Inspect dispatch terminal
+	var dispatch_res := session.interaction_service.request(&"player", &"ch01.station_atrium.dispatch_terminal", &"use")
+	_assert_true(dispatch_res.ok, "read dispatch_terminal ok")
+	_assert_true(session.narrative_state.get_flag(&"ch01.flag.ledger_2359_revealed"), "ledger flag set")
+	_assert_true(_has_journal_entry(session.narrative_state.get_journal(), "JRN_CH1_SEAL_ELIAS"), "seal elias journal added")
+
+	session.sim_clock.step(20)
+	session.interaction_service.trigger_enter(&"player", &"ch01.station_atrium.door_exit_north")
+	router.process_pending()
+
+	# 10. Street Exit (Beat 10): Outro trigger -> Chapter Complete
+	_assert_eq(router.current_room_id, &"ch01.street_exit", "in street_exit")
+	session.interaction_service.trigger_enter(&"player", &"ch01.street_exit.trigger_outro")
+	_assert_true(ch01.chapter_complete, "Chapter 1 completed")
+	_assert_true(session.narrative_state.get_flag(&"ch01.flag.chapter_complete"), "chapter complete flag set")
+
+	# Confirm all 5 puzzles are solved
+	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-001"), "PZ-001 solved")
+	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-002"), "PZ-002 solved")
+	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-003"), "PZ-003 solved")
+	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-004"), "PZ-004 solved")
+	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-005"), "PZ-005 solved")
+
+	# Confirm autosave exists in isolated test root
+	_assert_true(router.save_service != null, "SaveService active")
+	_assert_true(router.save_service.has_slot(router.autosave_slot), "Autosave slot exists in test folder")
+	_assert_true(FileAccess.file_exists(TEST_SAVE_ROOT.path_join("slot_%d.json" % router.autosave_slot)), "Autosave file in test root")
+
+	_cleanup_ch01(ch01)
+	_assert_real_save_unchanged(real_save_before, "test_scripted_playthrough_full_chapter_rooms_1_to_10")
 	_assert_false(DirAccess.dir_exists_absolute(TEST_SAVE_ROOT), "test save root cleaned up")
