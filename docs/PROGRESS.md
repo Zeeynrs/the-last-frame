@@ -10,7 +10,7 @@
 |---|---|---|
 | 0 — Project setup | COMPLETE | Tag `m0-complete`: repo, ADRs, folder structure, input map, pixel-art display, headless validation (5/5) documented in README |
 | 1 — Isometric foundation | IN PROGRESS (exit criteria met except one item) | Movement, collision, interaction, settings and remapping are merged and verified. Remaining: a physical controller spot-check by a human (ISSUE-011) |
-| 2 — Temporal prototype | IN PROGRESS | Core done (TLF-008 temporal, TLF-016 Echo); player-facing pocket watch/HUD pending (TLF-018) |
+| 2 — Temporal prototype | COMPLETE | Exit criteria met: unit tests for state transitions, echo holds a switch while the player acts (tests + playable PZ-003), invalid targets fail gracefully; pocket watch + HUD merged (TLF-018) |
 | 3 — Spatial prototype | IN PROGRESS | SpatialGraph (TLF-020) + room routing (TLF-021) merged; exit needs a playable PZ-005 room (TLF-009 content) |
 | 4 — Puzzle/narrative framework | IN PROGRESS | PuzzleService, NarrativeState, SaveService merged (TLF-019); dialogue/journal UI pending |
 | 5 — Chapter 1 vertical slice | NOT STARTED | |
@@ -37,6 +37,7 @@
 | 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
 | 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
 | 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
+| 2026-10-31 | Integrated Flash TLF-018 + TLF-009 (`7fb8aec`) and Opus TLF-028 + TLF-029 (`2eb5272`); committed ui_feedback translation (`4476e0e`). Independent check: fresh clone without the file fails as reported, with it passes on first run (76 scripts, 209/209, no leaks); real user://saves untouched. Ch1 rooms 1–4 playable on main. (Docs commit `100aab2` was partial; completed in the next commit.) | Agent 1 |
 | 2026-10-31 | Lead review TLF-009 (`b157fd4`): approved with pre-merge fix R1 (tests wrote the real autosave; artifact removed). Real-input probe: Chapter01 rooms 1→3, PZ-001 via pocket watch, checkpoint autosave. TLF-029 (frame-stepping tests) added. ISSUE-017 recorded (agent takeover attempt; main history clean) | Agent 1 |
 | 2026-10-31 | Squash-merged design-art `689e169` (TLF-024b: SPK_* labels, pa_speaker/intercom IDs approved, JRN_CH1_OPERATOR_WARNING) keeping `eecb822` out of history. Reviewed Flash TLF-018 fixes (R1/R2b/R4/R5 OK, 194/194 on merge result, SpriteFrames verified); found fresh-clone failure (ISSUE-015): translations now committed (ADR-013 corrected), `validate.ps1` hardening → TLF-028. TLF-018 merge waits for Flash's ch01_text translation registration | Agent 1 |
 | 2026-10-31 | Merged `64f7be8` alone (ART_BIBLE light convention + flip_h trade-offs, docs-only); `eecb822` still excluded | Agent 1 |
