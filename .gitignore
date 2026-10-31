@@ -1,0 +1,23 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Export / build output
+/build/
+/export/
+/exports/
+*.tmp
+
+# Local secrets and machine-specific config (never commit)
+.env
+.env.*
+*.local.json
+.mcp.json
+.claude/settings.local.json
+.gemini/
+
+# OS / editor noise
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.swp
