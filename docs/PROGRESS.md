@@ -9,7 +9,7 @@
 | Milestone | Status | Notes |
 |---|---|---|
 | 0 — Project setup | COMPLETE | Tag `m0-complete`: repo, ADRs, folder structure, input map, pixel-art display, headless validation (5/5) documented in README |
-| 1 — Isometric foundation | IN PROGRESS | TLF-007 merged (session core, iso movement, interaction in greybox). Remaining for exit: controller manual test evidence, input remapping foundation |
+| 1 — Isometric foundation | IN PROGRESS (exit criteria met except one item) | Movement, collision, interaction, settings and remapping are merged and verified. Remaining: a physical controller spot-check by a human (ISSUE-011) |
 | 2 — Temporal prototype | IN PROGRESS | Core done (TLF-008 temporal, TLF-016 Echo); player-facing pocket watch/HUD pending (TLF-018) |
 | 3 — Spatial prototype | IN PROGRESS | SpatialGraph (TLF-020) + room routing (TLF-021) merged; exit needs a playable PZ-005 room (TLF-009 content) |
 | 4 — Puzzle/narrative framework | IN PROGRESS | PuzzleService, NarrativeState, SaveService merged (TLF-019); dialogue/journal UI pending |
@@ -37,6 +37,7 @@
 | 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
 | 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
 | 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
+| 2026-10-31 | Flash's TLF-017 handoff received and stored (`docs/handoffs/TLF-017/`, local paths removed). Its manual checks were scripted synthetic input; the Lead re-verified remap on `main` independently. TLF-017 COMPLETE with deviation; only a physical controller spot-check remains for Milestone 1 | Agent 1 |
 | 2026-10-31 | TLF-021 implemented by Opus, merged `5fda100`: RoomRouter (queued transitions, arrival grace, world memory, checkpoint autosave, restore, cross-room relocation), ChapterRoot.tscn, CheckpointZone, SafeAnchor; ADR-018; 118/118 | Agent 1 |
 | 2026-10-31 | Lead review of Flash TLF-017 (`19436f9`, after reverting duplicate `431d1c5`): net diff in scope, simulated merge 108/108, merged `c72f272`; manual controller evidence still missing (ISSUE-011); remap single-slot note (ISSUE-010) | Agent 1 |
 | 2026-10-31 | TLF-020 implemented by Opus, merged `3740531`: SpatialGraph (transactional re-pairing, critical paths), SpatialService (relocation), DoorwayPresenter, spatial save section, GameSession refs via node paths; 94/94 | Agent 1 |
