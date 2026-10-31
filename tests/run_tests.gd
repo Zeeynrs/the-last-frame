@@ -3,11 +3,20 @@ extends SceneTree
 ## Zero-dependency test runner per ADR-012.
 ## Discovers res://tests/**/test_*.gd, executes test_* methods,
 ## records assertion failures, prints summary and exits with failure count.
+##
+## Frame-stepping (TLF-029): a test that awaits becomes a coroutine; the runner then steps
+## physics frames until it completes, or fails it after `timeout_frames` (default 3600).
+## Sync tests run back to back in one frame, exactly as before. After every test the runner
+## releases all input actions and frees nodes the test left under the root.
+
+const DEFAULT_TIMEOUT_FRAMES: int = 3600
 
 class AssertHelper extends RefCounted:
 	var current_file: String = ""
 	var current_method: String = ""
 	var failures: Array[Dictionary] = []
+	## Quiet helpers record without printing (runner self-tests use them for expected failures).
+	var quiet: bool = false
 
 	func set_context(file_path: String, method_name: String) -> void:
 		current_file = file_path
@@ -60,13 +69,14 @@ class AssertHelper extends RefCounted:
 			"method": current_method,
 			"message": msg
 		})
-		print("  FAIL: [%s::%s] %s" % [current_file, current_method, msg])
+		if not quiet:
+			print("  FAIL: [%s::%s] %s" % [current_file, current_method, msg])
 
 
 var _has_run: bool = false
 
 
-## Tests run on the first frame: during _init()/_initialize() the root is not yet inside the
+## Tests run from the first frame: during _init()/_initialize() the root is not yet inside the
 ## tree, so nodes added by tests would never receive _ready().
 func _process(_delta: float) -> bool:
 	if not _has_run:
@@ -94,7 +104,7 @@ func _run_all() -> void:
 	for file_path in test_files:
 		print("Test file: %s" % file_path)
 		var script = load(file_path)
-		if script == null or not (script is GDScript):
+		if script == null or not (script is GDScript) or not script.can_instantiate():
 			print("  ERROR: Failed to load script %s" % file_path)
 			failed += 1
 			continue
@@ -110,30 +120,15 @@ func _run_all() -> void:
 		if "scene_tree" in instance:
 			instance.scene_tree = self
 
-		var method_list = script.get_script_method_list()
 		var methods: Array[String] = []
-		for m in method_list:
+		for m in script.get_script_method_list():
 			if m["name"].begins_with("test_"):
 				methods.append(m["name"])
 		methods.sort()
 
 		for method_name in methods:
 			assert_helper.set_context(file_path, method_name)
-			var failures_before = assert_helper.failures.size()
-
-			var arg_count: int = 0
-			for m in method_list:
-				if m["name"] == method_name:
-					arg_count = m["args"].size()
-					break
-
-			if arg_count == 1:
-				instance.call(method_name, assert_helper)
-			else:
-				instance.call(method_name)
-
-			var failures_after = assert_helper.failures.size()
-			if failures_after == failures_before:
+			if await run_test(instance, method_name, assert_helper):
 				passed += 1
 				print("  PASS: %s" % method_name)
 			else:
@@ -145,6 +140,76 @@ func _run_all() -> void:
 	print("---------------------------")
 	print("TESTS: %d passed, %d failed" % [passed, failed])
 	quit(failed)
+
+
+## Runs one test method and returns true when it recorded no failures. Awaits coroutines
+## (stepping physics frames) up to the instance's `timeout_frames`. Always releases input and
+## frees nodes the test left under the root. Public so runner self-tests can drive fixtures.
+func run_test(instance: Object, method_name: String, helper: AssertHelper) -> bool:
+	var failures_before: int = helper.failures.size()
+	var root_before: Array[Node] = root.get_children()
+
+	var arg_count: int = 0
+	for m in instance.get_script().get_script_method_list():
+		if m["name"] == method_name:
+			arg_count = m["args"].size()
+			break
+
+	var result = instance.call(method_name, helper) if arg_count == 1 else instance.call(method_name)
+
+	if result is Object and result.get_class() == "GDScriptFunctionState":
+		var done: Array[bool] = [false]
+		result.completed.connect(func(_value) -> void: done[0] = true)
+		var limit: int = DEFAULT_TIMEOUT_FRAMES
+		if "timeout_frames" in instance:
+			limit = instance.timeout_frames
+		var frames: int = 0
+		while not done[0] and frames < limit:
+			await physics_frame
+			frames += 1
+		if not done[0]:
+			helper.fail("Timed out after %d physics frames (async test never finished)" % limit)
+			# Detach the abandoned coroutine: its helpers stop driving input and its later
+			# assertions go to a discarded helper instead of the next test.
+			if "aborted" in instance:
+				instance.aborted = true
+			if "assert_helper" in instance:
+				var discard := AssertHelper.new()
+				discard.quiet = true
+				instance.assert_helper = discard
+
+	_release_all_input(instance)
+	_free_new_root_children(root_before, method_name)
+	return helper.failures.size() == failures_before
+
+
+func make_assert_helper(is_quiet: bool = true) -> AssertHelper:
+	var helper := AssertHelper.new()
+	helper.quiet = is_quiet
+	return helper
+
+
+func _release_all_input(instance: Object) -> void:
+	if instance.has_method("release_all_input"):
+		instance.release_all_input()
+	# Apply any press still buffered, then clear every action, whoever pressed it.
+	Input.flush_buffered_events()
+	for action in InputMap.get_actions():
+		if Input.is_action_pressed(action):
+			Input.action_release(action)
+
+
+func _free_new_root_children(before: Array[Node], method_name: String) -> void:
+	var leftovers: Array[Node] = []
+	for child in root.get_children():
+		if not before.has(child):
+			leftovers.append(child)
+	if leftovers.is_empty():
+		return
+	print("  NOTE: %s left %d node(s) under the root; freed them." % [method_name, leftovers.size()])
+	for node in leftovers:
+		root.remove_child(node)
+		node.free()
 
 
 func _discover_test_files(dir_path: String, out_files: Array[String]) -> void:

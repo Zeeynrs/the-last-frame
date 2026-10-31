@@ -6,6 +6,12 @@ extends RefCounted
 
 var assert_helper: RefCounted
 var scene_tree: SceneTree
+## Frame budget for an awaited test before the runner fails it (TLF-029).
+var timeout_frames: int = 3600
+## Set by the runner when this test timed out: helpers stop waiting and stop pressing input.
+var aborted: bool = false
+
+var _pressed_actions: Array[StringName] = []
 
 
 func _assert_eq(actual, expected, msg: String = "") -> bool:
@@ -22,6 +28,61 @@ func _assert_false(cond: bool, msg: String = "") -> bool:
 
 func _tree() -> SceneTree:
 	return scene_tree if scene_tree != null else Engine.get_main_loop() as SceneTree
+
+
+## Frame stepping (TLF-029). `await physics_frames(n)` lets physics, input and timers run.
+func physics_frames(n: int = 1) -> void:
+	for i in n:
+		if aborted:
+			return
+		await _tree().physics_frame
+
+
+## Polls `condition` once per physics frame; true as soon as it holds, false after max_frames.
+## Use as `_assert_true(await until(func(): return x, 120), "x happened")`.
+func until(condition: Callable, max_frames: int = 600) -> bool:
+	for i in max_frames:
+		if aborted:
+			return false
+		if condition.call():
+			return true
+		await _tree().physics_frame
+	return condition.call()
+
+
+## Presses an input action as a real InputEventAction (Input state + _input dispatch).
+## The runner releases everything after the test, even when it fails.
+func press(action: StringName, strength: float = 1.0) -> void:
+	if aborted:
+		return
+	_send_action(action, true, strength)
+	if not _pressed_actions.has(action):
+		_pressed_actions.append(action)
+
+
+func release(action: StringName) -> void:
+	_send_action(action, false, 0.0)
+	_pressed_actions.erase(action)
+
+
+## Press, hold for `frames` physics frames, release (for is_action_just_pressed handlers).
+func tap(action: StringName, frames: int = 1) -> void:
+	press(action)
+	await physics_frames(frames)
+	release(action)
+
+
+func release_all_input() -> void:
+	for action in _pressed_actions.duplicate():
+		release(action)
+
+
+func _send_action(action: StringName, pressed: bool, strength: float) -> void:
+	var event := InputEventAction.new()
+	event.action = action
+	event.pressed = pressed
+	event.strength = strength
+	Input.parse_input_event(event)
 
 
 ## Builds a GameSession with SimClock, IdRegistry and InteractionService under the tree root.
