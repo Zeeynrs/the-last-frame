@@ -14,8 +14,9 @@ extends "res://tests/support/base_test.gd"
 ## Blocking TLF-032 UI (Beat 01 at boot, document pages, Beats 09/10) is advanced with real
 ## interact taps (base_test.dismiss_blocking_ui()).
 ##
-## The RISK-018 negative check (PZ-004 must not be solvable without an Echo) lands together with
-## the signal_control layout fix: today a no-Echo run makes the window (reported in TLF-031).
+## test_pz004_cannot_be_solved_without_echo is the RISK-018 negative check. It fails on the
+## signal_control layout as of ec2bd6d/cf4a2db (a no-Echo run pulls B 173 ticks after A) and is
+## meant to merge together with the layout fix (TLF-033).
 
 const CH01_SCENE_PATH := "res://scenes/chapters/ch01/Chapter01.tscn"
 const TEST_SAVE_ROOT := "user://tlf_test_ch01_late_saves"
@@ -155,6 +156,82 @@ func _stabilize_capacitor() -> bool:
 	await tap(&"watch")
 	return _assert_true(await until(func() -> bool: return capacitor.is_stabilized(), 10),
 		"capacitor stabilized (powered + frozen)")
+
+
+# --- negative check: RISK-018 --------------------------------------------------------------
+
+## Fastest no-Echo attempt: around the south railing's east end, then straight at breaker B;
+## if B never becomes the interact target on that line, the full Z-route.
+const NO_ECHO_ROUTE: Array[Vector2] = [Vector2(392, 232), Vector2(510, 220), W2, W3]
+
+
+## Without an Echo, pulling A and running to B as fast as a player can must miss the 180-tick
+## window. A is pulled while already moving; B is pulled the first frame it is the interact
+## target, without stopping.
+func test_pz004_cannot_be_solved_without_echo() -> void:
+	if not await _start_chapter(&"ch01.signal_control", &"door_entry_south"):
+		_stop_chapter()
+		return
+	var a := _resolve(&"ch01.signal_control.breaker_a") as TimedBreaker
+	var b := _resolve(&"ch01.signal_control.breaker_b") as TimedBreaker
+	var grid := _resolve(&"ch01.signal_control.substation_grid") as SubstationGrid
+	if not (await _stabilize_capacitor() and await walk_to(_player, "no-Echo run -> W0 (breaker A)", W0)):
+		_stop_chapter()
+		return
+	_assert_eq(_player.current_target, a, "breaker A is the interact target at W0")
+
+	var clock := _session.sim_clock
+	var a_tick := -1
+	var b_tick := -1
+	var b_pos := Vector2.ZERO
+	var interact_frames := 0     # >0 while interact is held for a pull
+	press(&"interact")           # pull A on the move
+	interact_frames = 1
+	var leg := 0
+	var anchor_pos := _player.global_position
+	var still := 0
+	for frame in 1200:
+		if aborted or b.is_engaged() or leg >= NO_ECHO_ROUTE.size():
+			break
+		if interact_frames > 0:
+			if Input.is_action_pressed(&"interact"):
+				interact_frames += 1
+			if interact_frames > 2:
+				release(&"interact")
+				interact_frames = 0
+		if a_tick < 0 and a.is_engaged():
+			a_tick = clock.tick
+		if a_tick >= 0 and b_tick < 0 and interact_frames == 0 and _player.current_target == b:
+			press(&"interact")
+			interact_frames = 1
+			b_tick = clock.tick
+			b_pos = _player.global_position
+		if _player.global_position.distance_to(NO_ECHO_ROUTE[leg]) <= WALK_TOLERANCE:
+			leg += 1
+			continue
+		steer(_player, NO_ECHO_ROUTE[leg])
+		await physics_frames(1)
+		if _player.global_position.distance_to(anchor_pos) >= WALK_STUCK_DISTANCE:
+			anchor_pos = _player.global_position
+			still = 0
+		else:
+			still += 1
+			if still >= WALK_STUCK_FRAMES:   # blocked on this leg: try the next waypoint
+				leg += 1
+				still = 0
+	hold_moves([])
+	if interact_frames > 0:
+		release(&"interact")
+	await physics_frames(3)
+	_assert_true(a_tick >= 0, "breaker A pulled on the move")
+	if b_tick >= 0:
+		_assert_false(grid.grid_online,
+			"RISK-018: grid came online without Echo; B pulled %d ticks after A from %s (window %d)" % [
+				b_tick - a_tick, b_pos, a.engage_ticks_base])
+		print("  INFO: no-Echo run: B pulled %d ticks after A from %s; grid_online=%s" % [b_tick - a_tick, b_pos, grid.grid_online])
+	else:
+		print("  INFO: no-Echo run: breaker B never became the interact target")
+	_stop_chapter()
 
 
 # --- the late playthrough ------------------------------------------------------------------
