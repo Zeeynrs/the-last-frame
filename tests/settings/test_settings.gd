@@ -78,6 +78,7 @@ func test_default_settings() -> void:
 func test_save_load_round_trip() -> void:
 	var s = _get_settings()
 	_cleanup_file(TEST_CONFIG_ROUNDTRIP)
+	var original_path: String = s.settings_path  # headless: user://headless/settings.cfg (TLF-036)
 	s.settings_path = TEST_CONFIG_ROUNDTRIP
 
 	s.master_volume = 0.75
@@ -116,7 +117,7 @@ func test_save_load_round_trip() -> void:
 	_assert_true(abs(s.screen_shake - 0.4) < 0.001, "screen_shake should restore to 0.4")
 
 	s.reset_to_defaults()
-	s.settings_path = s.DEFAULT_SETTINGS_PATH
+	s.settings_path = original_path
 	_cleanup_file(TEST_CONFIG_ROUNDTRIP)
 
 
@@ -153,6 +154,7 @@ func test_corrupt_file_handling() -> void:
 	f.store_string("[corrupted_section_without_closing_bracket\n")
 	f.close()
 
+	var original_path: String = s.settings_path  # headless: user://headless/settings.cfg (TLF-036)
 	s.settings_path = TEST_CONFIG_CORRUPT
 	s.master_volume = 0.3
 	s.reduced_effects = true
@@ -163,7 +165,7 @@ func test_corrupt_file_handling() -> void:
 	_assert_eq(s.master_volume, 1.0, "Corrupt file should cause reset to default master_volume=1.0")
 	_assert_false(s.reduced_effects, "Corrupt file should cause reset to default reduced_effects=false")
 
-	s.settings_path = s.DEFAULT_SETTINGS_PATH
+	s.settings_path = original_path
 	_cleanup_file(TEST_CONFIG_CORRUPT)
 
 
@@ -259,6 +261,7 @@ func test_remap_allow_list_interact_confirm() -> void:
 func test_remap_persisted_and_reapplied() -> void:
 	var s = _get_settings()
 	_cleanup_file(TEST_CONFIG_REMAP)
+	var original_path: String = s.settings_path  # headless: user://headless/settings.cfg (TLF-036)
 	s.settings_path = TEST_CONFIG_REMAP
 
 	# Remap pause key to Key O (79)
@@ -289,7 +292,7 @@ func test_remap_persisted_and_reapplied() -> void:
 	_assert_true(has_key_o_reloaded, "After load_settings, custom binding Key O should be restored")
 
 	s.reset_all_bindings()
-	s.settings_path = s.DEFAULT_SETTINGS_PATH
+	s.settings_path = original_path
 	_cleanup_file(TEST_CONFIG_REMAP)
 
 
