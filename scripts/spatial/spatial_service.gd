@@ -48,6 +48,18 @@ func get_actor_room(actor_id: StringName) -> StringName:
 	return _actor_rooms.get(actor_id, &"")
 
 
+## Safety relocation requested by gameplay (closing shutters, retracting bridges; ADR-016).
+## Goes through the same channel as graph-driven relocation, which the room router executes.
+func request_relocation(actor_id: StringName, anchor_id: StringName) -> void:
+	relocate_requested.emit(actor_id, anchor_id)
+
+
+## Dry run of apply_transform (no side effects).
+func validate_transform(pairs: Array) -> InteractionResult:
+	var result := graph.validate_transform(pairs)
+	return InteractionResult.success() if result["ok"] else InteractionResult.failure(result["reason"])
+
+
 ## Transactional transform through the graph. Returns an InteractionResult so levers can pass it on.
 func apply_transform(pairs: Array) -> InteractionResult:
 	var result := graph.apply(pairs)
