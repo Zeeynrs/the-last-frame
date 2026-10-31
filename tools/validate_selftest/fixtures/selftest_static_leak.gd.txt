@@ -1,0 +1,7 @@
+extends RefCounted
+
+## validate.ps1 self-test fixture (TLF-035): loading this script runs its static initializer,
+## which creates a Node nobody frees. The script check loads every res:// script, so it leaks.
+## Expected: script check step fails with "leaked at exit".
+
+static var _leaked: Node = Node.new()

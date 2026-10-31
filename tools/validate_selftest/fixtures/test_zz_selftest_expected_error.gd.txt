@@ -1,0 +1,11 @@
+extends "res://tests/support/base_test.gd"
+
+## validate.ps1 self-test fixture (TLF-035): a negative-style test that logs an ERROR: line on
+## purpose (mentioning a leak) and cleans up. Expected: validation stays green.
+
+
+func test_selftest_expected_error_is_not_a_leak() -> void:
+	var node := Node.new()
+	push_error("Selftest: expected error, the fixture leaked nothing (not 'at exit').")
+	node.free()
+	_assert_true(true, "expected error only")

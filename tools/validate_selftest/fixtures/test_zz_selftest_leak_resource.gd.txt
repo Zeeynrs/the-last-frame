@@ -1,0 +1,10 @@
+extends "res://tests/support/base_test.gd"
+
+## validate.ps1 self-test fixture (TLF-035): a leaked Node keeps a loaded resource alive.
+## Expected: "resources still in use at exit" (plus the ObjectDB leak) -> test suite step fails.
+
+
+func test_selftest_leaks_a_resource() -> void:
+	var node := Node.new()
+	node.set_meta("held", load("res://data/puzzles/ch01/CH1-PZ-001.tres"))
+	_assert_true(true, "passes, but leaks")

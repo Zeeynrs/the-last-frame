@@ -23,7 +23,7 @@ $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 
 # Runs Godot with the given arguments, echoes every output line as it arrives and returns
 # @{ ExitCode; Lines }.
-function Invoke-Godot([string[]]$Arguments) {
+function Invoke-Godot([string[]]$Arguments, [switch]$Quiet) {
     $info = New-Object System.Diagnostics.ProcessStartInfo
     $info.FileName = $env:ComSpec
     $info.Arguments = '/d /s /c ""{0}" --path "{1}" {2} 2>&1"' -f $Godot, $ProjectRoot, ($Arguments -join ' ')
@@ -35,7 +35,7 @@ function Invoke-Godot([string[]]$Arguments) {
     $process = [System.Diagnostics.Process]::Start($info)
     $lines = New-Object System.Collections.Generic.List[string]
     while ($null -ne ($line = $process.StandardOutput.ReadLine())) {
-        Write-Host $line
+        if (-not $Quiet) { Write-Host $line }
         $lines.Add($line)
     }
     $process.WaitForExit()
@@ -45,6 +45,37 @@ function Invoke-Godot([string[]]$Arguments) {
 function Get-ErrorLines($Lines) {
     # Godot may colour its output; strip ANSI escapes before matching line starts.
     return @($Lines | Where-Object { ($_ -replace "\x1b\[[0-9;]*m", "") -match "^(SCRIPT )?ERROR:" })
+}
+
+# Leak messages Godot prints at exit (verified on 4.7.2, TLF-035), e.g.
+#   WARNING: 1 ObjectDB instance was leaked at exit (run with `--verbose` for details).
+#   ERROR: 2 resources still in use at exit (run with --verbose for details).
+#   ERROR: 1 RID allocations of type 'P11GodotBody2D' were leaked at exit.
+# Matched on the message text, not the WARNING:/ERROR: prefix, so the ERROR: lines that negative
+# tests log on purpose never count. ("Orphan StringName" only appears with --verbose.)
+$LeakPattern = "leaked at exit|still in use at exit"
+
+function Get-LeakLines($Lines) {
+    return @($Lines | Where-Object { ($_ -replace "\x1b\[[0-9;]*m", "") -match $LeakPattern })
+}
+
+# Fails the step if Godot reported leaks at exit; reruns it with --verbose to show what leaked.
+function Assert-NoLeaks([string]$Step, $Result, [string[]]$Arguments) {
+    $leakLines = Get-LeakLines $Result.Lines
+    if ($leakLines.Count -eq 0) {
+        Write-Host "Leak check: clean ($Step)"
+        return
+    }
+    Write-Host "`nVALIDATION FAILED: $Step leaked at exit:"
+    $leakLines | ForEach-Object { Write-Host "  $_" }
+    Write-Host "`nRe-running $Step with --verbose for leak details..."
+    $verbose = Invoke-Godot (@("--verbose") + $Arguments) -Quiet
+    $details = @($verbose.Lines | Where-Object {
+        ($_ -replace "\x1b\[[0-9;]*m", "") -match "^(Leaked instance|Resource still in use|Orphan StringName)|$LeakPattern"
+    })
+    $details | Select-Object -First 40 | ForEach-Object { Write-Host "  $_" }
+    if ($details.Count -gt 40) { Write-Host "  ... ($($details.Count - 40) more)" }
+    exit 1
 }
 
 Write-Host "=== Validating The Last Frame Project ==="
@@ -99,26 +130,35 @@ func _collect(dir_path: String, out: Array[String]) -> void:
 $checkerPath = Join-Path ([System.IO.Path]::GetTempPath()) ("tlf_validate_check_{0}.gd" -f [guid]::NewGuid().ToString("N"))
 [System.IO.File]::WriteAllText($checkerPath, $checker, (New-Object System.Text.UTF8Encoding($false)))
 try {
-    $check = Invoke-Godot @("--headless", "-s", "`"$checkerPath`"")
+    $checkArgs = @("--headless", "-s", "`"$checkerPath`"")
+    $check = Invoke-Godot $checkArgs
+
+    $errorLines = Get-ErrorLines $check.Lines
+    if ($check.ExitCode -ne 0 -or $errorLines.Count -gt 0) {
+        Write-Host "`nVALIDATION FAILED: script check exited with code $($check.ExitCode) and printed $($errorLines.Count) ERROR line(s):"
+        $errorLines | ForEach-Object { Write-Host "  $_" }
+        exit 1
+    }
+    Assert-NoLeaks "script check" $check $checkArgs
 } finally {
     Remove-Item -LiteralPath $checkerPath -Force -ErrorAction SilentlyContinue
 }
 
-$errorLines = Get-ErrorLines $check.Lines
-if ($check.ExitCode -ne 0 -or $errorLines.Count -gt 0) {
-    Write-Host "`nVALIDATION FAILED: script check exited with code $($check.ExitCode) and printed $($errorLines.Count) ERROR line(s):"
-    $errorLines | ForEach-Object { Write-Host "  $_" }
-    exit 1
-}
-
 # Step 3: Headless test runner (exit code = failure count; tests may log expected ERROR: lines)
 Write-Host "`n[3/3] Running headless automated test suite..."
-$tests = Invoke-Godot @("--headless", "-s", "res://tests/run_tests.gd")
+$testArgs = @("--headless", "-s", "res://tests/run_tests.gd")
+$tests = Invoke-Godot $testArgs
 
 if ($tests.ExitCode -ne 0) {
     Write-Host "`nVALIDATION FAILED: test suite exited with code $($tests.ExitCode)."
+    $leakLines = Get-LeakLines $tests.Lines
+    if ($leakLines.Count -gt 0) {
+        Write-Host "The test suite also leaked at exit:"
+        $leakLines | ForEach-Object { Write-Host "  $_" }
+    }
     exit $(if ($tests.ExitCode -gt 0) { $tests.ExitCode } else { 1 })
 }
+Assert-NoLeaks "test suite" $tests $testArgs
 
 Write-Host "`n=== All validation checks passed successfully! ==="
 exit 0
