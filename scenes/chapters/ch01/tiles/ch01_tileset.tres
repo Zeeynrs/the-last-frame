@@ -1,0 +1,63 @@
+[gd_resource type="TileSet" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_tile_terrazzo_dark_idle.png" id="1_df60g"]
+[ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_tile_terrazzo_cracked_idle.png" id="2_r1jt2"]
+[ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_tile_tactile_amber_idle.png" id="3_ewmpu"]
+[ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_tile_industrial_grating_idle.png" id="4_2ipe5"]
+[ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_tile_concrete_service_idle.png" id="5_57pvw"]
+[ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_tile_cable_conduit_off_idle.png" id="6_g1bqk"]
+[ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_tile_cable_conduit_on_idle.png" id="7_k6pb7"]
+[ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_tile_stone_step_wet_idle.png" id="8_0w76t"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iqdr4"]
+texture = ExtResource("1_df60g")
+texture_region_size = Vector2i(32, 16)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_caqdd"]
+texture = ExtResource("2_r1jt2")
+texture_region_size = Vector2i(32, 16)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hqhgk"]
+texture = ExtResource("3_ewmpu")
+texture_region_size = Vector2i(32, 16)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tjc2e"]
+texture = ExtResource("4_2ipe5")
+texture_region_size = Vector2i(32, 16)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_epaug"]
+texture = ExtResource("5_57pvw")
+texture_region_size = Vector2i(32, 16)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v1x6u"]
+texture = ExtResource("6_g1bqk")
+texture_region_size = Vector2i(32, 16)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7qvg5"]
+texture = ExtResource("7_k6pb7")
+texture_region_size = Vector2i(32, 16)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h4ad1"]
+texture = ExtResource("8_0w76t")
+texture_region_size = Vector2i(32, 16)
+0:0/0 = 0
+
+[resource]
+tile_shape = 1
+tile_layout = 5
+tile_size = Vector2i(32, 16)
+sources/0 = SubResource("TileSetAtlasSource_iqdr4")
+sources/1 = SubResource("TileSetAtlasSource_caqdd")
+sources/2 = SubResource("TileSetAtlasSource_hqhgk")
+sources/3 = SubResource("TileSetAtlasSource_tjc2e")
+sources/4 = SubResource("TileSetAtlasSource_epaug")
+sources/5 = SubResource("TileSetAtlasSource_v1x6u")
+sources/6 = SubResource("TileSetAtlasSource_7qvg5")
+sources/7 = SubResource("TileSetAtlasSource_h4ad1")
