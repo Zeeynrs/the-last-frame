@@ -75,6 +75,7 @@ static var _initialized: bool = false
 
 ## Ensures translations are added to TranslationServer for tr() lookups.
 static func init_translations() -> void:
+	UITheme.ensure_initialized()
 	if _initialized:
 		return
 	_initialized = true

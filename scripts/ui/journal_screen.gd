@@ -130,6 +130,7 @@ func _populate_journal(session: GameSession) -> void:
 			continue
 
 		var cat_header := Label.new()
+		cat_header.theme_type_variation = &"HeaderMedium"
 		var cat_key = CATEGORY_KEYS.get(cat, cat.capitalize())
 		cat_header.text = "%s (%d)" % [tr(cat_key), cat_entries.size()]
 		cat_header.modulate = CATEGORY_COLORS.get(cat, Color.WHITE)
@@ -173,6 +174,7 @@ func _populate_fragments(session: GameSession) -> void:
 		var body_key = "FRAG_%s_BODY" % last_part
 
 		var title_lbl := Label.new()
+		title_lbl.theme_type_variation = &"HeaderMedium"
 		title_lbl.text = tr(title_key)
 		title_lbl.modulate = Color(0.8, 0.45, 1.0)
 		fragments_content.add_child(title_lbl)

@@ -193,3 +193,9 @@ func test_autoloads() -> void:
 			"autoload %s registered" % autoload_name)
 	var tree := Engine.get_main_loop() as SceneTree
 	_assert_true(tree.root.has_node("SceneRouter"), "SceneRouter autoload is instantiated under /root")
+
+
+func test_custom_theme_registered() -> void:
+	# TLF-040: Project-wide custom theme registered in project.godot
+	_assert_eq(ProjectSettings.get_setting("gui/theme/custom"), "res://scenes/ui/theme/tlf_ui_theme.tres", "gui/theme/custom must be registered")
+

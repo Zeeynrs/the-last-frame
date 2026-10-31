@@ -33,11 +33,9 @@ var _labels: Dictionary = {}   # item -> Label
 
 func _ready() -> void:
 	UIFeedback.init_translations()
-	var font := load(FONT_PATH) as Font
-	if font != null:
-		var ui_theme := Theme.new()
-		ui_theme.default_font = font
-		theme = ui_theme
+	var prj_theme := load("res://scenes/ui/theme/tlf_ui_theme.tres") as Theme
+	if prj_theme != null:
+		theme = prj_theme
 	_labels = {&"new_game": $Menu/NewGame, &"continue": $Menu/Continue, &"quit": $Menu/Quit}
 	for item in ITEMS:
 		var label: Label = _labels[item]

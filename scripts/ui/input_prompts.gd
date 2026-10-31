@@ -35,33 +35,35 @@ static func get_action_glyph(action: StringName, prefer_joypad: bool = false) ->
 
 	var events = InputMap.action_get_events(action)
 	var key_glyph := ""
+	var mouse_glyph := ""
 	var joy_glyph := ""
 
 	for ev in events:
-		if ev is InputEventKey:
+		if ev is InputEventKey and key_glyph == "":
 			var code = ev.physical_keycode if ev.physical_keycode != KEY_NONE else ev.keycode
 			if code != KEY_NONE:
 				key_glyph = "[" + OS.get_keycode_string(code) + "]"
-		elif ev is InputEventMouseButton:
+		elif ev is InputEventMouseButton and mouse_glyph == "":
 			match ev.button_index:
 				MOUSE_BUTTON_LEFT:
-					key_glyph = "[LMB]"
+					mouse_glyph = "[LMB]"
 				MOUSE_BUTTON_RIGHT:
-					key_glyph = "[RMB]"
+					mouse_glyph = "[RMB]"
 				MOUSE_BUTTON_MIDDLE:
-					key_glyph = "[MMB]"
+					mouse_glyph = "[MMB]"
 				MOUSE_BUTTON_WHEEL_UP:
-					key_glyph = "[WheelUp]"
+					mouse_glyph = "[WheelUp]"
 				MOUSE_BUTTON_WHEEL_DOWN:
-					key_glyph = "[WheelDown]"
-		elif ev is InputEventJoypadButton:
+					mouse_glyph = "[WheelDown]"
+		elif ev is InputEventJoypadButton and joy_glyph == "":
 			var label = JOY_GLYPHS.get(ev.button_index, "Btn%d" % ev.button_index)
 			joy_glyph = "[" + label + "]"
 
+	var primary_key = key_glyph if key_glyph != "" else mouse_glyph
 	if use_joy:
-		return joy_glyph if joy_glyph != "" else key_glyph
+		return joy_glyph if joy_glyph != "" else primary_key
 	else:
-		return key_glyph if key_glyph != "" else joy_glyph
+		return primary_key if primary_key != "" else joy_glyph
 
 
 static func format_prompt(action: StringName, prompt_tr_key: String = "PROMPT_USE", prefer_joypad: bool = false) -> String:
