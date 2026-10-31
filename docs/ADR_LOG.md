@@ -172,6 +172,7 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - Everything else is a child of a `GameSession` node at the root of gameplay scenes: `SimClock`, `IdRegistry`, `InteractionService`, `TemporalService`, `EchoService`, `PuzzleService`, `SpatialGraph` holder, `NarrativeState`.
   - Gameplay nodes find the session with `get_tree().get_first_node_in_group(&"game_session")`.
 - **Consequences:** Tests instantiate a fresh `GameSession` per case. No hidden global gameplay state.
+- **Implementation note 2026-10-31 (TLF-027):** Godot 4.7.2 refuses a `class_name` equal to an autoload name ("Class … hides an autoload singleton"). Therefore the **class is `SaveStore`** (`scripts/save/save_service.gd`) and the **autoload is `SaveService`**. `RoomRouter` adopts `/root/SaveService` when registered and owns a `SaveStore` only as a fallback. Tests inject their own `SaveStore` so they never touch the real save root. Rule for future autoloads: the autoload name must not equal any `class_name`.
 
 ## ADR-012 — Test framework and tool policy
 - **Date / status:** 2026-10-31 · Accepted
