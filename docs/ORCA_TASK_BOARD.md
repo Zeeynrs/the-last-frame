@@ -22,8 +22,9 @@
 | TLF-023 | COMPLETE | Opus Ch1 puzzle objects merged `e6de2b4`: all 27 spec tests + 10 extra, mutation-checked; 166/166 |
 | TLF-029 | COMPLETE (runner) | Merged `2eb5272` (Opus impl): awaitable frame-stepping tests + 6 self-tests. Follow-up TLF-030: real-input Ch1 playthrough test |
 | TLF-030 | COMPLETE | Merged `0ddf131` (Opus impl): real-input playthrough PZ-001…003, ~524 physics frames |
-| TLF-032 | READY | Flash: `docs/tasks/TLF-032.md` (dialogue box, document viewer, journal screen, `hint` action/UI, Ch1 Beat text wiring, missing call box / PA / trace bench hooks) |
-| TLF-031 | READY | Opus impl agent: `docs/tasks/TLF-031.md` (real-input PZ-004 with Echo + Z-route incl. the no-Echo negative check, then rooms 7–10) |
+| TLF-033 | READY | Flash: `docs/tasks/TLF-033.md` (PZ-004 layout: no reach through railing, seal the gap, unskippable exit trigger, real geometric route test) |
+| TLF-032 | COMPLETE | Merged (Flash `dcdb67e`): dialogue box, document viewer, journal, hint (H + joypad 10), Ch1 Beat wiring. Lead spec review item by item + runtime probes |
+| TLF-031 | CHANGES REQUESTED | Opus impl `af95b40`: passes on old main, fails on main+TLF-032 (Beat 01 blocking monologue not dismissed). Rebase on main, add dismiss steps for Beats 01/09/10, and fix `tests/support/base_test.gd::tap()` (can drop a press when 2 physics steps run in one idle frame; allowed). The RISK-018 negative test (`agent/opus-core-risk018`) is merged together with TLF-033 |
 | TLF-025 | COMPLETE | Merged `a39be53` (Flash): rooms 5–10, PZ-004/005, Beat 09/10, intercom journal hook. Lead real-input probe: PZ-005 levers → atrium → terminal → outro (`chapter_complete`) |
 | TLF-028 | COMPLETE | Merged `2eb5272` (Opus impl): validate.ps1 robust on PowerShell 5.1; fresh clone validates on first run |
 | TLF-027 | COMPLETE | Opus impl agent `aafb2bb`, merged: class `SaveStore`, autoload name `SaveService`; verified 180/180 with and without the autoload; router adopts the autoload. **TLF-018 R2b unblocked** |

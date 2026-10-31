@@ -18,7 +18,7 @@ Shared contract files (`interactable.gd`, `game_session.gd`, `GameSession.tscn`,
 
 ## Current state
 - See `PROJECT_STATUS.md` (what works), `ORCA_TASK_BOARD.md` (task status), `DEVELOPMENT_ROADMAP.md` (order).
-- **State 2026-10-31:** Chapter 1 playable start to finish on main (greybox). Next: TLF-031 (Opus impl, real-input PZ-004). Flash: TLF-032 (dialogue/document/journal UI, hint, Ch1 text wiring). design-art idle.
+- **State 2026-10-31:** Chapter 1 playable end to end with story text, documents, journal and hints (TLF-032). Open: RISK-018 (PZ-004 solvable without Echo) → TLF-033 (Flash); TLF-031 rebase + tap() fix (Opus impl). Merge order: TLF-031 first, then TLF-033 together with `agent/opus-core-risk018`.
 - **Handoff rule:** paste raw `tools/validate.ps1` output (not a paraphrase) in every handoff.
 - Content generators: `python tools/content/gen_ch01_text.py`, `gen_ch01_puzzle_data.py` and `gen_ch01_graph.py` (sources: `narrative/ch01/CH01_TEXT.md`, `design/ch01/puzzles/*.md`, `design/ch01/ROOM_GRAPH.md`). Opus core systems + Ch1 puzzle logic are merged; TLF-009 (rooms 1–4) waits for TLF-018. Open: TLF-017 manual evidence (ISSUE-011).
 - Building Ch1 rooms: instance them under `ChapterRoot`, follow ADR-018 (Spawn markers off the presenter, IDs `ch01.<room>.<object>`).
