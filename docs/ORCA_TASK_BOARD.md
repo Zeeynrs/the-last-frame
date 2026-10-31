@@ -22,6 +22,7 @@
 | TLF-023 | COMPLETE | Opus Ch1 puzzle objects merged `e6de2b4`: all 27 spec tests + 10 extra, mutation-checked; 166/166 |
 | TLF-029 | COMPLETE (runner) | Merged `2eb5272` (Opus impl): awaitable frame-stepping tests + 6 self-tests. Follow-up TLF-030: real-input Ch1 playthrough test |
 | TLF-030 | COMPLETE | Merged `0ddf131` (Opus impl): real-input playthrough PZ-001…003, ~524 physics frames |
+| TLF-039 | READY | Design-art (Claude Code, Sonnet 5.5): `docs/tasks/TLF-039.md` (art batch 2: Elias walk fix ISSUE-012, remaining ROOM_GRAPH §7 kit, placement sheet; tier 2 hero set-pieces). Branch `adityadaffa522/tlf-art-batch2` from origin/main |
 | TLF-038 | READY | Flash: `docs/tasks/TLF-038.md` (first-playtest fixes: Beat 01 non-blocking + clear continue cue + movement hint; non-blocking dialogue leaves `interact` to the world; HUD target marker world→screen; `use` feedback text) |
 | TLF-037 | IN PROGRESS | Opus impl: `docs/tasks/TLF-037.md` (F5 plays: Boot → title screen → Chapter01, New Game / Continue / Quit, SceneRouter autoload; ISSUE-027). Dialogue continue cue is TLF-038 (Flash), not TLF-037 |
 | TLF-036 | COMPLETE | Merged `e6fa5f1` (Opus impl `19e06d9`): SaveStore + Settings resolve to `user://headless/` when headless (env override `TLF_ALLOW_REAL_USER_DATA=1`); old tests no longer reset `settings_path` to the real file. Lead fresh archive 91 scripts, 255/255, leak check clean, startup lines show the headless roots |

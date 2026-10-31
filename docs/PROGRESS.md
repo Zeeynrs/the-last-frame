@@ -26,7 +26,7 @@
 - Windows/Linux, single-player.
 - Orca IDE with three agents:
   - Claude Opus 5.5 High — lead architect.
-  - Gemini 4 Argon — puzzle/narrative/design specialist.
+  - Gemini 4 Argon — puzzle/narrative/design specialist (unavailable since 2026-10-31; design-art worktree covered by Claude Code on Sonnet 5.5, RISK-019).
   - Gemini 3.8 Flash High — implementation/QA.
 
 ## Work log
@@ -37,6 +37,7 @@
 | 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
 | 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
 | 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
+| 2026-10-31 | User decision via tlf-lead: design-art worktree reactivated with Claude Code (Sonnet 5.5) until Argon returns; RISK-019 mitigated. TLF-039 written (art batch 2: Elias walk fix with layout-compatible sheet, remaining §7 kit pieces, placement sheet for Flash; hero set-pieces as tier 2). New branch `adityadaffa522/tlf-art-batch2` from origin/main because the old design branch carries obsolete ISSUE-014 commits | Agent 1 |
 | 2026-10-31 | Merged TLF-034 (`7bc0ea9`, Flash) and TLF-036 (`e6fa5f1`, Opus impl). Lead review read all new test logic (real `tap()` input, `opened` signal count, use_count, "next press still works" step; headless guard unit + autoload tests). Lead fresh archive (renamed config/name): 91 scripts, 255/255, leak check clean ×2; startup lines show `user://headless/` roots. Real save folder hashed only (user is playing: slot_0 changed 17:56 by the user). ISSUE-028: Flash TLF-034 validate output not genuine. First user playtest (via tlf-lead): stuck at Beat 01, floating cyan marker, wrong `use` feedback, F6 overwrites save → TLF-038 (Flash), ISSUE-032 → TLF-037 | Agent 1 |
 | 2026-10-31 | Merged TLF-035 (`6559aba`, Opus impl `ae73b5d`): validate.ps1 fails on leaks at exit. Review read the self-test assertion logic (exit code **and** expected lines). Lead fresh archive (renamed config/name): 89 scripts, 242/242, "Leak check: clean" ×2; independent red check with a different leak (orphan Area2D + CircleShape2D → RID + ObjectDB leak, exit 1). Real save folder (user's own F6 save, 17:39) listed read-only, unchanged | Agent 1 |
 | 2026-10-31 | tlf-lead: the real-folder `slot_0.json` came from Flash's hung headless probes (not a sentinel, not the user's); removed by tlf-lead with the user's OK (ISSUE-026). The user can't start the game with F5 (ISSUE-027). ADR-011 amendments: headless runs redirect to `user://headless/`; `SceneRouter` autoload for menu ↔ chapter. TLF-036 + TLF-037 written for Opus impl; TLF-034 (Flash) and TLF-035 (Opus) relayed and started | Agent 1 |

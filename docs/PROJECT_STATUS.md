@@ -46,7 +46,7 @@ This file states what the repository **actually** contains. Task-level detail li
 1. TLF-038 (Flash) first-playtest fixes
 2. Human: physical controller spot-check (ISSUE-011, last item for M1)
 3. TLF-037 Boot → title → Chapter01 so F5 plays (ISSUE-027). Until then: open `Chapter01.tscn`, press F6
-4. Vertical-slice polish: art beyond v1 (Argon unavailable, ISSUE-012), audio, lighting/VFX, Beat 10 cinematic, accessibility pass
+4. Vertical-slice polish: art batch 2 (TLF-039, design-art Sonnet 5.5; ISSUE-012), audio, lighting/VFX, Beat 10 cinematic, accessibility pass
 5. External playtest (Gate C)
 
 ## F. Should be improved

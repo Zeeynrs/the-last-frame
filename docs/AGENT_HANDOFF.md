@@ -7,7 +7,8 @@ Read this first when resuming. Keep it short and current.
 |---|---|---|
 | Opus (Claude) | Lead architect, **core-systems programmer**, integration authority | `docs/`, ADRs, integration on `main`; core systems in `scripts/temporal/`, `scripts/echo/`, `scripts/puzzle/`, `scripts/save/`, `scripts/spatial/`, `scripts/session/` and their tests |
 | Flash (Gemini) | Feature implementer + QA | player, interaction feel, UI/HUD/menus, settings, input, camera, audio/VFX integration, scene setup, `project.godot` (single owner), regression tests |
-| Argon (Gemini) | On-demand creative/design | `design/`, `narrative/`, `assets/source/` (`.pxo`), high-value batches only |
+| Argon (Gemini) | On-demand creative/design | `design/`, `narrative/`, `assets/source/` (`.pxo`), high-value batches only. **Unavailable since 2026-10-31 (RISK-019)** |
+| Design-art (Claude Code, Sonnet 5.5) | Stand-in for Argon on art, worktree `tlf-design-art`, branch `adityadaffa522/tlf-art-batch2` | `design/art/`, `assets/source/ch01/`, PNG exports in `assets/{characters,environments,props}/ch01/`; no scenes/scripts/merges. First task TLF-039 |
 
 Shared contract files (`interactable.gd`, `game_session.gd`, `GameSession.tscn`, `project.godot`) have **one owner per task**, named in the task file.
 
@@ -18,7 +19,8 @@ Shared contract files (`interactable.gd`, `game_session.gd`, `GameSession.tscn`,
 
 ## Current state
 - See `PROJECT_STATUS.md` (what works), `ORCA_TASK_BOARD.md` (task status), `DEVELOPMENT_ROADMAP.md` (order).
-- **State 2026-10-31:** Chapter 1 playable end to end with story text, documents, journal and hints (TLF-032). Open: RISK-018 (PZ-004 solvable without Echo) → TLF-033 (Flash); TLF-031 rebase + tap() fix (Opus impl). Merge order: TLF-031 first, then TLF-033 together with `agent/opus-core-risk018`.
+- **State 2026-10-31:** Chapter 1 playable end to end (F6 on `Chapter01.tscn`), RISK-018 closed, leak gate + headless save guard in place. Open: TLF-037 (Opus impl: F5 → title → Chapter01), TLF-038 (Flash: first-playtest fixes), TLF-039 (design-art Sonnet 5.5: art batch 2).
+- **Merge rule:** the Lead re-runs `validate.ps1` on a fresh `git archive` with a renamed `config/name` for every merge; agent-pasted validate output is never accepted as evidence alone (ISSUE-028).
 - **Handoff rule:** paste raw `tools/validate.ps1` output (not a paraphrase) in every handoff.
 - Content generators: `python tools/content/gen_ch01_text.py`, `gen_ch01_puzzle_data.py` and `gen_ch01_graph.py` (sources: `narrative/ch01/CH01_TEXT.md`, `design/ch01/puzzles/*.md`, `design/ch01/ROOM_GRAPH.md`). Opus core systems + Ch1 puzzle logic are merged; TLF-009 (rooms 1–4) waits for TLF-018. Open: TLF-017 manual evidence (ISSUE-011).
 - Building Ch1 rooms: instance them under `ChapterRoot`, follow ADR-018 (Spawn markers off the presenter, IDs `ch01.<room>.<object>`).
