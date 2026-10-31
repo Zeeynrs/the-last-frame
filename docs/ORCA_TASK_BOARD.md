@@ -11,7 +11,7 @@
 | TLF-006 | COMPLETE | Merged `c1492d8` (re-review of `846f806` passed; validate on main 5/5) |
 | TLF-004 | COMPLETE | Merged `eed7c4e` (re-review of `75dcb95` passed) |
 | TLF-007 | COMPLETE | Merged `99f6bb3` (re-review of `1801ed0` passed; validate on main 26/26) |
-| TLF-005 | READY | Argon: `docs/tasks/TLF-005.md` (room graph, critical path, placement, kit list) |
+| TLF-005 | CHANGES REQUESTED | `636d305` reviewed: PZ-004 solvable solo (breakers 132 ticks apart < 180 window), door tiles off boundary; see `docs/reviews/2026-10-31_TLF-005.md` |
 | TLF-008 | COMPLETE | Opus temporal core merged `fe3744a` (validate 51/51; TestRoom regression probe OK) |
 | TLF-017 | READY | Flash: `docs/tasks/TLF-017.md` (Settings autoload, remapping foundation, `echo_reset`, controller evidence) |
 | TLF-018 | READY (after TLF-017) | Flash: `docs/tasks/TLF-018.md` pocket-watch controller, TemporalTestRoom, feedback HUD |

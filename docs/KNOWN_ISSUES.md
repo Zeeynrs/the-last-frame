@@ -27,6 +27,7 @@ This file starts as a tracking template. Do not invent resolved status.
 | ISSUE-006 | Player discards `InteractionResult`; failed interactions give no feedback | Medium | Open | Flash (HUD/feedback task) | Show `reason` via `tr()` feedback keys from `design/ch01/puzzles/README.md` |
 | ISSUE-007 | Interaction prompt text hard-codes "[E]", English-only, no controller glyph | Low | Open | Flash (UI task) | `tr()` key + input-glyph lookup per active device |
 | RISK-017 | PZ-002 180-tick window may be tight even with ADR-015 auto-targeting | Medium | Open | Argon / Flash | Playtest in TLF-009; assist setting extends to 300 ticks |
+| RISK-018 | PZ-004 breaker sync puzzle can be solved without Echo if the breaker route is shorter than the engage window | High | Open | Argon | TLF-005 R1: route ≥ window + 120 ticks |
 | RISK-016 | Project-local `pixel-art` MCP (`pxcli-mcp`) writes to `./assets/sprites`, outside ADR-001 layout and Argon ownership | Low | Open | Agent 1 | Not used (ADR-012). Remove from local config if it causes confusion |
 
 ## Issue template

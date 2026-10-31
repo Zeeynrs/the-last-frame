@@ -31,10 +31,10 @@ This file states what the repository **actually** contains. Task-level detail li
 1. Echo record/playback (TLF-016, Opus, in progress)
 2. Pocket-watch controller + HUD (TLF-018, Flash, after TLF-017)
 3. PuzzleService (ADR-016) and SaveService (ADR-010) (Opus)
-5. Settings autoload and input-remapping foundation (TLF-017, Flash)
-6. Camera, scene routing between rooms, SpatialGraph (doorway reassignment)
-7. Ch1 room graph (TLF-005, Argon, in progress), then art target sheet (TLF-010)
-8. All art, audio, UI, dialogue/narrative presentation and Ch1 content
+4. Settings autoload and input-remapping foundation (TLF-017, Flash)
+5. Camera, scene routing between rooms, SpatialGraph (doorway reassignment)
+6. Ch1 room graph (TLF-005, Argon, changes requested), then art target sheet (TLF-010)
+7. All art, audio, UI, dialogue/narrative presentation and Ch1 content
 
 ## F. Should be improved
 - Prompt text is hard-coded `[E]` and English-only (ISSUE-007).
