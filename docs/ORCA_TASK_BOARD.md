@@ -19,9 +19,9 @@
 | TLF-021 | COMPLETE | Opus RoomRouter + ChapterRoot + world memory merged `5fda100` (118/118, mutation-checked, physics probe). Was: room router (scene loading per room, doorway spawn placement, checkpoints → SaveService), Echo stop on room change |
 | TLF-019 | COMPLETE | Opus PuzzleService + SaveService + NarrativeState merged `afa6929` (82/82, no leaks; real-scene save probe OK). Autoload registration → TLF-018 |
 | TLF-016 | COMPLETE | Opus EchoService + TriggerZone merged `9f55245` (validate 67/67; physics runtime probe OK) |
-| TLF-023 | IN PROGRESS | Opus: Ch1 puzzle object classes (PZ-001…005) with the spec acceptance tests |
+| TLF-023 | COMPLETE | Opus Ch1 puzzle objects merged `e6de2b4`: all 27 spec tests + 10 extra, mutation-checked; 166/166 |
 | TLF-024 | READY | Argon: `docs/tasks/TLF-024.md` (Ch1 documents, journal, Operator, feedback text) |
-| TLF-009 | BLOCKED (TLF-018, TLF-023) | Flash: `docs/tasks/TLF-009.md` (rooms 1–4 playable greybox); rooms 5–10 → TLF-025 |
+| TLF-009 | BLOCKED (TLF-018) | Flash: `docs/tasks/TLF-009.md` (rooms 1–4 playable greybox); rooms 5–10 → TLF-025 |
 | TLF-022 | COMPLETE | Opus HintService + PuzzleDef (5 Ch1 defs + CSV generated from specs) + DocumentDef/ReadableDocument + journal merged `440a5be` (129/129) |
 | TLF-010 | COMPLETE | Merged (Argon `68e299f`): all 10 `.pxo` pass the Pixelorama CLI open/export check; PNGs byte-identical to the re-exports; palette-only; 0 semi-alpha. Art polish notes → ISSUE-012 |
 | others | NOT STARTED | |

@@ -18,7 +18,7 @@ Shared contract files (`interactable.gd`, `game_session.gd`, `GameSession.tscn`,
 
 ## Current state
 - See `PROJECT_STATUS.md` (what works), `ORCA_TASK_BOARD.md` (task status), `DEVELOPMENT_ROADMAP.md` (order).
-- In flight: TLF-018 ready for Flash, TLF-010 ready for Argon. Opus core systems are all merged (temporal, echo, puzzle, save, spatial, rooms, hints/documents). Open: TLF-017 manual evidence (ISSUE-011).
+- In flight: TLF-018 (Flash, WIP in its worktree), TLF-024 ready for Argon. Opus core systems + Ch1 puzzle logic are merged; TLF-009 (rooms 1–4) waits for TLF-018. Open: TLF-017 manual evidence (ISSUE-011).
 - Building Ch1 rooms: instance them under `ChapterRoot`, follow ADR-018 (Spawn markers off the presenter, IDs `ch01.<room>.<object>`).
 
 ## How to verify anything

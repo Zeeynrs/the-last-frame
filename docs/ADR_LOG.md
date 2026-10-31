@@ -236,6 +236,11 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - A reset anchor resets only its own puzzle's dynamic objects plus the active echo.
   - **After `SOLVED`, nothing may re-block the solved passage:** reset anchors, unfreezing, and echo resets all leave the route open. Optional objects may still reset.
   - Any reset or spatial change that would overlap the player with newly enabled collision first moves the player to the puzzle's declared safe anchor.
+- **Implementation notes 2026-10-31 (TLF-023):**
+  - Puzzle objects extend `PuzzleObject` (`puzzle_id`, `safe_anchor_id`). It registers as a member and latches on solve, on a reset after solving, and in `_ready` when the puzzle is already SOLVED (restored saves).
+  - Collision for passages is a child **`Blocker`** (StaticBody2D) whose shapes are toggled by `set_passage_blocked()`.
+  - Safety moves go through `SpatialService.request_relocation()`, which the room router executes.
+  - Timed windows that echoes can trigger use **absolute ticks**, so an echo's pull (inside a tick signal) and a player's pull last exactly the same number of ticks.
 
 ## ADR-017 — Team allocation and Opus implementation workflow
 - **Date / status:** 2026-10-31 · Accepted (from the user's continuous-development master prompt)
