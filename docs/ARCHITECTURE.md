@@ -10,7 +10,11 @@
 - Do not serialize live scene-tree references.
 - The logical world state is authoritative; rendering is a presentation of that state.
 
+> **Accepted decisions:** see `docs/ADR_LOG.md`. Where this document and an accepted ADR differ, the ADR wins.
+
 ## 2. Suggested autoloads
+
+> Superseded by ADR-011: autoloads are limited to `Settings`, `SaveService`, `SceneRouter`, `AudioService`; gameplay services live under a session-scoped `GameSession` node. The list below is kept for history.
 
 Keep autoloads limited to truly global services:
 - `GameManager`: global game state and high-level flow.
@@ -154,6 +158,8 @@ Avoid hard-coding every puzzle into a single script. Scripts implement reusable 
 Profile before optimizing. Use atlases and reusable tilesets where practical. Avoid excessive unique lights and expensive full-screen effects. Use layered 2D lighting and shader effects carefully. Maintain a target internal resolution/pixel density and validate integer scaling. Keep visual effects optional/reducible for accessibility.
 
 ## 11. Architecture decision record
+
+Recorded in `docs/ADR_LOG.md`.
 
 Any major architecture change must be recorded with:
 - Decision ID and date.

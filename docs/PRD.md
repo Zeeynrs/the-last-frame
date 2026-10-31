@@ -113,6 +113,8 @@ Priority definitions: **P0** required for vertical slice; **P1** required for fu
 
 The first complete milestone is a polished 30–45 minute experience in The Forgotten Station.
 
+> **Scope decision SD-1 (`docs/ADR_LOG.md`):** Ch1 mechanics = Rewind, Freeze, Echo (1 at a time), Trace reveal, and one doorway-reassignment spatial foreshadow. Fast-Forward is a stretch goal for the slice. Time Shift, room rotation, gravity, folding and temporal energy are out of the slice. Controller remapping and accessibility settings ship at foundation fidelity.
+
 Must include:
 - One cohesive station environment with interconnected rooms.
 - Isometric player movement, camera and interactions.

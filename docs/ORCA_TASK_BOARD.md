@@ -1,5 +1,20 @@
 # Orca Task Board — Initial Backlog
 
+## Current status (2026-10-31)
+
+| ID | Status | Note |
+|---|---|---|
+| TLF-000 | COMPLETE | Repo, relocation, baseline tag `m0-base` |
+| TLF-001 | COMPLETE | `docs/TLF-001_AUDIT_REPORT.md` |
+| TLF-002 | COMPLETE | `docs/ADR_LOG.md` (ADR-014 still Proposed, closes with TLF-003) |
+| TLF-003 | READY | Dispatch to Argon: `docs/tasks/TLF-003.md` |
+| TLF-006 | READY | Dispatch to Flash: `docs/tasks/TLF-006.md` (re-scoped: project exists) |
+| TLF-004, 005, 010 | NOT STARTED | Wait for TLF-003 review |
+| TLF-007, 008 | NOT STARTED | Wait for TLF-006 |
+| others | NOT STARTED | |
+
+Branch naming and merge flow: ADR-002.
+
 Use this as the initial task list. Each task must run in its assigned worktree. Agent 1 controls dependencies and integration.
 
 | ID | Task | Owner | Depends on | Deliverable / acceptance |

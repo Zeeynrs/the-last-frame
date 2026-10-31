@@ -1,14 +1,14 @@
 # Project Progress
 
-**Last updated:** Initial documentation package  
+**Last updated:** 2026-10-31  
 **Current milestone:** Milestone 0 — Project setup  
-**Overall status:** Documentation baseline prepared; game implementation not yet verified.
+**Overall status:** Repository and architecture baseline in place. No gameplay implemented.
 
 ## Milestone status
 
 | Milestone | Status | Notes |
 |---|---|---|
-| 0 — Project setup | NOT STARTED | Create Godot project and repository |
+| 0 — Project setup | IN PROGRESS | Repo + bare Godot 4.7.2 project + ADRs done; TLF-006 (structure, settings, tests) pending |
 | 1 — Isometric foundation | NOT STARTED | |
 | 2 — Temporal prototype | NOT STARTED | |
 | 3 — Spatial prototype | NOT STARTED | |
@@ -34,6 +34,9 @@
 | Date | Change | Owner |
 |---|---|---|
 | Initial | Project documentation baseline created | Project team |
+| 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
+| 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
+| 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
 
 ## Update instructions
 
@@ -51,5 +54,5 @@ Do not mark work complete based only on generated code or an agent's assertion.
 ## Pack baseline update (2026-10-30)
 - [x] Correct Orca product identified as Onorca Orca IDE.
 - [x] Added Windows MCP templates, worktree ownership, task board, bootstrap and QA gates.
-- [ ] Verify actual installed versions and MCP connections on the user machine.
+- [x] Verify actual installed versions and MCP connections on the user machine (2026-10-31; Gemini model access still open).
 - [ ] Create Godot project skeleton and complete first vertical-slice milestone.

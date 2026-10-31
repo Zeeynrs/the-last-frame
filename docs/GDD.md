@@ -52,6 +52,10 @@ The city is frozen at 23:59. The recurring clock motif should appear in UI, envi
 | 5 | Beyond Reality | Fractured dimension | Combine overlapping timelines, spatial folding and repeated journeys |
 | 6 | The Last Frame | Temporal core | Final synthesis puzzle, confrontation and ending choice |
 
+Chapter 1 foreshadows spatial manipulation with a single doorway-reassignment puzzle; Chapter 3 remains the full introduction of room rotation and doorway graphs (SD-1, `ADR_LOG.md`).
+
+Naming: the ability that reveals residual traces is provisionally called **Trace** to avoid collision with the recorded **Echo** system (ADR-014).
+
 Target full-game duration: approximately 5–8 hours. Treat this as a pacing target, not a promise until playtesting.
 
 ## 6. Core gameplay loop
