@@ -358,36 +358,109 @@ func test_passage_blockers_toggle_with_puzzle_state() -> void:
 
 
 func test_pz004_route_is_at_least_600_px() -> void:
-	var signal_scene := (load(ROOM_PATHS[&"ch01.signal_control"]) as PackedScene).instantiate()
-	var railings := signal_scene.get_node_or_null("TrenchRailings") as StaticBody2D
-	_assert_true(railings != null, "TrenchRailings StaticBody2D exists in signal_control")
+	var sig := (load(ROOM_PATHS[&"ch01.signal_control"]) as PackedScene).instantiate() as Node2D
+	var perim_node := sig.get_node("PerimeterWalls/CollisionPolygon2D") as CollisionPolygon2D
+	var perim_poly := perim_node.polygon
+	var south_col := sig.get_node("TrenchRailings/SouthRailingCollision") as CollisionShape2D
+	var s_seg := south_col.shape as SegmentShape2D
+	var north_col := sig.get_node("TrenchRailings/NorthRailingCollision") as CollisionShape2D
+	var n_seg := north_col.shape as SegmentShape2D
+	var barrier_col := sig.get_node_or_null("TrenchRailings/NorthBarrierCollision") as CollisionPolygon2D
+	var barrier_poly: PackedVector2Array = barrier_col.polygon if barrier_col != null else PackedVector2Array()
 
-	# Waypoint coordinates from ROOM_GRAPH.md §5.4
 	var w0 := Vector2(176, 152)  # Breaker A standing spot (1, 10)
-	var w1 := Vector2(400, 232)  # South-East crossover bridge (13, 8)
-	var w2 := Vector2(304, 104)  # North-West crossover bridge (2, 3)
 	var w3 := Vector2(528, 184)  # Breaker B standing spot (14, 1)
 
-	var d01 := (w1 - w0).length()
-	var d12 := (w2 - w1).length()
-	var d23 := (w3 - w2).length()
-	var total_walk := d01 + d12 + d23
+	var cell_size := 4
+	var min_x := 100
+	var max_x := 600
+	var min_y := 40
+	var max_y := 320
+	var cols := (max_x - min_x) / cell_size
+	var rows := (max_y - min_y) / cell_size
 
-	_assert_true(total_walk >= 600.0, "Shortest switchback walk (%.1f px) is >= 600 px (300 ticks)" % total_walk)
-	_assert_true(absf(total_walk - 635.8) < 1.0, "Total walk matches spec calculation (~635.8 px)")
+	var grid := AStarGrid2D.new()
+	grid.region = Rect2i(0, 0, cols, rows)
+	grid.cell_size = Vector2(cell_size, cell_size)
+	grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ALWAYS
+	grid.default_compute_heuristic = AStarGrid2D.HEURISTIC_EUCLIDEAN
+	grid.default_estimate_heuristic = AStarGrid2D.HEURISTIC_EUCLIDEAN
+	grid.update()
 
-	# Confirm railings block the direct path between W0 and W3
-	var south_col := railings.get_node_or_null("SouthRailingCollision") as CollisionShape2D
-	var north_col := railings.get_node_or_null("NorthRailingCollision") as CollisionShape2D
-	_assert_true(south_col != null and south_col.shape is SegmentShape2D, "South railing collision segment exists")
-	_assert_true(north_col != null and north_col.shape is SegmentShape2D, "North railing collision segment exists")
+	var player_radius := 6.0
 
-	var s_seg := south_col.shape as SegmentShape2D
-	var n_seg := north_col.shape as SegmentShape2D
-	_assert_true(_segments_cross(w0, w3, s_seg.a, s_seg.b), "Direct path W0 -> W3 intersects South Railing")
-	_assert_true(_segments_cross(w0, w3, n_seg.a, n_seg.b), "Direct path W0 -> W3 intersects North Railing")
+	var is_walkable := func(pos: Vector2) -> bool:
+		if not Geometry2D.is_point_in_polygon(pos, perim_poly):
+			return false
+		var n := perim_poly.size()
+		for i in n:
+			var p1 := perim_poly[i]
+			var p2 := perim_poly[(i + 1) % n]
+			if Geometry2D.get_closest_point_to_segment(pos, p1, p2).distance_to(pos) < player_radius:
+				return false
+		if Geometry2D.get_closest_point_to_segment(pos, s_seg.a, s_seg.b).distance_to(pos) < player_radius:
+			return false
+		if Geometry2D.get_closest_point_to_segment(pos, n_seg.a, n_seg.b).distance_to(pos) < player_radius:
+			return false
+		if barrier_poly.size() > 2:
+			if Geometry2D.is_point_in_polygon(pos, barrier_poly):
+				return false
+			for i in barrier_poly.size():
+				var p1 := barrier_poly[i]
+				var p2 := barrier_poly[(i + 1) % barrier_poly.size()]
+				if Geometry2D.get_closest_point_to_segment(pos, p1, p2).distance_to(pos) < player_radius:
+					return false
+		return true
 
-	signal_scene.free()
+	for c in cols:
+		for r in rows:
+			var pos := Vector2(min_x + c * cell_size + cell_size / 2.0, min_y + r * cell_size + cell_size / 2.0)
+			if not is_walkable.call(pos):
+				grid.set_point_solid(Vector2i(c, r), true)
+
+	var start_coord := Vector2i(int((w0.x - min_x) / cell_size), int((w0.y - min_y) / cell_size))
+	var goal_coord := Vector2i(int((w3.x - min_x) / cell_size), int((w3.y - min_y) / cell_size))
+
+	_assert_false(grid.is_point_solid(start_coord), "W0 standing spot is walkable")
+	_assert_false(grid.is_point_solid(goal_coord), "W3 standing spot is walkable")
+
+	var path := grid.get_point_path(start_coord, goal_coord)
+	_assert_true(path.size() > 1, "Walkable switchback path exists between W0 and W3")
+
+	var total_path_length := 0.0
+	for i in path.size() - 1:
+		total_path_length += path[i].distance_to(path[i + 1])
+
+	_assert_true(total_path_length >= 600.0,
+		"Shortest walkable path on room collision (%.1f px) is >= 600.0 px (exceeds 300 ticks)" % total_path_length)
+
+	# Assert breaker B's interaction area cannot be overlapped from any point south of the north railing
+	var breaker_b := sig.get_node("breaker_b") as Area2D
+	var b_pos := breaker_b.global_position
+	var b_col := breaker_b.get_node("CollisionShape2D") as CollisionShape2D
+	var b_radius: float = (b_col.shape as CircleShape2D).radius
+	var max_interact_reach := b_radius + 36.0 # breaker shape radius + player detector radius
+
+	var min_dist_south := INF
+	var vulnerable_cells := 0
+	for c in cols:
+		for r in rows:
+			if grid.is_point_solid(Vector2i(c, r)):
+				continue
+			var pos := Vector2(min_x + c * cell_size + cell_size / 2.0, min_y + r * cell_size + cell_size / 2.0)
+			# North railing line: x - 2y - 96 = 0; south of railing means x - 2y < 96
+			if (pos.x - 2.0 * pos.y) < 96.0:
+				var dist := pos.distance_to(b_pos)
+				if dist < min_dist_south:
+					min_dist_south = dist
+				if dist <= max_interact_reach:
+					vulnerable_cells += 1
+
+	_assert_eq(vulnerable_cells, 0, "Zero points south of north railing can reach breaker B")
+	_assert_true(min_dist_south > max_interact_reach,
+		"Min distance south of railing (%.1f px) is > interact reach (%.1f px)" % [min_dist_south, max_interact_reach])
+
+	sig.free()
 
 
 func test_pz005_levers_and_resetter_configuration() -> void:
