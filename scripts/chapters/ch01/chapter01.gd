@@ -57,7 +57,19 @@ func _ready() -> void:
 		room_router.room_entered.connect(_on_room_entered)
 
 		if room_router.current_room == null:
-			room_router.enter_room(&"ch01.arrival_platform", &"", &"ch01.arrival_platform.safe_anchor_spawn")
+			# TLF-037: Continue hands over a save slot via SceneRouter; otherwise (or if it can't be
+			# restored) start fresh, and say so on the HUD.
+			var scene_router := get_node_or_null("/root/SceneRouter")
+			var slot: int = scene_router.consume_pending_restore() if scene_router != null else -1
+			var restored := false
+			if slot >= 0 and room_router.save_service != null:
+				var read: Dictionary = room_router.save_service.read_slot(slot)
+				restored = read.get("ok", false) and room_router.restore_from_save(read["data"]).get("ok", false)
+			if not restored:
+				room_router.enter_room(&"ch01.arrival_platform", &"", &"ch01.arrival_platform.safe_anchor_spawn")
+				var hud = player.get("hud") if player != null else null
+				if slot >= 0 and hud != null:
+					hud.show_feedback.call_deferred(&"restore_failed")
 
 	# 4. Connect narrative hooks
 	if session != null:
