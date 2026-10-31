@@ -12,6 +12,61 @@ const ROOM_PATHS := {
 	&"ch01.security_crossing": "res://scenes/chapters/ch01/rooms/security_crossing.tscn"
 }
 const CH01_SCENE_PATH := "res://scenes/chapters/ch01/Chapter01.tscn"
+const TEST_SAVE_ROOT := "user://tlf_test_ch01_saves"
+const REAL_SAVE_SLOT_0 := "user://saves/slot_0.json"
+
+
+func _record_real_save_state() -> Dictionary:
+	var exists := FileAccess.file_exists(REAL_SAVE_SLOT_0)
+	var mtime := FileAccess.get_modified_time(REAL_SAVE_SLOT_0) if exists else 0
+	return {"exists": exists, "mtime": mtime}
+
+
+func _assert_real_save_unchanged(before: Dictionary, context: String) -> void:
+	var exists := FileAccess.file_exists(REAL_SAVE_SLOT_0)
+	_assert_eq(exists, before["exists"], "%s: real save existence unchanged" % context)
+	if before["exists"]:
+		var mtime := FileAccess.get_modified_time(REAL_SAVE_SLOT_0)
+		_assert_eq(mtime, before["mtime"], "%s: real save modified time unchanged" % context)
+
+
+func _cleanup_test_save_dir() -> void:
+	var dir := DirAccess.open(TEST_SAVE_ROOT)
+	if dir != null:
+		for file in dir.get_files():
+			dir.remove(file)
+		for sub_dir in dir.get_directories():
+			dir.remove(sub_dir)
+	if DirAccess.dir_exists_absolute(TEST_SAVE_ROOT):
+		DirAccess.remove_absolute(TEST_SAVE_ROOT)
+
+
+func _make_ch01() -> Node2D:
+	_cleanup_test_save_dir()
+	var ch01_scene := load(CH01_SCENE_PATH) as PackedScene
+	var ch01 := ch01_scene.instantiate() as Node2D
+	var router := ch01.get_node_or_null("RoomRouter") as RoomRouter
+	if router != null:
+		# Inject an isolated test SaveStore so real player saves in user://saves are never touched
+		var store := SaveStore.new()
+		store.name = "TestSaveStore"
+		store.save_root = TEST_SAVE_ROOT
+		router.add_child(store)
+		router.save_service = store
+	_tree().root.add_child(ch01)
+	return ch01
+
+
+func _cleanup_ch01(ch01: Node) -> void:
+	if ch01 == null:
+		return
+	var router: RoomRouter = ch01.get_node_or_null("RoomRouter")
+	if router != null and router.current_room != null:
+		router._unload_current()
+	if ch01.get_parent() != null:
+		ch01.get_parent().remove_child(ch01)
+	ch01.free()
+	_cleanup_test_save_dir()
 
 
 func _graph_def() -> ChapterGraphDef:
@@ -229,27 +284,10 @@ func test_passage_blockers_toggle_with_puzzle_state() -> void:
 	free_session(s)
 
 
-func _cleanup_ch01(ch01: Node) -> void:
-	if ch01 == null:
-		return
-	var router: RoomRouter = ch01.get_node_or_null("RoomRouter")
-	if router != null and router.current_room != null:
-		router._unload_current()
-	if router != null and router.save_service != null:
-		var slot_file := router.save_service.slot_path(router.autosave_slot)
-		if FileAccess.file_exists(slot_file):
-			DirAccess.remove_absolute(slot_file)
-	if ch01.get_parent() != null:
-		ch01.get_parent().remove_child(ch01)
-	ch01.free()
-
-
 func test_chapter01_scene_initialization_and_graph_validation() -> void:
-	var ch01_scene := load(CH01_SCENE_PATH) as PackedScene
-	_assert_true(ch01_scene != null, "Chapter01 scene loads")
-	var ch01 := ch01_scene.instantiate() as Node2D
+	var real_save_before := _record_real_save_state()
+	var ch01 := _make_ch01()
 	_assert_true(ch01 != null, "Chapter01 instantiates")
-	_tree().root.add_child(ch01)
 
 	var session: GameSession = ch01.get_node_or_null("GameSession")
 	var router: RoomRouter = ch01.get_node_or_null("RoomRouter")
@@ -271,12 +309,12 @@ func test_chapter01_scene_initialization_and_graph_validation() -> void:
 	_assert_true(session.id_registry.has_id(&"ch01.arrival_platform.safe_anchor_spawn"), "safe anchor registered")
 
 	_cleanup_ch01(ch01)
+	_assert_real_save_unchanged(real_save_before, "test_chapter01_scene_initialization_and_graph_validation")
 
 
 func test_scripted_playthrough_rooms_1_to_4() -> void:
-	var ch01_scene := load(CH01_SCENE_PATH) as PackedScene
-	var ch01 := ch01_scene.instantiate() as Node2D
-	_tree().root.add_child(ch01)
+	var real_save_before := _record_real_save_state()
+	var ch01 := _make_ch01()
 
 	var session: GameSession = ch01.get_node_or_null("GameSession")
 	var router: RoomRouter = ch01.get_node_or_null("RoomRouter")
@@ -395,8 +433,11 @@ func test_scripted_playthrough_rooms_1_to_4() -> void:
 	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-002"), "CH1-PZ-002 solved")
 	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-003"), "CH1-PZ-003 solved")
 
-	# Confirm autosave exists
+	# Confirm autosave exists in isolated test root
 	_assert_true(router.save_service != null, "SaveService active")
-	_assert_true(router.save_service.has_slot(router.autosave_slot), "Autosave slot exists")
+	_assert_true(router.save_service.has_slot(router.autosave_slot), "Autosave slot exists in test folder")
+	_assert_true(FileAccess.file_exists(TEST_SAVE_ROOT.path_join("slot_%d.json" % router.autosave_slot)), "Autosave file in test root")
 
 	_cleanup_ch01(ch01)
+	_assert_real_save_unchanged(real_save_before, "test_scripted_playthrough_rooms_1_to_4")
+	_assert_false(DirAccess.dir_exists_absolute(TEST_SAVE_ROOT), "test save root cleaned up")
