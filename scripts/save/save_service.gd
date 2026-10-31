@@ -32,6 +32,8 @@ static func default_save() -> Dictionary:
 		"fragments": [],
 		"temporal": {},
 		"spatial": {},
+		"journal": [],
+		"hints": {},
 		"settings_ref": "user://settings.cfg",
 	}
 
@@ -49,6 +51,9 @@ func capture(session: GameSession, chapter: String, checkpoint_id: String) -> Di
 	if session.narrative_state != null:
 		data["narrative_flags"] = session.narrative_state.export_flags()
 		data["fragments"] = session.narrative_state.export_fragments()
+		data["journal"] = session.narrative_state.export_journal()
+	if session.hint_service != null:
+		data["hints"] = session.hint_service.export_state()
 	var temporal := {}
 	for id in session.id_registry.get_ids():
 		var node = session.id_registry.resolve(id)
@@ -72,6 +77,9 @@ func apply(session: GameSession, data: Dictionary) -> Dictionary:
 		session.puzzle_service.import_state(data["puzzles"])
 	if session.narrative_state != null:
 		session.narrative_state.import_state(data["narrative_flags"], data["fragments"])
+		session.narrative_state.import_journal(data["journal"])
+	if session.hint_service != null:
+		session.hint_service.import_state(data["hints"])
 	if session.spatial_service != null and not data["spatial"].is_empty():
 		var spatial_result := session.spatial_service.import_state(data["spatial"])
 		if not spatial_result["ok"]:
@@ -166,7 +174,7 @@ func validate(data: Dictionary) -> Dictionary:
 		"save_version": TYPE_INT, "chapter": TYPE_STRING, "checkpoint_id": TYPE_STRING,
 		"puzzles": TYPE_DICTIONARY, "narrative_flags": TYPE_DICTIONARY,
 		"fragments": TYPE_ARRAY, "temporal": TYPE_DICTIONARY, "spatial": TYPE_DICTIONARY,
-		"settings_ref": TYPE_STRING,
+		"journal": TYPE_ARRAY, "hints": TYPE_DICTIONARY, "settings_ref": TYPE_STRING,
 	}
 	for key in expected.keys():
 		if not data.has(key) or typeof(data[key]) != expected[key]:

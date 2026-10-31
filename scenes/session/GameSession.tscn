@@ -8,8 +8,9 @@
 [ext_resource type="Script" path="res://scripts/puzzle/puzzle_service.gd" id="6_puzzle"]
 [ext_resource type="Script" path="res://scripts/narrative/narrative_state.gd" id="7_narrative"]
 [ext_resource type="Script" path="res://scripts/spatial/spatial_service.gd" id="8_spatial"]
+[ext_resource type="Script" path="res://scripts/puzzle/hint_service.gd" id="9_hint"]
 
-[node name="GameSession" type="Node" groups=["game_session"] node_paths=PackedStringArray("sim_clock", "id_registry", "interaction_service", "echo_service", "puzzle_service", "narrative_state", "spatial_service")]
+[node name="GameSession" type="Node" groups=["game_session"] node_paths=PackedStringArray("sim_clock", "id_registry", "interaction_service", "echo_service", "puzzle_service", "narrative_state", "spatial_service", "hint_service")]
 script = ExtResource("1_session")
 sim_clock = NodePath("SimClock")
 id_registry = NodePath("IdRegistry")
@@ -18,6 +19,7 @@ echo_service = NodePath("EchoService")
 puzzle_service = NodePath("PuzzleService")
 narrative_state = NodePath("NarrativeState")
 spatial_service = NodePath("SpatialService")
+hint_service = NodePath("HintService")
 
 [node name="SimClock" type="Node" parent="."]
 script = ExtResource("2_clock")
@@ -45,3 +47,9 @@ script = ExtResource("7_narrative")
 
 [node name="SpatialService" type="Node" parent="."]
 script = ExtResource("8_spatial")
+
+[node name="HintService" type="Node" parent="." node_paths=PackedStringArray("sim_clock", "puzzle_service")]
+script = ExtResource("9_hint")
+sim_clock = NodePath("../SimClock")
+puzzle_service = NodePath("../PuzzleService")
+
