@@ -34,6 +34,7 @@ This file starts as a tracking template. Do not invent resolved status.
 | ISSUE-011 | Milestone 1 controller evidence is synthetic (scripted device-0 joypad events); no physical controller test yet | Low | Mitigated | Human | 1-minute spot-check: run TestRoom with a real gamepad, walk to a lever, press A. Remap behaviour already verified by Flash's script and the Lead's probe |
 | ISSUE-012 | Elias v1: the walk stride is very subtle (mid-stride frame ≈ idle), so feet may appear to slide in motion; the silhouette is blocky against the "Premium HD" target | Medium | Open | Argon | Next art batch: stronger leg separation + 1 px bob, more silhouette detail (coat flare, hands); re-check in motion in Godot |
 | RISK-019 | Argon unavailable (usage limit reached 2026-10-31) | Medium | Open | Human / Agent 1 | Per the master prompt, work is redistributed: TLF-024 text → Opus. Art polish (ISSUE-012) waits for Argon or a human in Pixelorama; it doesn't block gameplay work |
+| ISSUE-013 | `class_name SaveService` collides with the planned `SaveService` autoload (Godot 4.7.2 parse error "hides an autoload singleton", reproduced on a scratch copy of `main`) | High | In progress | Opus impl agent (TLF-027) | Rename the class to `SaveStore`, keep the autoload name `SaveService` (ADR-011) |
 | RISK-016 | Project-local `pixel-art` MCP (`pxcli-mcp`) writes to `./assets/sprites`, outside ADR-001 layout and Argon ownership | Low | Open | Agent 1 | Not used (ADR-012). Remove from local config if it causes confusion |
 
 ## Issue template
