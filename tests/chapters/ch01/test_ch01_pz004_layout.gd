@@ -221,3 +221,43 @@ func test_shortest_walkable_path_between_breakers_exceeds_600_px() -> void:
 		"Shortest walkable path (%.1f px) is >= 600.0 px (exceeds 300 ticks at 120 px/s)" % total_path_length)
 
 	sig.free()
+
+
+func test_north_barrier_visual_and_collision_match() -> void:
+	var sig := (load(SIGNAL_SCENE_PATH) as PackedScene).instantiate() as Node2D
+	var barrier_col := sig.get_node_or_null("TrenchRailings/NorthBarrierCollision") as CollisionPolygon2D
+	var barrier_vis := sig.get_node_or_null("NorthBarrierVisual") as Polygon2D
+
+	_assert_true(barrier_col != null, "NorthBarrierCollision exists")
+	_assert_true(barrier_vis != null, "NorthBarrierVisual exists")
+
+	if barrier_col != null and barrier_vis != null:
+		var col_poly := barrier_col.polygon
+		var vis_poly := barrier_vis.polygon
+		_assert_eq(col_poly, vis_poly, "NorthBarrierCollision and NorthBarrierVisual polygons match identically")
+
+		# Geometric area difference via Geometry2D.clip_polygons
+		var diff_1 := Geometry2D.clip_polygons(col_poly, vis_poly)
+		var diff_2 := Geometry2D.clip_polygons(vis_poly, col_poly)
+		var diff_area_1 := 0.0
+		for poly in diff_1:
+			var a := 0.0
+			for i in poly.size():
+				var p1: Vector2 = poly[i]
+				var p2: Vector2 = poly[(i + 1) % poly.size()]
+				a += p1.x * p2.y - p2.x * p1.y
+			diff_area_1 += abs(a) * 0.5
+		var diff_area_2 := 0.0
+		for poly in diff_2:
+			var a := 0.0
+			for i in poly.size():
+				var p1: Vector2 = poly[i]
+				var p2: Vector2 = poly[(i + 1) % poly.size()]
+				a += p1.x * p2.y - p2.x * p1.y
+			diff_area_2 += abs(a) * 0.5
+
+		_assert_true(diff_area_1 <= 1.0, "col_poly - vis_poly area <= 1 px^2 (actual: %.2f)" % diff_area_1)
+		_assert_true(diff_area_2 <= 1.0, "vis_poly - col_poly area <= 1 px^2 (actual: %.2f)" % diff_area_2)
+
+	sig.free()
+

@@ -137,3 +137,82 @@ func test_dialogue_one_shot_flag_and_save_load() -> void:
 	session.free()
 	new_session.free()
 	diag.free()
+
+
+class MockUseTarget extends Interactable:
+	var use_count: int = 0
+
+	func _can_use(_actor_id: StringName, _interaction_id: StringName, _payload: Dictionary) -> StringName:
+		return &""
+
+	func _on_use(_actor_id: StringName, _interaction_id: StringName, _payload: Dictionary) -> void:
+		use_count += 1
+
+
+func test_dialogue_box_advance_does_not_trigger_interactable() -> void:
+	var orig_save_root := ""
+	var ss := scene_tree.root.get_node_or_null("SaveService")
+	if ss != null and "save_root" in ss:
+		orig_save_root = ss.save_root
+		ss.save_root = "user://tlf_test_ui_saves"
+
+	var sess_scene = load("res://scenes/session/GameSession.tscn")
+	var session = sess_scene.instantiate() as GameSession
+	scene_tree.root.add_child(session)
+
+	var diag_scene = load("res://scenes/ui/DialogueBox.tscn")
+	var diag = diag_scene.instantiate() as DialogueBox
+	scene_tree.root.add_child(diag)
+
+	var player_scene = load("res://scenes/player/Player.tscn")
+	var player = player_scene.instantiate() as Player
+	player.position = Vector2(100, 100)
+	player.add_to_group(&"player")
+	scene_tree.root.add_child(player)
+
+	# Create a mock interactable target next to player
+	var interactable = MockUseTarget.new()
+	interactable.object_id = &"ch01.test_dialogue_target"
+	interactable.collision_layer = 4
+	interactable.collision_mask = 0
+	interactable.position = Vector2(100, 100)
+	var col = CollisionShape2D.new()
+	var shape = CircleShape2D.new()
+	shape.radius = 16.0
+	col.shape = shape
+	interactable.add_child(col)
+	scene_tree.root.add_child(interactable)
+
+	# Let physics detect interactable
+	await physics_frames(5)
+	_assert_eq(player.current_target, interactable, "Player targets interactable next to them")
+
+	# Play a 1-line blocking monologue
+	var lines = [["SPK_ELIAS", "EL_B01_01"]]
+	diag.play_sequence(&"test_blocking_last_line", lines, true)
+	_assert_true(diag.is_active, "Dialogue is active")
+	_assert_false(player.is_physics_processing(), "Player movement stopped during blocking dialogue")
+
+	# Advance last line with interact
+	await tap(&"interact")
+	await physics_frames(3)
+
+	_assert_false(diag.is_active, "Dialogue finished")
+	_assert_true(player.is_physics_processing(), "Player unblocked after dialogue finished")
+	_assert_eq(interactable.use_count, 0, "Interactable was NOT used when advancing dialogue with interact")
+
+	# Clean up
+	interactable.free()
+	player.free()
+	diag.free()
+	session.free()
+
+	if ss != null and "save_root" in ss and orig_save_root != "":
+		ss.save_root = orig_save_root
+	if DirAccess.dir_exists_absolute("user://tlf_test_ui_saves"):
+		var d = DirAccess.open("user://tlf_test_ui_saves")
+		if d != null:
+			for f in d.get_files():
+				d.remove(f)
+		DirAccess.remove_absolute("user://tlf_test_ui_saves")
+
