@@ -38,9 +38,14 @@ func make_session() -> GameSession:
 	session.add_child(clock)
 	session.add_child(registry)
 	session.add_child(service)
+	var echo := EchoService.new()
+	echo.name = "EchoService"
+	session.add_child(echo)
+	echo.bind(clock, service)
 	session.sim_clock = clock
 	session.id_registry = registry
 	session.interaction_service = service
+	session.echo_service = echo
 	_tree().root.add_child(session)
 	return session
 

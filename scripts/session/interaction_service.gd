@@ -22,7 +22,7 @@ func _ready() -> void:
 func _get_current_tick() -> int:
 	if sim_clock != null:
 		return sim_clock.tick
-	var session = get_tree().get_first_node_in_group(&"game_session")
+	var session = get_tree().get_first_node_in_group(&"game_session") if is_inside_tree() else null
 	if session != null and "sim_clock" in session and session.sim_clock != null:
 		return session.sim_clock.tick
 	return 0
@@ -31,7 +31,7 @@ func _get_current_tick() -> int:
 func _get_id_registry() -> IdRegistry:
 	if id_registry != null:
 		return id_registry
-	var session = get_tree().get_first_node_in_group(&"game_session")
+	var session = get_tree().get_first_node_in_group(&"game_session") if is_inside_tree() else null
 	if session != null and "id_registry" in session and session.id_registry != null:
 		return session.id_registry
 	return null
@@ -72,13 +72,29 @@ func request(actor_id: StringName, target_id: StringName, interaction_id: String
 	return InteractionResult.success()
 
 
-## Dispatch trigger enter event for an actor.
+## Dispatch trigger enter event for an actor (ADR-006 clarification: no reasons).
+## The registered trigger node decides what the actor's presence means via on_trigger_enter().
 func trigger_enter(actor_id: StringName, trigger_id: StringName) -> void:
-	var current_tick: int = _get_current_tick()
-	trigger_entered.emit(current_tick, actor_id, trigger_id)
+	_dispatch_trigger(trigger_id, &"on_trigger_enter", actor_id)
+	trigger_entered.emit(_get_current_tick(), actor_id, trigger_id)
 
 
 ## Dispatch trigger exit event for an actor.
 func trigger_exit(actor_id: StringName, trigger_id: StringName) -> void:
-	var current_tick: int = _get_current_tick()
-	trigger_exited.emit(current_tick, actor_id, trigger_id)
+	_dispatch_trigger(trigger_id, &"on_trigger_exit", actor_id)
+	trigger_exited.emit(_get_current_tick(), actor_id, trigger_id)
+
+
+## True when trigger_id resolves to a live node (used by EchoService to report missing targets).
+func has_target(target_id: StringName) -> bool:
+	var registry = _get_id_registry()
+	return registry != null and registry.resolve(target_id) != null
+
+
+func _dispatch_trigger(trigger_id: StringName, method: StringName, actor_id: StringName) -> void:
+	var registry = _get_id_registry()
+	if registry == null:
+		return
+	var trigger = registry.resolve(trigger_id)
+	if trigger != null and trigger.has_method(method):
+		trigger.call(method, actor_id)
