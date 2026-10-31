@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DocumentDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/narrative/document_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+document_id = &"ch01.waiting_lounge.audio_mira_01"
+kind = 1
+title_key = "DOC_MIRA_01_TITLE"
+body_key = "DOC_MIRA_01_BODY_1"
+flag_id = &"ch01.flag.mira_trace_seen"
+fragment_id = &"ch01.fragment.mira_departure"
+journal_entry_key = "JRN_CH1_MIRA_PLEA"
+journal_category = "fact"

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DocumentDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/narrative/document_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+document_id = &"ch01.vestibule_niche.doc_index_plaque"
+kind = 2
+title_key = "DOC_INDEX_PLAQUE_TITLE"
+body_key = "DOC_INDEX_PLAQUE_BODY_1"
+flag_id = &""
+fragment_id = &""
+journal_entry_key = "JRN_CH1_THRESHOLDS"
+journal_category = "theory"
