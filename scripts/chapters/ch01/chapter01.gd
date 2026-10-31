@@ -306,6 +306,7 @@ func _show_chapter_complete_ui() -> void:
 
 	var label := Label.new()
 	label.name = "TitleLabel"
+	label.theme_type_variation = &"HeaderLarge"
 	label.text = "%s\n%s" % [tr("UI_CHAPTER_COMPLETE"), tr("UI_CHAPTER_01_TITLE")]
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER

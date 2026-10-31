@@ -35,6 +35,10 @@ window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 window/stretch/scale_mode="integer"
 
+[gui]
+
+theme/custom="res://scenes/ui/theme/tlf_ui_theme.tres"
+
 [internationalization]
 
 locale/translations=PackedStringArray("res://localization/ch01_puzzles.en.translation", "res://localization/ch01_text.en.translation", "res://localization/ui_feedback.en.translation")
