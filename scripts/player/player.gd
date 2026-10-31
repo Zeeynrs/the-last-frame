@@ -19,6 +19,9 @@ var facing_direction: String = "s"
 var _candidates: Array[Interactable] = []
 var current_target: Interactable = null
 
+var _input_blocked: bool = false
+var _unblock_physics_frame: int = -100
+
 
 func _ready() -> void:
 	if interaction_detector != null:
@@ -189,6 +192,11 @@ static func choose_best_interactable(from_pos: Vector2, candidates: Array) -> In
 
 
 func _handle_interaction() -> void:
+	# Ignore interaction inputs on the frame the player is unblocked and the next frame,
+	# preventing actions that closed a modal UI (e.g. interact) from triggering objects.
+	if Engine.get_physics_frames() <= _unblock_physics_frame + 1:
+		return
+
 	if Input.is_action_just_pressed(&"interact"):
 		if current_target != null:
 			var session = get_tree().get_first_node_in_group(&"game_session")
@@ -214,3 +222,63 @@ func _handle_interaction() -> void:
 	if Input.is_action_just_pressed(&"echo_reset"):
 		if pocket_watch != null:
 			pocket_watch.reset_echo()
+
+
+## Blocks or unblocks player input and movement (used by modal UIs like DialogueBox, DocumentViewer, JournalScreen).
+## When blocked, velocity is zeroed and physics process is stopped.
+## When unblocked, physics process is restored and the current physics frame is recorded
+## so subsequent interaction polling ignores the closing action press.
+func set_input_blocked(blocked: bool) -> void:
+	_input_blocked = blocked
+	set_physics_process(not blocked)
+	if blocked:
+		velocity = Vector2.ZERO
+	else:
+		_unblock_physics_frame = Engine.get_physics_frames()
+
+
+## Fallback lookup chain for the active player node:
+## 1. GameSession (via group "game_session" or root search) -> room_router.player
+## 2. First node in group "player"
+## 3. Child named "Player" under root
+static func find_player(from_node: Node) -> CharacterBody2D:
+	if from_node == null or not from_node.is_inside_tree():
+		return null
+	var tree := from_node.get_tree()
+	if tree == null:
+		return null
+
+	var session = tree.get_first_node_in_group(&"game_session")
+	if session == null:
+		session = tree.root.find_child("GameSession", true, false)
+	if session != null and "room_router" in session and session.room_router != null and session.room_router.player != null:
+		return session.room_router.player
+
+	var p = tree.get_first_node_in_group(&"player")
+	if p is CharacterBody2D:
+		return p
+
+	var candidate = tree.root.find_child("Player", true, false)
+	if candidate is CharacterBody2D:
+		return candidate
+
+	return null
+
+
+## Dispatches input block/unblock to the player node resolved from from_node.
+## If cached_player is valid, uses it; otherwise resolves via find_player.
+## Calls set_input_blocked(blocked) on Player, or set_physics_process(not blocked) on generic CharacterBody2D.
+## Returns the resolved player reference for caching.
+static func set_player_blocked(from_node: Node, blocked: bool, cached_player: CharacterBody2D = null) -> CharacterBody2D:
+	var target: CharacterBody2D = cached_player
+	if target == null or not is_instance_valid(target):
+		target = find_player(from_node)
+	if target != null and is_instance_valid(target):
+		if target.has_method(&"set_input_blocked"):
+			target.set_input_blocked(blocked)
+		else:
+			target.set_physics_process(not blocked)
+			if blocked:
+				target.velocity = Vector2.ZERO
+	return target
+

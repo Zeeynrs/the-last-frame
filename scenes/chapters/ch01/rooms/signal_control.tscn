@@ -87,7 +87,7 @@ default_color = Color(0.3, 0.4, 0.55, 1)
 
 [node name="NorthBarrierVisual" type="Polygon2D" parent="."]
 color = Color(0.18, 0.24, 0.32, 1)
-polygon = PackedVector2Array(476, 190, 532, 218, 512, 246, 476, 236)
+polygon = PackedVector2Array(476, 190, 540, 222, 540, 260, 476, 260)
 
 [node name="NorthRailingVisual" type="Line2D" parent="."]
 points = PackedVector2Array(320, 112, 532, 218)
