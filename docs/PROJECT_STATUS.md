@@ -32,7 +32,7 @@ This file states what the repository **actually** contains. Task-level detail li
 | Ch1 design: beat sheet (10 beats, 38 min), 5 puzzle specs with 27 given/when/then tests, room graph (10 rooms, boundary doors, placement metrics, kit list) | `design/ch01/` | Lead reviews in `docs/reviews/` |
 
 ## B. Partially implemented
-- Boot scene: placeholder label only; `run/main_scene` is Boot, not a gameplay scene.
+- Game entry: Chapter 1 is fully playable, but only via F6 on `Chapter01.tscn`; no title/menu flow (TLF-037).
 
 ## C. Implemented but not integrated
 - Art v1 is barely placed in the Ch1 rooms: only the archway frame and the 23:59 clock appear (8 of 10 rooms); floors, walls and props are greybox polygons (ISSUE-012, Argon unavailable).
@@ -40,11 +40,13 @@ This file states what the repository **actually** contains. Task-level detail li
 ## D. Broken
 - `interact` that closes a document / the last blocking dialogue line also fires on the player in the same frame: the document reopens or a nearby object is used (ISSUE-023 → TLF-034).
 - PZ-004 barrier visual smaller than its collision (ISSUE-024 → TLF-034).
+- F5 shows a black screen: `Boot.tscn` is a placeholder (ISSUE-027 → TLF-037).
+- Headless runs without an explicit save root write the real `user://saves` (ISSUE-026 → TLF-036).
 
 ## E. Missing (next by priority)
 1. TLF-034 (Flash) input/visual fixes; TLF-035 (Opus impl) leak gate in `validate.ps1`
 2. Human: physical controller spot-check (ISSUE-011, last item for M1)
-3. Boot → main menu → Chapter01 flow (`run/main_scene` is still the Boot placeholder)
+3. TLF-036 headless save guard (ISSUE-026); TLF-037 Boot → title → Chapter01 so F5 plays (ISSUE-027). Until then: open `Chapter01.tscn`, press F6
 4. Vertical-slice polish: art beyond v1 (Argon unavailable, ISSUE-012), audio, lighting/VFX, Beat 10 cinematic, accessibility pass
 5. External playtest (Gate C)
 
