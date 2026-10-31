@@ -32,9 +32,9 @@ A production-ready **planning, documentation, multi-agent workflow and toolchain
 
 | Agent | Requested model | Role |
 |---|---|---|
-| 1 | Claude Opus 5.5 High | Lead architect, producer, reviewer, integration authority |
-| 2 | Gemini 4 Argon | Narrative, puzzle/level design, Pixelorama source-art owner |
-| 3 | Gemini 3.8 Flash High | Godot implementation, runtime asset integration, testing and QA |
+| 1 | Claude Opus 5.5 High | Lead architect, core-systems programmer, reviewer, integration authority (ADR-017) |
+| 2 | Gemini 3.8 Flash High | Feature implementation (player, UI, settings, camera, audio/VFX, scenes), testing and QA |
+| 3 | Gemini 4 Argon | On-demand creative: narrative, puzzle/level design, Pixelorama source art |
 
 Model availability and exact model labels depend on the provider account and CLI version. Orca provides isolated worktrees and agent terminals; it does not guarantee a particular model alias or automatically share one MCP configuration across every CLI.
 

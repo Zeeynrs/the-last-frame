@@ -126,6 +126,11 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - When recording starts, every trigger the player already occupies is seeded as a `trigger_enter` at `rel_tick 0`.
   - The ghost spawns at the player's position at recording start. A room transition or reaching 1200 ticks stops the recording automatically.
   - Playback dispatches as actor `&"echo.0"` through `InteractionService`. Failures emit `echo_event_failed(tick, target_id, reason)`.
+- **Implementation notes 2026-10-31 (TLF-016):**
+  - `rel_tick 0` events dispatch at the moment `start_playback()` is called; later events dispatch on their tick.
+  - After the last event and the recorded length, the state becomes `HOLDING` (final occupancy kept). Restarting playback first releases the echo's occupancy.
+  - Occupancy uses one code path: physical bodies and the echo both go through `InteractionService.trigger_enter/exit`, which calls the trigger's `on_trigger_enter/exit`.
+  - `TriggerZone.accepts_echoes = false` implements the ADR-016 rule that completion triggers are player-only.
 
 ## ADR-009 — Spatial graph
 - **Date / status:** 2026-10-31 · Accepted
@@ -145,6 +150,11 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - Only IDs and primitives. Missing fields get defaults. Migrations live in `SaveService.MIGRATIONS[from_version]`.
   - A corrupt or unknown file is reported to the UI and never crashes the game.
   - Settings are stored separately in `user://settings.cfg` (ConfigFile).
+- **Amendment 2026-10-31 (TLF-019 implementation):**
+  - Encoding: `JSON.stringify(JSON.from_native(data))` / `JSON.to_native(JSON.parse_string(text))`. Verified on 4.7.2 that StringName/int/nested values round-trip exactly and that Objects encode as `null`, so live Nodes can't be serialized.
+  - `temporal[object_id]` is `TemporalComponent.export_history()`: `{schema_version, cursor, entries[], is_frozen}`. A cursor alone is insufficient after runtime commits.
+  - Writes go to `.tmp`, are verified by re-reading, then renamed. Reads return `{ok, reason, data}` with `reason ∈ {no_save, corrupt, unsupported_version, invalid}`. Migrations are `migrations[from_version] -> Callable`, and a gap in the chain is refused. Defaults are filled for missing fields; structure is validated before any write or apply. Unknown temporal IDs are skipped and reported, never fatal.
+  - `SaveService` is implemented in `scripts/save/save_service.gd` (a Node). Its **autoload registration** in `project.godot` belongs to Flash (single owner) in TLF-018.
 
 ## ADR-011 — Global vs session services
 - **Date / status:** 2026-10-31 · Accepted (supersedes the autoload list in ARCHITECTURE §2)
@@ -163,6 +173,7 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
     - Import check: `Godot_v4.7.2-stable_win64_console.exe --headless --path . --import`
     - Tests: `Godot_v4.7.2-stable_win64_console.exe --headless --path . -s res://tests/run_tests.gd`
   - Adopting GdUnit4/GUT later needs a new ADR plus human approval for the install.
+  - **Amendment 2026-10-31 (TLF-008):** the runner executes tests on the **first `_process` frame**, not in `_init()`. Measured: during `_init`/`_initialize` the root isn't inside the tree, so nodes added by tests never got `_ready()`. The runner injects `scene_tree`. New tests extend `res://tests/support/base_test.gd` (shared asserts plus a `make_session()` fixture).
   - **MCP tool policy:** the Lead uses Godot MCP read-only. Only the agent assigned as Godot owner for a task may use write tools (`create_scene`, `add_node`, `save_scene`, `update_project_uids`). Godot CLI is preferred for validation. Godot AI Workbench is not adopted for now (not installed).
 - **Amendment 2026-10-31 (MCP server chosen):** The project's Godot MCP is **`@coding-solo/godot-mcp`**, pinned to **0.1.1** (`npx -y @coding-solo/godot-mcp@0.1.1`, Claude Code user scope). Godot AI Workbench is **not adopted**. Upgrades need a version bump recorded here.
   - Verified read-only: `get_godot_version`, `get_project_info`, `list_projects`, `get_uid` (see ISSUE-002).
@@ -211,4 +222,17 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - A reset anchor resets only its own puzzle's dynamic objects plus the active echo.
   - **After `SOLVED`, nothing may re-block the solved passage:** reset anchors, unfreezing, and echo resets all leave the route open. Optional objects may still reset.
   - Any reset or spatial change that would overlap the player with newly enabled collision first moves the player to the puzzle's declared safe anchor.
+
+## ADR-017 — Team allocation and Opus implementation workflow
+- **Date / status:** 2026-10-31 · Accepted (from the user's continuous-development master prompt)
+- **Context:** The user's updated master prompt makes Opus an active core-systems programmer (~50%), with Flash on features/QA (~35%) and Argon on high-value creative batches (~15%). It also asks for continuous development without per-task approval, plus four status documents.
+- **Decision:**
+  - **Opus implements** the core systems: temporal (TemporalComponent/TemporalService), Echo, PuzzleService, SaveService, SpatialGraph, TimelineManager, and the session contracts.
+  - **Flash** owns player feel, UI/HUD/menus, settings, input, camera, audio/VFX integration, scene setup and regression tests. Flash is the single owner of `project.godot`.
+  - **Argon** owns design batches and `.pxo` sources.
+  - TLF-008 is split: the temporal core goes to Opus; the pocket-watch controller and HUD become TLF-018 (Flash).
+  - Opus works in its own worktree `D:\TheLastFrame\wt-opus-core` on branch `agent/opus-core`. Orca role branches stay as they are; the master prompt's suggested names are advisory, and existing branches are kept for compatibility. Opus's own work is self-verified (validate plus runtime probe) before merging to `main` with `--no-ff`.
+  - Status docs: `PROJECT_STATUS.md`, `DEVELOPMENT_ROADMAP.md`, `TECHNICAL_DEBT.md`, `AGENT_HANDOFF.md`.
+  - Unchanged: destructive or irreversible actions, external credentials and creative-direction changes still go to the user.
+- **Consequences:** Shared contract files get exactly one owner per task (named in the task file). Opus may edit `scripts/interaction/interactable.gd` and `scripts/session/*` during TLF-008/016; Flash must not touch them until merged.
 
