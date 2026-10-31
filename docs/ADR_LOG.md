@@ -281,3 +281,18 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - `CheckpointZone` (player-only) triggers the autosave to slot 0. The router owns a `SaveService` until the autoload is registered (TLF-018).
 - **Consequences:** Room scenes must follow the ID scheme and give each doorway a `Spawn` marker placed **off** the presenter's shape. Non-temporal room state that must persist belongs in PuzzleService/NarrativeState or a TemporalComponent.
 
+## ADR-019 — Chapter 1 art integration rules (art batch 2)
+- **Date / status:** 2026-10-31 · Accepted (Lead decisions on TLF-039 open questions, `design/art/CH01_PLACEMENT_SHEET.md` §13)
+- **Context:** Art batch 2 (TLF-039, merged `34d95be`) delivers the kit, puzzle props and a per-room placement sheet. The placement sheet raised layout and sorting questions that touch gameplay scenes.
+- **Decision:**
+  - **Sorting:** wall-mounted fixtures stay in `Wall_Fixtures` (`z_index = 7`). **Free-standing** objects (junction levers, mid-room breakers, consoles, benches, puzzle props on the floor) go into `YSort_Actors` (`z_index = 10`, Y-sorted by pivot), so Elias draws behind them when he is behind them (OQ-2). The art agent adds a bible appendix.
+  - **Collision and gameplay positions are frozen:** art integration changes visuals only. Every `CollisionShape2D`/`CollisionPolygon2D`, `TriggerZone`, doorway, spawn and puzzle-object position stays byte-identical, with two exceptions:
+    - `ch01.signal_control.intercom` moves to its N-wall mount (OQ-4), under the condition that the TLF-033 layout tests and the RISK-018 negative test stay green and the intercom stays reachable (≤ 36 px from a walkable point).
+    - The greybox `Clock` sprites (rooms 1, 2, 5, 6, 7, 9) move onto wall modules per placement sheet §0.6 (OQ-9). They are visuals; the `digital_clock_2359` interactables keep their positions unless the sheet names a new one, in which case the reach rule above applies.
+  - **Railings:** rooms 1 and 5 ship without near-edge rails (they would hide the amber platform lip); railings only on interior trench edges (rooms 4, 6) and the niche grille (room 8) (OQ-7). Collision is unaffected.
+  - **Puzzle visuals bind read-only:** sprite state comes from a presenter in `scripts/chapters/ch01/visuals/` that reads the object's public state (`capture_state()`, `is_frozen()`, `passage_changed`) every frame. No visual code in `scripts/puzzle/**`.
+  - **Echo recorder pedestal (OQ-8):** not built. The implemented PZ-003 starts the echo from the pocket watch; the ROOM_GRAPH §5.3 entry is set dressing only and is deferred.
+  - **Palette:** Elias may use palette index 03 (trouser highlight); it is in TLF-CH01-32, the bible appendix records it.
+  - **Reproducibility:** art produced by scripts must be regenerable: generator scripts are committed under `tools/art/gen/` and a check reproduces the committed `.pxo`/PNG byte for byte.
+- **Consequences:** Integration tasks guard collision geometry with a before/after hash test. ISSUE-012 (Elias walk) closes only after an in-motion check in Godot, not from stills.
+
