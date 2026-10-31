@@ -37,6 +37,7 @@
 | 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
 | 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
 | 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
+| 2026-10-31 | Squash-merged design-art `689e169` (TLF-024b: SPK_* labels, pa_speaker/intercom IDs approved, JRN_CH1_OPERATOR_WARNING) keeping `eecb822` out of history. Reviewed Flash TLF-018 fixes (R1/R2b/R4/R5 OK, 194/194 on merge result, SpriteFrames verified); found fresh-clone failure (ISSUE-015): translations now committed (ADR-013 corrected), `validate.ps1` hardening → TLF-028. TLF-018 merge waits for Flash's ch01_text translation registration | Agent 1 |
 | 2026-10-31 | Merged `64f7be8` alone (ART_BIBLE light convention + flip_h trade-offs, docs-only); `eecb822` still excluded | Agent 1 |
 | 2026-10-31 | TLF-027 (Opus impl agent `aafb2bb`) reviewed and merged: SaveStore class + SaveService autoload verified with/without autoload; ADR-011 note; TLF-018 R2b unblocked for Flash | Agent 1 |
 | 2026-10-31 | TLF-024 duplicate (`eecb822`) not merged; port-into-main decisions recorded (ADR-013 am.: SPK_* labels, SPK_OPERATOR="VOICE", BODY_1..N pages, UI_FB_* only for reasons) | Agent 1 |

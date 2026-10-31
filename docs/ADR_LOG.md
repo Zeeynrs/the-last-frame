@@ -214,7 +214,7 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - Proposed object IDs `ch01.security_crossing.pa_speaker`, `ch01.signal_control.intercom` and journal key `JRN_CH1_OPERATOR_WARNING` are **pending Lead approval** in the review of the port commit.
   - **Player-facing text is ASCII-only** while the UI font (TLF Pixel Mono) covers ASCII 32-126 (tested for `ch01_text.csv` and `ch01_puzzles.csv`).
   - Generators live in `tools/content/` (`gen_ch01_puzzle_data.py`, `gen_ch01_text.py`). Their markdown inputs are the source of truth: re-run them, don't edit generated files.
-  - CSV translations are imported by Godot into `*.translation` files, which are derived and git-ignored. **Registering them in `project.godot` (internationalization/locale/translations) is Flash's job** (single owner); until then `tr()` returns the key.
+  - CSV translations are imported by Godot into `*.translation` files. ~~Derived and git-ignored~~ **Corrected 2026-10-31: the generated `*.translation` files are committed.** They're registered in `project.godot`, and on a fresh clone Godot loads them *before* the import creates them, which produced startup `ERROR`s and failed validation (reproduced by the Lead on a `git archive`). Staleness against the CSV is caught by the round-trip tests (`test_hint_service`, `test_ch01_text`). Registering them in `project.godot` (internationalization/locale/translations) is Flash's job (single owner).
 
 ## ADR-014 — Ability naming
 - **Date / status:** 2026-10-31 · **Accepted**: "Trace" (Argon's TLF-003 recommendation; "afterimage" and "imprint" allowed as prose synonyms only)
