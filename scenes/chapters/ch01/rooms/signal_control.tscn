@@ -1,0 +1,244 @@
+[gd_scene load_steps=22 format=3]
+
+[ext_resource type="Script" path="res://scripts/spatial/doorway_presenter.gd" id="1_door"]
+[ext_resource type="Script" path="res://scripts/rooms/safe_anchor.gd" id="2_anchor"]
+[ext_resource type="Script" path="res://scripts/rooms/checkpoint_zone.gd" id="3_checkpoint"]
+[ext_resource type="Script" path="res://scripts/puzzle/objects/surge_capacitor.gd" id="4_capacitor"]
+[ext_resource type="Script" path="res://scripts/temporal/temporal_component.gd" id="5_temporal"]
+[ext_resource type="Script" path="res://scripts/puzzle/objects/timed_breaker.gd" id="6_breaker"]
+[ext_resource type="Script" path="res://scripts/puzzle/objects/substation_grid.gd" id="7_grid"]
+[ext_resource type="Script" path="res://scripts/puzzle/objects/powered_door.gd" id="8_door_obj"]
+[ext_resource type="Script" path="res://scripts/puzzle/reset_anchor.gd" id="9_reset"]
+[ext_resource type="Script" path="res://scripts/puzzle/puzzle_completion_zone.gd" id="10_complete"]
+[ext_resource type="Script" path="res://scripts/chapters/ch01/signal_control_intercom.gd" id="11_intercom"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_digital_clock_2359_idle.png" id="12_clock"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_door"]
+radius = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cp"]
+size = Vector2(28, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cap"]
+radius = 18.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_breaker"]
+radius = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door_blocker"]
+size = Vector2(24, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_reset"]
+radius = 14.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(24, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_intercom"]
+radius = 16.0
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_south_railing"]
+a = Vector2(192, 128)
+b = Vector2(384, 224)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_north_railing"]
+a = Vector2(320, 112)
+b = Vector2(512, 208)
+
+[node name="SignalControl" type="Node2D"]
+y_sort_enabled = true
+
+[node name="Floor" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.12, 0.16, 0.22, 1)
+polygon = PackedVector2Array(320, 64, 576, 192, 384, 288, 128, 160)
+
+[node name="FloorAccent" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.17, 0.22, 0.3, 1)
+polygon = PackedVector2Array(320, 80, 552, 196, 384, 280, 152, 164)
+
+[node name="PerimeterWalls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PerimeterWalls"]
+build_mode = 1
+polygon = PackedVector2Array(320, 60, 580, 190, 384, 292, 124, 158)
+
+[node name="TrenchRailings" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="SouthRailingCollision" type="CollisionShape2D" parent="TrenchRailings"]
+shape = SubResource("SegmentShape2D_south_railing")
+
+[node name="NorthRailingCollision" type="CollisionShape2D" parent="TrenchRailings"]
+shape = SubResource("SegmentShape2D_north_railing")
+
+[node name="SouthRailingVisual" type="Line2D" parent="."]
+points = PackedVector2Array(192, 128, 384, 224)
+width = 3.0
+default_color = Color(0.3, 0.4, 0.55, 1)
+
+[node name="NorthRailingVisual" type="Line2D" parent="."]
+points = PackedVector2Array(320, 112, 512, 208)
+width = 3.0
+default_color = Color(0.3, 0.4, 0.55, 1)
+
+[node name="Clock" type="Sprite2D" parent="."]
+position = Vector2(320, 50)
+texture = ExtResource("12_clock")
+
+[node name="door_entry_south" type="Area2D" parent="."]
+position = Vector2(272, 216)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_door")
+room_id = &"ch01.signal_control"
+door_id = &"door_entry_south"
+object_id = &"ch01.signal_control.door_entry_south"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="door_entry_south"]
+shape = SubResource("CircleShape2D_door")
+
+[node name="Spawn" type="Marker2D" parent="door_entry_south"]
+position = Vector2(16, -8)
+
+[node name="door_exit_north" type="Area2D" parent="."]
+position = Vector2(448, 128)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_door")
+room_id = &"ch01.signal_control"
+door_id = &"door_exit_north"
+object_id = &"ch01.signal_control.door_exit_north"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="door_exit_north"]
+shape = SubResource("CircleShape2D_door")
+
+[node name="Spawn" type="Marker2D" parent="door_exit_north"]
+position = Vector2(-16, 8)
+
+[node name="safe_anchor_center" type="Marker2D" parent="."]
+position = Vector2(352, 176)
+script = ExtResource("2_anchor")
+object_id = &"ch01.signal_control.safe_anchor_center"
+
+[node name="checkpoint" type="Area2D" parent="."]
+position = Vector2(288, 208)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("3_checkpoint")
+checkpoint_id = &"ch01.cp.signal_control"
+spawn_anchor_id = &"ch01.signal_control.safe_anchor_center"
+object_id = &"ch01.signal_control.checkpoint"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoint"]
+shape = SubResource("RectangleShape2D_cp")
+
+[node name="surge_capacitor" type="Area2D" parent="."]
+position = Vector2(368, 168)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_capacitor")
+puzzle_id = &"CH1-PZ-004"
+object_id = &"ch01.signal_control.surge_capacitor"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="surge_capacitor"]
+shape = SubResource("CircleShape2D_cap")
+
+[node name="TemporalComponent" type="Node" parent="surge_capacitor"]
+script = ExtResource("5_temporal")
+capabilities = 3
+state_fields = PackedStringArray("charge_state", "decay_ticks", "bus_powered")
+initial_history = [{
+"bus_powered": true,
+"charge_state": &"charged",
+"decay_ticks": 240
+}]
+
+[node name="breaker_a" type="Area2D" parent="."]
+position = Vector2(160, 144)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("6_breaker")
+capacitor_id = &"ch01.signal_control.surge_capacitor"
+engage_ticks_base = 180
+puzzle_id = &"CH1-PZ-004"
+object_id = &"ch01.signal_control.breaker_a"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="breaker_a"]
+shape = SubResource("CircleShape2D_breaker")
+
+[node name="breaker_b" type="Area2D" parent="."]
+position = Vector2(544, 192)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("6_breaker")
+capacitor_id = &"ch01.signal_control.surge_capacitor"
+engage_ticks_base = 180
+puzzle_id = &"CH1-PZ-004"
+object_id = &"ch01.signal_control.breaker_b"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="breaker_b"]
+shape = SubResource("CircleShape2D_breaker")
+
+[node name="substation_grid" type="Area2D" parent="."]
+script = ExtResource("7_grid")
+capacitor_id = &"ch01.signal_control.surge_capacitor"
+breaker_a_id = &"ch01.signal_control.breaker_a"
+breaker_b_id = &"ch01.signal_control.breaker_b"
+puzzle_id = &"CH1-PZ-004"
+object_id = &"ch01.signal_control.substation_grid"
+
+[node name="vestibule_door" type="Area2D" parent="."]
+position = Vector2(448, 128)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("8_door_obj")
+grid_id = &"ch01.signal_control.substation_grid"
+puzzle_id = &"CH1-PZ-004"
+object_id = &"ch01.signal_control.vestibule_door"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="vestibule_door"]
+shape = SubResource("RectangleShape2D_door_blocker")
+
+[node name="Blocker" type="StaticBody2D" parent="vestibule_door"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="vestibule_door/Blocker"]
+shape = SubResource("RectangleShape2D_door_blocker")
+
+[node name="reset_anchor_01" type="Area2D" parent="."]
+position = Vector2(352, 192)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("9_reset")
+puzzle_id = &"CH1-PZ-004"
+object_id = &"ch01.signal_control.reset_anchor_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="reset_anchor_01"]
+shape = SubResource("CircleShape2D_reset")
+
+[node name="exit_trigger_vestibule" type="Area2D" parent="."]
+position = Vector2(432, 136)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("10_complete")
+puzzle_id = &"CH1-PZ-004"
+object_id = &"ch01.signal_control.exit_trigger_vestibule"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="exit_trigger_vestibule"]
+shape = SubResource("RectangleShape2D_exit")
+
+[node name="intercom" type="Area2D" parent="."]
+position = Vector2(352, 160)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("11_intercom")
+object_id = &"ch01.signal_control.intercom"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="intercom"]
+shape = SubResource("CircleShape2D_intercom")

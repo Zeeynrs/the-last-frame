@@ -1,0 +1,117 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/spatial/doorway_presenter.gd" id="1_door"]
+[ext_resource type="Script" path="res://scripts/rooms/safe_anchor.gd" id="2_anchor"]
+[ext_resource type="Script" path="res://scripts/rooms/checkpoint_zone.gd" id="3_checkpoint"]
+[ext_resource type="Script" path="res://scripts/puzzle/puzzle_completion_zone.gd" id="4_complete"]
+[ext_resource type="Script" path="res://scripts/narrative/readable_document.gd" id="5_readable"]
+[ext_resource type="Resource" path="res://data/documents/ch01/dispatch_terminal.tres" id="6_doc_dispatch"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_digital_clock_2359_idle.png" id="7_clock"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_door"]
+radius = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cp"]
+size = Vector2(28, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(24, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_doc"]
+radius = 18.0
+
+[node name="StationAtrium" type="Node2D"]
+y_sort_enabled = true
+
+[node name="Floor" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.12, 0.16, 0.22, 1)
+polygon = PackedVector2Array(320, 64, 576, 192, 352, 304, 96, 176)
+
+[node name="FloorAccent" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.17, 0.22, 0.3, 1)
+polygon = PackedVector2Array(320, 80, 552, 196, 352, 296, 120, 180)
+
+[node name="PerimeterWalls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PerimeterWalls"]
+build_mode = 1
+polygon = PackedVector2Array(320, 60, 580, 190, 352, 308, 92, 174)
+
+[node name="Clock" type="Sprite2D" parent="."]
+position = Vector2(352, 120)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("7_clock")
+
+[node name="door_entry_south" type="Area2D" parent="."]
+position = Vector2(240, 232)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_door")
+room_id = &"ch01.station_atrium"
+door_id = &"door_entry_south"
+object_id = &"ch01.station_atrium.door_entry_south"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="door_entry_south"]
+shape = SubResource("CircleShape2D_door")
+
+[node name="Spawn" type="Marker2D" parent="door_entry_south"]
+position = Vector2(16, -8)
+
+[node name="door_exit_north" type="Area2D" parent="."]
+position = Vector2(448, 128)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_door")
+room_id = &"ch01.station_atrium"
+door_id = &"door_exit_north"
+object_id = &"ch01.station_atrium.door_exit_north"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="door_exit_north"]
+shape = SubResource("CircleShape2D_door")
+
+[node name="Spawn" type="Marker2D" parent="door_exit_north"]
+position = Vector2(-16, 8)
+
+[node name="safe_anchor_south" type="Marker2D" parent="."]
+position = Vector2(272, 216)
+script = ExtResource("2_anchor")
+object_id = &"ch01.station_atrium.safe_anchor_south"
+
+[node name="checkpoint" type="Area2D" parent="."]
+position = Vector2(256, 224)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("3_checkpoint")
+checkpoint_id = &"ch01.cp.station_atrium"
+spawn_anchor_id = &"ch01.station_atrium.safe_anchor_south"
+object_id = &"ch01.station_atrium.checkpoint"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoint"]
+shape = SubResource("RectangleShape2D_cp")
+
+[node name="entry_trigger_atrium" type="Area2D" parent="."]
+position = Vector2(256, 224)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_complete")
+puzzle_id = &"CH1-PZ-005"
+object_id = &"ch01.station_atrium.entry_trigger_atrium"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="entry_trigger_atrium"]
+shape = SubResource("RectangleShape2D_exit")
+
+[node name="dispatch_terminal" type="Area2D" parent="."]
+position = Vector2(352, 176)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("5_readable")
+document = ExtResource("6_doc_dispatch")
+object_id = &"ch01.station_atrium.dispatch_terminal"
+traceable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="dispatch_terminal"]
+shape = SubResource("CircleShape2D_doc")
