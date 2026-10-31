@@ -49,11 +49,14 @@ func register(id: StringName, node: Node) -> bool:
 
 
 ## Unregister an ID when a node leaves the scene tree.
-func unregister(id: StringName) -> bool:
-	if _nodes_by_id.has(id):
-		_nodes_by_id.erase(id)
-		return true
-	return false
+## If node is provided, only unregisters if that node is the currently registered node.
+func unregister(id: StringName, node: Node = null) -> bool:
+	if not _nodes_by_id.has(id):
+		return false
+	if node != null and _nodes_by_id[id] != node:
+		return false
+	_nodes_by_id.erase(id)
+	return true
 
 
 ## Resolve an ID to its active Node. Returns null if not found.

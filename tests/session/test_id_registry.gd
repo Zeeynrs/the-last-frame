@@ -110,3 +110,25 @@ func test_unregister_and_resolve() -> void:
 
 	node.free()
 	registry.free()
+
+
+func test_unregister_requires_matching_node() -> void:
+	var registry = IdRegistry.new()
+	var node_original = Node.new()
+	var node_impostor = Node.new()
+
+	registry.register(&"ch01.protected_item", node_original)
+
+	# Impostor attempting to unregister another node's ID must fail
+	var impostor_unreg = registry.unregister(&"ch01.protected_item", node_impostor)
+	_assert_false(impostor_unreg, "Unregistering with non-matching node must return false")
+	_assert_eq(registry.resolve(&"ch01.protected_item"), node_original, "Original node must remain registered")
+
+	# Genuine owner unregistering must succeed
+	var original_unreg = registry.unregister(&"ch01.protected_item", node_original)
+	_assert_true(original_unreg, "Unregistering with matching node must return true")
+	_assert_eq(registry.resolve(&"ch01.protected_item"), null, "Item should now be unregistered")
+
+	node_original.free()
+	node_impostor.free()
+	registry.free()
