@@ -1,0 +1,204 @@
+# THE LAST FRAME — Production Art Bible ("Premium HD Cinematic Pixel Art")
+
+**Task:** TLF-010  
+**Owner:** Agent 2 (Argon — Narrative, Puzzle, Level Design & Art)  
+**Architecture Baseline:** `docs/ADR_LOG.md` (ADR-003, ADR-004, ADR-008, ADR-014, ADR-015), `docs/ART_PIPELINE.md`, `design/ch01/ROOM_GRAPH.md`
+
+---
+
+## 1. Resolution, Projection, Pixel Density & Grid Metrics (`ADR-003`)
+
+### 1.1 Viewport & Scaling Standard
+| Parameter | Exact Value | Notes / Engine Binding |
+|---|---|---|
+| **Internal Authoring Canvas** | **`640 × 360 px`** (`16:9`) | `display/window/size/viewport_width = 640`, `viewport_height = 360` |
+| **Default Window Output** | **`1920 × 1080 px`** (`×3` integer scale) | `stretch/mode = "viewport"`, `stretch/scale_mode = "integer"`, `aspect = "keep"` |
+| **Supported Integer Multipliers** | `×2` (`1280×720`), `×3` (`1920×1080`), `×4` (`2560×1440`), `×6` (`3840×2160`) | Zero fractional scaling; letterboxed on non-`16:9` monitors |
+| **Texture Filtering & Pixel Snap** | **`Nearest`** + **`2D Transform Snap = true`** | `default_texture_filter = Nearest`, `snap_2d_transforms_to_pixel = true` |
+| **Renderer** | **Forward+** (`Compatibility` fallback) | Supports 2D HDR glow, bloom, and GPU particle overlays without blurring base sprites |
+
+### 1.2 Isometric Projection & Pixel Density
+- **Projection:** **2:1 Dimetric Isometric** (`±2 px` horizontal step per `±1 px` vertical step along floor diamond edges; floor axis angle = $\arctan(0.5) \approx 26.565^\circ$).
+- **Logical Grid Unit (`1 × 1` Tile):** **`32 × 16 px`** diamond (`1.0 m × 1.0 m` world floor footprint).
+  - Top vertex: `(16, 0)` · Right vertex: `(31, 7..8)` · Bottom vertex: `(16, 15)` · Left vertex: `(0, 7..8)` · Geometric center pivot: **`(16, 8)`**.
+- **Room Screen Mapping (`ROOM_GRAPH.md` §1):**
+  $$\text{px\_x}(x, y) = 320 + (x - y) \times 16, \qquad \text{px\_y}(x, y) = 64 + (x + y) \times 8$$
+- **Vertical Pixel Density:** **`24 px = 1.0 m` vertical height** (`1 px ≈ 4.17 cm` vertical; `48 px = 2.0 m` vertical wall/frame height).
+
+### 1.3 Character, Tile, Wall & Prop Size Table Against the `32 × 16` Grid
+
+| Asset Class | Grid Footprint (`W × H` Tiles) | Canvas Size (`W × H px`) | Active Silhouette (`W × H px`) | Pivot / Origin `(px_x, px_y)` | Godot `z_index` / Sorting Layer | Examples |
+|---|---|---|---|---|---|---|
+| **Playable / NPC Humanoid (`Elias`, `Mira`, `Echo`)** | `1 × 1` (`0.45 m` radius) | **`32 × 48 px`** | **`14 × 42 px`** (`y = 3..44` standing; `1.75 m` @ `24 px/m`) | **`(16, 44)`** *(boot sole center; `offset = (-16, -44)`)* | `z_index = 10` (`YSort_Actors`, `y_sort_enabled = true`) | `ch01_char_elias_base_sheet.png` |
+| **Base Floor Tile (`1 × 1` flush)** | `1 × 1` | **`32 × 16 px`** | `32 × 16 px` (`256 px` diamond area) | **`(16, 8)`** *(tile diamond center)* | `z_index = 0` (`TileMapLayer_Floor`) | `ch01_env_tile_terrazzo_dark_idle.png`, `ch01_env_tile_terrazzo_cracked_idle.png`, `ch01_env_tile_tactile_amber_idle.png` |
+| **Boundary Wall Module (`N` or `W`)** | `1 × 1` boundary edge | **`32 × 64 px`** | `32 × 64 px` (`48 px` vertical wall = `2.0 m` + `16 px` iso slope; clears Elias by `+6 px`) | **`(16, 56)`** *(center of `32×16` base diamond at `y = 48..63`)* | `z_index = 5` (`TileMapLayer_Walls` / `YSort_Walls`) | `ch01_env_wall_subterranean_n_idle.png`, `ch01_env_wall_subterranean_w_idle.png` |
+| **Doorway Archway Frame (`N/S/E/W`)** | `1 × 1` boundary tile | **`32 × 64 px`** | `32 × 64 px` outer · **`20 × 42 px` clear portal opening** (`6 px` steel jambs, `11 px` lintel + transom glyph) | **`(16, 56)`** *(threshold floor center)* | `z_index = 6` (`YSort_Walls`) | `ch01_env_archway_frame_e_idle.png` |
+| **Low Trench / Mezzanine Railing** | `1 × 1` edge | **`32 × 48 px`** | `32 × 38 px` (`22 px` vertical iron rail ≈ `0.92 m` waist height + `16 px` iso slope) | **`(16, 40)`** | `z_index = 8` (`YSort_Props`) | `wall_railing_iron` |
+| **Micro / Floor Pickup Prop** | `0.5 × 0.5` | **`16 × 16 px`** | `10 × 8 px` to `12 × 12 px` | **`(8, 12)`** | `z_index = 8` (`YSort_Props`) | `global.pocket_watch` pickup, `prop_document_clipboard` |
+| **Small Wall / Suspended Fixture** | `1 × 1` wall-mounted | **`32 × 24 px`** | `30 × 21 px` | **`(16, 20)`** *(bottom casing mount)* | `z_index = 7` (`Wall_Fixtures`) | `ch01_prop_digital_clock_2359_idle.png` (`32 × 24 px`), `prop_call_box_phone` (`24 × 36 px`), `prop_lever_switch` (`24 × 32 px`) |
+| **Medium Floor Prop / Console** | `1 × 1` to `1.5 × 1` | **`32 × 36 px`** to **`48 × 32 px`** | `28 × 32 px` to `44 × 28 px` | **`(W/2, H - 6)`** | `z_index = 10` (`YSort_Actors`) | `prop_reset_console` (`32 × 36 px`), `prop_turnstile_gate` (`32 × 40 px`), `prop_station_bench` (`48 × 32 px`) |
+| **Large Hero Mechanism / Set-Piece** | `2 × 1` to `4 × 2` | **`64 × 64 px`** to **`128 × 80 px`** | `60 × 58 px` to `124 × 74 px` | **`(W/2, H - 8)`** | `z_index = 10` (`YSort_Actors`) | `prop_fire_shutter` (`64 × 64 px`), `prop_surge_capacitor` (`64 × 64 px`), `prop_dispatch_terminal` (`64 × 64 px`), `prop_transit_car_stalled` (`128 × 80 px`) |
+
+---
+
+## 2. Character Proportions, Direction Count & Mirroring Rule (`Elias`)
+
+### 2.1 Elias 4-Head Vertical Proportion (`32 × 48 px` Frame)
+- **Top Headroom (`y = 0..2`, `3 px`):** Reserved for walk-cycle vertical bob (`±1 px`) and overhead status badges.
+- **Head & Hair (`y = 3..12`, `10 px`):** Tousled espresso-brown hair (`#231B18` / `#3B2D26`) and key-lit face (`#E0B494` lit cheek, `#B88A6C` shadow cheek, `1 px` `#0A0D14` eyes).
+- **Upper Torso, Coat Lapels & Arms (`y = 13..30`, `18 px`):** Weathered umber trench coat (`#7D614F` NW shoulder highlight, `#594438` mid-body, `#3B2D26` shadow fold) over a dark slate collar (`#1F2838`), with a `3 px` glinting brass pocket-watch chain (`#EB8A28` / `#FFD166`) at the waist (`y = 26..27`).
+- **Coat Hem, Trousers & Boots (`y = 31..44`, `14 px`):** Coat tails (`y = 31..36`) over dark boots (`#231B18` / `#3B2D26`) planting at **`(16, 44)`**.
+- **Bottom Margin (`y = 45..47`, `3 px`):** Front toe step clearance and `14 × 6 px` isometric floor shadow ellipse (`#141A26` / `#0A0D14`).
+
+### 2.2 Direction Count (`8 Directions`) & Mirroring Specification
+- **Chosen Direction Count:** **`8 directions`** (`S`, `SE`, `E`, `NE`, `N`, `NW`, `W`, `SW`).
+- **Unique Authored Directions (`5`):** **`S`**, **`SE`**, **`E`**, **`NE`**, **`N`**.
+- **Horizontally Mirrored Directions (`3`):**
+  - **`SW` (`(-2, +1).normalized()`)** $\Longleftarrow$ Horizontal mirror (`flip_h`, $x' = 31 - x$) of **`SE` (`(+2, +1).normalized()`)**
+  - **`W` (`(-1, 0)`)** $\Longleftarrow$ Horizontal mirror (`flip_h`, $x' = 31 - x$) of **`E` (`(+1, 0)`)**
+  - **`NW` (`(-2, -1).normalized()`)** $\Longleftarrow$ Horizontal mirror (`flip_h`, $x' = 31 - x$) of **`NE` (`(+2, -1).normalized()`)**
+
+| Direction Tag Suffix | Velocity Vector in `Player.compute_movement_vector` (`scripts/player/player.gd`) | Screen Angle | Authored vs. Mirrored | Idle Frames (`1`-based in `.pxo`) | Walk Frames (`1`-based in `.pxo`) |
+|---|---|---|---|---|---|
+| **`s`** | `(0.0, +1.0)` | `+90.0°` (Down) | **Unique Authored #1** | `1..4` (`idle_s`) | `5..10` (`walk_s`) |
+| **`se`** | `(+0.8944, +0.4472)` (`+x` tile axis) | `+26.6°` (Down-Right) | **Unique Authored #2** | `11..14` (`idle_se`) | `15..20` (`walk_se`) |
+| **`e`** | `(+1.0, 0.0)` | `0.0°` (Right) | **Unique Authored #3** | `21..24` (`idle_e`) | `25..30` (`walk_e`) |
+| **`ne`** | `(+0.8944, -0.4472)` (`-y` tile axis) | `-26.6°` (Up-Right) | **Unique Authored #4** | `31..34` (`idle_ne`) | `35..40` (`walk_ne`) |
+| **`n`** | `(0.0, -1.0)` | `-90.0°` (Up) | **Unique Authored #5** | `41..44` (`idle_n`) | `45..50` (`walk_n`) |
+| **`nw`** | `(-0.8944, -0.4472)` (`-x` tile axis) | `-153.4°` (Up-Left) | **Mirrored from `ne`** (`flip_h`) | `51..54` (`idle_nw`) | `55..60` (`walk_nw`) |
+| **`w`** | `(-1.0, 0.0)` | `180.0°` (Left) | **Mirrored from `e`** (`flip_h`) | `61..64` (`idle_w`) | `65..70` (`walk_w`) |
+| **`sw`** | `(-0.8944, +0.4472)` (`+y` tile axis) | `+153.4°` (Down-Left) | **Mirrored from `se`** (`flip_h`) | `71..74` (`idle_sw`) | `75..80` (`walk_sw`) |
+
+### 2.3 Justification Against 8-Direction Movement
+1. **Zero Angular Foot-Sliding:** `Player.compute_movement_vector` (`scripts/player/player.gd`) maps `WASD`/stick input to 8 discrete vectors: 4 along the `2:1` isometric room axes (`SE`, `SW`, `NE`, `NW`) and 4 along the screen cardinal axes (`N`, `S`, `E`, `W`). A 4-direction sprite set creates a `26.6°` to `63.4°` angular mismatch whenever the player traverses a room horizontally (`E/W`) or vertically (`N/S`), making feet appear to skate sideways. Providing all 8 directions guarantees `0.0°` discrepancy between movement vector and stride orientation.
+2. **Bilateral Projection Symmetry (`37.5%` Scope Reduction):** In a `2:1` dimetric projection, the camera view plane is bilaterally symmetric across the vertical screen centerline (`x = 16`). Consequently, `SW`, `W`, and `NW` are exact geometric reflections of `SE`, `E`, and `NE`. Authoring `5` canonical directions and mirroring `3` saves `37.5%` of character frame production (`50` unique frames instead of `80`) while preserving full 8-way responsiveness.
+3. **Baked Spritesheet Convenience:** All `80` frames (`50` unique + `30` mirrored) are exported in `ch01_char_elias_base_sheet.png` (`2560 × 48 px`), allowing Flash's `AnimatedSprite2D` controller to look up `idle_<dir>` and `walk_<dir>` uniformly without conditional `flip_h` branching.
+
+---
+
+## 3. Chapter 1 Master Palette (`TLF-CH01-32`) & Material Ramps
+
+All Chapter 1 sprites, tiles, props, UI elements, and target compositions are strictly constrained to the **32-color `TLF-CH01-32` palette** (`assets/source/ch01/ch01_palette_elysium09.gpl` / `.pxo` / `.png`) plus binary transparent background (`#00000000`).
+
+### 3.1 Complete 32-Color Ramp Specification
+
+| Index | Hex | RGB `(R, G, B)` | Swatch Name | Material Ramp & Primary Usage |
+|---|---|---|---|---|
+| **`00`** | `#0A0D14` | `(10, 13, 20)` | *Abyssal Void* | **Ramp 1 (Void & Terrazzo Slate):** Universal `1 px` interior dark outline, unlit tunnel void, UI panel fill |
+| **`01`** | `#141A26` | `(20, 26, 38)` | *Sub-Line Shadow* | **Ramp 1:** Cast shadows, floor mortar seams, recessed window interiors |
+| **`02`** | `#1F2838` | `(31, 40, 56)` | *Terrazzo Dark Base* | **Ramp 1:** Primary dark terrazzo platform floor slab |
+| **`03`** | `#2D394F` | `(45, 57, 79)` | *Terrazzo Mid* | **Ramp 1:** Terrazzo mineral flecks, NE floor bevel, weathered concrete mid |
+| **`04`** | `#3F4F6B` | `(63, 79, 107)` | *Terrazzo Highlight* | **Ramp 1:** NW key-lit floor tile bevel, fracture crack lip highlight |
+| **`05`** | `#586C8F` | `(88, 108, 143)` | *Specular Stone* | **Ramp 1:** Wet stone step rim glint, polished terrazzo specular peak |
+| **`06`** | `#19232E` | `(25, 35, 46)` | *Wall Mortar Shadow* | **Ramp 2 (Subterranean Ceramic Wall):** NE wall grout lines, deep cornice shadow |
+| **`07`** | `#263545` | `(38, 53, 69)` | *Ceramic Tile Dark* | **Ramp 2:** Shaded NE wall ceramic face (`Step -1`), NW wall mortar grout |
+| **`08`** | `#364B5E` | `(54, 75, 94)` | *Ceramic Tile Mid* | **Ramp 2:** Key-lit NW wall ceramic face (`Step 0`), NE tile top glaze |
+| **`09`** | `#4B667D` | `(75, 102, 125)` | *Ceramic Tile Light* | **Ramp 2:** Upper wall cornice plane, NW ceramic bevel highlight |
+| **`10`** | `#6888A3` | `(104, 136, 163)` | *Glazed Ceramic Specular* | **Ramp 2:** NW wall top cornice edge (`Step +1`), glazed tile corner glint |
+| **`11`** | `#1B1E24` | `(27, 30, 36)` | *Cast Iron Dark* | **Ramp 3 (Brushed Steel & Cast Iron):** Skirting boards, heavy iron railings, shadow bevels |
+| **`12`** | `#2E333D` | `(46, 51, 61)` | *Gunmetal Shadow* | **Ramp 3:** Shaded machinery casings, transit car body, curb steel |
+| **`13`** | `#464E5C` | `(70, 78, 92)` | *Brushed Steel Mid* | **Ramp 3:** Archway pillars, `23:59` clock casing, UI inactive frame border |
+| **`14`** | `#677385` | `(103, 115, 133)` | *Steel Bevel Light* | **Ramp 3:** NW machined steel edge highlight, bench seat plane |
+| **`15`** | `#94A2B8` | `(148, 162, 184)` | *Chrome Specular* | **Ramp 3:** `1 px` top lintel & clock housing specular ridge |
+| **`16`** | `#231B18` | `(35, 27, 24)` | *Espresso Hair / Boot Dark* | **Ramp 4 (Elias Character):** Elias hair base, boots, deep coat crease |
+| **`17`** | `#3B2D26` | `(59, 45, 38)` | *Umber Coat Shadow* | **Ramp 4:** Elias coat shadow side (`SE`/`E`), hair crown mid-tone |
+| **`18`** | `#594438` | `(89, 68, 56)` | *Weathered Brown Coat Mid* | **Ramp 4:** Elias trench coat primary body |
+| **`19`** | `#7D614F` | `(125, 97, 79)` | *Coat Shoulder Light* | **Ramp 4:** Elias NW key-lit shoulder, lapel, and left sleeve |
+| **`20`** | `#B88A6C` | `(184, 138, 108)` | *Skin Shadow / Warm Tan* | **Ramp 4:** Elias shaded cheek, right hand, leather watch strap |
+| **`21`** | `#E0B494` | `(224, 180, 148)` | *Skin Key Light* | **Ramp 4:** Elias lit face plane and left hand |
+| **`22`** | `#4A1C14` | `(74, 28, 20)` | *Dark Crimson Backlight* | **Ramp 5 (Ch1 Warning Amber & `23:59` Glow):** Unlit `23:59` LED matrix bed, blister stud shadow |
+| **`23`** | `#8C2D19` | `(140, 45, 25)` | *Deep Hazard Amber-Red* | **Ramp 5:** `23:59` digit outer glow halo, recessed hazard strip |
+| **`24`** | `#CC4E1E` | `(204, 78, 30)` | *Emergency Sodium Orange* | **Ramp 5:** Wall dado emergency stripe, lower LED segment tone |
+| **`25`** | `#EB8A28` | `(235, 138, 40)` | *Tactile Safety Amber* | **Ramp 5:** Tactile platform studs, brass pocket watch casing, `23:59` digit mid |
+| **`26`** | `#FFD166` | `(255, 209, 102)` | *Incandescent Gold Peak* | **Ramp 5:** `23:59` digit hot core, pocket-watch chain glint, frozen dust motes |
+| **`27`** | `#16425B` | `(22, 66, 91)` | *Temporal Deep Teal* | **Ramp 6 (Temporal VFX & UI):** `Freeze` deep aura shadow, temporal UI backdrop |
+| **`28`** | `#287A9E` | `(40, 122, 158)` | *Chrono Cyan Mid* | **Ramp 6:** `Echo` ghost body mid-tone, `Rewind` trail secondary |
+| **`29`** | `#4CE0D2` | `(76, 224, 210)` | *Aether Cyan-Mint* | **Ramp 6:** `Rewind` primary arc, active transom glyph `[◁]`, UI focus border |
+| **`30`** | `#9E7BFF` | `(158, 123, 255)` | *Residual Trace Violet* | **Ramp 6:** `Trace` memory distortion ripple & past silhouette columns |
+| **`31`** | `#EDF4FA` | `(237, 244, 250)` | *Frost / UI Crisp White* | **Ramp 6:** `Freeze` crystalline lock peak, primary HUD & dialogue text |
+
+---
+
+## 4. Station Light Direction & Planar Value Hierarchy
+
+- **Single Station Light Direction:** **Top-North-West (`NW`, Screen Top-Left)** at **Azimuth `315°`**, **Elevation `60°`** above the floor plane (normalized 3D light direction vector $\mathbf{L} = (-0.354, -0.354, -0.866)$).
+- **Mandatory Planar Value Separation (Minimum `1` Ramp Step Between Adjacent Isometric Planes):**
+  1. **Horizontal Top Planes (Cornice Caps, Bench Seats, Console Tops, Character Head/Shoulders):** **Brightest (`Step +1`)** — e.g., `#6888A3` / `#4B667D` on walls, `#94A2B8` / `#677385` on steel, `#7D614F` on Elias's coat shoulder.
+  2. **North-West (`W`, `x = 0`) Wall Faces (facing South-East `+x`):** **Mid-Light (`Step 0`)** — e.g., `#364B5E` ceramic body with `#4B667D` / `#6888A3` top tile glaze (`ch01_env_wall_subterranean_w_idle.png`).
+  3. **Horizontal Floor Slabs (`z_index = 0`):** **Controlled Dark-Mid (`#1F2838` / `#2D394F`)** — intentionally kept `2` value steps darker than character skin/coat highlights (`#E0B494` / `#7D614F`) and tactile amber (`#EB8A28`) so actors and puzzle cues pop with high contrast against the floor.
+  4. **North-East (`N`, `y = 0`) Wall Faces (facing South-West `+y`):** **Mid-Dark (`Step -1`)** — e.g., `#263545` ceramic body with `#19232E` grout (`ch01_env_wall_subterranean_n_idle.png`).
+  5. **Cast Shadows & Trenches:** **Darkest (`Step -2`, `#141A26` / `#0A0D14`)** — projected **`+2 px` X, `+1 px` Y** (down-right along the `SE` isometric axis) from every grounded actor and prop.
+
+---
+
+## 5. Outline, Anti-Aliasing (AA) & Dithering Rules
+
+### 5.1 Outline Rule
+- **Characters & Interactive/Standalone Props (`Elias`, `prop_digital_clock_2359`, levers, consoles, gates):**
+  - Mandatory **`1 px` interior outline** using `#0A0D14` (*Abyssal Void*) on outer silhouettes, never exceeding `1 px` thickness and never using pure `#000000`.
+- **Modular Floor Tiles & Wall Modules (`tile_*`, `wall_*`):**
+  - **`0 px` outer silhouette outline** along shared tile seams so adjacent modules tile without visible grid cages.
+  - Internal structural transitions use **`1 px` bevel highlights** (`#3F4F6B` on floors, `#6888A3` / `#94A2B8` on walls/steel) on NW-facing lips and **`1 px` dark mortar seams** (`#141A26` / `#0A0D14`) on SE-facing drops.
+
+### 5.2 Anti-Aliasing (AA) Rule
+- **External / Alpha-Edge AA:** **STRICTLY NONE (`0` semi-transparent pixels allowed).**
+  - Every pixel in every exported PNG must have **binary alpha `A ∈ {0, 255}`**. Semi-transparent pixels (`1 ≤ A ≤ 254`) are prohibited to prevent dark/light halo artifacts under `Nearest` filtering and Y-sorted overlap.
+- **Selective Internal AA:**
+  - Allowed **only inside opaque regions** (`A = 255`) using existing `TLF-CH01-32` ramp colors (`max 1–2 px` intermediate buffer pixels on `23:59` LED digit glow halos `#8C2D19` or long diagonal rails).
+
+### 5.3 Dithering Rule
+- **Characters & Props (`≤ 64 × 64 px`):** **NONE (`0%` dithering).** Shading uses solid, readable pixel clusters (`≥ 2 px` width/height wherever geometry permits) so animations never shimmer.
+- **Environment Tiles & Target Compositions:** **Restrained stipple / `2×2` Bayer dither (`≤ 4 px` transition band)** allowed only between adjacent ramp steps (`Step N` to `Step N+1`) on weathered terrazzo/concrete or suspended dust motes.
+
+---
+
+## 6. Animation Frame Rates (FPS) Per Category
+
+All gameplay state runs on the deterministic `60 Hz` `SimClock` (`ADR-004`). Visual animations use exact integer/half-integer tick divisors:
+
+| Animation Type | Target FPS | `SimClock` Ticks / Frame | Standard Frame Count | Cycle Duration | Loop Policy |
+|---|---|---|---|---|---|
+| **Character Idle (`idle_s` … `idle_sw`)** | **`8 FPS`** | `7.5 ticks` (`0.125 s`) | **`4 frames`** | `0.50 s` | Loop |
+| **Character Walk (`walk_s` … `walk_sw`)** | **`10 FPS`** | `6.0 ticks` (`0.100 s`) | **`6 frames`** (`3f` per step) | `0.60 s` (`72 px` travel @ `120 px/s`) | Loop |
+| **Pocket-Watch Cast / Interact** | **`12 FPS`** | `5.0 ticks` (`0.083 s`) | **`4 frames`** | `0.33 s` | One-shot |
+| **Ambient Fixture Loops (`23:59` clock, conduits)** | **`6 FPS`** | `10.0 ticks` (`0.167 s`) | **`2–4 frames`** | `0.33–0.67 s` | Loop |
+| **Mechanical Puzzle Transitions (Turnstile, Shutter, Gear)** | **`12 FPS`** | `5.0 ticks` (`0.083 s`) | **`4–6 frames`** | `0.33–0.50 s` | One-shot / Loop |
+| **Temporal Ability VFX (`Rewind`, `Freeze`, `Trace`, `Echo`)** | **`15 FPS`** | `4.0 ticks` (`0.067 s`) | **`6–8 frames`** | `0.40–0.53 s` | One-shot / Loop |
+
+---
+
+## 7. Temporal VFX Color & Color-Independent Shape/Motion Language
+
+Per `GDD.md` §15–16 and `ADR-014`/`ADR-015`, no temporal state may rely on color alone. Every ability combines a **dedicated palette pair**, a **distinct geometric icon/border shape**, and a **unique motion/line-pattern signature**:
+
+| Ability / System | Palette Colors (`TLF-CH01-32`) | Non-Color Geometric Shape / Silhouette Cue | Non-Color Animation / Pattern Cue |
+|---|---|---|---|
+| **`Rewind`** (`&"rewind"`) | • Primary: `#4CE0D2` (`29` *Aether Cyan-Mint*)<br>• Secondary: `#287A9E` (`28` *Chrono Cyan Mid*) | **Counter-clockwise double-chevron ring (`«` / `↺`)** with inward-pointing triangular arrowheads around the target's bounding box. | **Upward reverse-scrolling horizontal scanlines** (`1 px` dashed bands rising at `-1 px/frame` @ `15 FPS`) + reverse frame stepping. |
+| **`Freeze`** (`&"freeze"`) | • Primary: `#EDF4FA` (`31` *Frost White*)<br>• Secondary: `#16425B` (`27` *Temporal Deep Teal*) | **Rigid 6-point hexagonal crystal glyph (`❖`) + `2 px` solid `90°` corner L-brackets** clamping all four corners of the frozen object. | **Absolute `0 FPS` static hold:** zero internal motion, solid double-pixel perimeter lock (`no scanline scrolling`). |
+| **`Trace`** (`&"trace"`) | • Primary: `#9E7BFF` (`30` *Residual Trace Violet*)<br>• Secondary: `#FFD166` (`26` *Incandescent Gold Peak*) | **Concentric diamond reticle (`◈`)** expanding outward from the anchor point (`turnstile_trace_anchor`, `route_board`, Mira's bench). | **Vertical column interlacing:** past silhouettes are rendered only on **even `X` columns** (`x % 2 == 0`) with a `±1 px` vertical wave at `8 FPS`. |
+| **`Echo`** (`&"echo.0"`) | • Primary: `#287A9E` (`28` *Chrono Cyan Mid*)<br>• Outline: `#4CE0D2` (`29` *Aether Cyan-Mint*)<br>• Peak: `#EDF4FA` (`31` *Frost White*) | **Hollow-core silhouette (`1 px` bright outer rim over `#141A26` interior) + overhead tape transport badge** (`●` `RECORDING`, `▶` `PLAYING`, `❚❚` `HOLDING`). | **Horizontal row interlacing:** rendered on **even `Y` scanlines** (`y % 2 == 0`) + persistent `3`-dot isometric footprint trail on the floor. |
+
+---
+
+## 8. UI Scale & Pixel Font Specification (`640 × 360`)
+
+### 8.1 UI Grid & HUD Scale at `640 × 360`
+- **Authoring Canvas:** `640 × 360 px` (`1:1` pixel match with the gameplay viewport; scales `×3` to `1920 × 1080`).
+- **Screen Safe Margin:** **`12 px`** inset from all four viewport edges (`active HUD box = (12, 12) to (628, 348)`).
+- **Panel Construction:** Snap all panel positions and dimensions to a **`4 px` grid**; `1 px` outer border (`#464E5C` idle, `#4CE0D2` focused/active, `#EB8A28` warning), `#0A0D14` solid interior fill (`100%` opaque `A = 255`), and `4 px` internal text padding.
+- **HUD Element Dimensions (`ADR-015`):**
+  - **Top-Left Location / Status Bar:** `212 × 16 px` at `(12, 12)`.
+  - **Top-Right Pocket-Watch & `23:59` Indicator:** `80 × 16 px` at `(548, 12)`; ability icon slots = `16 × 16 px` each (`Trace`, `Rewind`, `Freeze`, `Echo`).
+  - **Bottom-Center Contextual Interaction Prompt (`[E] ...`):** `192 × 16 px` centered at `(224, 330)`.
+  - **World-Space Watch Target Highlight (`≤ 96 px` radius per `ADR-015`):** `12 × 12 px` floating ability badge centered `6 px` above the targeted `Interactable`'s top bound.
+
+### 8.2 Pixel Font Specification
+- **Font File:** `assets/ui/fonts/tlf_pixel_mono.ttf` (**TLF Pixel Mono Regular**).
+- **License:** **CC0 1.0 Universal (Public Domain Dedication)** — committed at `assets/ui/fonts/LICENSE.txt` (original production font authored by Argon for *The Last Frame*).
+- **Glyph Metrics:**
+  - Native glyph matrix: **`5 × 7 px`** inside a **`6 × 8 px` monospace character cell** (`5 px` glyph width + `1 px` right tracking; `7 px` cap/ascender height + `1 px` descender/row gap; `unitsPerEm = 512` where `1 px = 64 font units`).
+  - Allowed integer point/pixel sizes at `640 × 360` (`subpixel_positioning = disabled`, `antialiased = false`, `hinting = none`):
+    - **`8 px` (`1×` native):** HUD badges, interaction prompts (`[E]`), subtitle/dialogue body (`96` characters max per `576 px` line; recommended `≤ 64` chars/line for comfort), Journal body text.
+    - **`16 px` (`2×` integer multiple):** Room title cards, Journal section headers, Pause/Settings menu headings.
+    - **`24 px` (`3×` integer multiple):** Chapter title cards (`CHAPTER 1 — THE FORGOTTEN STATION`) and ending summary headers.
+  - **Accessibility Text Size Multiplier (`SD-1` / `GDD.md` §16):** `Small/Default (100%) = 8 px`, `Large (200%) = 16 px` (maintaining strict integer pixel alignment on the `640 × 360` canvas).

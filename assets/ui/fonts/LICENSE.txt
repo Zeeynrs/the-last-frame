@@ -1,0 +1,9 @@
+TLF Pixel Mono (tlf_pixel_mono.ttf)
+Author: Agent 2 (Argon) for The Last Frame (TLF-010)
+License: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
+URL: https://creativecommons.org/publicdomain/zero/1.0/
+
+To the extent possible under law, the author has waived all copyright and
+related or neighboring rights to TLF Pixel Mono. This font is dedicated to
+the public domain and may be freely used, modified, and redistributed in
+commercial and non-commercial builds without restriction.
