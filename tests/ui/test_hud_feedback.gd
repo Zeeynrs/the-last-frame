@@ -12,6 +12,10 @@ func test_translations_registered_in_project_settings() -> void:
 	var fb_text = tr("UI_FB_UNSUPPORTED")
 	_assert_eq(fb_text, "The pocket watch cannot affect this object.", "UI_FB_UNSUPPORTED translates to English")
 
+	var clock_text = tr("EL_CLOCK_2359")
+	_assert_true(clock_text != "EL_CLOCK_2359" and not clock_text.is_empty(), "EL_CLOCK_2359 translates to English")
+	_assert_eq(clock_text, "23:59. The seconds digit flickers, but it never turns over.")
+
 
 func test_feedback_text_resolves_all_standard_reasons() -> void:
 	UIFeedback.init_translations()
