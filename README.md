@@ -67,6 +67,24 @@ Model availability and exact model labels depend on the provider account and CLI
 - `assets/` — asset folder conventions.
 - `tools/` — safe local helper scripts (no credentials or auto-installers); created when first needed. `scripts/` is reserved for GDScript.
 
+## Validate the project
+
+Requires Godot **4.7.2** (console build). Point `GODOT` at it, then from the repo root (PowerShell):
+
+```powershell
+$env:GODOT = "C:\path\to\Godot_v4.7.2-stable_win64_console.exe"
+./tools/validate.ps1          # headless import check + test suite; exit 0 = pass
+```
+
+Individual steps:
+
+```powershell
+& $env:GODOT --headless --path . --import                       # import, must print no ERROR lines
+& $env:GODOT --headless --path . -s res://tests/run_tests.gd    # tests; exit code = failures
+```
+
+Tests live in `tests/**/test_*.gd` (zero-dependency runner, ADR-012). Run validation before every push to `main`.
+
 The repository root is the Godot project (`project.godot`). See `docs/ADR_LOG.md` for accepted architecture decisions and `docs/TLF-001_AUDIT_REPORT.md` for the initial audit.
 
 ## Official tool references

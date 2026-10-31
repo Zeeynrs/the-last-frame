@@ -7,10 +7,12 @@
 | TLF-000 | COMPLETE | Repo, relocation, baseline tag `m0-base` |
 | TLF-001 | COMPLETE | `docs/TLF-001_AUDIT_REPORT.md` |
 | TLF-002 | COMPLETE | `docs/ADR_LOG.md` (ADR-014 accepted 2026-10-31) |
-| TLF-003 | CHANGES REQUESTED | `33e25d5` reviewed; fix D1–D3 in `docs/reviews/2026-10-31_TLF-003_TLF-006.md` |
-| TLF-006 | CHANGES REQUESTED | `a792438` reviewed; tests pass, fix R1–R5 (controller bindings) in same review doc |
-| TLF-004, 005, 010 | NOT STARTED | Wait for TLF-003 review |
-| TLF-007, 008 | NOT STARTED | Wait for TLF-006 |
+| TLF-003 | COMPLETE | Merged `db09cc2` (re-review of `d5bfba6` passed) |
+| TLF-006 | COMPLETE | Merged `c1492d8` (re-review of `846f806` passed; validate on main 5/5) |
+| TLF-004 | READY | Argon: `docs/tasks/TLF-004.md` (5 puzzle specs) |
+| TLF-007 | READY | Flash: `docs/tasks/TLF-007.md` (session core, iso movement, interaction) |
+| TLF-005, 010 | NOT STARTED | Argon, after TLF-004 (order: 004 → 005 → 010) |
+| TLF-008 | NOT STARTED | Flash, after TLF-007 |
 | others | NOT STARTED | |
 
 Branch naming and merge flow: ADR-002 (incl. Orca naming amendment).
