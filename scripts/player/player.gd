@@ -11,8 +11,10 @@ extends CharacterBody2D
 @onready var interaction_detector: Area2D = get_node_or_null("InteractionDetector")
 @onready var collision_shape: CollisionShape2D = get_node_or_null("CollisionShape2D")
 @onready var pocket_watch: PocketWatch = get_node_or_null("PocketWatch")
+@onready var sprite: AnimatedSprite2D = get_node_or_null("Sprite")
 
 var hud: HUD = null
+var facing_direction: String = "s"
 
 var _candidates: Array[Interactable] = []
 var current_target: Interactable = null
@@ -60,6 +62,48 @@ func _handle_movement() -> void:
 	var move_dir = compute_movement_vector(raw_input)
 	velocity = move_dir * walk_speed
 	move_and_slide()
+	_update_animation(move_dir)
+
+
+func _update_animation(move_dir: Vector2) -> void:
+	if sprite == null:
+		sprite = get_node_or_null("Sprite") as AnimatedSprite2D
+	if sprite == null or sprite.sprite_frames == null:
+		return
+
+	var is_moving = move_dir.length_squared() > 0.01
+	if is_moving:
+		facing_direction = direction_tag_from_vector(move_dir)
+		var anim = &"walk_" + facing_direction
+		if sprite.animation != anim or not sprite.is_playing():
+			sprite.play(anim)
+	else:
+		var anim = &"idle_" + facing_direction
+		if sprite.animation != anim or not sprite.is_playing():
+			sprite.play(anim)
+
+
+static func direction_tag_from_vector(v: Vector2) -> String:
+	if v.length_squared() < 0.01:
+		return "s"
+	var sign_x = sign(v.x) if abs(v.x) > 0.3 else 0.0
+	var sign_y = sign(v.y) if abs(v.y) > 0.3 else 0.0
+	if sign_x > 0.0 and sign_y > 0.0:
+		return "se"
+	elif sign_x > 0.0 and sign_y < 0.0:
+		return "ne"
+	elif sign_x < 0.0 and sign_y > 0.0:
+		return "sw"
+	elif sign_x < 0.0 and sign_y < 0.0:
+		return "nw"
+	elif sign_x > 0.0:
+		return "e"
+	elif sign_x < 0.0:
+		return "w"
+	elif sign_y < 0.0:
+		return "n"
+	else:
+		return "s"
 
 
 ## Maps screen-relative input into 8 directions with 2:1 isometric diagonal ratio.
