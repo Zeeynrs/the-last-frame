@@ -223,3 +223,19 @@ func test_player_interact_failure_shows_hud_feedback() -> void:
 		_assert_eq(player.hud.feedback_label.text, "Mechanism is jammed.")
 
 	free_session(s)
+
+
+func test_ghost_node_freed_on_watch_cleanup_no_leaks() -> void:
+	var s = make_session()
+	var player = Player.new()
+	s.add_child(player)
+
+	var watch = player.pocket_watch
+	_assert_true(watch != null, "Player has pocket_watch child")
+	_assert_true(watch._ghost_node != null, "Ghost node instantiated")
+	_assert_true(is_instance_valid(watch._ghost_node), "Ghost node is valid instance")
+
+	var ghost_ref = weakref(watch._ghost_node)
+	free_session(s)
+
+	_assert_false(ghost_ref.get_ref() != null, "Ghost node freed cleanly with session")

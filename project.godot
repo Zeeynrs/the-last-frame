@@ -33,6 +33,10 @@ window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 window/stretch/scale_mode="integer"
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://localization/ch01_puzzles.en.translation", "res://localization/ui_feedback.en.translation")
+
 [layer_names]
 
 2d_physics/layer_1="world"

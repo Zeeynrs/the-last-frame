@@ -4,19 +4,28 @@ extends "res://tests/support/base_test.gd"
 ## and dynamic input prompts per ADR-015, ISSUE-006, and ISSUE-007.
 
 
+func test_translations_registered_in_project_settings() -> void:
+	# Verifies project.godot locale/translations registration (R2a)
+	var hint_text = tr("PZ001_HINT_1")
+	_assert_true(hint_text != "PZ001_HINT_1" and not hint_text.is_empty(), "PZ001_HINT_1 translates to English")
+
+	var fb_text = tr("UI_FB_UNSUPPORTED")
+	_assert_eq(fb_text, "The pocket watch cannot affect this object.", "UI_FB_UNSUPPORTED translates to English")
+
+
 func test_feedback_text_resolves_all_standard_reasons() -> void:
 	UIFeedback.init_translations()
 
 	_assert_eq(UIFeedback.get_feedback_text(&"unsupported"), "The pocket watch cannot affect this object.")
-	_assert_eq(UIFeedback.get_feedback_text(&"frozen"), "Object is locked in time—unfreeze it first.")
+	_assert_eq(UIFeedback.get_feedback_text(&"frozen"), "Object is locked in time - unfreeze it first.")
 	_assert_eq(UIFeedback.get_feedback_text(&"no_history"), "No earlier temporal state recorded for this object.")
 	_assert_eq(UIFeedback.get_feedback_text(&"jammed"), "Mechanism is jammed.")
 	_assert_eq(UIFeedback.get_feedback_text(&"missing_target"), "Target is no longer present.")
 	_assert_eq(UIFeedback.get_feedback_text(&"echo_forbidden"), "An echo cannot claim permanent items or records.")
 	_assert_eq(UIFeedback.get_feedback_text(&"already_open"), "Already open.")
 	_assert_eq(UIFeedback.get_feedback_text(&"unpowered"), "No power to this mechanism.")
-	_assert_eq(UIFeedback.get_feedback_text(&"invalid_graph"), "Route conflict—clear the active loop on the paired junction first.")
-	_assert_eq(UIFeedback.get_feedback_text(&"critical_path_unreachable"), "Safety interlock—cannot sever main entry route.")
+	_assert_eq(UIFeedback.get_feedback_text(&"invalid_graph"), "Route conflict - clear the active loop on the paired junction first.")
+	_assert_eq(UIFeedback.get_feedback_text(&"critical_path_unreachable"), "Safety interlock - cannot sever main entry route.")
 	_assert_eq(UIFeedback.get_feedback_text(&"echo_busy"), "Echo is already busy.")
 	_assert_eq(UIFeedback.get_feedback_text(&"not_recording"), "Not currently recording an echo.")
 	_assert_eq(UIFeedback.get_feedback_text(&"no_recording"), "No echo recorded to play back.")
@@ -62,7 +71,7 @@ func test_hud_feedback_toast_display_and_dismissal() -> void:
 	# Show feedback for frozen object
 	hud.show_feedback(&"frozen")
 	_assert_true(hud.feedback_panel.visible, "Feedback panel should be visible after show_feedback")
-	_assert_eq(hud.feedback_label.text, "Object is locked in time—unfreeze it first.")
+	_assert_eq(hud.feedback_label.text, "Object is locked in time - unfreeze it first.")
 
 	# Advance 2.5 seconds -> toast auto-dismisses
 	hud._process(2.5)

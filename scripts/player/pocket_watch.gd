@@ -43,6 +43,15 @@ func _ready() -> void:
 	_setup_ghost()
 
 
+func _exit_tree() -> void:
+	_cleanup_ghost()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE:
+		_cleanup_ghost()
+
+
 func _physics_process(_delta: float) -> void:
 	update_targeting()
 	_update_ghost_visibility()
@@ -201,20 +210,20 @@ func activate_watch() -> InteractionResult:
 
 		var echo_svc = sess.echo_service
 		match echo_svc.state:
-			0: # State.IDLE
+			EchoService.State.IDLE:
 				var parent_node = get_parent() as Node2D
 				var res = echo_svc.start_recording(parent_node)
 				if res == &"":
 					last_result = InteractionResult.success()
 				else:
 					last_result = InteractionResult.failure(res)
-			1: # State.RECORDING
+			EchoService.State.RECORDING:
 				var res = echo_svc.stop_recording()
 				if res == &"":
 					last_result = InteractionResult.success()
 				else:
 					last_result = InteractionResult.failure(res)
-			2, 3, 4: # State.READY, PLAYING, HOLDING
+			EchoService.State.READY, EchoService.State.PLAYING, EchoService.State.HOLDING:
 				var res = echo_svc.start_playback()
 				if res == &"":
 					last_result = InteractionResult.success()
@@ -266,15 +275,40 @@ func _setup_ghost() -> void:
 		rect.color = Color(0.7, 0.4, 0.9, 0.55)
 		_ghost_node.add_child(rect)
 
+		var p = get_parent()
+		var ghost_parent: Node = null
+		if p != null and p.get_parent() != null:
+			ghost_parent = p.get_parent()
+		elif p != null:
+			ghost_parent = p
+		elif is_inside_tree():
+			ghost_parent = get_tree().current_scene
+
+		if ghost_parent != null:
+			ghost_parent.add_child.call_deferred(_ghost_node)
+
 		var sess = get_session()
 		if sess != null and sess.echo_service != null:
-			sess.echo_service.ghost_moved.connect(_on_ghost_moved)
+			if not sess.echo_service.ghost_moved.is_connected(_on_ghost_moved):
+				sess.echo_service.ghost_moved.connect(_on_ghost_moved)
+
+
+func _cleanup_ghost() -> void:
+	if _ghost_node != null and is_instance_valid(_ghost_node):
+		if _ghost_node.get_parent() != null:
+			_ghost_node.queue_free()
+		else:
+			_ghost_node.free()
+		_ghost_node = null
 
 
 func _on_ghost_moved(pos: Vector2) -> void:
 	if _ghost_node != null:
-		if _ghost_node.get_parent() == null and is_inside_tree():
-			get_parent().get_parent().add_child(_ghost_node)
+		if _ghost_node.get_parent() == null:
+			var p = get_parent()
+			var ghost_parent: Node = p.get_parent() if (p != null and p.get_parent() != null) else p
+			if ghost_parent != null:
+				ghost_parent.add_child(_ghost_node)
 		_ghost_node.global_position = pos
 		_ghost_node.visible = true
 
@@ -286,9 +320,9 @@ func _update_ghost_visibility() -> void:
 			_ghost_node.visible = false
 		return
 
-	if sess.echo_service.state in [0, 1]: # IDLE, RECORDING
+	if sess.echo_service.state in [EchoService.State.IDLE, EchoService.State.RECORDING]:
 		if _ghost_node != null:
 			_ghost_node.visible = false
-	elif sess.echo_service.state in [3, 4]: # PLAYING, HOLDING
+	elif sess.echo_service.state in [EchoService.State.PLAYING, EchoService.State.HOLDING]:
 		if _ghost_node != null:
 			_ghost_node.visible = true
