@@ -37,6 +37,7 @@
 | 2026-10-31 | TLF-001 audit (`docs/TLF-001_AUDIT_REPORT.md`) | Agent 1 |
 | 2026-10-31 | Git repo initialised, pack relocated to root, baseline `4297a5a` tagged `m0-base`, pushed to GitHub | Human + Agent 1 |
 | 2026-10-31 | TLF-002: `docs/ADR_LOG.md` (SD-1, ADR-001…013 accepted, ADR-014 proposed); ARCHITECTURE/PRD/GDD annotated | Agent 1 |
+| 2026-10-31 | TLF-024 duplicate (`eecb822`) not merged; port-into-main decisions recorded (ADR-013 am.: SPK_* labels, SPK_OPERATOR="VOICE", BODY_1..N pages, UI_FB_* only for reasons) | Agent 1 |
 | 2026-10-31 | Roles split: a dedicated Opus implementation agent now owns `wt-opus-core`; this session = Lead (review/integration). ISSUE-013 (class/autoload name clash) reproduced and routed as TLF-027 | Agent 1 |
 | 2026-10-31 | TLF-026 by Opus, merged: Ch1 ChapterGraphDef generated from the reviewed design docs (10 rooms, 20 doorways), layout checks as tests; TLF-009 now loads it instead of hand-building; 180/180 | Agent 1 |
 | 2026-10-31 | TLF-024 written by Opus (Argon unavailable), merged: Ch1 text (66 keys), 5 DocumentDefs, generators moved to `tools/content/`; ASCII-only text rule; 171/171 | Agent 1 |
