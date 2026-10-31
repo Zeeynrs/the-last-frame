@@ -95,6 +95,8 @@ func _init() -> void:
 
 		if "assert_helper" in instance:
 			instance.assert_helper = assert_helper
+		if "scene_tree" in instance:
+			instance.scene_tree = self
 
 		var method_list = script.get_script_method_list()
 		var methods: Array[String] = []

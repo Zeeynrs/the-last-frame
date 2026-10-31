@@ -1,0 +1,133 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/session/GameSession.tscn" id="1_session"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/interaction/lever.gd" id="3_lever"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lever_a"]
+radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lever_b"]
+radius = 16.0
+
+[node name="TestRoom" type="Node2D"]
+y_sort_enabled = true
+
+[node name="GameSession" parent="." instance=ExtResource("1_session")]
+
+[node name="Floor" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.16, 0.18, 0.22, 1)
+polygon = PackedVector2Array(320, 84, 512, 180, 320, 276, 128, 180)
+
+[node name="GridLines" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.22, 0.25, 0.3, 1)
+polygon = PackedVector2Array(320, 100, 480, 180, 320, 260, 160, 180)
+
+[node name="GridLinesInner" type="Polygon2D" parent="."]
+z_index = -1
+color = Color(0.28, 0.32, 0.38, 1)
+polygon = PackedVector2Array(320, 132, 416, 180, 320, 228, 224, 180)
+
+[node name="PerimeterWalls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PerimeterWalls"]
+build_mode = 1
+polygon = PackedVector2Array(320, 84, 512, 180, 320, 276, 128, 180)
+
+[node name="Obstacle" type="StaticBody2D" parent="."]
+position = Vector2(272, 180)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Obstacle"]
+polygon = PackedVector2Array(-16, 0, 0, -8, 16, 0, 0, 8)
+
+[node name="VisualBase" type="Polygon2D" parent="Obstacle"]
+color = Color(0.35, 0.38, 0.45, 1)
+polygon = PackedVector2Array(-16, 0, 0, 8, 16, 0, 16, -16, 0, -8, -16, -16)
+
+[node name="VisualTop" type="Polygon2D" parent="Obstacle"]
+color = Color(0.5, 0.54, 0.62, 1)
+polygon = PackedVector2Array(-16, -16, 0, -24, 16, -16, 0, -8)
+
+[node name="LeverA" type="Area2D" parent="."]
+position = Vector2(360, 160)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_lever")
+object_id = &"ch01.lever_a"
+prompt_text = "[E] Lever A"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeverA"]
+shape = SubResource("CircleShape2D_lever_a")
+
+[node name="VisualBase" type="Polygon2D" parent="LeverA"]
+color = Color(0.2, 0.22, 0.26, 1)
+polygon = PackedVector2Array(-10, 0, 0, -5, 10, 0, 0, 5)
+
+[node name="VisualRect" type="ColorRect" parent="LeverA"]
+offset_left = -4.0
+offset_top = -18.0
+offset_right = 4.0
+offset_bottom = -2.0
+color = Color(0.8, 0.2, 0.2, 1)
+
+[node name="PromptLabel" type="Label" parent="LeverA"]
+visible = false
+offset_left = -40.0
+offset_top = -36.0
+offset_right = 40.0
+offset_bottom = -20.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Lever A"
+horizontal_alignment = 1
+
+[node name="LeverB" type="Area2D" parent="."]
+position = Vector2(380, 170)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_lever")
+object_id = &"ch01.lever_b"
+prompt_text = "[E] Lever B"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeverB"]
+shape = SubResource("CircleShape2D_lever_b")
+
+[node name="VisualBase" type="Polygon2D" parent="LeverB"]
+color = Color(0.2, 0.22, 0.26, 1)
+polygon = PackedVector2Array(-10, 0, 0, -5, 10, 0, 0, 5)
+
+[node name="VisualRect" type="ColorRect" parent="LeverB"]
+offset_left = -4.0
+offset_top = -18.0
+offset_right = 4.0
+offset_bottom = -2.0
+color = Color(0.8, 0.2, 0.2, 1)
+
+[node name="PromptLabel" type="Label" parent="LeverB"]
+visible = false
+offset_left = -40.0
+offset_top = -36.0
+offset_right = 40.0
+offset_bottom = -20.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Lever B"
+horizontal_alignment = 1
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(320, 180)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="InstructionLabel" type="Label" parent="UI"]
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 400.0
+offset_bottom = 40.0
+theme_override_font_sizes/font_size = 11
+text = "THE LAST FRAME — Greybox Test Room (TLF-007)
+WASD / Left Stick: 2:1 Isometric Move | E / South Btn: Interact"
