@@ -14,6 +14,7 @@ const REQUIRED_ACTIONS: Array[String] = [
 	"watch",
 	"ability_next",
 	"ability_prev",
+	"echo_reset",
 	"confirm",
 	"cancel",
 	"journal",
@@ -29,6 +30,7 @@ const GAMEPLAY_ACTIONS: Array[String] = [
 	"watch",
 	"ability_next",
 	"ability_prev",
+	"echo_reset",
 	"journal",
 	"pause"
 ]
