@@ -54,7 +54,7 @@ The city is frozen at 23:59. The recurring clock motif should appear in UI, envi
 
 Chapter 1 foreshadows spatial manipulation with a single doorway-reassignment puzzle; Chapter 3 remains the full introduction of room rotation and doorway graphs (SD-1, `ADR_LOG.md`).
 
-Naming: the ability that reveals residual traces is provisionally called **Trace** to avoid collision with the recorded **Echo** system (ADR-014).
+Naming: the ability that reveals residual traces is called **Trace** to avoid collision with the recorded **Echo** system (ADR-014).
 
 Target full-game duration: approximately 5–8 hours. Treat this as a pacing target, not a promise until playtesting.
 

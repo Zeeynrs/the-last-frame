@@ -100,6 +100,7 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - Permanent progression (puzzle solved, story flags) lives in `PuzzleService`/`NarrativeState`, never in `state_fields`, so it can't be rewound.
   - An unsupported ability returns `&"unsupported"` with feedback, and state is unchanged.
 - **Consequences:** Objects opt in explicitly. No whole-scene snapshots.
+- **Amendment 2026-10-31 (authored pre-history):** Many Ch1 puzzles rewind objects to states from before the player arrived (TLF-003 Beats 02, 04, 07). `TemporalComponent` therefore exposes `@export var initial_history: Array[Dictionary]` (oldest first, each a full `state_fields` dict). On `_ready` these entries seed the ring buffer with negative ticks (`-N … -1`), ahead of the current state at tick 0. Rewind walks through them like any other entry. An object with an empty buffer returns `&"no_history"`. Save data stores the buffer cursor so a reload doesn't restore a consumed pre-history.
 
 ## ADR-008 — Echo recording model
 - **Date / status:** 2026-10-31 · Accepted
@@ -167,6 +168,6 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - Argon specs (Markdown) are the design source. Flash transcribes them into `.tres`.
 
 ## ADR-014 — Ability naming
-- **Date / status:** 2026-10-31 · Proposed (awaiting Argon's TLF-003 naming proposal)
+- **Date / status:** 2026-10-31 · **Accepted**: "Trace" (Argon's TLF-003 recommendation; "afterimage" and "imprint" allowed as prose synonyms only)
 - **Context:** "Echo" names two different mechanics (GDD §8 vs §9).
 - **Working decision:** "**Echo**" = record/replay of the player's own actions. The reveal-residual-traces ability uses the working name "**Trace**" until accepted. Code uses `echo` and `trace` identifiers accordingly.

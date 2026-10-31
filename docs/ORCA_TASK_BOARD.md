@@ -6,9 +6,9 @@
 |---|---|---|
 | TLF-000 | COMPLETE | Repo, relocation, baseline tag `m0-base` |
 | TLF-001 | COMPLETE | `docs/TLF-001_AUDIT_REPORT.md` |
-| TLF-002 | COMPLETE | `docs/ADR_LOG.md` (ADR-014 still Proposed, closes with TLF-003) |
-| TLF-003 | IN PROGRESS | Argon, worktree `tlf-design-art`, spec `docs/tasks/TLF-003.md` |
-| TLF-006 | IN PROGRESS | Flash, worktree `tlf-implementation-qa`, spec `docs/tasks/TLF-006.md` |
+| TLF-002 | COMPLETE | `docs/ADR_LOG.md` (ADR-014 accepted 2026-10-31) |
+| TLF-003 | CHANGES REQUESTED | `33e25d5` reviewed; fix D1–D3 in `docs/reviews/2026-10-31_TLF-003_TLF-006.md` |
+| TLF-006 | CHANGES REQUESTED | `a792438` reviewed; tests pass, fix R1–R5 (controller bindings) in same review doc |
 | TLF-004, 005, 010 | NOT STARTED | Wait for TLF-003 review |
 | TLF-007, 008 | NOT STARTED | Wait for TLF-006 |
 | others | NOT STARTED | |
