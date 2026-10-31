@@ -20,11 +20,20 @@ static var _instance: UITheme = null
 
 func _init() -> void:
 	_instance = self
-	var args := OS.get_cmdline_args()
-	if "--import" in args:
-		return
 	_setup_theme()
 	_connect_settings()
+
+
+func _is_font_imported() -> bool:
+	if not DirAccess.dir_exists_absolute("res://.godot/imported"):
+		return false
+	var dir := DirAccess.open("res://.godot/imported")
+	if dir == null:
+		return false
+	for f in dir.get_files():
+		if f.begins_with("tlf_pixel_mono.ttf-") and f.ends_with(".fontdata"):
+			return true
+	return false
 
 
 func _make_stylebox(border_color: Color, bg_color: Color, padding: int = 4) -> StyleBoxFlat:
@@ -43,6 +52,9 @@ func _make_stylebox(border_color: Color, bg_color: Color, padding: int = 4) -> S
 
 
 func _setup_theme() -> void:
+	if not _is_font_imported():
+		return
+
 	var font := load(FONT_PATH) as Font
 	if font != null:
 		default_font = font
