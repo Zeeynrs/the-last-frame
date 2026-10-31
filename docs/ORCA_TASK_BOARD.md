@@ -23,8 +23,8 @@
 | TLF-029 | COMPLETE (runner) | Merged `2eb5272` (Opus impl): awaitable frame-stepping tests + 6 self-tests. Follow-up TLF-030: real-input Ch1 playthrough test |
 | TLF-030 | COMPLETE | Merged `0ddf131` (Opus impl): real-input playthrough PZ-001…003, ~524 physics frames |
 | TLF-037 | READY (after TLF-036) | Opus impl: `docs/tasks/TLF-037.md` (F5 plays: Boot → title screen → Chapter01, New Game / Continue / Quit, SceneRouter autoload; ISSUE-027) |
-| TLF-036 | READY (after TLF-035) | Opus impl: `docs/tasks/TLF-036.md` (headless runs never touch real save/settings; ISSUE-026, ADR-011 am.) |
-| TLF-035 | READY | Opus impl: `docs/tasks/TLF-035.md` (validate.ps1 fails on leaks at exit; mutation-proven) |
+| TLF-036 | IN PROGRESS | Opus impl: `docs/tasks/TLF-036.md` (headless runs never touch real save/settings; ISSUE-026, ADR-011 am.) |
+| TLF-035 | COMPLETE | Merged `6559aba` (Opus impl `ae73b5d`): leak gate in validate.ps1 (script check + test suite, `--verbose` rerun on failure) + `tools/validate_selftest/` 6/6. Lead fresh archive 89/242 "Leak check: clean"; independent Lead red check (orphan Area2D + shape: RID + ObjectDB leak → exit 1) |
 | TLF-034 | READY | Flash: `docs/tasks/TLF-034.md` (interact closes and then reopens a document / uses an object after a blocking dialogue: one player block API that swallows just-pressed on the unblock frame; PZ-004 barrier visual = collision) |
 | TLF-033 | COMPLETE | Merged `66677d9` (Flash `73df531`): PZ-004 layout, railing reach sealed, exit trigger spans the north approach, geometric route + reach tests on real scene colliders. Opus negative real-input test green (no-Echo attempt 411 ticks > 180 window) |
 | TLF-032 | COMPLETE | Merged (Flash `dcdb67e`): dialogue box, document viewer, journal, hint (H + joypad 10), Ch1 Beat wiring. Lead spec review item by item + runtime probes |

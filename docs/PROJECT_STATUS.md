@@ -1,6 +1,6 @@
 # Project Status
 
-**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 242/242 tests, 89 scripts, no leaks (checked by hand until TLF-035)
+**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 242/242 tests, 89 scripts, leak check clean (enforced by validate.ps1 since TLF-035)
 
 This file states what the repository **actually** contains. Task-level detail lives in `ORCA_TASK_BOARD.md`; history lives in `PROGRESS.md`.
 
@@ -9,7 +9,7 @@ This file states what the repository **actually** contains. Task-level detail li
 |---|---|---|
 | Project config: 640×360 integer-scaled pixel display, Forward+, 60 Hz physics | `project.godot` | `tests/test_project_settings.gd` |
 | Input map: 12 actions, keyboard/mouse + controller (all devices), no conflicting binds | `project.godot` | binding-conflict + device tests |
-| Headless validation (import + zero-dependency test runner) | `tools/validate.ps1`, `tests/run_tests.gd` | runner fails correctly on a broken assert |
+| Headless validation (import + script parse + zero-dependency test runner + leak-at-exit gate) | `tools/validate.ps1`, `tests/run_tests.gd`, `tools/validate_selftest/` | runner fails correctly on a broken assert; self-test 6/6 (node/resource/RID/static leaks red, expected ERROR lines green) |
 | Session core: `GameSession`, `SimClock` (integer ticks), `IdRegistry` (ADR-005 regex, duplicate-safe), `InteractionService` (ADR-006 order, `interaction_applied` signal) | `scripts/session/`, `scenes/session/` | 4 test files |
 | Player: 8-dir isometric movement (2:1 diagonals, 120 px/s), deterministic nearest-target interaction | `scripts/player/`, `scenes/player/` | unit tests + Lead runtime probe |
 | Interactable base + test Lever | `scripts/interaction/` | lifecycle tests |
@@ -44,7 +44,7 @@ This file states what the repository **actually** contains. Task-level detail li
 - Headless runs without an explicit save root write the real `user://saves` (ISSUE-026 → TLF-036).
 
 ## E. Missing (next by priority)
-1. TLF-034 (Flash) input/visual fixes; TLF-035 (Opus impl) leak gate in `validate.ps1`
+1. TLF-034 (Flash) input/visual fixes
 2. Human: physical controller spot-check (ISSUE-011, last item for M1)
 3. TLF-036 headless save guard (ISSUE-026); TLF-037 Boot → title → Chapter01 so F5 plays (ISSUE-027). Until then: open `Chapter01.tscn`, press F6
 4. Vertical-slice polish: art beyond v1 (Argon unavailable, ISSUE-012), audio, lighting/VFX, Beat 10 cinematic, accessibility pass
