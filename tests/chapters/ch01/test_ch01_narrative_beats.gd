@@ -81,7 +81,8 @@ func test_beat01_platform_awakening_and_watch_pickup() -> void:
 	var diag := ch01.get_dialogue_box()
 	_assert_true(diag != null, "DialogueBox present in scene")
 	_assert_true(diag.is_active, "Beat 01 awakening dialogue is active")
-	_assert_true(diag.is_blocking, "Beat 01 monologue is blocking")
+	_assert_false(diag.is_blocking, "Beat 01 monologue is non-blocking")
+	_assert_eq(diag.auto_advance_delay, 4.0, "Beat 01 monologue auto-advances at 4.0s")
 	_assert_eq(diag.current_sequence_id, &"ch01_b01_start", "sequence is ch01_b01_start")
 	_assert_eq(diag.current_lines.size(), 3, "Beat 01 start has 3 lines (EL_B01_01..03)")
 
@@ -117,6 +118,94 @@ func test_beat01_platform_awakening_and_watch_pickup() -> void:
 
 	_cleanup_ch01(ch01)
 	_assert_real_save_unchanged(real_save_before, "test_beat01_platform_awakening_and_watch_pickup")
+
+
+func test_beat01_player_moves_immediately_and_dialogue_auto_advances() -> void:
+	var real_save_before := _record_real_save_state()
+	var ch01 := _make_ch01()
+	await physics_frames(2)
+
+	var player := ch01.player
+	_assert_true(player != null, "Player exists in Chapter01")
+	var initial_x := player.global_position.x
+
+	var diag := ch01.get_dialogue_box()
+	_assert_true(diag != null, "DialogueBox exists")
+	_assert_true(diag.is_active, "Beat 01 is active")
+	_assert_false(diag.is_blocking, "Beat 01 is non-blocking")
+
+	# Move right for 8 physics frames (<= 10 frames), with NO interact press
+	press(&"move_right")
+	await physics_frames(8)
+	release(&"move_right")
+	await physics_frames(1)
+
+	_assert_true(player.global_position.x > initial_x + 5.0, "Player moved right immediately without needing interact")
+
+	# Advance lines via auto_advance or fast simulate
+	var steps := 0
+	while diag.is_active and steps < 20:
+		steps += 1
+		diag._process(diag.auto_advance_delay + 0.1)
+		await physics_frames(1)
+
+	_assert_false(diag.is_active, "Dialogue finished via auto-advance")
+	_assert_true(ch01.session.narrative_state.get_flag(&"heard.ch01_b01_start"), "heard.ch01_b01_start is set")
+
+	_cleanup_ch01(ch01)
+	_assert_real_save_unchanged(real_save_before, "test_beat01_player_moves_immediately_and_dialogue_auto_advances")
+
+
+func test_movement_hint_lifecycle() -> void:
+	var real_save_before := _record_real_save_state()
+	var ch01 := _make_ch01()
+	await physics_frames(2)
+
+	var hud: HUD = null
+	for child in ch01.get_children():
+		if child is HUD:
+			hud = child
+			break
+	_assert_true(hud != null, "HUD found in Chapter01")
+
+	# Advance 3 seconds without movement (180 frames at 60fps)
+	for i in range(190):
+		await physics_frames(1)
+
+	# Movement hint should now be displayed
+	_assert_true(ch01.session.narrative_state.get_flag(&"ch01.flag.movement_hint_shown"), "movement_hint_shown flag is set")
+	_assert_true(hud.feedback_panel.visible, "Feedback panel is visible showing movement hint")
+	_assert_true(hud.feedback_label.text.contains("Move:"), "Feedback label contains 'Move:'")
+
+	# Move player: hint must disappear immediately
+	press(&"move_right")
+	await physics_frames(2)
+	release(&"move_right")
+	await physics_frames(1)
+	_assert_false(hud.feedback_panel.visible, "Movement hint disappears immediately on player movement")
+
+	# Test save and reload: hint must not show again
+	var saved_flags = ch01.session.narrative_state.export_flags()
+	_cleanup_ch01(ch01)
+
+	var ch01_second := _make_ch01()
+	ch01_second.session.narrative_state.import_state(saved_flags, [])
+	await physics_frames(2)
+
+	var hud2: HUD = null
+	for child in ch01_second.get_children():
+		if child is HUD:
+			hud2 = child
+			break
+
+	# Advance another 3 seconds
+	for i in range(190):
+		await physics_frames(1)
+
+	_assert_false(hud2.feedback_panel.visible, "Movement hint does not appear again after reload")
+
+	_cleanup_ch01(ch01_second)
+	_assert_real_save_unchanged(real_save_before, "test_movement_hint_lifecycle")
 
 
 func test_beat03_call_box_09() -> void:

@@ -94,3 +94,74 @@ func test_hud_feedback_toast_display_and_dismissal() -> void:
 	_assert_false(hud.feedback_panel.visible, "Feedback panel should auto-hide after toast duration")
 
 	hud.free()
+
+
+func test_target_marker_camera_offset_conversion() -> void:
+	var hud_scene = load("res://scenes/ui/HUD.tscn")
+	var hud = hud_scene.instantiate() as HUD
+	scene_tree.root.add_child(hud)
+
+	var watch = PocketWatch.new()
+	watch.unlocked_abilities = [&"trace"]
+	watch.selected_ability = &"trace"
+	hud.bind_pocket_watch(watch)
+
+	# Create a dummy target at world position (200, 150)
+	var target = Area2D.new()
+	target.set_script(load("res://scripts/interaction/interactable.gd"))
+	target.object_id = &"ch01.test_target"
+	target.position = Vector2(200, 150)
+	scene_tree.root.add_child(target)
+
+	# Set up a camera with an offset of (50, 40)
+	var camera = Camera2D.new()
+	camera.position = Vector2(50, 40)
+	scene_tree.root.add_child(camera)
+	camera.make_current()
+
+	await physics_frames(2)
+
+	# Target the object
+	watch.current_target = target
+	hud._on_target_changed(target)
+	hud._update_target_highlight_position()
+
+	_assert_true(hud.target_highlight.visible, "Target highlight is visible with target")
+	var target_screen_pos: Vector2 = target.get_global_transform_with_canvas().origin
+	var expected_screen_pos: Vector2 = target_screen_pos + Vector2(0, -28)
+	var actual_pos: Vector2 = hud.target_highlight.global_position
+	var diff := actual_pos.distance_to(expected_screen_pos)
+	_assert_true(diff <= 1.0, "Target highlight screen position matches target screen pos + offset")
+
+	# When target is null, marker is invisible
+	watch.current_target = null
+	hud._on_target_changed(null)
+	_assert_false(hud.target_highlight.visible, "Target highlight is hidden when target is null")
+
+	camera.free()
+	target.free()
+	watch.free()
+	hud.free()
+
+
+func test_use_vs_watch_unsupported_feedback() -> void:
+	UIFeedback.init_translations()
+
+	var use_fb = UIFeedback.get_feedback_text(&"unsupported", &"use")
+	_assert_eq(use_fb, "Nothing happens.", "use on unsupported object returns 'Nothing happens.'")
+
+	var watch_fb = UIFeedback.get_feedback_text(&"unsupported", &"watch")
+	_assert_eq(watch_fb, "The pocket watch cannot affect this object.", "watch on unsupported object returns watch text")
+
+	var hud_scene = load("res://scenes/ui/HUD.tscn")
+	var hud = hud_scene.instantiate() as HUD
+	scene_tree.root.add_child(hud)
+
+	hud.show_feedback(&"unsupported", &"use")
+	_assert_eq(hud.feedback_label.text, "Nothing happens.", "HUD feedback for use shows 'Nothing happens.'")
+
+	hud.show_feedback(&"unsupported", &"watch")
+	_assert_eq(hud.feedback_label.text, "The pocket watch cannot affect this object.", "HUD feedback for watch shows watch text")
+
+	hud.free()
+

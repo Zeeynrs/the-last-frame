@@ -46,13 +46,6 @@ theme_override_colors/font_color = Color(0.3, 0.75, 1, 1)
 theme_override_font_sizes/font_size = 12
 text = "SPEAKER"
 
-[node name="PromptLabel" type="Label" parent="Panel/Margin/VBox/TopRow"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.8)
-theme_override_font_sizes/font_size = 11
-text = "[E] Continue"
-horizontal_alignment = 2
-
 [node name="TextLabel" type="Label" parent="Panel/Margin/VBox"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
@@ -61,3 +54,10 @@ theme_override_colors/font_color = Color(0.93, 0.96, 0.98, 1)
 theme_override_font_sizes/font_size = 12
 text = "Dialogue line text goes here..."
 autowrap_mode = 3
+
+[node name="PromptLabel" type="Label" parent="Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.9)
+theme_override_font_sizes/font_size = 12
+text = "[Enter] Continue"
+horizontal_alignment = 1

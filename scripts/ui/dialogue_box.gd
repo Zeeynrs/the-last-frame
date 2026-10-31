@@ -14,7 +14,7 @@ signal sequence_finished(sequence_id: StringName)
 @onready var panel: PanelContainer = $Panel
 @onready var speaker_label: Label = $Panel/Margin/VBox/TopRow/SpeakerLabel
 @onready var text_label: Label = $Panel/Margin/VBox/TextLabel
-@onready var prompt_label: Label = $Panel/Margin/VBox/TopRow/PromptLabel
+@onready var prompt_label: Label = get_node_or_null("Panel/Margin/VBox/PromptLabel") if has_node("Panel/Margin/VBox/PromptLabel") else get_node_or_null("Panel/Margin/VBox/TopRow/PromptLabel")
 
 var is_active: bool = false
 var is_blocking: bool = false
@@ -24,6 +24,7 @@ var current_line_index: int = -1
 var auto_advance_delay: float = 0.0
 
 var _auto_timer: float = 0.0
+var _pulse_timer: float = 0.0
 var _player_ref: CharacterBody2D = null
 
 const SPEAKER_COLORS: Dictionary = {
@@ -35,6 +36,8 @@ const SPEAKER_COLORS: Dictionary = {
 
 func _ready() -> void:
 	UIFeedback.init_translations()
+	if prompt_label == null:
+		prompt_label = find_child("PromptLabel", true, false) as Label
 	if panel != null:
 		panel.visible = false
 	visible = false
@@ -44,10 +47,27 @@ func _input(event: InputEvent) -> void:
 	if not is_active:
 		return
 
-	if event.is_action_pressed(&"confirm") or event.is_action_pressed(&"interact"):
-		advance_line()
-		if get_viewport() != null:
-			get_viewport().set_input_as_handled()
+	if event is InputEventJoypadButton or event is InputEventJoypadMotion:
+		if not InputPrompts.is_joypad_mode:
+			InputPrompts.set_joypad_mode(true)
+			if is_blocking and prompt_label != null and prompt_label.visible:
+				prompt_label.text = InputPrompts.format_prompt(&"confirm", "UI_DIALOGUE_ADVANCE")
+	elif event is InputEventKey or event is InputEventMouseButton:
+		if InputPrompts.is_joypad_mode:
+			InputPrompts.set_joypad_mode(false)
+			if is_blocking and prompt_label != null and prompt_label.visible:
+				prompt_label.text = InputPrompts.format_prompt(&"confirm", "UI_DIALOGUE_ADVANCE")
+
+	if is_blocking:
+		if event.is_action_pressed(&"confirm") or event.is_action_pressed(&"interact"):
+			advance_line()
+			if get_viewport() != null:
+				get_viewport().set_input_as_handled()
+	else:
+		if event.is_action_pressed(&"confirm"):
+			advance_line()
+			if get_viewport() != null:
+				get_viewport().set_input_as_handled()
 
 
 func _process(delta: float) -> void:
@@ -58,6 +78,20 @@ func _process(delta: float) -> void:
 		_auto_timer += delta
 		if _auto_timer >= auto_advance_delay:
 			advance_line()
+
+	if is_blocking and prompt_label != null and prompt_label.visible:
+		var reduced: bool = false
+		var settings = null
+		if is_inside_tree() and get_tree() != null and get_tree().root != null:
+			settings = get_tree().root.get_node_or_null("Settings")
+		if settings != null and "reduced_effects" in settings:
+			reduced = settings.reduced_effects
+
+		if reduced:
+			prompt_label.modulate.a = 1.0
+		else:
+			_pulse_timer += delta
+			prompt_label.modulate.a = 0.65 + 0.35 * sin(_pulse_timer * 4.0)
 
 
 func play_sequence(sequence_id: StringName, lines: Array, blocking: bool = false, auto_advance: float = 0.0, one_shot: bool = true) -> bool:
@@ -147,8 +181,15 @@ func _display_current_line() -> void:
 		text_label.text = localized_text
 
 	if prompt_label != null:
-		prompt_label.text = InputPrompts.format_prompt(&"interact", "UI_DIALOGUE_ADVANCE")
+		if is_blocking:
+			prompt_label.visible = true
+			prompt_label.text = InputPrompts.format_prompt(&"confirm", "UI_DIALOGUE_ADVANCE")
+			prompt_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			prompt_label.modulate.a = 1.0
+		else:
+			prompt_label.visible = false
 
+	_pulse_timer = 0.0
 	_auto_timer = 0.0
 	line_displayed.emit(speaker_key, text_key)
 
