@@ -1,0 +1,75 @@
+keys,en
+EL_B01_01,Cold tiles. My head is pounding. The name inside my coat collar reads ELIAS. It's all I have.
+EL_B01_02,Every clock says 23:59. Nothing moves. Everything holds its breath at the edge of the minute.
+EL_B01_03,The train doors are sealed. From the outside.
+EL_B01_04,"A pocket watch, right beside me. The crystal is cracked, but the brass is still warm."
+JRN_CH1_AWAKENING,"I woke on the arrival platform of Elysium-09. Every clock reads 23:59. A warm, cracked pocket watch lay beside me."
+JRN_CH1_TURNSTILE_TRACE,Someone else passed through the West Turnstile seconds before the station froze at 23:59.
+OP_B03_01,"Good, you picked up. Stay on the line, Elias. It won't hold for long."
+OP_B03_02,Elysium-09 is under a containment lock. Nothing in here moves past 23:59 unless you move it.
+OP_B03_03,That watch can't turn back the whole station. Only the pieces that broke when it stopped.
+OP_B03_04,"Feels like the whole place is holding its breath at the edge of the minute, doesn't it?"
+OP_B03_05,Restore auxiliary power in Signal Control. That unseals the street exit. Go through Maintenance.
+JRN_CH1_OPERATOR_CALL,"The man on Call Box 09 knows how my watch works. He sounds tired, and somehow familiar."
+DOC_EVAC_NOTICE_TITLE,Station Bulletin: Emergency Evacuation
+DOC_EVAC_NOTICE_BODY,ELYSIUM-09 STATION CONTROL // ISSUED 23:54\nAll passengers must leave the station now.\nExit by the street stairs in the Atrium.\nDo not wait for transit service to resume.\nELYSIUM civic stabilization works in progress.\nThank you for your patience.
+JRN_CH1_EVAC_2354,"Station Control ordered an evacuation at 23:54, five minutes before every clock stopped."
+DOC_TECH_LOG_TITLE,Maintenance Clipboard: Shift Log
+DOC_TECH_LOG_BODY,Day 1: Grid meters ran backward for 4 seconds.\nDay 2: Again. Calling it chronometric backflow.\nDay 3: Shutter gear slipped twice. Reported.\nDay 4: ELYSIUM directors say ignore the meters.\n'Expected field behavior.'\nI'm logging it anyway.
+JRN_CH1_CHRONO_BACKFLOW,A technician logged 'chronometric backflow' days before the incident. ELYSIUM's directors said to ignore it.
+DOC_TRANSIT_PASS_TITLE,Security Booth Log and Transit Pass
+DOC_TRANSIT_PASS_BODY,BOOTH LOG // SECURITY CROSSING // NIGHT\n23:50 Gate set to pressure-plate interlock.\n23:54 Evacuation bulletin received.\n23:56 Two passengers waved through to Lounge.\n23:58 Atrium not answering. Holding post.\nTransit pass SC-09 clipped to this page.
+JRN_CH1_TRANSIT_PASS,The booth guard waved two passengers through to the Waiting Lounge at 23:56.
+OP_B05_01,Don't stare at it too long. An echo only does what you already chose to do.
+DOC_MIRA_01_TITLE,Personal Recorder: Mira
+DOC_MIRA_01_BODY,"[Static. A woman's voice, close to the mic.]\nElias, if the stabilization fails, don't come\nback for me. Promise me you'll let the clock\npass midnight.\n[A long breath. Footsteps. The tape ends.]"
+FRAG_MIRA_DEPARTURE_TITLE,Memory: The Bench by the Window
+FRAG_MIRA_DEPARTURE_BODY,"Two shapes on the bench, minutes before 23:59.\nMira, holding my sleeve too tightly.\nMe, checking the clock again and again.\nShe asked me to promise.\nI don't remember if I did."
+EL_B06_01,"That's me on the bench beside her. Mira. I know her name, but I can't hold on to her face."
+JRN_CH1_MIRA_PLEA,"Mira begged me not to come back for her if the stabilization failed, and to let the clock pass midnight."
+JRN_CH1_SUBSTATION_BOUNDARY,"Elysium-09 isn't blocked by rubble. An artificial temporal boundary surrounds it, anchored to the Atrium."
+OP_B07_01,Power's back. I can hear the relays from here.
+OP_B07_02,Listen to me. The vestibule door is open. Go straight up to the street exit.
+OP_B07_03,Don't waste time on the dispatch logs in the Atrium. There's nothing up there you need.
+JRN_CH1_OPERATOR_WARNING,The Operator wants me to skip the Atrium dispatch logs. What doesn't he want me to see?
+DOC_INDEX_PLAQUE_TITLE,ELYSIUM Threshold Index: Sector 09
+DOC_INDEX_PLAQUE_BODY,"Every threshold in this sector is an index node.\nDoorways link by index, not by adjacency.\nIn a field fault, nodes may pair wrongly.\nRe-route at the junction relays.\nScratched below: since 23:59 the north arch\nkeeps opening onto the west one."
+JRN_CH1_THRESHOLD_INDEX,"Doorways here link by index, not by position. Since 23:59 some of them open onto the wrong place."
+DOC_DISPATCH_2359_TITLE,Central Dispatch Recorder
+DOC_DISPATCH_2359_BODY_1,"CONTAINMENT PROTOCOL: EXECUTED\nTIME: 23:59:00   SITE: ELYSIUM-09\nSTATION SEAL: ACTIVE\nAUTHORIZED BY: ELIAS\nCLEARANCE: LEVEL-0 ELYSIUM\nINPUT: THIS TERMINAL, PALM VERIFIED"
+DOC_DISPATCH_2359_BODY_2,DIAGNOSTIC // ACCESS LOG\n23:59:00 - USER: ELIAS\n23:59:00 - USER: ELIAS\n23:59:00 - USER: ELIAS\n23:59:00 - USER: ELIAS\n23:59:00 - USER: ELIAS
+EL_B09_01,It knows my hand. The seal opened the moment I touched it.
+EL_B09_02,Authorized by Elias. Level-0 clearance. The lock that froze this station came from me.
+EL_B09_03,I sealed Elysium-09 at 23:59. Why would I do that?
+EL_B09_04,"And that corner log... the same line, over and over. 23:59:00. Me."
+JRN_CH1_LEDGER_2359,The 23:59 containment lock was executed from the Atrium terminal with my own Level-0 clearance. I sealed the station.
+JRN_CH1_TIMESTAMP_ANOMALY,"The terminal's access log repeats one line: 23:59:00, USER: ELIAS. A clock fault, or something else?"
+OP_B10_01,Now you see why I told you to leave the terminal alone.
+OP_B10_02,"Keep moving. She's in the Central District, and the city remembers what you lost."
+UI_FB_CLOCK_2359,23:59. The display isn't broken. It just won't change.
+UI_FB_MISSING_TARGET,Target is no longer present.
+UI_FB_ECHO_FORBIDDEN,An echo cannot claim permanent items or records.
+UI_FB_UNSUPPORTED,The pocket watch cannot affect this object.
+UI_FB_FROZEN,Object is locked in time. Unfreeze it first.
+UI_FB_NO_HISTORY,No earlier temporal state recorded for this object.
+UI_FB_ALREADY_OPEN,Already open.
+UI_FB_UNPOWERED,No power to this mechanism.
+UI_FB_INVALID_GRAPH,Route conflict. Clear the active loop on the paired junction first.
+UI_FB_CRITICAL_PATH,Safety interlock: cannot sever the main entry route.
+PZ001_FB_GATE_JAMMED,The turnstile rotor is crushed shut. Physical force won't budge it.
+PZ001_FB_GATE_REWIND_ONLY,Only Rewind can restore this fractured mechanism.
+PZ001_FB_PILLAR_UNSUPPORTED,Solid station concrete. No temporal fracture to manipulate.
+PZ002_FB_GEAR_LOCKED,The counterweight gear is frozen. Unfreeze it before rewinding the shutter.
+PZ002_FB_SHUTTER_NO_FREEZE,The shutter is too heavy to freeze directly. Target the counterweight gear.
+PZ002_FB_SHUTTER_HEAVY,Too heavy to lift by hand.
+PZ002_FB_GEAR_NO_REWIND,The stripped gear has no spring memory. Rewind the fire shutter itself.
+PZ003_FB_SHIELDED_SWITCH,Chrono-shielded pressure plate. It only responds to physical weight.
+PZ003_FB_GATE_SWITCH_LOCKED,Locked by the floor pressure switch on the south deck.
+PZ003_FB_SHIELDED_GATE,Chrono-shielded security gate. It cannot be frozen or rewound.
+PZ004_FB_BUS_UNPOWERED,Main power bus is dead. Stabilize the central surge capacitor first.
+PZ004_FB_BREAKER_ENGAGED,Breaker is already engaged.
+PZ004_FB_BREAKER_SHIELDED,High-voltage insulated switch. The pocket watch cannot affect it directly.
+PZ004_FB_DOOR_UNPOWERED,Bulkhead sealed. Synchronize both substation breakers to restore power.
+PZ005_FB_ATRIUM_LOCKED,Can't re-engage the West Loop while the North Archway leads to the Atrium.
+PZ005_FB_LOOP_CONFLICT,Route conflict. Uncouple the West Loop at the west junction lever first.
+PZ005_FB_SPATIAL_ANCHORED,Spatial index relays are anchored outside local time. Switch them by hand.
