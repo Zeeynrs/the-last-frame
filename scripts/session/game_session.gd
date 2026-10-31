@@ -11,6 +11,8 @@ extends Node
 @export var puzzle_service: PuzzleService
 @export var narrative_state: NarrativeState
 @export var spatial_service: SpatialService
+## Present in chapter scenes (ChapterRoot); null in standalone test rooms.
+@export var room_router: RoomRouter
 
 
 func _enter_tree() -> void:
@@ -32,3 +34,5 @@ func _ready() -> void:
 		narrative_state = get_node_or_null("NarrativeState") as NarrativeState
 	if spatial_service == null:
 		spatial_service = get_node_or_null("SpatialService") as SpatialService
+	if room_router == null:
+		room_router = get_node_or_null("RoomRouter") as RoomRouter

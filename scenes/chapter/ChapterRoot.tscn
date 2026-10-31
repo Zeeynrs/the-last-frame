@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/session/GameSession.tscn" id="1_session"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/rooms/room_router.gd" id="3_router"]
+
+[node name="ChapterRoot" type="Node2D"]
+y_sort_enabled = true
+
+[node name="GameSession" parent="." node_paths=PackedStringArray("room_router") instance=ExtResource("1_session")]
+room_router = NodePath("../RoomRouter")
+
+[node name="RoomContainer" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+
+[node name="RoomRouter" type="Node" parent="." node_paths=PackedStringArray("session", "room_container", "player")]
+script = ExtResource("3_router")
+session = NodePath("../GameSession")
+room_container = NodePath("../RoomContainer")
+player = NodePath("../Player")
