@@ -5,6 +5,9 @@
 **Priority:** [P0/P1/P2]
 **Dependencies:** [IDs]
 
+## Workspace rule
+Work only inside your Orca worktree, on its existing branch. Never touch the primary checkout `D:\TheLastFrame\the-last-frame`. Don't create or switch branches. Push with `git push origin HEAD`.
+
 ## Objective
 [One measurable outcome]
 

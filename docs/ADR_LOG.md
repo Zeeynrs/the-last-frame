@@ -45,6 +45,7 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - One task at a time per role worktree.
   - The commit subject starts with the task ID (e.g. `feat(TLF-006): …`).
   - After Opus merges, the role starts its next task with `git switch -c tlf-<id>-<slug> origin/main` (or Orca creates a fresh workspace). Never reset a worktree that has unmerged work.
+- **Amendment 2026-10-31 (incident):** Agents created branches and wrote files in the Lead's primary checkout, and a Lead commit landed on an agent branch. Rule: the primary checkout `D:\TheLastFrame\the-last-frame` is Lead-only. Agents stay inside their Orca worktree and its existing branch, and never create or switch branches. Duplicate remote branches `tlf-003-ch01-beat-sheet` and `tlf-006-project-skeleton` (same commits as the Orca branches) are removed only after integration.
 
 ## ADR-003 — Rendering, resolution and pixel density
 - **Date / status:** 2026-10-31 · Accepted (provisional numbers; final after TLF-010 target sheet)

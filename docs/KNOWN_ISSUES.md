@@ -21,6 +21,7 @@ This file starts as a tracking template. Do not invent resolved status.
 | ISSUE-001 | Docs specify Godot AI Workbench; it is not installed and a different `godot` MCP server is connected | Low | Resolved 2026-10-31 | Agent 1 | Adopted `@coding-solo/godot-mcp` 0.1.1 (ADR-012 amendment) |
 | ISSUE-002 | godot-mcp `get_uid` only reads `<file>.uid` sidecars; for imported assets (e.g. `icon.svg`) it reports "does not exist" and suggests `resave_resources`, but the UID actually lives in `<file>.import` | Low | Open (workaround) | Agent 1 | Don't run resave on that message. Read the UID from the `.import` file instead |
 | RISK-015 | Godot MCP launched via unpinned `npx` would auto-run any newly published version | Medium | Resolved 2026-10-31 | Agent 1 | Pinned to `@0.1.1` |
+| ISSUE-003 | 2026-10-31: agents used the Lead's primary checkout (created `tlf-003-…`/`tlf-006-…` branches, stray stub files); a Lead commit landed on an agent branch; during cleanup Lead briefly deleted a branch holding TLF-003 work (restored within ~1 min, also present on the Orca branch) | High | Resolved | Agent 1 | Workspace rule added to task files/template (ADR-002 amendment). Lead never deletes a branch without first checking its tip against the last observed SHA |
 | RISK-016 | Project-local `pixel-art` MCP (`pxcli-mcp`) writes to `./assets/sprites`, outside ADR-001 layout and Argon ownership | Low | Open | Agent 1 | Not used (ADR-012). Remove from local config if it causes confusion |
 
 ## Issue template
