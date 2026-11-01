@@ -14,6 +14,8 @@ extends Node
 @export var hint_service: HintService
 ## Present in chapter scenes (ChapterRoot); null in standalone test rooms.
 @export var room_router: RoomRouter
+## Playtest telemetry (TLF-048): created for chapter scenes when `tlf/playtest_log` is on, else null.
+var playtest_log: PlaytestLog
 
 
 func _enter_tree() -> void:
@@ -39,3 +41,8 @@ func _ready() -> void:
 		hint_service = get_node_or_null("HintService") as HintService
 	if room_router == null:
 		room_router = get_node_or_null("RoomRouter") as RoomRouter
+	# Before the chapter's _ready enters (or restores) the first room, so the log sees it.
+	if playtest_log == null and room_router != null and PlaytestLog.is_enabled():
+		playtest_log = PlaytestLog.new()
+		playtest_log.name = "PlaytestLog"
+		add_child(playtest_log)

@@ -11,7 +11,8 @@ extends Node
 ## - Missing optional fields get defaults; data is validated before anything touches the world.
 ## Registered as the SaveService autoload (ADR-011); the class is SaveStore so the name does not hide it.
 
-const SAVE_VERSION: int = 1
+## v2 (TLF-048): + "playtest" (PlaytestLog state); v1 saves migrate with an empty log.
+const SAVE_VERSION: int = 2
 const DEFAULT_ROOT: String = "user://saves"
 ## Headless runs (tests, validate.ps1, -s probes) never touch the player's saves (ADR-011 am.,
 ## ISSUE-026, TLF-036). The shipped game never runs headless.
@@ -24,7 +25,7 @@ var save_root: String = DEFAULT_ROOT
 ## Target version for migrations (tests may raise it together with `migrations`).
 var current_version: int = SAVE_VERSION
 ## from_version (int) -> Callable taking and returning the save Dictionary at from_version + 1.
-var migrations: Dictionary = {}
+var migrations: Dictionary = {1: migrate_v1_to_v2}
 
 
 ## Default save root for a display server name and the TLF_ALLOW_REAL_USER_DATA value.
@@ -58,6 +59,7 @@ static func default_save() -> Dictionary:
 		"journal": [],
 		"hints": {},
 		"settings_ref": "user://settings.cfg",
+		"playtest": {},
 	}
 
 
@@ -87,6 +89,8 @@ func capture(session: GameSession, chapter: String, checkpoint_id: String) -> Di
 	data["temporal"] = temporal
 	if session.spatial_service != null:
 		data["spatial"] = session.spatial_service.export_state()
+	if session.playtest_log != null:
+		data["playtest"] = session.playtest_log.export_state()
 	return data
 
 
@@ -98,6 +102,8 @@ func apply(session: GameSession, data: Dictionary) -> Dictionary:
 		return {"ok": false, "reason": check["reason"], "skipped": []}
 	if session.puzzle_service != null:
 		session.puzzle_service.import_state(data["puzzles"])
+	if session.playtest_log != null:
+		session.playtest_log.import_state(data["playtest"])
 	if session.narrative_state != null:
 		session.narrative_state.import_state(data["narrative_flags"], data["fragments"])
 		session.narrative_state.import_journal(data["journal"])
@@ -191,13 +197,21 @@ func upgrade(raw: Dictionary) -> Dictionary:
 	return {"ok": true, "reason": &"", "data": data}
 
 
+## v1 -> v2: saves from before TLF-048 have no playtest log (PlaytestLog marks their solved puzzles
+## UNTRACKED). Nothing else changes.
+static func migrate_v1_to_v2(data: Dictionary) -> Dictionary:
+	if not (data.get("playtest") is Dictionary):
+		data["playtest"] = {}
+	return data
+
+
 ## Structural validation (types of every section). Returns {ok, reason}.
 func validate(data: Dictionary) -> Dictionary:
 	var expected := {
 		"save_version": TYPE_INT, "chapter": TYPE_STRING, "checkpoint_id": TYPE_STRING,
 		"puzzles": TYPE_DICTIONARY, "narrative_flags": TYPE_DICTIONARY,
 		"fragments": TYPE_ARRAY, "temporal": TYPE_DICTIONARY, "spatial": TYPE_DICTIONARY,
-		"journal": TYPE_ARRAY, "hints": TYPE_DICTIONARY, "settings_ref": TYPE_STRING,
+		"journal": TYPE_ARRAY, "hints": TYPE_DICTIONARY, "settings_ref": TYPE_STRING, "playtest": TYPE_DICTIONARY,
 	}
 	for key in expected.keys():
 		if not data.has(key) or typeof(data[key]) != expected[key]:
