@@ -1,6 +1,6 @@
 # Project Status
 
-**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 300/300 tests, 114 scripts, leak check clean (enforced by validate.ps1 since TLF-035)
+**Updated:** 2026-11-01 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 314/314 tests, 121 scripts, leak check clean (enforced by validate.ps1 since TLF-035)
 
 This file states what the repository **actually** contains. Task-level detail lives in `ORCA_TASK_BOARD.md`; history lives in `PROGRESS.md`.
 
@@ -31,18 +31,21 @@ This file states what the repository **actually** contains. Task-level detail li
 | Game flow: F5 → Boot → title screen (New Game / Continue / Quit, overwrite confirmation) → Chapter 1; Continue restores the last checkpoint; chapter complete → title. `SceneRouter` autoload | `scripts/core/`, `scenes/boot/`, `scenes/ui/title_screen.tscn` | `tests/core/`, `tests/ui/test_title_screen.gd`; Opus windowed screenshots |
 | Art (batches 1+2): art bible, Ch1 palette (32), Elias v2 8-dir idle/walk, 8 floor tiles, walls/pillar/archways/railing, shared props (bench, call box, reset console, lever, clipboard, 23:59 clock), 5 puzzle props (turnstile, fire shutter, gear, capacitor, pressure switch), placement sheet for all 10 rooms, 4 room mockups, batch 3 (route board, security gate, bridge, transit car, dispatch terminal, pocket watch, lever badges, PA speaker), generators in `tools/art/gen/` (byte-reproducible), CC0 pixel font | `design/art/`, `assets/`, `tools/art/check_assets.py` | Pixelorama re-export pixel-identical (tlf-lead 37/37, Lead 3/3), palette/alpha checks; placed in all 10 rooms (TLF-041), collision unchanged |
 | Ch1 design: beat sheet (10 beats, 38 min), 5 puzzle specs with 27 given/when/then tests, room graph (10 rooms, boundary doors, placement metrics, kit list) | `design/ch01/` | Lead reviews in `docs/reviews/` |
+| Ch1 expansion Step 1 design (ADR-020): concept, specs SO-01/SO-02/PZ-006 + R1 revisions of PZ-001..005, TraceMemory/unlock/commuter specs, beat sheet §7 (28.7 min design / 17.2 floor), text (209 keys) | `design/ch01/`, `narrative/ch01/`, `localization/ch01_text.csv` | TLF-047; tlf-lead generator check |
+| Chapter-complete overlay as a themed scene with the playtest summary | `scenes/ui/chapter_complete_overlay.tscn`, `scripts/ui/` | `tests/ui/test_chapter_complete_overlay.gd`; tlf-lead screenshot |
+| Ability wheel art (face, pointers, segments x 3 states, icons, lock glyph) | `assets/ui/ability_wheel/`, `tools/art/gen/ui_wheel.py` | TLF-053; Pixelorama 39/39, verify_regen |
 
 ## B. Partially implemented
 
 ## C. Implemented but not integrated
+- `TraceMemory`, `AbilityUnlocks` + `AbilityUnlockTrigger`, locked-ability refusal in PocketWatch, save v3 (TLF-050). The game still starts with all four abilities and no room has a memory until TLF-055.
 
 ## D. Broken
-- Trace shows nothing in the game (ISSUE-039 -> TLF-050).
-- PZ-002 possibly solvable without Freeze (RISK-020 -> TLF-049).
-- Chapter-complete title runs off screen (ISSUE-040 -> TLF-051).
+- Trace shows nothing in the game yet (ISSUE-039: mechanism merged, content -> TLF-055).
+- PZ-002 is solvable without Freeze (RISK-020 confirmed by TLF-049; fix -> TLF-054/055/056).
 
 ## E. Missing (next by priority)
-1. Chapter 1 expansion Step 1 (ADR-020, concept `design/ch01/CH01_EXPANSION.md`): TLF-047 phase 2 specs (design), TLF-049 PZ-002 negative test + TLF-050 TraceMemory/unlocks (Opus impl), then Step 1 implementation and a telemetry playtest (target >= 15 min)
+1. Chapter 1 expansion Step 1 (ADR-020): TLF-052 ability wheel (Flash), TLF-054 puzzle logic (Opus impl), TLF-057 art (design-art), then TLF-055 rooms (Flash), TLF-056 real-input proofs (Opus impl), then a telemetry playtest (target >= 15 min)
 2. Export smoke test (Windows build: theme font, translations, saves) once an export preset exists
 3. Human: physical controller spot-check (ISSUE-011, last item for M1)
 4. Vertical-slice polish: audio, lighting/VFX, Beat 10 cinematic, accessibility pass

@@ -22,3 +22,6 @@ Desktop.ini
 .DS_Store
 *.swp
 
+# Python bytecode (art/content generators)
+__pycache__/
+*.pyc
