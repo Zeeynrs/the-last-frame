@@ -224,6 +224,15 @@ func test_shortest_walkable_path_between_breakers_exceeds_600_px() -> void:
 
 
 func test_north_barrier_visual_and_collision_match() -> void:
+	# Note (TLF-046 / ISSUE-037):
+	# Previously (TLF-034), this test asserted that visual == collision identically.
+	# However, NorthBarrierCollision extends beyond the floor edge (into the unlit void)
+	# down to y=260 to seal the middle-lane corner so Elias cannot reach Breaker B.
+	# Rendering that full polygon resulted in a flat blue-grey block hanging outside the room.
+	# Per TLF-046 Lead decision:
+	# 1. Collision polygon is strictly UNCHANGED (exact match to spec polygon).
+	# 2. Visual polygon is clipped to the room floor: visual == intersect(collision, floor).
+	# 3. Area difference between the visual and intersect(collision, floor) is <= 1 px^2.
 	var sig := (load(SIGNAL_SCENE_PATH) as PackedScene).instantiate() as Node2D
 	var barrier_col := sig.get_node_or_null("TrenchRailings/NorthBarrierCollision") as CollisionPolygon2D
 	var barrier_vis := sig.get_node_or_null("NorthBarrierVisual") as Polygon2D
@@ -234,11 +243,25 @@ func test_north_barrier_visual_and_collision_match() -> void:
 	if barrier_col != null and barrier_vis != null:
 		var col_poly := barrier_col.polygon
 		var vis_poly := barrier_vis.polygon
-		_assert_eq(col_poly, vis_poly, "NorthBarrierCollision and NorthBarrierVisual polygons match identically")
 
-		# Geometric area difference via Geometry2D.clip_polygons
-		var diff_1 := Geometry2D.clip_polygons(col_poly, vis_poly)
-		var diff_2 := Geometry2D.clip_polygons(vis_poly, col_poly)
+		# 1. Collision polygon must be unchanged (exact)
+		var expected_col := PackedVector2Array([
+			Vector2(476, 190), Vector2(540, 222), Vector2(540, 260), Vector2(476, 260)
+		])
+		_assert_eq(col_poly, expected_col, "NorthBarrierCollision polygon is unchanged (exact)")
+
+		# 2. Floor polygon for Signal Control (16x12 footprint, apex (320, 64))
+		var floor_poly := PackedVector2Array([
+			Vector2(320, 64), Vector2(576, 192), Vector2(384, 288), Vector2(128, 160)
+		])
+		var inter := Geometry2D.intersect_polygons(col_poly, floor_poly)
+		_assert_true(inter.size() == 1, "Collision intersects floor in exactly 1 polygon")
+
+		var expected_vis := inter[0]
+
+		# 3. Geometric area difference between visual and intersect(collision, floor) <= 1 px^2
+		var diff_1 := Geometry2D.clip_polygons(expected_vis, vis_poly)
+		var diff_2 := Geometry2D.clip_polygons(vis_poly, expected_vis)
 		var diff_area_1 := 0.0
 		for poly in diff_1:
 			var a := 0.0
@@ -256,8 +279,8 @@ func test_north_barrier_visual_and_collision_match() -> void:
 				a += p1.x * p2.y - p2.x * p1.y
 			diff_area_2 += abs(a) * 0.5
 
-		_assert_true(diff_area_1 <= 1.0, "col_poly - vis_poly area <= 1 px^2 (actual: %.2f)" % diff_area_1)
-		_assert_true(diff_area_2 <= 1.0, "vis_poly - col_poly area <= 1 px^2 (actual: %.2f)" % diff_area_2)
+		_assert_true(diff_area_1 <= 1.0, "expected_vis - vis_poly area <= 1 px^2 (actual: %.2f)" % diff_area_1)
+		_assert_true(diff_area_2 <= 1.0, "vis_poly - expected_vis area <= 1 px^2 (actual: %.2f)" % diff_area_2)
 
 	sig.free()
 

@@ -393,8 +393,29 @@ func test_puzzle_prop_presenter_state_mappings() -> void:
 	c_pres._refresh()
 	_assert_true(c_pres.texture.resource_path.ends_with("surge_capacitor_charged.png"),
 		"SurgeCapacitorPresenter: charged charge_state selects charged texture")
-	_assert_eq(c_pres.resolve_state_key(&"charged", true), "frozen",
-		"SurgeCapacitorPresenter: is_frozen maps to frozen via data mapping")
+	_assert_eq(c_pres.resolve_state_key(&"charged", true), "frozen_charged",
+		"SurgeCapacitorPresenter: frozen + charged maps to frozen_charged via data mapping")
+	_assert_eq(c_pres.resolve_state_key(&"discharged", true), "frozen_discharged",
+		"SurgeCapacitorPresenter: frozen + discharged maps to frozen_discharged via data mapping")
+	_assert_true(c_pres.state_textures["frozen_charged"].resource_path.ends_with("surge_capacitor_frozen_charged.png"),
+		"SurgeCapacitorPresenter: frozen_charged texture is surge_capacitor_frozen_charged.png")
+	_assert_true(c_pres.state_textures["frozen_discharged"].resource_path.ends_with("surge_capacitor_frozen_discharged.png"),
+		"SurgeCapacitorPresenter: frozen_discharged texture is surge_capacitor_frozen_discharged.png")
+	_assert_true(c_pres.state_textures["frozen"].resource_path.ends_with("surge_capacitor_frozen.png"),
+		"SurgeCapacitorPresenter: legacy frozen fallback texture remains registered")
+
+	# Test in-engine refresh with TemporalComponent frozen flag
+	var temp := TemporalComponent.new()
+	cap.add_child(temp)
+	temp.is_frozen = true
+	cap.charge_state = &"charged"
+	c_pres._refresh()
+	_assert_true(c_pres.texture.resource_path.ends_with("surge_capacitor_frozen_charged.png"),
+		"SurgeCapacitorPresenter: frozen + charged selects frozen_charged texture")
+	cap.charge_state = &"discharged"
+	c_pres._refresh()
+	_assert_true(c_pres.texture.resource_path.ends_with("surge_capacitor_frozen_discharged.png"),
+		"SurgeCapacitorPresenter: frozen + discharged selects frozen_discharged texture")
 	cap.free()
 
 	# 5. PressureSwitchPresenter
