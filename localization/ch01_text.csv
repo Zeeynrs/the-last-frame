@@ -104,3 +104,165 @@ DOC_DISPATCH_BODY_2,"DIAGNOSTIC LOG
 23:59:00 - USER: ELIAS
 23:59:00 - USER: ELIAS
 23:59:00 - USER: ELIAS"
+SPK_MEM_N01,"Ines, conductor"
+MEM_N01_1,"[23:57] Doors closing! Hollow Quay, rear car only."
+MEM_N01_2,They keep changing it. Go by the last announcement.
+JRN_MEM_N01,"Ines, conductor, 23:57: the last service is Hollow Quay, rear car. Go by the last announcement."
+SPK_MEM_N02,"Tomas, student"
+MEM_N02_1,"[23:41] Mum says Central, platform 1, front car."
+MEM_N02_2,"She can't know about the cancellations, can she?"
+JRN_MEM_N02,"Tomas, a student, 23:41: Central line, platform 1, front car, his mother's advice."
+SPK_MEM_N03,"Mr. Adeyemi, old man"
+MEM_N03_1,"[23:30] Harbour line, platform 2, middle car."
+MEM_N03_2,"Forty years. Same bench, same train."
+JRN_MEM_N03,"Mr. Adeyemi, 23:30: Harbour line, platform 2, middle car. The oldest word on the platform."
+SPK_MEM_N04,Night cleaner
+MEM_N04_1,[23:58] They moved the last service to platform 3.
+MEM_N04_2,Hauled my trolley over. One minute and I'm clocked out.
+JRN_MEM_N04,"The night cleaner, 23:58: the last service was moved to platform 3."
+SPK_MEM_N05,"Dev, courier"
+MEM_N05_1,[23:59] Not stopping for a gate. The conduit's coming down!
+MEM_N05_2,"Go, go, GO!"
+JRN_MEM_N05,A courier cleared the turnstile at 23:59 as the ceiling conduit fell. The watch ticked backwards.
+SPK_MEM_N06,Woman in a red coat
+MEM_N06_1,"[23:41] Harbour line, platform 1."
+MEM_N06_2,I'll make the 23:50 if this thing prints.
+JRN_MEM_N06,"Woman in a red coat, 23:41: ticket for the Harbour line, platform 1."
+SPK_MEM_N07,Man with a briefcase
+MEM_N07_1,"[23:49] Central line, platform 2."
+MEM_N07_2,Third notice today that says it's not a drill.
+JRN_MEM_N07,"Man with a briefcase, 23:49: ticket for the Central line, platform 2."
+SPK_MEM_N08,Father with a child
+MEM_N08_1,"[23:53] Orchard Gate, platform 3."
+MEM_N08_2,Just let her sleep. Just let her sleep.
+JRN_MEM_N08,"A father with a sleeping child, 23:53: ticket for Orchard Gate, platform 3."
+SPK_MEM_N09,Teenager
+MEM_N09_1,"[23:55] Orchard Gate, platform 1."
+MEM_N09_2,Bought it right when they said evacuate. Whatever.
+JRN_MEM_N09,"A teenager, 23:55: ticket for Orchard Gate, platform 1, bought as the evacuation was announced."
+SPK_MEM_N11,"Hollis, hatch tech"
+MEM_N11_1,[23:58] Hold it. Hold it open! I'll fetch the wrench.
+MEM_N11_2,Hold it...
+JRN_MEM_N11,"Hollis, a hatch tech, 23:58: held a service hatch open by hand. The watch stopped for a moment."
+SPK_MEM_N13,"Corva, security guard"
+MEM_N13_1,[23:57] The gate follows the south plate.
+MEM_N13_2,The north one's the alarm. Trust me on that.
+JRN_MEM_N13,"Corva, security guard, 23:57: the south plate works the gate. The north plate is only an alarm."
+SPK_MEM_N20,"Lis, signal engineer"
+MEM_N20_1,[23:56] Bus 2 is hot. Don't touch breaker C.
+MEM_N20_2,C is the lamp ring. It'll brown out the whole bank.
+JRN_MEM_N20,"Lis, signal engineer, 23:56: never engage breaker C while the bus is powered."
+SPK_MEM_N21,"Ayo, tourist"
+MEM_N21_1,"[23:55] North, then west, then north again."
+MEM_N21_2,I keep coming out of the same door.
+JRN_MEM_N21,"Ayo, a tourist, 23:55: walking north brought them out of the west arch again and again."
+SPK_MEMORY,Memory
+MEM_ANCHOR_TURNSTILE_1,[23:59] A figure vaults the gate. Behind him a conduit tears loose.
+MEM_ANCHOR_TURNSTILE_2,It lands across the turnstile arm.
+EL_UNLOCK_REWIND,It went back. One step.
+EL_UNLOCK_FREEZE,It can hold things still.
+EL_UNLOCK_ECHO,A second hand. It follows the first.
+UNLOCK_TRACE,Trace unlocked. Hold the watch up to anything that remembers.
+UNLOCK_REWIND,Rewind unlocked.
+UNLOCK_FREEZE,Freeze unlocked.
+UNLOCK_ECHO,Echo unlocked.
+SO001_FB_WRONG_CODE,The panel buzzes and resets.
+SO001_FB_LOCKED_OUT,The panel is still resetting.
+SO001_FB_GATE_SEALED,Sealed. The release panel is on the north wall.
+SO001_LINE_0,CENTRAL
+SO001_LINE_1,HOLLOW QUAY
+SO001_LINE_2,HARBOUR
+SO001_PLAT_0,PLAT 1
+SO001_PLAT_1,PLAT 2
+SO001_PLAT_2,PLAT 3
+SO001_CAR_0,MIDDLE CAR
+SO001_CAR_1,REAR CAR
+SO001_CAR_2,FRONT CAR
+JRN_SO001_SOLVED,"The platform gate answers to the last announcement, not the first."
+DOC_LAST_SERVICE_TITLE,PLATFORM ANNOUNCEMENT LOG
+DOC_LAST_SERVICE_BODY_1,"LAST SERVICE: ANNOUNCEMENTS
+23:30  service announced
+23:41  service changed
+23:57  service changed
+23:58  platform changed
+Follow the latest announcement."
+JRN_DOC_LAST_SERVICE,"The platform log: the service was changed three times, the platform once. The latest one counts."
+SO002_FB_HATCH_WEIGHT,The hatch only opens under weight.
+SO002_FB_BELL,A bell rings. Nothing else happens.
+SO002_FB_HATCH_HELD,The hatch is held open.
+JRN_SO002_SOLVED,"The watch can hold a mechanism in the state it is in, even after I step away."
+DOC_HATCH_CHART_TITLE,HATCH 4 SERVICE CHART
+DOC_HATCH_CHART_BODY_1,"Plate A (brass, marked A): opens Hatch 4
+Plate B (green, marked B): service bell
+The hatch opens under weight.
+Do not leave it unattended.
+- Maintenance"
+JRN_DOC_HATCH_CHART,Plate A works the hatch. Plate B only rings a bell.
+OP_B03_06,"The staff door opens for one ticket only. Ask the queue what they bought, and when."
+DOC_TICKET_TERMS_TITLE,STAFF DOOR NOTICE
+DOC_TICKET_TERMS_BODY_1,"After the evacuation order,
+only ORCHARD GATE tickets
+are honoured at the staff door.
+The door reads one ticket at a time.
+- Station Office"
+JRN_DOC_TICKET_TERMS,The staff door honours Orchard Gate tickets bought after the evacuation order.
+PZ006_LINE_0,DOCKSIDE
+PZ006_LINE_1,HARBOUR
+PZ006_LINE_2,ORCHARD GATE
+PZ006_LINE_3,CENTRAL
+PZ006_LINE_4,HOLLOW QUAY
+PZ006_LINE_5,HILL ROAD
+PZ006_PLAT_0,PLAT 6
+PZ006_PLAT_1,PLAT 4
+PZ006_PLAT_2,PLAT 2
+PZ006_PLAT_3,PLAT 1
+PZ006_PLAT_4,PLAT 3
+PZ006_PLAT_5,PLAT 5
+PZ006_TIME_0,23:38
+PZ006_TIME_1,23:55
+PZ006_TIME_2,23:49
+PZ006_TIME_3,23:41
+PZ006_TIME_4,23:53
+PZ006_TIME_5,23:57
+PZ006_FB_DIAL_JAMMED,The dial only turns back with the watch.
+PZ006_FB_NO_SUCH_TICKET,No such ticket.
+PZ006_FB_DOOR_WAITING,The staff door is waiting for a valid ticket.
+PZ006_OK,Ticket accepted. The staff door unlocks.
+JRN_PZ006_SOLVED,The ticket machines remember tickets out of order. Time here runs backwards in places.
+PZ001_FB_PINNED,A fallen conduit pins the turnstile. Lift it first.
+PZ002_FB_UNANCHORED,The inner shutter needs the gear locked to hold.
+DOC_INNER_SHUTTER_TITLE,INNER SHUTTER
+DOC_INNER_SHUTTER_BODY_1,"Anchored to the main counterweight gear.
+Gear locked: shutter holds.
+Gear free: shutter will not lift."
+JRN_DOC_INNER_SHUTTER,The inner shutter hangs on the same gear. It only lifts while the gear is locked.
+PZ003_FB_NO_PASS,A staff pass is needed to open this barrier.
+PZ003_FB_ALARM,The alarm rings. Nothing else happens.
+PZ003_FB_BARRIER,Staff only. The reader is beside the barrier.
+DOC_GUARD_LOG_TITLE,SECURITY LOG
+DOC_GUARD_LOG_BODY_1,"23:52 Trench sealed: staff only.
+23:55 Gate runs off the SOUTH plate.
+NORTH plate: alarm. Do not stand on it.
+Staff pass at the desk, reader at the barrier."
+JRN_DOC_GUARD_LOG,Only the south plate works the gate. The staff pass is needed at the east barrier.
+PZ004_FB_BROWNOUT,Breaker C browned out the capacitor. Stabilize it again.
+PZ004_FB_C_DEAD,The lamp ring has no power to draw yet.
+DOC_BUS_CHART_TITLE,BUS 2 CHART
+DOC_BUS_CHART_BODY_1,"A, B: vestibule door feed
+C: lamp ring. Do NOT engage
+while the bus is powered.
+Engage A and B together."
+JRN_DOC_BUS_CHART,Breakers A and B feed the vestibule door. Breaker C is the lamp ring and must stay off.
+PZ005_FB_UNPOWERED_RELAY,The relay is dead. Something must hold the standby plate.
+PZ005_FB_DEAD_RELAY,This auxiliary relay was never wired.
+DOC_RELAY_MEMO_TITLE,RELAY BOX MEMO
+DOC_RELAY_MEMO_BODY_1,"Junction relays draw standby power
+from the floor plate in the SW corner.
+Keep it held while switching."
+JRN_DOC_RELAY_MEMO,The junction relays need the floor plate held while they are switched.
+MEM_HATCH_RESIDUE_1,[23:58] A man's whole weight on the brass plate.
+MEM_HATCH_RESIDUE_2,The hatch breathes open. It closes the moment he lets go.
+JRN_MEM_HATCH,The brass plate opens the hatch while someone stands on it. It shuts the moment they step off.
+MEM_GEAR_RESIDUE_1,[23:56] The gear housing shudders. A second linkage runs east.
+MEM_GEAR_RESIDUE_2,It ends at the inner shutter. Both hang on this one gear.
+JRN_MEM_GEAR,"The counterweight gear also carries the inner shutter, east of the first one."

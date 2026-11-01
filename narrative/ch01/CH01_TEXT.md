@@ -82,6 +82,145 @@
 | DOC_DISPATCH_TITLE | terminal | | 09 | ch01.station_atrium.dispatch_terminal | CENTRAL DISPATCH RECORDER | the revelation |
 | DOC_DISPATCH_BODY_1 | terminal | | 09 | ch01.station_atrium.dispatch_terminal | BIOMETRIC MATCH - ACCESS GRANTED<br>EVENT: CONTAINMENT PROTOCOL<br>STATUS: EXECUTED 23:59:00<br>AUTHORIZATION: LEVEL-0<br>USER: ELIAS<br>LOCATION: THIS TERMINAL | |
 | DOC_DISPATCH_BODY_2 | terminal | | 09 | ch01.station_atrium.dispatch_terminal | DIAGNOSTIC LOG<br>23:59:00 - USER: ELIAS<br>23:59:00 - USER: ELIAS<br>23:59:00 - USER: ELIAS<br>23:59:00 - USER: ELIAS<br>23:59:00 - USER: ELIAS | unnumbered, no "exit" |
+| SPK_MEM_N01 | speaker | System | any |  | Ines, conductor | frozen commuter speaker label |
+| MEM_N01_1 | memory | Ines, conductor | 01b | ch01.arrival_platform.n01_conductor | [23:57] Doors closing! Hollow Quay, rear car only. | Trace memory line 1 (time stamp first) |
+| MEM_N01_2 | memory | Ines, conductor | 01b | ch01.arrival_platform.n01_conductor | They keep changing it. Go by the last announcement. | Trace memory line 2 |
+| JRN_MEM_N01 | journal |  | 01b | ch01.arrival_platform.n01_conductor | Ines, conductor, 23:57: the last service is Hollow Quay, rear car. Go by the last announcement. | observation (added on first Trace) |
+| SPK_MEM_N02 | speaker | System | any |  | Tomas, student | frozen commuter speaker label |
+| MEM_N02_1 | memory | Tomas, student | 01b | ch01.arrival_platform.n02_student | [23:41] Mum says Central, platform 1, front car. | Trace memory line 1 (time stamp first) |
+| MEM_N02_2 | memory | Tomas, student | 01b | ch01.arrival_platform.n02_student | She can't know about the cancellations, can she? | Trace memory line 2 |
+| JRN_MEM_N02 | journal |  | 01b | ch01.arrival_platform.n02_student | Tomas, a student, 23:41: Central line, platform 1, front car, his mother's advice. | observation (added on first Trace) |
+| SPK_MEM_N03 | speaker | System | any |  | Mr. Adeyemi, old man | frozen commuter speaker label |
+| MEM_N03_1 | memory | Mr. Adeyemi, old man | 01b | ch01.arrival_platform.n03_old_man | [23:30] Harbour line, platform 2, middle car. | Trace memory line 1 (time stamp first) |
+| MEM_N03_2 | memory | Mr. Adeyemi, old man | 01b | ch01.arrival_platform.n03_old_man | Forty years. Same bench, same train. | Trace memory line 2 |
+| JRN_MEM_N03 | journal |  | 01b | ch01.arrival_platform.n03_old_man | Mr. Adeyemi, 23:30: Harbour line, platform 2, middle car. The oldest word on the platform. | observation (added on first Trace) |
+| SPK_MEM_N04 | speaker | System | any |  | Night cleaner | frozen commuter speaker label |
+| MEM_N04_1 | memory | Night cleaner | 01b | ch01.arrival_platform.n04_cleaner | [23:58] They moved the last service to platform 3. | Trace memory line 1 (time stamp first) |
+| MEM_N04_2 | memory | Night cleaner | 01b | ch01.arrival_platform.n04_cleaner | Hauled my trolley over. One minute and I'm clocked out. | Trace memory line 2 |
+| JRN_MEM_N04 | journal |  | 01b | ch01.arrival_platform.n04_cleaner | The night cleaner, 23:58: the last service was moved to platform 3. | observation (added on first Trace) |
+| SPK_MEM_N05 | speaker | System | any |  | Dev, courier | frozen commuter speaker label |
+| MEM_N05_1 | memory | Dev, courier | 02a | ch01.concourse_west.n05_courier | [23:59] Not stopping for a gate. The conduit's coming down! | Trace memory line 1 (time stamp first) |
+| MEM_N05_2 | memory | Dev, courier | 02a | ch01.concourse_west.n05_courier | Go, go, GO! | Trace memory line 2 |
+| JRN_MEM_N05 | journal |  | 02a | ch01.concourse_west.n05_courier | A courier cleared the turnstile at 23:59 as the ceiling conduit fell. The watch ticked backwards. | observation (added on first Trace) |
+| SPK_MEM_N06 | speaker | System | any |  | Woman in a red coat | frozen commuter speaker label |
+| MEM_N06_1 | memory | Woman in a red coat | 03b | ch01.concourse_west.n06_red_coat | [23:41] Harbour line, platform 1. | Trace memory line 1 (time stamp first) |
+| MEM_N06_2 | memory | Woman in a red coat | 03b | ch01.concourse_west.n06_red_coat | I'll make the 23:50 if this thing prints. | Trace memory line 2 |
+| JRN_MEM_N06 | journal |  | 03b | ch01.concourse_west.n06_red_coat | Woman in a red coat, 23:41: ticket for the Harbour line, platform 1. | observation (added on first Trace) |
+| SPK_MEM_N07 | speaker | System | any |  | Man with a briefcase | frozen commuter speaker label |
+| MEM_N07_1 | memory | Man with a briefcase | 03b | ch01.concourse_west.n07_briefcase | [23:49] Central line, platform 2. | Trace memory line 1 (time stamp first) |
+| MEM_N07_2 | memory | Man with a briefcase | 03b | ch01.concourse_west.n07_briefcase | Third notice today that says it's not a drill. | Trace memory line 2 |
+| JRN_MEM_N07 | journal |  | 03b | ch01.concourse_west.n07_briefcase | Man with a briefcase, 23:49: ticket for the Central line, platform 2. | observation (added on first Trace) |
+| SPK_MEM_N08 | speaker | System | any |  | Father with a child | frozen commuter speaker label |
+| MEM_N08_1 | memory | Father with a child | 03b | ch01.concourse_west.n08_father | [23:53] Orchard Gate, platform 3. | Trace memory line 1 (time stamp first) |
+| MEM_N08_2 | memory | Father with a child | 03b | ch01.concourse_west.n08_father | Just let her sleep. Just let her sleep. | Trace memory line 2 |
+| JRN_MEM_N08 | journal |  | 03b | ch01.concourse_west.n08_father | A father with a sleeping child, 23:53: ticket for Orchard Gate, platform 3. | observation (added on first Trace) |
+| SPK_MEM_N09 | speaker | System | any |  | Teenager | frozen commuter speaker label |
+| MEM_N09_1 | memory | Teenager | 03b | ch01.concourse_west.n09_teen | [23:55] Orchard Gate, platform 1. | Trace memory line 1 (time stamp first) |
+| MEM_N09_2 | memory | Teenager | 03b | ch01.concourse_west.n09_teen | Bought it right when they said evacuate. Whatever. | Trace memory line 2 |
+| JRN_MEM_N09 | journal |  | 03b | ch01.concourse_west.n09_teen | A teenager, 23:55: ticket for Orchard Gate, platform 1, bought as the evacuation was announced. | observation (added on first Trace) |
+| SPK_MEM_N11 | speaker | System | any |  | Hollis, hatch tech | frozen commuter speaker label |
+| MEM_N11_1 | memory | Hollis, hatch tech | 04a | ch01.maintenance_bay.n11_hatch_tech | [23:58] Hold it. Hold it open! I'll fetch the wrench. | Trace memory line 1 (time stamp first) |
+| MEM_N11_2 | memory | Hollis, hatch tech | 04a | ch01.maintenance_bay.n11_hatch_tech | Hold it... | Trace memory line 2 |
+| JRN_MEM_N11 | journal |  | 04a | ch01.maintenance_bay.n11_hatch_tech | Hollis, a hatch tech, 23:58: held a service hatch open by hand. The watch stopped for a moment. | observation (added on first Trace) |
+| SPK_MEM_N13 | speaker | System | any |  | Corva, security guard | frozen commuter speaker label |
+| MEM_N13_1 | memory | Corva, security guard | 05a | ch01.security_crossing.n13_guard | [23:57] The gate follows the south plate. | Trace memory line 1 (time stamp first) |
+| MEM_N13_2 | memory | Corva, security guard | 05a | ch01.security_crossing.n13_guard | The north one's the alarm. Trust me on that. | Trace memory line 2 |
+| JRN_MEM_N13 | journal |  | 05a | ch01.security_crossing.n13_guard | Corva, security guard, 23:57: the south plate works the gate. The north plate is only an alarm. | observation (added on first Trace) |
+| SPK_MEM_N20 | speaker | System | any |  | Lis, signal engineer | frozen commuter speaker label |
+| MEM_N20_1 | memory | Lis, signal engineer | 07a | ch01.signal_control.n20_engineer | [23:56] Bus 2 is hot. Don't touch breaker C. | Trace memory line 1 (time stamp first) |
+| MEM_N20_2 | memory | Lis, signal engineer | 07a | ch01.signal_control.n20_engineer | C is the lamp ring. It'll brown out the whole bank. | Trace memory line 2 |
+| JRN_MEM_N20 | journal |  | 07a | ch01.signal_control.n20_engineer | Lis, signal engineer, 23:56: never engage breaker C while the bus is powered. | observation (added on first Trace) |
+| SPK_MEM_N21 | speaker | System | any |  | Ayo, tourist | frozen commuter speaker label |
+| MEM_N21_1 | memory | Ayo, tourist | 08a | ch01.upper_vestibule.n21_tourist | [23:55] North, then west, then north again. | Trace memory line 1 (time stamp first) |
+| MEM_N21_2 | memory | Ayo, tourist | 08a | ch01.upper_vestibule.n21_tourist | I keep coming out of the same door. | Trace memory line 2 |
+| JRN_MEM_N21 | journal |  | 08a | ch01.upper_vestibule.n21_tourist | Ayo, a tourist, 23:55: walking north brought them out of the west arch again and again. | observation (added on first Trace) |
+| SPK_MEMORY | speaker | System | any |  | Memory | generic Trace speaker label |
+| MEM_ANCHOR_TURNSTILE_1 | memory | Memory | 02a | ch01.concourse_west.turnstile_trace_anchor | [23:59] A figure vaults the gate. Behind him a conduit tears loose. | scene memory, line 1 |
+| MEM_ANCHOR_TURNSTILE_2 | memory | Memory | 02a | ch01.concourse_west.turnstile_trace_anchor | It lands across the turnstile arm. | scene memory, line 2 |
+| EL_UNLOCK_REWIND | monologue | Elias | 02a | ch01.concourse_west.n05_courier | It went back. One step. | Rewind unlock |
+| EL_UNLOCK_FREEZE | monologue | Elias | 04a | ch01.maintenance_bay.n11_hatch_tech | It can hold things still. | Freeze unlock |
+| EL_UNLOCK_ECHO | monologue | Elias | 05a | ch01.security_crossing.echo_recorder_pedestal | A second hand. It follows the first. | Echo unlock |
+| UNLOCK_TRACE | toast |  | 01 | global.pocket_watch | Trace unlocked. Hold the watch up to anything that remembers. | HUD toast, 60 chars |
+| UNLOCK_REWIND | toast |  | 02a |  | Rewind unlocked. | HUD toast |
+| UNLOCK_FREEZE | toast |  | 04a |  | Freeze unlocked. | HUD toast |
+| UNLOCK_ECHO | toast |  | 05a |  | Echo unlocked. | HUD toast |
+| SO001_FB_WRONG_CODE | feedback |  | 01b | ch01.arrival_platform.release_lever | The panel buzzes and resets. | identical for every wrong code (no partial feedback) |
+| SO001_FB_LOCKED_OUT | feedback |  | 01b | ch01.arrival_platform.release_lever | The panel is still resetting. | during the lock-out |
+| SO001_FB_GATE_SEALED | feedback |  | 01b | ch01.arrival_platform.platform_gate | Sealed. The release panel is on the north wall. | use on the gate |
+| SO001_LINE_0 | label |  | 01b | ch01.arrival_platform.selector_line | CENTRAL | selector LINE position 0 |
+| SO001_LINE_1 | label |  | 01b | ch01.arrival_platform.selector_line | HOLLOW QUAY | selector LINE position 1 (answer) |
+| SO001_LINE_2 | label |  | 01b | ch01.arrival_platform.selector_line | HARBOUR | selector LINE position 2 |
+| SO001_PLAT_0 | label |  | 01b | ch01.arrival_platform.selector_platform | PLAT 1 | selector PLATFORM position 0 |
+| SO001_PLAT_1 | label |  | 01b | ch01.arrival_platform.selector_platform | PLAT 2 | selector PLATFORM position 1 |
+| SO001_PLAT_2 | label |  | 01b | ch01.arrival_platform.selector_platform | PLAT 3 | selector PLATFORM position 2 (answer) |
+| SO001_CAR_0 | label |  | 01b | ch01.arrival_platform.selector_car | MIDDLE CAR | selector CAR position 0 |
+| SO001_CAR_1 | label |  | 01b | ch01.arrival_platform.selector_car | REAR CAR | selector CAR position 1 (answer) |
+| SO001_CAR_2 | label |  | 01b | ch01.arrival_platform.selector_car | FRONT CAR | selector CAR position 2 |
+| JRN_SO001_SOLVED | journal |  | 01b | ch01.arrival_platform.release_lever | The platform gate answers to the last announcement, not the first. | fact |
+| DOC_LAST_SERVICE_TITLE | document |  | 01b | ch01.arrival_platform.doc_last_service | PLATFORM ANNOUNCEMENT LOG |  |
+| DOC_LAST_SERVICE_BODY_1 | document |  | 01b | ch01.arrival_platform.doc_last_service | LAST SERVICE: ANNOUNCEMENTS<br>23:30  service announced<br>23:41  service changed<br>23:57  service changed<br>23:58  platform changed<br>Follow the latest announcement. | times only, no values (insurance for the rule) |
+| JRN_DOC_LAST_SERVICE | journal |  | 01b | ch01.arrival_platform.doc_last_service | The platform log: the service was changed three times, the platform once. The latest one counts. | observation |
+| SO002_FB_HATCH_WEIGHT | feedback |  | 04b | ch01.maintenance_bay.hatch_01 | The hatch only opens under weight. | use on a closed hatch |
+| SO002_FB_BELL | feedback |  | 04b | ch01.maintenance_bay.bell_plate_01 | A bell rings. Nothing else happens. | decoy plate |
+| SO002_FB_HATCH_HELD | feedback |  | 04b | ch01.maintenance_bay.hatch_01 | The hatch is held open. | use on a frozen open hatch |
+| JRN_SO002_SOLVED | journal |  | 04b | ch01.maintenance_bay.hatch_01 | The watch can hold a mechanism in the state it is in, even after I step away. | fact |
+| DOC_HATCH_CHART_TITLE | document |  | 04b | ch01.maintenance_bay.doc_hatch_chart | HATCH 4 SERVICE CHART |  |
+| DOC_HATCH_CHART_BODY_1 | document |  | 04b | ch01.maintenance_bay.doc_hatch_chart | Plate A (brass, marked A): opens Hatch 4<br>Plate B (green, marked B): service bell<br>The hatch opens under weight.<br>Do not leave it unattended.<br>- Maintenance |  |
+| JRN_DOC_HATCH_CHART | journal |  | 04b | ch01.maintenance_bay.doc_hatch_chart | Plate A works the hatch. Plate B only rings a bell. | observation |
+| OP_B03_06 | operator | Operator (call box) | 03a | ch01.concourse_west.call_box_09 | The staff door opens for one ticket only. Ask the queue what they bought, and when. | new nudge, plays before OP_B03_05 |
+| DOC_TICKET_TERMS_TITLE | document |  | 03b | ch01.concourse_west.doc_ticket_terms | STAFF DOOR NOTICE |  |
+| DOC_TICKET_TERMS_BODY_1 | document |  | 03b | ch01.concourse_west.doc_ticket_terms | After the evacuation order,<br>only ORCHARD GATE tickets<br>are honoured at the staff door.<br>The door reads one ticket at a time.<br>- Station Office |  |
+| JRN_DOC_TICKET_TERMS | journal |  | 03b | ch01.concourse_west.doc_ticket_terms | The staff door honours Orchard Gate tickets bought after the evacuation order. | fact |
+| PZ006_LINE_0 | label |  | 03b | ch01.concourse_west.dial_line | DOCKSIDE | LINE dial entry 0 |
+| PZ006_LINE_1 | label |  | 03b | ch01.concourse_west.dial_line | HARBOUR | LINE dial entry 1 |
+| PZ006_LINE_2 | label |  | 03b | ch01.concourse_west.dial_line | ORCHARD GATE | LINE dial entry 2 (target) |
+| PZ006_LINE_3 | label |  | 03b | ch01.concourse_west.dial_line | CENTRAL | LINE dial entry 3 |
+| PZ006_LINE_4 | label |  | 03b | ch01.concourse_west.dial_line | HOLLOW QUAY | LINE dial entry 4 |
+| PZ006_LINE_5 | label |  | 03b | ch01.concourse_west.dial_line | HILL ROAD | LINE dial entry 5 (tick-0) |
+| PZ006_PLAT_0 | label |  | 03b | ch01.concourse_west.dial_platform | PLAT 6 | PLATFORM dial entry 0 |
+| PZ006_PLAT_1 | label |  | 03b | ch01.concourse_west.dial_platform | PLAT 4 | PLATFORM dial entry 1 |
+| PZ006_PLAT_2 | label |  | 03b | ch01.concourse_west.dial_platform | PLAT 2 | PLATFORM dial entry 2 |
+| PZ006_PLAT_3 | label |  | 03b | ch01.concourse_west.dial_platform | PLAT 1 | PLATFORM dial entry 3 (target) |
+| PZ006_PLAT_4 | label |  | 03b | ch01.concourse_west.dial_platform | PLAT 3 | PLATFORM dial entry 4 |
+| PZ006_PLAT_5 | label |  | 03b | ch01.concourse_west.dial_platform | PLAT 5 | PLATFORM dial entry 5 (tick-0) |
+| PZ006_TIME_0 | label |  | 03b | ch01.concourse_west.dial_time | 23:38 | TIME dial entry 0 |
+| PZ006_TIME_1 | label |  | 03b | ch01.concourse_west.dial_time | 23:55 | TIME dial entry 1 (target) |
+| PZ006_TIME_2 | label |  | 03b | ch01.concourse_west.dial_time | 23:49 | TIME dial entry 2 |
+| PZ006_TIME_3 | label |  | 03b | ch01.concourse_west.dial_time | 23:41 | TIME dial entry 3 |
+| PZ006_TIME_4 | label |  | 03b | ch01.concourse_west.dial_time | 23:53 | TIME dial entry 4 |
+| PZ006_TIME_5 | label |  | 03b | ch01.concourse_west.dial_time | 23:57 | TIME dial entry 5 (tick-0) |
+| PZ006_FB_DIAL_JAMMED | feedback |  | 03b | ch01.concourse_west.dial_line | The dial only turns back with the watch. | use on a dial |
+| PZ006_FB_NO_SUCH_TICKET | feedback |  | 03b | ch01.concourse_west.ticket_validator | No such ticket. | identical for every wrong combination |
+| PZ006_FB_DOOR_WAITING | feedback |  | 03b | ch01.concourse_west.staff_door | The staff door is waiting for a valid ticket. | use on the staff door |
+| PZ006_OK | feedback |  | 03b | ch01.concourse_west.ticket_validator | Ticket accepted. The staff door unlocks. | success |
+| JRN_PZ006_SOLVED | journal |  | 03b | ch01.concourse_west.ticket_validator | The ticket machines remember tickets out of order. Time here runs backwards in places. | theory |
+| PZ001_FB_PINNED | feedback |  | 02b | ch01.concourse_west.turnstile_gate | A fallen conduit pins the turnstile. Lift it first. | Rewind on a pinned gate |
+| PZ002_FB_UNANCHORED | feedback |  | 04c | ch01.maintenance_bay.inner_shutter | The inner shutter needs the gear locked to hold. | Rewind on the inner shutter while the gear is free |
+| DOC_INNER_SHUTTER_TITLE | document |  | 04c | ch01.maintenance_bay.doc_inner_shutter_plate | INNER SHUTTER |  |
+| DOC_INNER_SHUTTER_BODY_1 | document |  | 04c | ch01.maintenance_bay.doc_inner_shutter_plate | Anchored to the main counterweight gear.<br>Gear locked: shutter holds.<br>Gear free: shutter will not lift. |  |
+| JRN_DOC_INNER_SHUTTER | journal |  | 04c | ch01.maintenance_bay.doc_inner_shutter_plate | The inner shutter hangs on the same gear. It only lifts while the gear is locked. | observation |
+| PZ003_FB_NO_PASS | feedback |  | 05b | ch01.security_crossing.card_reader_01 | A staff pass is needed to open this barrier. | reader without the pass |
+| PZ003_FB_ALARM | feedback |  | 05b | ch01.security_crossing.alarm_plate_01 | The alarm rings. Nothing else happens. | decoy plate |
+| PZ003_FB_BARRIER | feedback |  | 05b | ch01.security_crossing.staff_barrier_01 | Staff only. The reader is beside the barrier. | use on the barrier |
+| DOC_GUARD_LOG_TITLE | document |  | 05b | ch01.security_crossing.doc_guard_log | SECURITY LOG |  |
+| DOC_GUARD_LOG_BODY_1 | document |  | 05b | ch01.security_crossing.doc_guard_log | 23:52 Trench sealed: staff only.<br>23:55 Gate runs off the SOUTH plate.<br>NORTH plate: alarm. Do not stand on it.<br>Staff pass at the desk, reader at the barrier. |  |
+| JRN_DOC_GUARD_LOG | journal |  | 05b | ch01.security_crossing.doc_guard_log | Only the south plate works the gate. The staff pass is needed at the east barrier. | observation |
+| PZ004_FB_BROWNOUT | feedback |  | 07b | ch01.signal_control.breaker_c | Breaker C browned out the capacitor. Stabilize it again. | C pulled while charged |
+| PZ004_FB_C_DEAD | feedback |  | 07b | ch01.signal_control.breaker_c | The lamp ring has no power to draw yet. | C pulled while the bus is dead |
+| DOC_BUS_CHART_TITLE | document |  | 07b | ch01.signal_control.doc_bus_chart | BUS 2 CHART |  |
+| DOC_BUS_CHART_BODY_1 | document |  | 07b | ch01.signal_control.doc_bus_chart | A, B: vestibule door feed<br>C: lamp ring. Do NOT engage<br>while the bus is powered.<br>Engage A and B together. |  |
+| JRN_DOC_BUS_CHART | journal |  | 07b | ch01.signal_control.doc_bus_chart | Breakers A and B feed the vestibule door. Breaker C is the lamp ring and must stay off. | observation |
+| PZ005_FB_UNPOWERED_RELAY | feedback |  | 08b | ch01.upper_vestibule.junction_lever_a | The relay is dead. Something must hold the standby plate. | lever without plate power |
+| PZ005_FB_DEAD_RELAY | feedback |  | 08b | ch01.upper_vestibule.junction_lever_c | This auxiliary relay was never wired. | decoy lever |
+| DOC_RELAY_MEMO_TITLE | document |  | 08b | ch01.upper_vestibule.doc_relay_memo | RELAY BOX MEMO |  |
+| DOC_RELAY_MEMO_BODY_1 | document |  | 08b | ch01.upper_vestibule.doc_relay_memo | Junction relays draw standby power<br>from the floor plate in the SW corner.<br>Keep it held while switching. |  |
+| JRN_DOC_RELAY_MEMO | journal |  | 08b | ch01.upper_vestibule.doc_relay_memo | The junction relays need the floor plate held while they are switched. | observation |
+| MEM_HATCH_RESIDUE_1 | memory | Memory | 04b | ch01.maintenance_bay.hatch_residue | [23:58] A man's whole weight on the brass plate. | scene memory on the brass plate, line 1 |
+| MEM_HATCH_RESIDUE_2 | memory | Memory | 04b | ch01.maintenance_bay.hatch_residue | The hatch breathes open. It closes the moment he lets go. | scene memory, line 2 |
+| JRN_MEM_HATCH | journal |  | 04b | ch01.maintenance_bay.hatch_residue | The brass plate opens the hatch while someone stands on it. It shuts the moment they step off. | observation |
+| MEM_GEAR_RESIDUE_1 | memory | Memory | 04c | ch01.maintenance_bay.gear_residue | [23:56] The gear housing shudders. A second linkage runs east. | scene memory on the counterweight gear, line 1 |
+| MEM_GEAR_RESIDUE_2 | memory | Memory | 04c | ch01.maintenance_bay.gear_residue | It ends at the inner shutter. Both hang on this one gear. | scene memory, line 2 |
+| JRN_MEM_GEAR | journal |  | 04c | ch01.maintenance_bay.gear_residue | The counterweight gear also carries the inner shutter, east of the first one. | observation |
 
 ## Documents
 | document_id | kind | title_key | body_keys | flag_id | fragment_id | journal_key | category |
@@ -92,10 +231,26 @@
 | ch01.vestibule_niche.doc_index_plaque | PLAQUE | DOC_INDEX_PLAQUE_TITLE | DOC_INDEX_PLAQUE_BODY_1 | | | JRN_CH1_THRESHOLDS | theory |
 | ch01.station_atrium.dispatch_terminal | TERMINAL | DOC_DISPATCH_TITLE | DOC_DISPATCH_BODY_1 | ch01.flag.ledger_2359_revealed | | JRN_CH1_SEAL_ELIAS | fact |
 
+## Documents (Step 1, pending implementation)
+Not read by `gen_ch01_text.py` (the generator parses only the `## Documents` table above). These seven readables belong to the TLF-047 Step 1 specs; their `DocumentDef` resources are generated when the implementation task moves the rows into the table above (it also updates the document-count assertion in `tests/narrative/test_ch01_text.gd`, which expects exactly 5).
+
+| document_id | kind | title_key | body_keys | flag_id | fragment_id | journal_key | category |
+|---|---|---|---|---|---|---|---|
+| ch01.arrival_platform.doc_last_service | DOCUMENT | DOC_LAST_SERVICE_TITLE | DOC_LAST_SERVICE_BODY_1 | ch01.flag.last_service_read |  | JRN_DOC_LAST_SERVICE | observation |
+| ch01.maintenance_bay.doc_hatch_chart | DOCUMENT | DOC_HATCH_CHART_TITLE | DOC_HATCH_CHART_BODY_1 | ch01.flag.hatch_chart_read |  | JRN_DOC_HATCH_CHART | observation |
+| ch01.concourse_west.doc_ticket_terms | PLAQUE | DOC_TICKET_TERMS_TITLE | DOC_TICKET_TERMS_BODY_1 | ch01.flag.ticket_terms_read |  | JRN_DOC_TICKET_TERMS | fact |
+| ch01.maintenance_bay.doc_inner_shutter_plate | PLAQUE | DOC_INNER_SHUTTER_TITLE | DOC_INNER_SHUTTER_BODY_1 | ch01.flag.inner_shutter_plate_read |  | JRN_DOC_INNER_SHUTTER | observation |
+| ch01.security_crossing.doc_guard_log | DOCUMENT | DOC_GUARD_LOG_TITLE | DOC_GUARD_LOG_BODY_1 | ch01.flag.guard_log_read |  | JRN_DOC_GUARD_LOG | observation |
+| ch01.signal_control.doc_bus_chart | PLAQUE | DOC_BUS_CHART_TITLE | DOC_BUS_CHART_BODY_1 | ch01.flag.bus_chart_read |  | JRN_DOC_BUS_CHART | observation |
+| ch01.upper_vestibule.doc_relay_memo | DOCUMENT | DOC_RELAY_MEMO_TITLE | DOC_RELAY_MEMO_BODY_1 | ch01.flag.relay_memo_read |  | JRN_DOC_RELAY_MEMO | observation |
+
 ## Deltas
 - Spec feedback text shortened to fit 80 characters and made ASCII: `PZ002_FB_GEAR_LOCKED`, `PZ002_FB_GEAR_NO_REWIND`, `PZ002_FB_SHUTTER_NO_FREEZE`, `PZ005_FB_ATRIUM_LOCKED`. Every em dash became a full stop.
 - `DocumentDef` has a single `body_key`, so the generator uses each document's first page. Multi-page bodies (`DOC_DISPATCH_BODY_2`) are shown by the document UI by key convention (`_BODY_2`, `_BODY_3` …). Adding a `page_keys` field to `DocumentDef` is a small follow-up if the UI needs it.
 - The Beat 09 terminal also yields `JRN_CH1_REPEATS` (theory). The UI/scene adds it when page 2 is viewed, since a DocumentDef only carries one journal entry.
+
+- **TLF-047 phase 2 (Step 1):** rows from `MEM_`, `SPK_MEM_`, `JRN_MEM_`, `UNLOCK_`, `EL_UNLOCK_`, `SO00N_`, `PZ006_`, `DOC_*` (7 new readables), `OP_B03_06` and the `PZ00N_FB_` additions are new. `UNLOCK_*`, `SO00N_*` labels and `PZ006_*` dial labels are display strings for the HUD/props. `MEM_*` lines start with a `[hh:mm]` time stamp (the memory UI shows them as is).
+- Hint keys for `CH1-SO-01`, `CH1-SO-02` and `CH1-PZ-006` (and the revised hints of PZ-001..005) come from `gen_ch01_puzzle_data.py` once it is extended (`design/ch01/expansion/gen_ch01_puzzle_data.patch`; the generator hard-codes `range(1, 6)`). The generated `data/puzzles/ch01/*.tres` and `localization/ch01_puzzles.csv` are **deferred to the implementation task**: `tests/puzzle/test_hint_service.gd:84` expects exactly 5 PuzzleDefs, and the hint button would otherwise show hints for objects that do not exist yet.
 
 ## Open canon questions (for Argon's review when available)
 1. Is "Time doesn't stop. It waits." the right shared Elias/Operator phrase, or should it be subtler still?
