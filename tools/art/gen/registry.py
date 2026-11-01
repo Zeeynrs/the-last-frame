@@ -1,12 +1,13 @@
 """Single registry of every asset the generators produce (TLF-039 / TLF-042).
 Each entry knows its .pxo stem, runtime PNG folder, canvas, layers and frames."""
 from lib import *
-import tiles, props, t2, t3, elias_build
+import tiles, props, t2, t3, elias_build, ui_wheel
 
 
 class Asset:
-    def __init__(self, stem, cat, w, h, layer_names, frames, fps=1.0, tags=None, user_data='TLF-039'):
+    def __init__(self, stem, cat, w, h, layer_names, frames, fps=1.0, tags=None, user_data='TLF-039', png_dir=None):
         self.stem, self.cat, self.w, self.h = stem, cat, w, h
+        self.png_dir = png_dir
         self.layer_names, self.frames, self.fps, self.tags, self.user_data = layer_names, frames, fps, tags, user_data
 
     def pxo(self):
@@ -19,6 +20,8 @@ class Asset:
         return 'assets/source/ch01/%s.pxo' % self.stem
 
     def png_rel(self):
+        if self.png_dir:
+            return 'assets/%s/%s.png' % (self.png_dir, self.stem)
         return 'assets/%s/ch01/%s.png' % (self.cat, self.stem)
 
 
@@ -38,4 +41,6 @@ def all_assets():
         out.append(Asset('ch01_%s_%s' % (key.split('#')[0], st), cat, w, h, names, [fn()]))
     for key, (fn, names, w, h, cat, st) in t3.T3.items():
         out.append(Asset('ch01_%s_%s' % (key.split('#')[0], st), cat, w, h, names, [fn()], user_data='TLF-042'))
+    for (stem, w, h, names, layers, _m) in ui_wheel.assets():
+        out.append(Asset(stem, 'ui', w, h, names, [layers], user_data='TLF-053', png_dir='ui/ability_wheel'))
     return out

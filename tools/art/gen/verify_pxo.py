@@ -24,6 +24,8 @@ def run(args):
 
 
 def png_for(stem):
+    if stem.startswith('ch01_ui_'):
+        return os.path.join(REPO, 'assets', 'ui', 'ability_wheel', stem + '.png')
     if stem.startswith('ch01_char'):
         return os.path.join(REPO, 'assets', 'characters', 'ch01', stem + '.png')
     if stem.startswith('ch01_env'):
@@ -36,6 +38,7 @@ def png_for(stem):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--log')
+    ap.add_argument('--only', help='substring filter on the .pxo stem (e.g. ch01_ui_)')
     a = ap.parse_args()
     out = []
     w = out.append
@@ -47,6 +50,8 @@ def main():
     summary = []
     for pxo in sorted(glob.glob(os.path.join(REPO, 'assets', 'source', 'ch01', '*.pxo'))):
         stem = os.path.basename(pxo)[:-4]
+        if a.only and a.only not in stem:
+            continue
         with tempfile.TemporaryDirectory() as td:
             tmp = os.path.join(td, stem + '.pxo')
             shutil.copyfile(pxo, tmp)
