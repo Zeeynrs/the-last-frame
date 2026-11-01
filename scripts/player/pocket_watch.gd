@@ -8,6 +8,8 @@ extends Node2D
 signal watch_used(ability: StringName, target_id: StringName, result: InteractionResult)
 signal ability_changed(new_ability: StringName)
 signal target_changed(new_target: Interactable)
+## TLF-050: a selection request for a locked ability was refused (reason &"ability_locked").
+signal ability_selection_refused(ability: StringName, reason: StringName)
 
 const MASTER_CYCLE_ORDER: Array[StringName] = [
 	&"trace",
@@ -32,6 +34,7 @@ var current_target: Interactable = null
 var last_result: InteractionResult = null
 
 var _ghost_node: Node2D = null
+var _unlocks: AbilityUnlocks = null
 
 
 func _ready() -> void:
@@ -41,6 +44,38 @@ func _ready() -> void:
 				selected_ability = ab
 				break
 	_setup_ghost()
+	_bind_unlocks()
+
+
+# --- TLF-050 (Opus): progressive unlocks. unlocked_abilities follows the session's AbilityUnlocks;
+# a watch without a session (unit tests) keeps its exported list. -------------------------------
+
+func _bind_unlocks() -> void:
+	if _unlocks != null or not is_inside_tree():
+		return
+	var sess := get_session()
+	if sess == null or not ("ability_unlocks" in sess) or sess.ability_unlocks == null:
+		return
+	_unlocks = sess.ability_unlocks
+	_unlocks.unlocks_changed.connect(_on_unlocks_changed)
+	_on_unlocks_changed(_unlocks.unlocked())
+
+
+func _on_unlocks_changed(abilities: Array[StringName]) -> void:
+	unlocked_abilities = abilities
+	if not unlocked_abilities.has(selected_ability) and not unlocked_abilities.is_empty():
+		for ab in MASTER_CYCLE_ORDER:
+			if unlocked_abilities.has(ab):
+				selected_ability = ab
+				break
+		ability_changed.emit(selected_ability)
+	update_targeting()
+
+
+func is_ability_unlocked(ability: StringName) -> bool:
+	return unlocked_abilities.has(ability)
+
+# --- end TLF-050 ---------------------------------------------------------------------------
 
 
 func _exit_tree() -> void:
@@ -53,6 +88,8 @@ func _notification(what: int) -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if _unlocks == null:
+		_bind_unlocks()   # TLF-050: the session may become reachable after _ready
 	update_targeting()
 	_update_ghost_visibility()
 
@@ -122,6 +159,7 @@ func set_selected_ability(ability: StringName) -> bool:
 		ability_changed.emit(selected_ability)
 		update_targeting()
 		return true
+	ability_selection_refused.emit(ability, &"ability_locked")   # TLF-050
 	return false
 
 
@@ -217,6 +255,12 @@ func update_targeting() -> void:
 ## For other abilities: dispatches request on current watch target.
 func activate_watch() -> InteractionResult:
 	var sess = get_session()
+
+	# TLF-050: a locked ability never reaches the services.
+	if not unlocked_abilities.has(selected_ability):
+		last_result = InteractionResult.failure(&"ability_locked")
+		watch_used.emit(selected_ability, &"", last_result)
+		return last_result
 
 	if selected_ability == &"echo":
 		if sess == null or sess.echo_service == null:

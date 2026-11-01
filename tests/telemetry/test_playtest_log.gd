@@ -329,7 +329,7 @@ func test_save_and_continue_keep_the_log() -> void:
 
 	var read := _store.read_slot(SLOT)
 	_assert_true(read.get("ok", false), "save reads back")
-	_assert_eq(read["data"]["save_version"], 2, "save v2")
+	_assert_eq(read["data"]["save_version"], SaveStore.SAVE_VERSION, "current save version")
 	_assert_eq(read["data"]["playtest"], saved_state, "playtest state round-trips through the save file")
 
 	# Continue through the real path: SceneRouter -> Chapter01 restore hook.
