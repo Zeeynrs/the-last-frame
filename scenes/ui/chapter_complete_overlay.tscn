@@ -1,0 +1,70 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/chapter_complete_overlay.gd" id="1_ovl"]
+
+[node name="ChapterCompleteOverlay" type="CanvasLayer"]
+layer = 100
+script = ExtResource("1_ovl")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.06, 0.1, 0.85)
+
+[node name="TitleLabel" type="Label" parent="."]
+visible = false
+text = "CHAPTER 1 COMPLETE
+THE FORGOTTEN STATION"
+
+[node name="VBox" type="VBoxContainer" parent="."]
+offset_left = 20.0
+offset_top = 16.0
+offset_right = 620.0
+offset_bottom = 308.0
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="VBox"]
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+text = "UI_CHAPTER_COMPLETE"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ChapterName" type="Label" parent="VBox"]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "UI_CHAPTER_01_TITLE"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="SummaryPanel" type="PanelContainer" parent="VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SummaryMargin" type="MarginContainer" parent="VBox/SummaryPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 6
+
+[node name="SummaryScroll" type="ScrollContainer" parent="VBox/SummaryPanel/SummaryMargin"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="PlaytestSummary" type="Label" parent="VBox/SummaryPanel/SummaryMargin/SummaryScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Playtest summary text..."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

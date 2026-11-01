@@ -13,6 +13,7 @@ const UI_SCENES: Array[String] = [
 	"res://scenes/ui/DocumentViewer.tscn",
 	"res://scenes/ui/HUD.tscn",
 	"res://scenes/ui/JournalScreen.tscn",
+	"res://scenes/ui/chapter_complete_overlay.tscn",
 ]
 const CHAPTER01_SCENE := "res://scenes/chapters/ch01/Chapter01.tscn"
 

@@ -297,36 +297,14 @@ func complete_chapter() -> void:
 func _show_chapter_complete_ui() -> void:
 	if _complete_overlay != null:
 		return
-	_complete_overlay = CanvasLayer.new()
-	_complete_overlay.name = "ChapterCompleteOverlay"
-	_complete_overlay.layer = 100
+	var scene := preload("res://scenes/ui/chapter_complete_overlay.tscn")
+	var overlay = scene.instantiate()
+	_complete_overlay = overlay
 
-	var bg := ColorRect.new()
-	bg.name = "Background"
-	bg.color = Color(0.04, 0.06, 0.1, 0.85)
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_complete_overlay.add_child(bg)
-
-	var label := Label.new()
-	label.name = "TitleLabel"
-	label.theme_type_variation = &"HeaderLarge"
-	label.text = "%s\n%s" % [tr("UI_CHAPTER_COMPLETE"), tr("UI_CHAPTER_01_TITLE")]
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.set_anchors_preset(Control.PRESET_CENTER)
-	_complete_overlay.add_child(label)
-
-	# TLF-048: playtest summary (total + per-puzzle time) under the title.
+	var lines := PackedStringArray()
 	if session != null and session.playtest_log != null:
-		var summary := Label.new()
-		summary.name = "PlaytestSummary"
-		summary.text = "\n".join(session.playtest_log.summary_lines())
-		summary.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		summary.add_theme_font_size_override(&"font_size", 12)
-		summary.set_anchors_preset(Control.PRESET_FULL_RECT)
-		summary.offset_top = 236
-		summary.offset_bottom = -44
-		_complete_overlay.add_child(summary)
+		lines = session.playtest_log.summary_lines()
+	overlay.setup(lines)
 
 	add_child(_complete_overlay)
 
