@@ -59,6 +59,7 @@ This file starts as a tracking template. Do not invent resolved status.
 | ISSUE-035 | `UITheme._setup_theme()` returns entirely (no font, styles or sizes, no message) if `res://.godot/imported/tlf_pixel_mono.ttf-*.fontdata` is not listed; untested in an exported PCK (tlf-lead note A on TLF-040) | Medium | Resolved 2026-11-01 (TLF-043 `c38520d`) | Flash | TLF-043 B |
 | ISSUE-036 | `tools/art/gen/verify_regen.py` crashes (`KeyError: 'Clock'`) after TLF-041: `placement.py` reads node positions from the live room scenes, which the integration changed | Medium | Resolved 2026-11-01 (TLF-045 `283e9dc`) | Design-art | TLF-045 (frozen placement snapshot) |
 | ISSUE-037 | Signal Control `NorthBarrierVisual` (= collision polygon) renders as a flat block below the floor edge | Low | Resolved 2026-11-01 (TLF-046 `21d892b`) | Flash | TLF-046 (visual = collision ∩ floor, styled; collision unchanged) |
+| ISSUE-038 | Playtest #2: Chapter 1 "feels very short" (no bugs; two-ability combos praised). Target 30-45 min; scripted perfect runs ~25 s game time; real first-time time not yet measured | High | Open | Agent 1 / Design / Opus impl | ADR-020: TLF-047 (expansion concepts), TLF-048 (telemetry), then implementation tasks |
 | RISK-016 | Project-local `pixel-art` MCP (`pxcli-mcp`) writes to `./assets/sprites`, outside ADR-001 layout and Argon ownership | Low | Open | Agent 1 | Not used (ADR-012). Remove from local config if it causes confusion |
 
 ## Issue template

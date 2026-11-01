@@ -40,9 +40,9 @@ This file states what the repository **actually** contains. Task-level detail li
 - Nothing known (validation green on `main`).
 
 ## E. Missing (next by priority)
-1. Second playtest via F5 with the art (human); fix list from it
+1. Chapter 1 length (ISSUE-038, ADR-020): TLF-047 expansion concepts (design), TLF-048 telemetry (Opus impl), then implementation
 2. Export smoke test (Windows build: theme font, translations, saves) once an export preset exists
-3. Human: physical controller spot-check (ISSUE-011, last item for M1); second playtest via F5
+3. Human: physical controller spot-check (ISSUE-011, last item for M1)
 4. Vertical-slice polish: audio, lighting/VFX, Beat 10 cinematic, accessibility pass
 5. External playtest (Gate C)
 

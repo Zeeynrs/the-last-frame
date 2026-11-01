@@ -301,3 +301,18 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - **Counterweight gear:** file suffix `_frozen` maps to code `gear_state = locked`; no rename (the code is authoritative, the mapping lives in the placement sheet).
   - **Stalled transit car:** pivot at the footprint centre (64,52) instead of `(W/2, H-8)`, accepted for this large background piece (bible appendix).
 
+
+## ADR-020 — Chapter 1 length: deepen the two-ability combo core, measure it
+- **Date / status:** 2026-11-01 · Accepted (Lead, after user playtest #2)
+- **Context:** Playtest #2 (F5, `36f54de`): no bugs; the user called combining two abilities "a perfect mechanic", but the chapter "feels very short". The beat sheet targets 30–45 min (estimate 38) with 5 puzzles; scripted perfect runs clear rooms 1–4 in ~9 s and 5–10 in ~16 s of game time. There is no measured first-time playtime yet.
+- **Options:** (a) pad with walking/backtracking or text; (b) harder variants of the 5 existing puzzles; (c) more two-ability combo puzzles on the main path plus optional combo side puzzles with lore rewards, calibrated by measured playtime; (d) a new mechanic.
+- **Decision:** (c), with (b) only where a second stage adds a *new* combo.
+  - **Target:** measured first-time playtime 30–45 min. Main path ≥ 25 min, optional content ≥ 8 min on top. Sizing is recalibrated from TLF-048 telemetry and the user's reported time.
+  - **Main path:** +3 combo puzzles (`CH1-PZ-006..008`), each needing two abilities in a combination the chapter has not used yet, e.g. Echo+Freeze, Trace+Rewind (Trace reveals which past state to restore), Echo or Rewind + doorway reassignment. Fast-Forward (SD-1 stretch) may appear in **at most one** puzzle, introduced late.
+  - **Optional:** 3 side puzzles (`CH1-SP-01..03`), ≤ 4 min each, combo-based, each rewarding one Memory Fragment (the journal has 1 today) plus a readable. Never required for completion.
+  - **Existing puzzles:** at most 2 second stages, only if they introduce a new combo. PZ-001..005 solutions and their tests stay valid.
+  - **Placement:** reuse the 10 rooms where footprints allow; at most 2 new rooms (ROOM_GRAPH + generator). ADR-019 frozen collision applies to existing puzzle geometry; new content gets its own fingerprint entries. ADR-015 reach rules (36 px interact, 96 px watch) and the RISK-018 lesson (prove "needs ability X" with a real-input negative test) apply to every new puzzle.
+  - **Not allowed:** new core mechanics beyond SD-1 (+ the FF stretch), difficulty through timing precision beyond the existing assist window, padding (forced backtracking, fetch quests).
+  - **Content:** +4–6 readables and journal theories tied to the new puzzles and fragments (ASCII, CH01_TEXT.md → generator).
+  - **Process:** concept doc first (TLF-047 phase 1, Lead and user approve), then full specs with given/when/then tests (phase 2), then implementation: Opus impl (puzzle logic + spec tests + real-input negative tests), Flash (rooms/scenes/wiring), design-art (props).
+- **Consequences:** The vertical slice grows by ~6 puzzles; the beat sheet and ROOM_GRAPH get revised. Telemetry (TLF-048) becomes the yardstick for "long enough" instead of estimates.
