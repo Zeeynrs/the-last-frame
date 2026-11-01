@@ -202,3 +202,47 @@ Below are the **3 candidate player-facing names** evaluated for the reveal-resid
 1. **Loop Counter Visibility (Beat 09) — Resolved:** No fixed number, no "exit" label, and no memory-wipe statement in Chapter 1. Beat 09's single revelation is Elias's self-implication (his clearance froze the station); the secondary pane shows only an unspecified scrolling list of `23:59:00` timestamps under user `ELIAS` as an ambiguous seed.
 2. **The Operator's Voice Modulation in Ch1 (Beat 03 / Beat 07) — Resolved:** Subtle shared phrasing is allowed (at most one or two echoed phrases between Elias and The Operator across Chapter 1, with nothing explicit). The Operator communicates exclusively through fixed/old communication devices (wall call boxes, intercoms, street payphone).
 3. **Foreshadowing The Archivist (Optional Lore) — Resolved:** Deferred to Chapters 2–3 so Chapter 1 remains tightly focused.
+
+---
+
+## 7. Step 1 revision (TLF-047 phase 2) — sub-beats around the 10 core beats
+
+**Status:** approved concept `design/ch01/CH01_EXPANSION.md` (`e038e45`); specs in `design/ch01/puzzles/` (`CH1-SO-01`, `CH1-SO-02`, `CH1-PZ-006`, revisions of `CH1-PZ-001…005`), `TRACE_MEMORY.md`, `ABILITY_UNLOCKS.md`, `COMMUTERS_STEP1.md`. **The ten core beats, their order and their rooms are unchanged. Beat 09 stays the only revelation.** Rows 1-6 above stay as written except where this section changes them (marked Δ).
+
+### 7.1 Ability curve (replaces "all abilities from the start")
+
+| Beat | Ability that is **new** here | Unlock moment |
+|---|---|---|
+| 01 | `Trace` | the cracked watch on the platform (one hand still moves) |
+| 02 | `Rewind` | tracing the frozen courier (the hand ticks backwards) |
+| 04 | `Freeze` | tracing the frozen hatch technician (the hand stops) |
+| 05 | `Echo` | the calibration pedestal (a second hand follows) |
+| 07 (stretch) | `Fast-Forward` | not in Step 1 (SP-D, optional, later) |
+
+Δ Beat 02 "Taught: Pocket watch UI, Trace, Rewind" becomes: Trace is taught in Beat 01 (`CH1-SO-01`); Beat 02 teaches Rewind. Δ Beat 04 "Taught: Freeze" now has a Freeze-only puzzle first (`CH1-SO-02`) and then the combo (`CH1-PZ-002`).
+
+### 7.2 Sub-beats and minutes (model `CH01_EXPANSION.md` §1.3; design / floor, minutes)
+
+| Core beat | Sub-beats (Step 1) | Content | Design | Floor |
+|---|---|---|---:|---:|
+| **01** Awakening | 01a movement, watch, monologue (existing) · 01b **Last Departure** | `CH1-SO-01`: four frozen people, a selector panel, the platform gate (Trace solo) | 0.8 + 2.7 | 0.5 + 1.6 |
+| **02** Fractured Turnstile | 02a "The courier" (Rewind unlock) · 02b **PZ-001 deepened** | conduit pins the turnstile (Rewind solo) | 1.9 | 1.2 |
+| **03** Call Box 09 | 03a call box (Δ one new Operator line `OP_B03_06`) and the bulletin (existing) · 03b **Last Ticket** | `CH1-PZ-006`: terms sign, four queue statues, three dials, validator (Trace + Rewind) | 0.7 + 4.3 | 0.4 + 2.6 |
+| **04** Runaway Shutter | 04a "Hold it open" (Freeze unlock) · 04b **Held Open** · 04c **PZ-002 deepened** | `CH1-SO-02` (hatch, Freeze solo), then the inner shutter anchored by the gear (Rewind + Freeze) | 2.1 + 3.1 | 1.3 + 1.8 |
+| **05** Delayed Platform | 05a pedestal (Echo unlock) · 05b **PZ-003 deepened** | guard clue, decoy plate, staff pass, card reader (Echo solo) | 2.7 | 1.6 |
+| **06** Ghosts in the Lounge | existing (Mira bench, recorder) | no change in Step 1 | 1.2 | 0.7 |
+| **07** Synchronized Substation | 07a engineer's warning · **PZ-004 deepened** | breaker C trap (Rewind + Freeze + Echo) | 3.2 | 1.9 |
+| **08** Displaced Corridor | 08a the tourist · **PZ-005 deepened** | Echo-powered relays, decoy lever (Trace + Echo + doorway) | 3.3 | 2.0 |
+| **09** Ledger 23:59 | existing (revelation exactly as written) | no change in Step 1 | 1.0 | 0.6 |
+| **10** Ascent | existing | no change | 0.4 | 0.2 |
+| — | room-to-room walking (9 transitions) | | 1.2 | 0.7 |
+| | | **Step 1 total** | **28.7** | **17.2** |
+
+Arithmetic: puzzles 163 + 116 + 259 + 126 + 185 + 164 + 193 + 197 = 1403 s = 23.4 min; non-puzzle 4.1 + 1.2 = 5.3 min; total 28.7 min design, x 0.6 = 17.2 floor. (The one-decimal rows above sum to within 0.1 of that.) The target for the next playtest is >= 15 min measured (ADR-020); Step 2 content (R11/R12, `CH1-PZ-007/008`, side puzzles, the remaining commuters) is not part of Step 1.
+
+### 7.3 Story notes for the new beats
+
+* **Frozen commuters** (13 in Step 1, `COMMUTERS_STEP1.md`): people who did not leave at 23:54; each Trace is a time-stamped memory and a journal observation. They never say who locked the station or who the Operator is.
+* **The five minutes:** the time stamps (23:30 … 23:59) line up in the journal. Beat 09 is unchanged; the player now arrives with thirteen small pieces of "what everyone was doing".
+* **Operator:** one new line before the call ends: `OP_B03_06` ("The staff door opens for one ticket only. Ask the queue what they bought, and when."). Play order in `chapter01.gd`: `OP_B03_01…04`, `OP_B03_06`, `OP_B03_05`.
+* **Elias** gets three unlock lines (`EL_UNLOCK_REWIND/FREEZE/ECHO`).

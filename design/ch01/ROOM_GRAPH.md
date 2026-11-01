@@ -301,3 +301,59 @@ To keep all 10 rooms producible within the vertical slice, ~85% of the environme
 ## 9. Open Questions
 
 **None blocking.** Every room footprint fits the fixed `640 × 360` viewport (`ADR-003`), all 20 doorways sit on boundary tiles with opposite-wall pairings (`ADR-009`), the `CH1-PZ-004` switchback path is `635.8 px` (`318 ticks` vs `180-tick` window), and all puzzle targets satisfy the `96 px` watch radius and `36 px` interact radius (`ADR-015`).
+
+---
+
+## 10. Step 1 deltas (TLF-047 phase 2)
+
+**Rule (ADR-019):** the collision of every existing puzzle object and every existing collider stays **exactly as it is**. Everything below is **new** (own fingerprint entries) or a **default-off option** on an existing class. Positions are tile `(x,y)` and px `(320+(x−y)·16, 64+(x+y)·8)`; the placement checker output is `design/ch01/expansion/step1_placement_check.txt` (55 of 55 stand-spot checks OK). Specs: `design/ch01/puzzles/CH1-SO-01.md`, `CH1-SO-02.md`, `CH1-PZ-006.md`, and the "R1 Revision 1" section at the end of `CH1-PZ-001…005.md`.
+
+### 10.1 New objects per room (no change to existing ones unless listed in 10.2)
+
+| Room | New objects (`object_id` suffix · tile · px) | New colliders (own fingerprint) |
+|---|---|---|
+| **R1** `arrival_platform` | `n01_conductor (10,8) (352,208)` · `n02_student (5,8) (272,168)` · `n03_old_man (4,2) (352,112)` · `n04_cleaner (12,7) (400,216)` · `doc_last_service (1,3) (288,96)` · `selector_line (7,1) (416,128)` · `selector_platform (9,1) (448,144)` · `selector_car (11,1) (480,160)` · `release_lever (13,2) (496,184)` · `release_lock` (logic) · `platform_gate` (east aperture `(13,5) (448,208)`) | 4 statue footprints 12x8; `platform_gate/Blocker` 24x12 |
+| **R2** `concourse_west` | `n05_courier (1,6) (240,120)` · `conduit_01 (2,8) (224,144)` · `dial_line (9,1) (448,144)` · `dial_platform (11,1) (480,160)` · `dial_time (13,1) (512,176)` · `ticket_validator (14,2) (512,192)` · `staff_door` (east aperture `(15,5) (480,224)`) · `reset_anchor_02 (8,1) (432,136)` · `doc_ticket_terms (9,9) (320,208)` · `n06_red_coat (13,6) (432,216)` · `n07_briefcase (13,8) (400,232)` · `n08_father (13,10) (368,248)` · `n09_teen (11,9) (352,224)` | 5 statue footprints; `staff_door/Blocker`; `ticket_validator` console 16x8 |
+| **R3** `maintenance_bay` | `n11_hatch_tech (2,3) (304,104)` · `hatch_01 (3,3) (320,112)` · `hatch_plate_01 (2,6) (256,128)` · `hatch_residue (2,6)` · `bell_plate_01 (1,8) (208,136)` · `hatch_threshold (3,3)` · `exit_trigger_hatch (4,3) (336,120)` · `doc_hatch_chart (2,7) (240,136)` · `safe_anchor_entry (1,4) (272,104)` · `inner_shutter (11,4) (432,184)` · `inner_shutter_threshold (11,4)` · `exit_trigger_east_02 (12,4) (448,192)` · `doc_inner_shutter_plate (11,1) (480,160)` · `gear_residue (5,2) (368,120)` | `Bulkhead`: `(368,88)→(328,108)`, `(312,116)→(224,160)`; `hatch_01/Blocker`; `InnerDivider`: `(496,152)→(440,180)`, `(424,188)→(352,224)`; `inner_shutter/Blocker`; statue footprint |
+| **R4** `security_crossing` | `echo_recorder_pedestal (4,8) (256,160)` · `n13_guard (4,3) (336,120)` · `doc_guard_log (2,4) (288,112)` · `alarm_plate_01 (5,3) (352,128)` · `card_reader_01 (11,7) (384,208)` · `staff_barrier_01 (12,5) (432,200)` | `StaffBarrier`: `(512,160)→(440,196)`, `(424,204)→(336,248)`; `staff_barrier_01/Blocker`; statue footprint |
+| **R6** `signal_control` | `breaker_c (0,6) (224,112)` · `doc_bus_chart (0,3) (272,88)` · `n20_engineer (6,7) (304,168)` | statue footprint |
+| **R7** `upper_vestibule` | `standby_plate_01 (2,11) (176,168)` · `junction_lever_c (6,2) (384,128)` · `doc_relay_memo (13,3) (480,192)` · `n21_tourist (5,4) (336,136)` | statue footprint |
+
+R5, R8, R9, R10: unchanged in Step 1. The coordinates are anchors: the scene owner fits colliders around the existing railings/walls, and the flood-fill tests in the specs decide.
+
+### 10.2 Changes to existing objects (default-off options or data)
+
+| Object | Change | Why |
+|---|---|---|
+| `concourse_west.turnstile_trace_anchor` | now a `TraceMemory` (same position) | Trace carries the scene memory |
+| `concourse_west.turnstile_gate` | export `pinned_by = conduit_01` | PZ-001 |
+| `maintenance_bay.checkpoint` | `spawn_anchor = safe_anchor_entry` | Continue must not spawn east of the bulkhead |
+| `maintenance_bay.exit_trigger_east (10,4)` | `puzzle_id` cleared (inert); `safe_anchor_east` unchanged | the PZ-002 completion moves to `exit_trigger_east_02 (12,4)` |
+| `maintenance_bay.fire_shutter` / `counterweight_gear` | unchanged; `inner_shutter` shares the gear | PZ-002 |
+| `security_crossing.transit_pass_pickup` | unchanged object; now **required** (see 10.4) | PZ-003 |
+| `upper_vestibule.junction_lever_a/_b` | export `requires_plate_id = standby_plate_01` | PZ-005 |
+| `signal_control.surge_capacitor` | new method `brownout()` (used only by `breaker_c`) | PZ-004 |
+| `arrival_platform.door_exit_east`, `concourse_west.door_exit_east` | unchanged doorways; their apertures gain the Blockers above | gates |
+
+### 10.3 Graph and gating (edges unchanged, gates added)
+
+| Edge | Before | Step 1 |
+|---|---|---|
+| E1 `arrival_platform → concourse_west` | requires the watch | + `CH1-SO-01` `SOLVED` (platform gate) |
+| E2 `concourse_west → maintenance_bay` | turnstile + soft gating by the bulletin | turnstile + `CH1-PZ-006` `SOLVED` (staff door) |
+| E3 `maintenance_bay → security_crossing` | gated in-room by the shutter | + `CH1-SO-02` hatch at the room entry, + inner shutter |
+| E4 `security_crossing → waiting_lounge` | gated in-room by gate + bridge | + staff barrier (pass) |
+| E5, E6, E7 | unchanged | unchanged (PZ-004 trap and PZ-005 plate are in-room) |
+
+No new rooms and no new edges in Step 1. Backtracking (§4.3) still needs **zero** ability re-execution: every new gate latches on `SOLVED` (ADR-016).
+
+### 10.4 Changes to §4 and §6
+
+* **§4.1 critical path** steps 1, 2, 3, 4, 5, 7, 8 each gain the new sub-goals listed in the beat sheet §7.2.
+* **§4.2 optional routes:** "Security Booth Pickup" `transit_pass_pickup` is no longer optional (it opens the staff barrier); every other optional route is unchanged.
+* **§6.1 checkpoints:** `ch01.cp.maintenance_bay` spawns at `safe_anchor_entry`; all other checkpoints unchanged.
+* **§6.2 save payload (additions):** `puzzles` gains `CH1-SO-01`, `CH1-SO-02`, `CH1-PZ-006`; `narrative_flags` gain `ch01.npc.<id>.traced` (13), `ch01.flag.echo_pedestal_used`, `ch01.flag.last_service_read`, `…hatch_chart_read`, `…ticket_terms_read`, `…inner_shutter_plate_read`, `…guard_log_read`, `…bus_chart_read`, `…relay_memo_read`; new key `unlocked_abilities` (save version 2 → 3, old saves unlock all four, `ABILITY_UNLOCKS.md`).
+
+### 10.5 ADR-015 summary of the new reach checks
+
+All new stand spots are listed in the specs and in `step1_placement_check.txt`; every intended target is the nearest candidate (17.9 px for the use/Trace/Rewind targets, 28.8-66 px for the hatch and shutter Freeze/Rewind cases), and no statue is nearer than the intended use-object from any use stand spot (rule P1).

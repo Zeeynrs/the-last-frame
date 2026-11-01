@@ -1,0 +1,111 @@
+--- R1 arrival_platform
+  stand tile (7, 2)  (400, 136)   use  -> selector_line (17.9) expect selector_line OK
+  stand tile (9, 2)  (432, 152)   use  -> selector_platform (17.9) expect selector_platform OK
+  stand tile (11, 2) (464, 168)   use  -> selector_car (17.9) expect selector_car OK
+  stand tile (13, 3) (480, 192)   use  -> release_lever (17.9) expect release_lever OK
+  stand tile (1, 4)  (272, 104)   use  -> doc_last_service (17.9) expect doc_last_service OK
+  stand tile (10, 7) (368, 200)   t    -> n01_conductor (17.9) expect n01_conductor OK
+  stand tile (5, 7)  (288, 160)   t    -> n02_student (17.9) expect n02_student OK
+  stand tile (4, 3)  (336, 120)   t    -> n03_old_man (17.9) expect n03_old_man OK
+  stand tile (12, 6) (416, 208)   t    -> n04_cleaner (17.9) expect n04_cleaner OK
+  stand tile (8, 6)  (352, 176)   use  -> pocket_watch_pickup (17.9) expect pocket_watch_pickup OK
+  close pairs (<36): [('selector_line', 'selector_platform', 35.8), ('selector_platform', 'selector_car', 35.8), ('selector_car', 'release_lever', 28.8)]
+--- R2 concourse_west
+  stand px           (256, 112)   r    -> turnstile_gate (17.9) expect turnstile_gate OK
+  stand px           (256, 112)   t    -> n05_courier (17.9) expect n05_courier OK
+  stand px           (248, 116)   t    -> n05_courier (8.9) expect n05_courier OK
+  stand px           (264, 116)   t    -> turnstile_trace_anchor (17.9) expect turnstile_trace_anchor OK
+  stand px           (208, 136)   r    -> conduit_01 (17.9) expect conduit_01 OK
+  stand px           (256, 112)   r    -> turnstile_gate (17.9) expect turnstile_gate OK
+  stand px           (272, 104)   use  -> call_box_09 (8.0) expect call_box_09 OK
+  stand tile (9, 2)  (432, 152)   r    -> dial_line (17.9) expect dial_line OK
+  stand tile (11, 2) (464, 168)   r    -> dial_platform (17.9) expect dial_platform OK
+  stand tile (13, 2) (496, 184)   r    -> dial_time (17.9) expect dial_time OK
+  stand tile (14, 3) (496, 200)   use  -> ticket_validator (17.9) expect ticket_validator OK
+  stand tile (8, 2)  (416, 144)   use  -> reset_anchor_02 (17.9) expect reset_anchor_02 OK
+  stand tile (14, 6) (448, 224)   t    -> n06_red_coat (17.9) expect n06_red_coat OK
+  stand tile (14, 8) (416, 240)   t    -> n07_briefcase (17.9) expect n07_briefcase OK
+  stand tile (14, 10) (384, 256)   t    -> n08_father (17.9) expect n08_father OK
+  stand tile (11, 10) (336, 232)   t    -> n09_teen (17.9) expect n09_teen OK
+  stand tile (9, 10) (304, 216)   use  -> doc_ticket_terms (17.9) expect doc_ticket_terms OK
+  close pairs (<36): [('turnstile_gate', 'turnstile_trace_anchor', 8.9), ('turnstile_gate', 'n05_courier', 32.0), ('turnstile_gate', 'reset_anchor_01', 28.8), ('turnstile_gate', 'call_box_09', 24.0), ('turnstile_trace_anchor', 'reset_anchor_01', 31.2), ('turnstile_trace_anchor', 'call_box_09', 29.1), ('n05_courier', 'conduit_01', 28.8), ('n05_courier', 'reset_anchor_01', 28.8), ('conduit_01', 'reset_anchor_01', 32.0), ('support_pillar_01', 'doc_evac_notice', 32.0), ('dial_line', 'dial_platform', 35.8), ('dial_line', 'reset_anchor_02', 17.9), ('dial_platform', 'dial_time', 35.8), ('dial_time', 'ticket_validator', 16.0), ('doc_ticket_terms', 'n09_teen', 35.8), ('n06_red_coat', 'n07_briefcase', 35.8), ('n07_briefcase', 'n08_father', 35.8), ('n08_father', 'n09_teen', 28.8)]
+--- R3 maintenance_bay
+  stand px           (256, 128)   f    -> hatch_01 (66.0) expect hatch_01 OK
+  stand px           (256, 128)   t    -> hatch_residue (0.0) expect hatch_residue OK
+  stand tile (2, 4)  (288, 112)   t    -> n11_hatch_tech (17.9) expect n11_hatch_tech OK
+  stand px           (224, 128)   use  -> doc_hatch_chart (17.9) expect doc_hatch_chart OK
+  stand tile (4, 7)  (272, 152)   use  -> reset_anchor_01 (17.9) expect reset_anchor_01 OK
+  stand tile (6, 4)  (352, 144)   r    -> fire_shutter (35.8) expect fire_shutter OK
+  stand tile (6, 4)  (352, 144)   f    -> counterweight_gear (45.3) expect counterweight_gear OK
+  stand tile (10, 4) (416, 176)   r    -> inner_shutter (17.9) expect inner_shutter OK
+  stand tile (10, 4) (416, 176)   f    -> counterweight_gear (71.6) expect counterweight_gear OK
+  stand tile (9, 4)  (400, 168)   r    -> fire_shutter (17.9) expect fire_shutter OK
+  stand tile (11, 2) (464, 168)   use  -> doc_inner_shutter_plate (17.9) expect doc_inner_shutter_plate OK
+  stand tile (6, 4)  (352, 144)   t    -> gear_residue (28.8) expect gear_residue OK
+  close pairs (<36): [('counterweight_gear', 'gear_residue', 17.9), ('reset_anchor_01', 'hatch_plate_01', 35.8), ('reset_anchor_01', 'hatch_residue', 35.8), ('hatch_01', 'n11_hatch_tech', 17.9), ('hatch_plate_01', 'hatch_residue', 0.0), ('hatch_plate_01', 'doc_hatch_chart', 17.9), ('bell_plate_01', 'doc_hatch_chart', 32.0), ('hatch_residue', 'doc_hatch_chart', 17.9)]
+--- R4 security_crossing
+  stand tile (4, 9)  (240, 168)   use  -> echo_recorder_pedestal (17.9) expect echo_recorder_pedestal OK
+  stand tile (4, 4)  (320, 128)   t    -> n13_guard (17.9) expect n13_guard OK
+  stand tile (3, 4)  (304, 120)   use  -> doc_guard_log (17.9) expect doc_guard_log OK
+  stand tile (3, 2)  (336, 104)   use  -> transit_pass_pickup (0.0) expect transit_pass_pickup OK
+  stand tile (11, 8) (368, 216)   use  -> card_reader_01 (17.9) expect card_reader_01 OK
+  close pairs (<36): [('pressure_switch_01', 'echo_recorder_pedestal', 16.0), ('security_gate_01', 'staff_barrier_01', 28.8), ('bridge_platform_01', 'reset_anchor_01', 35.8), ('bridge_platform_01', 'card_reader_01', 28.8), ('transit_pass_pickup', 'n13_guard', 16.0)]
+--- R6 signal_control
+  stand tile (1, 6)  (240, 120)   use  -> breaker_c (17.9) expect breaker_c OK
+  stand tile (1, 3)  (288, 96)    use  -> doc_bus_chart (17.9) expect doc_bus_chart OK
+  stand tile (6, 8)  (288, 176)   t    -> n20_engineer (17.9) expect n20_engineer OK
+  stand tile (1, 10) (176, 152)   use  -> breaker_a (17.9) expect breaker_a OK
+  stand tile (8, 6)  (352, 176)   r    -> surge_capacitor (17.9) expect surge_capacitor OK
+  close pairs (<36): [('surge_capacitor', 'reset_anchor_01', 28.8)]
+--- R7 upper_vestibule
+  stand tile (4, 7)  (272, 152)   use  -> junction_lever_a (17.9) expect junction_lever_a OK
+  stand tile (10, 7) (368, 200)   use  -> junction_lever_b (17.9) expect junction_lever_b OK
+  stand tile (6, 3)  (368, 136)   use  -> junction_lever_c (17.9) expect junction_lever_c OK
+  stand tile (7, 7)  (320, 176)   t    -> route_board (17.9) expect route_board OK
+  stand tile (5, 5)  (320, 144)   t    -> n21_tourist (17.9) expect n21_tourist OK
+  stand tile (12, 3) (464, 184)   use  -> doc_relay_memo (17.9) expect doc_relay_memo OK
+  close pairs (<36): [('route_board', 'n21_tourist', 32.0)]
+
+FAILS: []
+selector_line              tile (7, 1) px (416, 128)
+selector_platform          tile (9, 1) px (448, 144)
+selector_car               tile (11, 1) px (480, 160)
+release_lever              tile (13, 2) px (496, 184)
+doc_last_service           tile (1, 3) px (288, 96)
+n01_conductor              tile (10, 8) px (352, 208)
+n02_student                tile (5, 8) px (272, 168)
+n03_old_man                tile (4, 2) px (352, 112)
+n04_cleaner                tile (12, 7) px (400, 216)
+n05_courier                tile (1, 6) px (240, 120)
+conduit_01                 tile (2, 8) px (224, 144)
+dial_line                  tile (9, 1) px (448, 144)
+dial_platform              tile (11, 1) px (480, 160)
+dial_time                  tile (13, 1) px (512, 176)
+ticket_validator           tile (14, 2) px (512, 192)
+reset_anchor_02            tile (8, 1) px (432, 136)
+doc_ticket_terms           tile (9, 9) px (320, 208)
+n06_red_coat               tile (13, 6) px (432, 216)
+n07_briefcase              tile (13, 8) px (400, 232)
+n08_father                 tile (13, 10) px (368, 248)
+n09_teen                   tile (11, 9) px (352, 224)
+hatch_01                   tile (3, 3) px (320, 112)
+hatch_plate_01             tile (2, 6) px (256, 128)
+bell_plate_01              tile (1, 8) px (208, 136)
+hatch_residue              tile (2, 6) px (256, 128)
+doc_hatch_chart            tile (2, 7) px (240, 136)
+n11_hatch_tech             tile (2, 3) px (304, 104)
+inner_shutter              tile (11, 4) px (432, 184)
+doc_inner_shutter_plate    tile (11, 1) px (480, 160)
+gear_residue               tile (5, 2) px (368, 120)
+echo_recorder_pedestal     tile (4, 8) px (256, 160)
+n13_guard                  tile (4, 3) px (336, 120)
+doc_guard_log              tile (2, 4) px (288, 112)
+card_reader_01             tile (11, 7) px (384, 208)
+staff_barrier_01           tile (12, 5) px (432, 200)
+breaker_c                  tile (0, 6) px (224, 112)
+doc_bus_chart              tile (0, 3) px (272, 88)
+n20_engineer               tile (6, 7) px (304, 168)
+standby_plate_01           tile (2, 11) px (176, 168)
+junction_lever_c           tile (6, 2) px (384, 128)
+doc_relay_memo             tile (13, 3) px (480, 192)
+n21_tourist                tile (5, 4) px (336, 136)

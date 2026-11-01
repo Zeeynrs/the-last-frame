@@ -1,0 +1,26 @@
+diff --git a/tools/content/gen_ch01_puzzle_data.py b/tools/content/gen_ch01_puzzle_data.py
+index 85d6fe9..e1799a5 100644
+--- a/tools/content/gen_ch01_puzzle_data.py
++++ b/tools/content/gen_ch01_puzzle_data.py
+@@ -15,8 +15,9 @@ OUT_CSV = os.path.join(ROOT, "localization/ch01_puzzles.csv")
+ 
+ os.makedirs(OUT_DATA, exist_ok=True)
+ rows = []
+-for n in range(1, 6):
+-    pid = f"CH1-PZ-00{n}"
++# TLF-047 phase 2: Step 1 adds CH1-SO-01, CH1-SO-02 and CH1-PZ-006 (key prefix = id without dashes: SO001, SO002, PZ006)
++PUZZLES = [f"CH1-PZ-00{n}" for n in range(1, 6)] + ["CH1-SO-01", "CH1-SO-02", "CH1-PZ-006"]
++for pid in PUZZLES:
+     text = io.open(os.path.join(SPECS, f"{pid}.md"), encoding="utf-8").read()
+     name = re.search(r"^- \*\*Name:\*\* (.+)$", text, re.M).group(1).strip()
+     room = re.search(r"^- \*\*Chapter / Room:\*\*.*?\(`(ch01\.[a-z0-9_]+)`", text, re.M).group(1)
+@@ -26,7 +27,8 @@ for n in range(1, 6):
+         if m is None:
+             raise SystemExit(f"{pid}: hint {level} not found")
+         hints.append(m.group(1).strip())
+-    prefix = f"PZ00{n}"
++    kind, num = pid.split("-")[1], pid.split("-")[2]
++    prefix = f"{kind}{int(num):03d}"
+     rows.append((f"{prefix}_TITLE", name))
+     for level, hint in enumerate(hints, 1):
+         rows.append((f"{prefix}_HINT_{level}", hint))

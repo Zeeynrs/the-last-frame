@@ -79,3 +79,15 @@
 1. **Sub-Room Addition in Beat 08 (`ch01.vestibule_niche`, Accepted by Lead):**
    - `CH1-PZ-005` adds a small dead-end inspection alcove (`ch01.vestibule_niche`, with doorways `door_in` and `door_out`) adjacent to `ch01.upper_vestibule`.
    - **Rationale:** Ensures all 8 doorway endpoints in `SpatialGraph` are paired 1-to-1 across every valid graph state (`State 0`, `State 1`, `State 2`) with zero dangling doorways (`ADR-009`), while letting the player visually glimpse the Station Atrium through a barred masonry grille (`traversable = false`) and inspect an optional ELYSIUM threshold-indexing plaque. No beat order, timing, or narrative changes are needed.
+
+---
+
+## 4. Step 1 additions (TLF-047 phase 2)
+
+| Puzzle ID | Name | Beat | Room | Primary mechanics | Est. time (design / floor) | Spec |
+|---|---|---|---|---|---|---|
+| `CH1-SO-01` | Last Departure | 01b | `ch01.arrival_platform` | **Trace solo**: four frozen witnesses, latest statement wins | 2.7 / 1.6 min | `CH1-SO-01.md` |
+| `CH1-SO-02` | Held Open | 04b | `ch01.maintenance_bay` | **Freeze solo**: hold a plate-operated hatch open | 2.1 / 1.3 min | `CH1-SO-02.md` |
+| `CH1-PZ-006` | Last Ticket | 03b | `ch01.concourse_west` | **Trace + Rewind**: find the one valid ticket, rewind three dials to it | 4.3 / 2.6 min | `CH1-PZ-006.md` |
+
+`CH1-PZ-001…005` keep their IDs and base specs; each file ends with a section **R1 Revision 1 (TLF-047 Step 1)** listing the deltas, new objects, tests and the revised estimate (the three hint lines in section 1 are the revised ones; the superseded ones are quoted in R1). The estimates in the table of section 1 above are the *beat-sheet* figures and are superseded by the modelled ones in `CH01_BEAT_SHEET.md` §7.2. New shared specs: `design/ch01/TRACE_MEMORY.md`, `design/ch01/ABILITY_UNLOCKS.md`, `design/ch01/COMMUTERS_STEP1.md`. New failure reasons introduced in Step 1: `wrong_code`, `locked_out` (SO-01), `invalid_ticket` (PZ-006), `pinned` (PZ-001), `unanchored` (PZ-002), `no_pass` (PZ-003), `dead_relay` (PZ-005); the existing `unpowered` is reused by PZ-004 breaker C and the PZ-005 relays.
