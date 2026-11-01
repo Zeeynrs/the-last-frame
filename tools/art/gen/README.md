@@ -12,6 +12,7 @@ output is deterministic.
 | `props.py` | corner pillar, archway N, railing, bench, call box, reset console, lever, clipboard |
 | `t2.py` | turnstile, fire shutter, counterweight gear, surge capacitor, pressure switch |
 | `t3.py` | route board, security gate, bridge, transit car, dispatch terminal, pocket watch, lever badges, PA horn |
+| `ui_wheel.py` | ability wheel (TLF-053, ADR-021): face, bead pointers, 6 segments x 3 states, 16x16 ability icons, lock glyph, the three wheel mockups and the greyscale proof; PNGs go to `assets/ui/ability_wheel/` |
 | `registry.py` | list of every generated asset (stem, folder, size, layers, frames) |
 | `placement.py`, `placement_render.py`, `placement_md.py` | placement data → `design/art/CH01_PLACEMENT_SHEET.md` + `design/art/mockups/*.png` (positions come from `placement_snapshot_ch01.json`, see below) |
 | `gen_all.py` | writes the `.pxo` files (and, with `--export`, the runtime PNGs through Pixelorama) |
@@ -27,6 +28,7 @@ python tools/art/gen/gen_all.py --export        # ... and re-export every runtim
 python tools/art/gen/gen_all.py --sheet         # ... and rewrite the placement sheet + mockups
 python tools/art/gen/verify_regen.py            # regenerate in memory/temp, compare with the committed files
 python tools/art/gen/verify_regen.py --pixelorama   # also re-export each .pxo in a temp copy and compare PNG bytes
+python tools/art/gen/verify_pxo.py --only ch01_ui_ --log design/art/TLF-053_VERIFICATION.txt   # raw Pixelorama log, optional --only filter
 python tools/art/check_assets.py                # palette / alpha / size / Elias mirror checks on the PNGs
 ```
 

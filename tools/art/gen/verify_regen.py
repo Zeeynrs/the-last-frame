@@ -75,6 +75,21 @@ def main():
                 tag = 'BYTE-IDENTICAL' if same else 'DIFFER'
             ok_all &= same
             print('%s mockup %-32s %s' % ('ok  ' if same else 'FAIL', os.path.basename(c), tag))
+    import ui_wheel
+    with tempfile.TemporaryDirectory() as td:
+        ui_wheel.write_mockups(td)
+        wheel_files = [(ui_wheel.mockup_path(k), ui_wheel.mockup_path(k, td)) for k, *_r in ui_wheel.STATES]
+        wheel_files.append((ui_wheel.proof_path(), ui_wheel.proof_path(td)))
+        for c, t in wheel_files:
+            same = os.path.exists(c) and read(c) == read(t)
+            tag = 'BYTE-IDENTICAL'
+            if not same and os.path.exists(c):
+                same = Image.open(c).convert('RGBA').tobytes() == Image.open(t).convert('RGBA').tobytes()
+                tag = 'pixels IDENTICAL (bytes differ)' if same else 'DIFFER'
+            elif not same:
+                tag = 'DIFFER'
+            ok_all &= same
+            print('%s mockup %-44s %s' % ('ok  ' if same else 'FAIL', os.path.basename(c), tag))
     cur = open(placement_md.SHEET_PATH, 'rb').read().replace(b'\r\n', b'\n')
     new = placement_md.SHEET_TEXT.encode('utf-8')
     same = cur == new

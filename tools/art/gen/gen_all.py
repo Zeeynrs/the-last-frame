@@ -5,7 +5,7 @@ placement-sheet mockups/markdown.
   python tools/art/gen/gen_all.py                       # rewrite the .pxo files in assets/source/ch01
   python tools/art/gen/gen_all.py --out DIR             # write .pxo into DIR instead (for checks)
   python tools/art/gen/gen_all.py --export              # also run Pixelorama and replace the runtime PNGs
-  python tools/art/gen/gen_all.py --sheet               # also rewrite design/art/CH01_PLACEMENT_SHEET.md + mockups
+  python tools/art/gen/gen_all.py --sheet               # also rewrite design/art/CH01_PLACEMENT_SHEET.md + mockups (+ ability wheel mockups)
 
 Pixelorama path: env TLF_PIXELORAMA or D:/Pixelorama/Pixelorama-Windows-64bit/Pixelorama.exe.
 Pixelorama 1.2.3 ignores the --output file name and writes <name>.png next to the .pxo, so exports run in a temp copy.
@@ -50,15 +50,18 @@ def main():
                 png, _, _ = pixelorama_export(path, td)
                 if png is None:
                     print('FAIL pixelorama on', asset.stem); sys.exit(1)
+                os.makedirs(os.path.dirname(os.path.join(REPO, asset.png_rel())), exist_ok=True)
                 shutil.copyfile(png, os.path.join(REPO, asset.png_rel()))
                 line += ' + exported ' + asset.png_rel()
         print(line)
     if a.sheet:
         import placement_render, placement_md
         placement_render.write_mockups()
+        import ui_wheel
+        ui_wheel.write_mockups()
         with open(placement_md.SHEET_PATH, 'w', encoding='utf-8', newline='\n') as fh:
             fh.write(placement_md.SHEET_TEXT)
-        print('wrote sheet + mockups')
+        print('wrote sheet + mockups (incl. the ability wheel mockups and greyscale proof)')
 
 
 if __name__ == '__main__':

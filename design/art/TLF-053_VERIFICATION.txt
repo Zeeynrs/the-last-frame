@@ -1,0 +1,1372 @@
+Pixelorama verification log (raw tool output, nothing paraphrased)
+git HEAD at run time: d009748449e567bb49fbe216656c876e5806922a
+Pixelorama: D:\Pixelorama\Pixelorama-Windows-64bit\Pixelorama.exe
+
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_icon_echo.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_icon_echo.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(16, 16)
+Time Pixelorama took to open: 2505ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_icon_echo.png ch01_ui_icon_echo.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2515ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 2d5e11b9d94bb971636d1a80b7a67103f4bd4ad6787971f9ed7f56fcb1acf27a
+sha256 committed  : 2d5e11b9d94bb971636d1a80b7a67103f4bd4ad6787971f9ed7f56fcb1acf27a
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_icon_echo_locked.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_icon_echo_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(16, 16)
+Time Pixelorama took to open: 2513ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_icon_echo_locked.png ch01_ui_icon_echo_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2515ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 099bb498e2a1313f06ece57ebdeae597994a6ed41b7de2f81a93e7b2cebaf919
+sha256 committed  : 099bb498e2a1313f06ece57ebdeae597994a6ed41b7de2f81a93e7b2cebaf919
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_icon_fast_forward.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_icon_fast_forward.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(16, 16)
+Time Pixelorama took to open: 2531ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_icon_fast_forward.png ch01_ui_icon_fast_forward.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2517ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 96b3222859ab1c0f503e8e416e6f22b3f6bcade60c2c4673370aef0e0d4374c4
+sha256 committed  : 96b3222859ab1c0f503e8e416e6f22b3f6bcade60c2c4673370aef0e0d4374c4
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_icon_fast_forward_locked.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_icon_fast_forward_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(16, 16)
+Time Pixelorama took to open: 2522ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_icon_fast_forward_locked.png ch01_ui_icon_fast_forward_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2522ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : ab6e0b60d49cc8e5cd4b3ad10fc3b65e3e6b6ee52c8bc69079d042e762e87477
+sha256 committed  : ab6e0b60d49cc8e5cd4b3ad10fc3b65e3e6b6ee52c8bc69079d042e762e87477
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_icon_freeze.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_icon_freeze.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(16, 16)
+Time Pixelorama took to open: 2498ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_icon_freeze.png ch01_ui_icon_freeze.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2524ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 3b1d2be92bd805c03c37f94650ae827083d5906dbfd0559334dbb2c3b1c4c362
+sha256 committed  : 3b1d2be92bd805c03c37f94650ae827083d5906dbfd0559334dbb2c3b1c4c362
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_icon_freeze_locked.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_icon_freeze_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(16, 16)
+Time Pixelorama took to open: 2528ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_icon_freeze_locked.png ch01_ui_icon_freeze_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2496ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 4a1d47d33d4ba6296ec5f532a58b0bc2b3bedcede4f7e84773e55b3f1ce801a0
+sha256 committed  : 4a1d47d33d4ba6296ec5f532a58b0bc2b3bedcede4f7e84773e55b3f1ce801a0
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_icon_rewind.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_icon_rewind.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(16, 16)
+Time Pixelorama took to open: 2498ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_icon_rewind.png ch01_ui_icon_rewind.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2502ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : c25b30234d182172a5b94dc9fc13bd1f5f51a818f5f4d7f6999c466c8126e7e4
+sha256 committed  : c25b30234d182172a5b94dc9fc13bd1f5f51a818f5f4d7f6999c466c8126e7e4
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_icon_rewind_locked.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_icon_rewind_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(16, 16)
+Time Pixelorama took to open: 2505ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_icon_rewind_locked.png ch01_ui_icon_rewind_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2514ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 5a4232b95646de497ca47e83d7045cba1bfa182abcffc11abb4a0ef75e1dd1ec
+sha256 committed  : 5a4232b95646de497ca47e83d7045cba1bfa182abcffc11abb4a0ef75e1dd1ec
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_icon_trace.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_icon_trace.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(16, 16)
+Time Pixelorama took to open: 2509ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_icon_trace.png ch01_ui_icon_trace.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2513ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 8718d69ed58f3d8cd5841b67564e22db0bbc8c35da22b95026ab6d4925574547
+sha256 committed  : 8718d69ed58f3d8cd5841b67564e22db0bbc8c35da22b95026ab6d4925574547
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_icon_trace_locked.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_icon_trace_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(16, 16)
+Time Pixelorama took to open: 2518ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_icon_trace_locked.png ch01_ui_icon_trace_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2549ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : ce94ec05768d2ffa5f72d1bc3f4f2709a77980dd760b6e5018970c789e9430af
+sha256 committed  : ce94ec05768d2ffa5f72d1bc3f4f2709a77980dd760b6e5018970c789e9430af
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_icon_unknown.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_icon_unknown.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(16, 16)
+Time Pixelorama took to open: 2516ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_icon_unknown.png ch01_ui_icon_unknown.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2537ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 452f8d91c4cbb6ac641bbae802346b1c9de10d5766543bbbeca6e3413f0046e3
+sha256 committed  : 452f8d91c4cbb6ac641bbae802346b1c9de10d5766543bbbeca6e3413f0046e3
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_icon_unknown_locked.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_icon_unknown_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(16, 16)
+Time Pixelorama took to open: 2535ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_icon_unknown_locked.png ch01_ui_icon_unknown_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2506ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 5998772fe3ad168aec0669b130cef0a83e4effc9b6c1a281307527ffa5fea6bf
+sha256 committed  : 5998772fe3ad168aec0669b130cef0a83e4effc9b6c1a281307527ffa5fea6bf
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_lock_glyph.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_lock_glyph.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(14, 16)
+Time Pixelorama took to open: 2520ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_lock_glyph.png ch01_ui_lock_glyph.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2511ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 20751b841adfb58bbf92812fb7893f233f6485b9d7c53e531f0c529efad75efa
+sha256 committed  : 20751b841adfb58bbf92812fb7893f233f6485b9d7c53e531f0c529efad75efa
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_face.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_face.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(52, 56)
+Time Pixelorama took to open: 2518ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_face.png ch01_ui_wheel_face.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2512ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : f05bb5588ac557e22d5ff71109bcbd9ab0273249d5f9bb3d1f3b2f4f39dee600
+sha256 committed  : f05bb5588ac557e22d5ff71109bcbd9ab0273249d5f9bb3d1f3b2f4f39dee600
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_pointer_0.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_pointer_0.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(18, 18)
+Time Pixelorama took to open: 2523ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_pointer_0.png ch01_ui_wheel_pointer_0.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2500ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : efc95da701d1fd94c7ede184436592a6341bbfa73e7b83de8d18a19d12316b37
+sha256 committed  : efc95da701d1fd94c7ede184436592a6341bbfa73e7b83de8d18a19d12316b37
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_pointer_1.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_pointer_1.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(18, 18)
+Time Pixelorama took to open: 2527ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_pointer_1.png ch01_ui_wheel_pointer_1.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2511ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : ad1b5645e4f9d7cd25a28a96f295ea6b43c06d13dd941361e4200680dce57c62
+sha256 committed  : ad1b5645e4f9d7cd25a28a96f295ea6b43c06d13dd941361e4200680dce57c62
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_pointer_2.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_pointer_2.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(18, 18)
+Time Pixelorama took to open: 2508ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_pointer_2.png ch01_ui_wheel_pointer_2.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2504ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 00ad2398dbca2bc198d0242d1120042190872bda55e6d8762715de292385282c
+sha256 committed  : 00ad2398dbca2bc198d0242d1120042190872bda55e6d8762715de292385282c
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_pointer_3.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_pointer_3.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(18, 18)
+Time Pixelorama took to open: 2541ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_pointer_3.png ch01_ui_wheel_pointer_3.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2525ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 357ceda9a861984641ac9be8792b5190364b2c01d043086079843dd6071bb538
+sha256 committed  : 357ceda9a861984641ac9be8792b5190364b2c01d043086079843dd6071bb538
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_pointer_4.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_pointer_4.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(18, 18)
+Time Pixelorama took to open: 2490ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_pointer_4.png ch01_ui_wheel_pointer_4.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2493ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 590685a855ed52318618a6c47850c47e9757232808b72ea9152bc75217931fe1
+sha256 committed  : 590685a855ed52318618a6c47850c47e9757232808b72ea9152bc75217931fe1
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_pointer_5.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_pointer_5.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(18, 18)
+Time Pixelorama took to open: 2511ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_pointer_5.png ch01_ui_wheel_pointer_5.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2492ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 1f1d2fc5ab19b45c6ba62df0e33942fd04edf75881e68edeb2e36327befe264a
+sha256 committed  : 1f1d2fc5ab19b45c6ba62df0e33942fd04edf75881e68edeb2e36327befe264a
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_pointer_rest.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_pointer_rest.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(10, 10)
+Time Pixelorama took to open: 2495ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_pointer_rest.png ch01_ui_wheel_pointer_rest.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2522ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 205e25d88a8df4db467528bc645cbb56fa7e24225c7577e5ef6640cc8edd6476
+sha256 committed  : 205e25d88a8df4db467528bc645cbb56fa7e24225c7577e5ef6640cc8edd6476
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg0_locked.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg0_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(74, 43)
+Time Pixelorama took to open: 2527ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg0_locked.png ch01_ui_wheel_seg0_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2515ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 540a740700793583234df9a31b68a93653d76216f7dcfb9db8228ffff31e07e5
+sha256 committed  : 540a740700793583234df9a31b68a93653d76216f7dcfb9db8228ffff31e07e5
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg0_normal.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg0_normal.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(74, 43)
+Time Pixelorama took to open: 2516ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg0_normal.png ch01_ui_wheel_seg0_normal.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2524ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 7a65479365c29dbcc91eee466178df0346b1bd989721207bfbca3e203069719d
+sha256 committed  : 7a65479365c29dbcc91eee466178df0346b1bd989721207bfbca3e203069719d
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg0_selected.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg0_selected.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(74, 43)
+Time Pixelorama took to open: 2509ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg0_selected.png ch01_ui_wheel_seg0_selected.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2518ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : c17cc4b2a6df80932e9532ed31dcb96d301e6a4571eea06a607668a24413ee73
+sha256 committed  : c17cc4b2a6df80932e9532ed31dcb96d301e6a4571eea06a607668a24413ee73
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg1_locked.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg1_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(58, 67)
+Time Pixelorama took to open: 2521ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg1_locked.png ch01_ui_wheel_seg1_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2517ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 32988c12324868588f3b422726ab49898ae184e71342e1442a2103da8a6f5227
+sha256 committed  : 32988c12324868588f3b422726ab49898ae184e71342e1442a2103da8a6f5227
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg1_normal.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg1_normal.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(58, 67)
+Time Pixelorama took to open: 2510ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg1_normal.png ch01_ui_wheel_seg1_normal.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2522ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 023cc2bf5f14197676461182678ea686428cee9bfaa0640d0f6a14f57d10a853
+sha256 committed  : 023cc2bf5f14197676461182678ea686428cee9bfaa0640d0f6a14f57d10a853
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg1_selected.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg1_selected.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(58, 67)
+Time Pixelorama took to open: 2512ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg1_selected.png ch01_ui_wheel_seg1_selected.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2500ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 0b73c7c37ab067ebed8325e1274c486bddd30932fdcc2dfba55d69da4e60a669
+sha256 committed  : 0b73c7c37ab067ebed8325e1274c486bddd30932fdcc2dfba55d69da4e60a669
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg2_locked.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg2_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(58, 67)
+Time Pixelorama took to open: 2506ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg2_locked.png ch01_ui_wheel_seg2_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2523ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 713c55ad84e6b7626bfcea6b1997758027a358693597f17aee263024d454cfe7
+sha256 committed  : 713c55ad84e6b7626bfcea6b1997758027a358693597f17aee263024d454cfe7
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg2_normal.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg2_normal.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(58, 67)
+Time Pixelorama took to open: 2529ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg2_normal.png ch01_ui_wheel_seg2_normal.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2517ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : c987720ad2def90adbdf9bf5a05076c5f7c1fd816c0aac6c23069fde7404fa5e
+sha256 committed  : c987720ad2def90adbdf9bf5a05076c5f7c1fd816c0aac6c23069fde7404fa5e
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg2_selected.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg2_selected.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(58, 67)
+Time Pixelorama took to open: 2520ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg2_selected.png ch01_ui_wheel_seg2_selected.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2508ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 20aa49883636a4725c242d4442feb01e8f815e0e7d7581ecfd3c0373ca9ce5fb
+sha256 committed  : 20aa49883636a4725c242d4442feb01e8f815e0e7d7581ecfd3c0373ca9ce5fb
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg3_locked.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg3_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(74, 43)
+Time Pixelorama took to open: 2510ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg3_locked.png ch01_ui_wheel_seg3_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2514ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 8c53e59f4404feca6b064f72748d8e36dcc7f0621e25c8ca8bd390f1602921de
+sha256 committed  : 8c53e59f4404feca6b064f72748d8e36dcc7f0621e25c8ca8bd390f1602921de
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg3_normal.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg3_normal.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(74, 43)
+Time Pixelorama took to open: 2496ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg3_normal.png ch01_ui_wheel_seg3_normal.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2506ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 5b050acea7b5ba465a592d0bcee07a7baaf743055ad45be0c223deda18a33d72
+sha256 committed  : 5b050acea7b5ba465a592d0bcee07a7baaf743055ad45be0c223deda18a33d72
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg3_selected.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg3_selected.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(74, 43)
+Time Pixelorama took to open: 2550ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg3_selected.png ch01_ui_wheel_seg3_selected.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2527ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : a86faa427abd86ab24428acd64a08239282c9bc75cf4854f607fc58ff4546cd2
+sha256 committed  : a86faa427abd86ab24428acd64a08239282c9bc75cf4854f607fc58ff4546cd2
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg4_locked.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg4_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(58, 67)
+Time Pixelorama took to open: 2539ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg4_locked.png ch01_ui_wheel_seg4_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2513ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : ba76297218fce37d337b51fc9bbfaff33a9219a8c9f1778df47a3703df28c419
+sha256 committed  : ba76297218fce37d337b51fc9bbfaff33a9219a8c9f1778df47a3703df28c419
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg4_normal.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg4_normal.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(58, 67)
+Time Pixelorama took to open: 2522ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg4_normal.png ch01_ui_wheel_seg4_normal.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2493ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 8b3f360f2def16a0541f3dae87487137ce3e0122af50c09cc228b7b013624978
+sha256 committed  : 8b3f360f2def16a0541f3dae87487137ce3e0122af50c09cc228b7b013624978
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg4_selected.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg4_selected.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(58, 67)
+Time Pixelorama took to open: 2503ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg4_selected.png ch01_ui_wheel_seg4_selected.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2532ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : e9461795848acbdae4f9497a8d6d20cf4d8ad9d3b825cceac587a28c27e9470e
+sha256 committed  : e9461795848acbdae4f9497a8d6d20cf4d8ad9d3b825cceac587a28c27e9470e
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg5_locked.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg5_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(58, 67)
+Time Pixelorama took to open: 2540ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg5_locked.png ch01_ui_wheel_seg5_locked.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2520ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 9956d55cbd7579047afce0934f3593eb2f80565000cd0aab1b0313a2be2176d6
+sha256 committed  : 9956d55cbd7579047afce0934f3593eb2f80565000cd0aab1b0313a2be2176d6
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg5_normal.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg5_normal.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(58, 67)
+Time Pixelorama took to open: 2526ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg5_normal.png ch01_ui_wheel_seg5_normal.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2522ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 6772eec04c2888c265b5c5ddb6b3f31f496c7b4b7b6439681396dc7f763f3001
+sha256 committed  : 6772eec04c2888c265b5c5ddb6b3f31f496c7b4b7b6439681396dc7f763f3001
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_ui_wheel_seg5_selected.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_ui_wheel_seg5_selected.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(58, 67)
+Time Pixelorama took to open: 2497ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_ui_wheel_seg5_selected.png ch01_ui_wheel_seg5_selected.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2516ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 36c974d6a0a57f8ba63f0d127f21111255b4c2f1873d6a61bae4ac076a1154c9
+sha256 committed  : 36c974d6a0a57f8ba63f0d127f21111255b4c2f1873d6a61bae4ac076a1154c9
+BYTE-IDENTICAL: YES
+====================================================================================================
+SUMMARY (size-exit, export-exit, byte-identical)
+ch01_ui_icon_echo                                    0 0 YES
+ch01_ui_icon_echo_locked                             0 0 YES
+ch01_ui_icon_fast_forward                            0 0 YES
+ch01_ui_icon_fast_forward_locked                     0 0 YES
+ch01_ui_icon_freeze                                  0 0 YES
+ch01_ui_icon_freeze_locked                           0 0 YES
+ch01_ui_icon_rewind                                  0 0 YES
+ch01_ui_icon_rewind_locked                           0 0 YES
+ch01_ui_icon_trace                                   0 0 YES
+ch01_ui_icon_trace_locked                            0 0 YES
+ch01_ui_icon_unknown                                 0 0 YES
+ch01_ui_icon_unknown_locked                          0 0 YES
+ch01_ui_lock_glyph                                   0 0 YES
+ch01_ui_wheel_face                                   0 0 YES
+ch01_ui_wheel_pointer_0                              0 0 YES
+ch01_ui_wheel_pointer_1                              0 0 YES
+ch01_ui_wheel_pointer_2                              0 0 YES
+ch01_ui_wheel_pointer_3                              0 0 YES
+ch01_ui_wheel_pointer_4                              0 0 YES
+ch01_ui_wheel_pointer_5                              0 0 YES
+ch01_ui_wheel_pointer_rest                           0 0 YES
+ch01_ui_wheel_seg0_locked                            0 0 YES
+ch01_ui_wheel_seg0_normal                            0 0 YES
+ch01_ui_wheel_seg0_selected                          0 0 YES
+ch01_ui_wheel_seg1_locked                            0 0 YES
+ch01_ui_wheel_seg1_normal                            0 0 YES
+ch01_ui_wheel_seg1_selected                          0 0 YES
+ch01_ui_wheel_seg2_locked                            0 0 YES
+ch01_ui_wheel_seg2_normal                            0 0 YES
+ch01_ui_wheel_seg2_selected                          0 0 YES
+ch01_ui_wheel_seg3_locked                            0 0 YES
+ch01_ui_wheel_seg3_normal                            0 0 YES
+ch01_ui_wheel_seg3_selected                          0 0 YES
+ch01_ui_wheel_seg4_locked                            0 0 YES
+ch01_ui_wheel_seg4_normal                            0 0 YES
+ch01_ui_wheel_seg4_selected                          0 0 YES
+ch01_ui_wheel_seg5_locked                            0 0 YES
+ch01_ui_wheel_seg5_normal                            0 0 YES
+ch01_ui_wheel_seg5_selected                          0 0 YES
+TOTAL pxo: 39, all identical: True
