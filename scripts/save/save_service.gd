@@ -12,7 +12,8 @@ extends Node
 ## Registered as the SaveService autoload (ADR-011); the class is SaveStore so the name does not hide it.
 
 ## v2 (TLF-048): + "playtest" (PlaytestLog state); v1 saves migrate with an empty log.
-const SAVE_VERSION: int = 2
+## v3 (TLF-050): + "unlocked_abilities" (AbilityUnlocks); v2 saves migrate with all four unlocked.
+const SAVE_VERSION: int = 3
 const DEFAULT_ROOT: String = "user://saves"
 ## Headless runs (tests, validate.ps1, -s probes) never touch the player's saves (ADR-011 am.,
 ## ISSUE-026, TLF-036). The shipped game never runs headless.
@@ -25,7 +26,7 @@ var save_root: String = DEFAULT_ROOT
 ## Target version for migrations (tests may raise it together with `migrations`).
 var current_version: int = SAVE_VERSION
 ## from_version (int) -> Callable taking and returning the save Dictionary at from_version + 1.
-var migrations: Dictionary = {1: migrate_v1_to_v2}
+var migrations: Dictionary = {1: migrate_v1_to_v2, 2: migrate_v2_to_v3}
 
 
 ## Default save root for a display server name and the TLF_ALLOW_REAL_USER_DATA value.
@@ -60,6 +61,7 @@ static func default_save() -> Dictionary:
 		"hints": {},
 		"settings_ref": "user://settings.cfg",
 		"playtest": {},
+		"unlocked_abilities": _default_unlocked(),
 	}
 
 
@@ -91,6 +93,8 @@ func capture(session: GameSession, chapter: String, checkpoint_id: String) -> Di
 		data["spatial"] = session.spatial_service.export_state()
 	if session.playtest_log != null:
 		data["playtest"] = session.playtest_log.export_state()
+	if session.ability_unlocks != null:
+		data["unlocked_abilities"] = session.ability_unlocks.export_state()
 	return data
 
 
@@ -109,6 +113,8 @@ func apply(session: GameSession, data: Dictionary) -> Dictionary:
 		session.narrative_state.import_journal(data["journal"])
 	if session.hint_service != null:
 		session.hint_service.import_state(data["hints"])
+	if session.ability_unlocks != null:
+		session.ability_unlocks.import_state(data["unlocked_abilities"])
 	if session.spatial_service != null and not data["spatial"].is_empty():
 		var spatial_result := session.spatial_service.import_state(data["spatial"])
 		if not spatial_result["ok"]:
@@ -205,6 +211,20 @@ static func migrate_v1_to_v2(data: Dictionary) -> Dictionary:
 	return data
 
 
+## v2 -> v3: saves from before TLF-050 had every ability but the Fast-Forward stretch; they keep it.
+static func migrate_v2_to_v3(data: Dictionary) -> Dictionary:
+	if not (data.get("unlocked_abilities") is Array):
+		data["unlocked_abilities"] = _default_unlocked()
+	return data
+
+
+static func _default_unlocked() -> Array:
+	var out: Array = []
+	for ability in AbilityUnlocks.DEFAULT_UNLOCKED:
+		out.append(String(ability))
+	return out
+
+
 ## Structural validation (types of every section). Returns {ok, reason}.
 func validate(data: Dictionary) -> Dictionary:
 	var expected := {
@@ -212,6 +232,7 @@ func validate(data: Dictionary) -> Dictionary:
 		"puzzles": TYPE_DICTIONARY, "narrative_flags": TYPE_DICTIONARY,
 		"fragments": TYPE_ARRAY, "temporal": TYPE_DICTIONARY, "spatial": TYPE_DICTIONARY,
 		"journal": TYPE_ARRAY, "hints": TYPE_DICTIONARY, "settings_ref": TYPE_STRING, "playtest": TYPE_DICTIONARY,
+		"unlocked_abilities": TYPE_ARRAY,
 	}
 	for key in expected.keys():
 		if not data.has(key) or typeof(data[key]) != expected[key]:

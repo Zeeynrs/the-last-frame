@@ -161,10 +161,10 @@ func test_migrations_run_in_order_up_to_current_version() -> void:
 ## TLF-048: save v2 adds "playtest"; a v1 file (as the game wrote it before) still loads.
 func test_v1_save_migrates_to_v2_with_an_empty_playtest_log() -> void:
 	var save := _service()
-	_assert_eq(SaveStore.SAVE_VERSION, 2, "current save version")
 	_assert_true(save.migrations.has(1), "built-in v1 -> v2 migration")
 	var v1 := SaveStore.default_save()
 	v1.erase("playtest")
+	v1.erase("unlocked_abilities")
 	v1["save_version"] = 1
 	v1["checkpoint_id"] = "ch01.cp.maintenance_bay"
 	v1["puzzles"] = {"CH1-PZ-001": "SOLVED"}
@@ -172,8 +172,9 @@ func test_v1_save_migrates_to_v2_with_an_empty_playtest_log() -> void:
 	_write_raw(save, 0, JSON.stringify(JSON.from_native(v1), "\t"))
 	var read := save.read_slot(0)
 	if _assert_true(read["ok"], "v1 file reads (%s)" % read["reason"]):
-		_assert_eq(read["data"]["save_version"], 2, "upgraded to v2")
+		_assert_eq(read["data"]["save_version"], SaveStore.SAVE_VERSION, "upgraded through v2 to the current version")
 		_assert_eq(read["data"]["playtest"], {}, "empty playtest log")
+		_assert_eq(read["data"]["unlocked_abilities"], ["trace", "rewind", "freeze", "echo"], "v1 save keeps all four abilities")
 		_assert_eq(read["data"]["puzzles"], {"CH1-PZ-001": "SOLVED"}, "puzzles kept")
 		_assert_eq(read["data"]["hints"], {"CH1-PZ-002": 1}, "hints kept")
 		_assert_eq(read["data"]["checkpoint_id"], "ch01.cp.maintenance_bay", "checkpoint kept")
@@ -181,6 +182,49 @@ func test_v1_save_migrates_to_v2_with_an_empty_playtest_log() -> void:
 	bad["playtest"] = "not a dictionary"
 	_assert_eq(save.validate(bad)["reason"], &"invalid", "playtest must be a dictionary")
 	_wipe()
+
+
+## TLF-050: save v3 adds "unlocked_abilities"; a v2 file (TLF-048) migrates with all four unlocked.
+func test_v2_save_migrates_to_v3_with_all_four_abilities() -> void:
+	var save := _service()
+	_assert_eq(SaveStore.SAVE_VERSION, 3, "current save version")
+	_assert_true(save.migrations.has(2), "built-in v2 -> v3 migration")
+	var v2 := SaveStore.default_save()
+	v2.erase("unlocked_abilities")
+	v2["save_version"] = 2
+	v2["checkpoint_id"] = "ch01.cp.signal_control"
+	v2["puzzles"] = {"CH1-PZ-003": "SOLVED"}
+	v2["playtest"] = {"version": 1, "active_ticks": 1234}
+	_write_raw(save, 0, JSON.stringify(JSON.from_native(v2), "\t"))
+	var read := save.read_slot(0)
+	if _assert_true(read["ok"], "v2 file reads (%s)" % read["reason"]):
+		_assert_eq(read["data"]["save_version"], 3, "upgraded to v3")
+		_assert_eq(read["data"]["unlocked_abilities"], ["trace", "rewind", "freeze", "echo"], "all four unlocked")
+		_assert_eq(read["data"]["playtest"], {"version": 1, "active_ticks": 1234}, "TLF-048 log untouched")
+		_assert_eq(read["data"]["puzzles"], {"CH1-PZ-003": "SOLVED"}, "puzzles kept")
+	var bad := SaveStore.default_save()
+	bad["unlocked_abilities"] = "trace"
+	_assert_eq(save.validate(bad)["reason"], &"invalid", "unlocked_abilities must be an array")
+	_wipe()
+
+
+func test_capture_and_apply_round_trip_ability_unlocks() -> void:
+	var s := make_session()
+	var unlocks := s.ability_unlocks
+	if not _assert_true(unlocks != null, "GameSession creates AbilityUnlocks"):
+		free_session(s)
+		return
+	_assert_eq(unlocks.unlocked(), AbilityUnlocks.DEFAULT_UNLOCKED, "default: the old flow's four")
+	unlocks.set_unlocked([&"trace"])
+	unlocks.unlock(&"freeze")
+	var save := _service()
+	var data := save.capture(s, "ch01", "ch01.cp.arrival")
+	_assert_eq(data["unlocked_abilities"], ["trace", "freeze"], "captured in ADR-015 order")
+	unlocks.set_unlocked(AbilityUnlocks.DEFAULT_UNLOCKED)
+	_assert_true(save.apply(s, data)["ok"], "applied")
+	_assert_eq(unlocks.unlocked(), [&"trace", &"freeze"], "restored")
+	_wipe()
+	free_session(s)
 
 
 func test_invalid_structure_is_refused_for_read_and_write() -> void:
