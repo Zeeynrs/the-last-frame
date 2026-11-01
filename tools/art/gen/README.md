@@ -13,7 +13,7 @@ output is deterministic.
 | `t2.py` | turnstile, fire shutter, counterweight gear, surge capacitor, pressure switch |
 | `t3.py` | route board, security gate, bridge, transit car, dispatch terminal, pocket watch, lever badges, PA horn |
 | `registry.py` | list of every generated asset (stem, folder, size, layers, frames) |
-| `placement.py`, `placement_render.py`, `placement_md.py` | placement data → `design/art/CH01_PLACEMENT_SHEET.md` + `design/art/mockups/*.png` (reads the room `.tscn` files, read-only) |
+| `placement.py`, `placement_render.py`, `placement_md.py` | placement data → `design/art/CH01_PLACEMENT_SHEET.md` + `design/art/mockups/*.png` (positions come from `placement_snapshot_ch01.json`, see below) |
 | `gen_all.py` | writes the `.pxo` files (and, with `--export`, the runtime PNGs through Pixelorama) |
 | `verify_regen.py` | **the reproducibility check** |
 | `capacitor_compare.py` | TLF-044 review images: the 4 capacitor states side by side, colour and greyscale |
@@ -40,7 +40,7 @@ here runs on a temp copy of the `.pxo`. Optional previews write to `$TLF_ART_SCR
 * Runtime PNG: the committed PNG is the Pixelorama re-export; `verify_regen.py` compares its pixels with the generated
   pixels, and with `--pixelorama` also the exact bytes of a fresh Pixelorama re-export.
 * Mockups and the placement sheet: regenerated and compared byte for byte (mockup PNGs fall back to a pixel comparison
-  if only the PNG encoder differs). The sheet generator reads the room scenes, so it changes when the scenes change.
+  if only the PNG encoder differs). The sheet generator reads only the frozen snapshot below, so it does **not** change when the live room files change.
 * **Not covered:** the batch-1 files drawn by Argon in Pixelorama (terrazzo/tactile tiles, subterranean walls,
   `archway_frame_e`, the clock, the palette and the arrival-platform target sheet). They have no generator;
   `verify_regen.py` lists them as *NOT COVERED*. `props.archway_n` and the mockups read some of them as inputs.
@@ -53,3 +53,24 @@ Treat the batch-1 `.pxo` and PNG as **fixed sources**: commit a manifest of thei
 "not covered" into "pinned": any accidental edit fails the check, while Argon (or a later agent) can still replace a
 file deliberately by updating the manifest in the same commit. A generator is only worth writing for a file when its
 look has to change.
+
+## Placement snapshot (TLF-045)
+`placement_snapshot_ch01.json` is a **frozen copy of the node positions of the 10 Chapter 1 rooms as they were before the
+art integration** (commit `0be1959`, the TLF-042 merge; the commit, its date and the extraction rule are recorded inside
+the file). The generators read only this file, never the live room files: TLF-041 replaced the greybox nodes (e.g.
+`Clock`) and moved the intercom, so reading the live files crashed `verify_regen.py` with `KeyError: 'Clock'` (ISSUE-036).
+The live room files now belong to the integration; the snapshot is not updated when they change.
+
+Deliberate differences between the sheet and the snapshot (they live **only** in the sheet generator, `placement.py`,
+never in the snapshot):
+
+| Item | Snapshot (pre-integration) | Sheet / mockups |
+|---|---|---|
+| `signal_control.intercom` | node at `(352, 160)` in the capacitor lane | sprite on N-wall module `k = 6`, pivot `(528, 154)`; the sheet states that ADR-019 moved the node there |
+| Wall clocks (rooms 1, 2, 5, 6, 7) | greybox `Clock` at `(320, 50)` above the apex | pivot = base midpoint of the named N-wall module `+ (0, -38)` (sheet section 0.6) |
+| Atrium master clock | `Clock` at `(352, 120)` | kept at the snapshot position, drawn at 2x |
+| Everything else | as in the snapshot | as in the snapshot |
+
+To refresh the snapshot deliberately (a new art pass against a newer room layout), rebuild the JSON from the chosen
+commit with the extraction rule in its `source.how` field, regenerate the sheet and mockups (`gen_all.py --sheet`), and
+commit all of it together.

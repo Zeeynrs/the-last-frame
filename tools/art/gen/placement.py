@@ -2,7 +2,8 @@
 import re, os, sys
 from lib import *
 
-ROOMS_DIR = os.path.join(REPO, 'scenes', 'chapters', 'ch01', 'rooms')
+SNAPSHOT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'placement_snapshot_ch01.json')
+_SNAPSHOT = None
 
 
 def px(x, y):
@@ -19,18 +20,15 @@ def fmt_t(t):
     return '(%s, %s)' % (f(t[0]), f(t[1]))
 
 
-def parse_tscn(name):
-    pos = {}
-    cur = None
-    for l in open(os.path.join(ROOMS_DIR, name + '.tscn'), encoding='utf-8'):
-        m = re.match(r'\[node name="([^"]+)"(?: type="([^"]+)")?(?: parent="([^"]*)")?', l)
-        if m:
-            cur = m.group(1) if m.group(3) == '.' else None
-            continue
-        m = re.match(r'position = Vector2\(([-\d.]+), ([-\d.]+)\)', l)
-        if m and cur and cur not in pos:
-            pos[cur] = (float(m.group(1)), float(m.group(2)))
-    return pos
+def snapshot_positions(name):
+    """Node positions of one room from the FROZEN pre-integration snapshot (TLF-045). The generators never read the
+    live room files: those belong to the art integration (ADR-019) and no longer hold the greybox nodes."""
+    global _SNAPSHOT
+    if _SNAPSHOT is None:
+        import json
+        with open(SNAPSHOT_PATH, encoding='utf-8') as fh:
+            _SNAPSHOT = json.load(fh)
+    return {k: (float(v[0]), float(v[1])) for k, v in _SNAPSHOT['rooms'][name].items()}
 
 
 T = {  # tile sprite stems
@@ -82,7 +80,7 @@ def build_rooms():
 
     def mk(num, key, W, H, base, cracked=True):
         r = Room(); r.num, r.key, r.W, r.H, r.base, r.cracked = num, key, W, H, base, cracked
-        r.id = 'ch01.' + key; r.pos = parse_tscn(key)
+        r.id = 'ch01.' + key; r.pos = snapshot_positions(key)
         r.areas = []     # (label, [(x,y)], tile)
         r.doors = []     # (door_id, side)
         r.props = []     # dict(obj, sprite, state, pos, note, replaces)
@@ -175,7 +173,7 @@ def build_rooms():
         dict(obj='surge_capacitor', sprite='capacitor', files=['ch01_prop_surge_capacitor_discharged', 'ch01_prop_surge_capacitor_charged', 'ch01_prop_surge_capacitor_frozen_discharged', 'ch01_prop_surge_capacitor_frozen_charged'], state='`(charge_state, is_frozen())`: (`&"discharged"`, false) -> `_discharged`; (`&"charged"`, false) -> `_charged`; (`&"discharged"`, true) -> `_frozen_discharged`; (`&"charged"`, true) -> `_frozen_charged` (= `is_stabilized()` while `bus_powered`)', pos=p['surge_capacitor'], note='`prop_surge_capacitor` (64×64). The old single `_frozen` file is deprecated (kept until TLF-041 has switched, do not use for new work)', repl='none'),
         dict(obj='breaker_a', sprite='lever_off', state="`lever_state` `&\"open\"` -> `_off`; `&\"engaged\"` -> `_on` (auto-releases after 180 ticks)", pos=p['breaker_a'], note='stands at the foot of the W wall (`x = 0`): **wall-mounted, `Wall_Fixtures` 7**; badge A child at (3, -8)', repl='none', badge='a', zlayer=(7, 'Wall_Fixtures')),
         dict(obj='breaker_b', sprite='lever_off', state="`lever_state` `&\"open\"` -> `_off`; `&\"engaged\"` -> `_on`", pos=p['breaker_b'], note='free-standing at the E edge (`x = 15`, no wall drawn): **`YSort_Actors` 10** (ADR-019); badge B child at (3, -8)', repl='none', badge='b', zlayer=(10, 'YSort_Actors')),
-        dict(obj='intercom', sprite='callbox', state='idle', pos=p['intercom'], note='Operator intercom (shares `prop_call_box_phone`); node sits at the capacitor lane, so the sprite mounts on the N wall, module `k = 6`, offset (0, -14) (OQ-4)', repl='none', mount=('N', 6)),
+        dict(obj='intercom', sprite='callbox', state='idle', pos=p['intercom'], note='Operator intercom (shares `prop_call_box_phone`); the pre-integration node sat in the capacitor lane at the snapshot position, so the sprite mounts on the N wall, module `k = 6`, offset (0, -14) (OQ-4). **ADR-019 moved the node to this mount, `(528, 154)`**', repl='none', mount=('N', 6), node_moved=(528, 154)),
         dict(obj='reset_anchor_01', sprite='console', state='idle', pos=p['reset_anchor_01'], note='', repl='none'),
         dict(obj='vestibule_door (`door_exit_north`)', sprite='arch_n', state='locked / open -> `[■]` / `[▲]` transom glyph', pos=p['vestibule_door'], note='archway is the visual of the door; keep `Blocker` collision', repl='`Archway` n/a (greybox has none)'),
     ]

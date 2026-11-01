@@ -1,0 +1,440 @@
+{
+ "snapshot_of": "top-level node positions (parent \".\") of the 10 Chapter 1 room scenes BEFORE the art integration",
+ "source": {
+  "commit": "0be19592bebcf7c194e3fcd868743735a51207b4",
+  "subject": "merge(TLF-042): art batch 3: remaining puzzle props, pocket watch, lever badges, reproducible generators (design-art, Sonnet 5.5)",
+  "commit_date": "2026-11-01T00:16:46+07:00",
+  "taken": "2026-11-01 (TLF-045)",
+  "how": "one-off: for each room, `git show 0be1959:<room scene>` and take the first `position = Vector2(x, y)` after each top-level `[node ... parent=\".\"]` header (same rule the generators used before TLF-045)"
+ },
+ "rooms": {
+  "arrival_platform": {
+   "Clock": [
+    320.0,
+    50.0
+   ],
+   "Archway": [
+    448.0,
+    208.0
+   ],
+   "door_exit_east": [
+    448.0,
+    208.0
+   ],
+   "safe_anchor_spawn": [
+    352.0,
+    160.0
+   ],
+   "checkpoint": [
+    352.0,
+    160.0
+   ],
+   "pocket_watch_pickup": [
+    368.0,
+    168.0
+   ],
+   "digital_clock_2359": [
+    320.0,
+    50.0
+   ]
+  },
+  "concourse_west": {
+   "Clock": [
+    320.0,
+    50.0
+   ],
+   "ArchwayWest": [
+    240.0,
+    104.0
+   ],
+   "ArchwayEast": [
+    480.0,
+    224.0
+   ],
+   "door_entry_west": [
+    240.0,
+    104.0
+   ],
+   "door_exit_east": [
+    480.0,
+    224.0
+   ],
+   "safe_anchor_east": [
+    256.0,
+    112.0
+   ],
+   "safe_anchor_west": [
+    304.0,
+    136.0
+   ],
+   "checkpoint": [
+    256.0,
+    112.0
+   ],
+   "turnstile_gate": [
+    272.0,
+    120.0
+   ],
+   "turnstile_footprint": [
+    272.0,
+    120.0
+   ],
+   "turnstile_trace_anchor": [
+    280.0,
+    124.0
+   ],
+   "support_pillar_01": [
+    384.0,
+    176.0
+   ],
+   "reset_anchor_01": [
+    256.0,
+    144.0
+   ],
+   "exit_trigger_concourse": [
+    304.0,
+    136.0
+   ],
+   "call_box_09": [
+    272.0,
+    96.0
+   ],
+   "doc_evac_notice": [
+    352.0,
+    176.0
+   ],
+   "digital_clock_2359": [
+    320.0,
+    50.0
+   ]
+  },
+  "maintenance_bay": {
+   "ArchwayWest": [
+    240.0,
+    104.0
+   ],
+   "ArchwayEast": [
+    464.0,
+    200.0
+   ],
+   "door_entry_west": [
+    240.0,
+    104.0
+   ],
+   "door_exit_east": [
+    464.0,
+    200.0
+   ],
+   "safe_anchor_west": [
+    336.0,
+    136.0
+   ],
+   "safe_anchor_east": [
+    416.0,
+    176.0
+   ],
+   "checkpoint": [
+    256.0,
+    112.0
+   ],
+   "fire_shutter": [
+    384.0,
+    160.0
+   ],
+   "counterweight_gear": [
+    384.0,
+    112.0
+   ],
+   "shutter_threshold_trigger": [
+    384.0,
+    160.0
+   ],
+   "reset_anchor_01": [
+    288.0,
+    144.0
+   ],
+   "exit_trigger_east": [
+    416.0,
+    176.0
+   ],
+   "doc_tech_log": [
+    288.0,
+    192.0
+   ]
+  },
+  "security_crossing": {
+   "ArchwayWest": [
+    224.0,
+    112.0
+   ],
+   "ArchwayEast": [
+    464.0,
+    232.0
+   ],
+   "door_entry_west": [
+    224.0,
+    112.0
+   ],
+   "door_exit_east": [
+    464.0,
+    232.0
+   ],
+   "safe_anchor_west": [
+    320.0,
+    160.0
+   ],
+   "safe_anchor_east": [
+    432.0,
+    216.0
+   ],
+   "checkpoint": [
+    240.0,
+    120.0
+   ],
+   "pressure_switch_01": [
+    256.0,
+    176.0
+   ],
+   "security_gate_01": [
+    416.0,
+    176.0
+   ],
+   "bridge_platform_01": [
+    368.0,
+    184.0
+   ],
+   "bridge_walk_zone": [
+    368.0,
+    184.0
+   ],
+   "transit_pass_pickup": [
+    336.0,
+    104.0
+   ],
+   "reset_anchor_01": [
+    336.0,
+    168.0
+   ],
+   "exit_trigger_lounge": [
+    432.0,
+    216.0
+   ],
+   "pa_speaker": [
+    320.0,
+    60.0
+   ]
+  },
+  "waiting_lounge": {
+   "Clock": [
+    320.0,
+    50.0
+   ],
+   "door_entry_west": [
+    240.0,
+    104.0
+   ],
+   "door_exit_north": [
+    416.0,
+    112.0
+   ],
+   "safe_anchor_center": [
+    336.0,
+    152.0
+   ],
+   "checkpoint": [
+    256.0,
+    112.0
+   ],
+   "audio_mira_01": [
+    352.0,
+    144.0
+   ],
+   "trace_bench": [
+    304.0,
+    144.0
+   ],
+   "digital_clock_2359": [
+    320.0,
+    50.0
+   ]
+  },
+  "signal_control": {
+   "Clock": [
+    320.0,
+    50.0
+   ],
+   "door_entry_south": [
+    272.0,
+    216.0
+   ],
+   "door_exit_north": [
+    448.0,
+    128.0
+   ],
+   "safe_anchor_center": [
+    352.0,
+    176.0
+   ],
+   "checkpoint": [
+    288.0,
+    208.0
+   ],
+   "surge_capacitor": [
+    368.0,
+    168.0
+   ],
+   "breaker_a": [
+    160.0,
+    144.0
+   ],
+   "breaker_b": [
+    544.0,
+    192.0
+   ],
+   "vestibule_door": [
+    448.0,
+    128.0
+   ],
+   "reset_anchor_01": [
+    352.0,
+    192.0
+   ],
+   "exit_trigger_vestibule": [
+    448.0,
+    128.0
+   ],
+   "intercom": [
+    352.0,
+    160.0
+   ],
+   "digital_clock_2359": [
+    320.0,
+    50.0
+   ]
+  },
+  "upper_vestibule": {
+   "Clock": [
+    320.0,
+    50.0
+   ],
+   "door_south": [
+    224.0,
+    224.0
+   ],
+   "door_west": [
+    208.0,
+    120.0
+   ],
+   "door_east": [
+    416.0,
+    224.0
+   ],
+   "door_north": [
+    432.0,
+    120.0
+   ],
+   "safe_anchor_center": [
+    320.0,
+    176.0
+   ],
+   "checkpoint": [
+    240.0,
+    216.0
+   ],
+   "junction_lever_a": [
+    256.0,
+    144.0
+   ],
+   "junction_lever_b": [
+    384.0,
+    208.0
+   ],
+   "reset_anchor_01": [
+    272.0,
+    200.0
+   ],
+   "route_board": [
+    336.0,
+    168.0
+   ],
+   "digital_clock_2359": [
+    320.0,
+    50.0
+   ]
+  },
+  "vestibule_niche": {
+   "door_in": [
+    272.0,
+    88.0
+   ],
+   "door_out": [
+    368.0,
+    88.0
+   ],
+   "safe_anchor_niche": [
+    320.0,
+    112.0
+   ],
+   "doc_index_plaque": [
+    336.0,
+    104.0
+   ]
+  },
+  "station_atrium": {
+   "Clock": [
+    352.0,
+    120.0
+   ],
+   "door_entry_south": [
+    240.0,
+    232.0
+   ],
+   "door_exit_north": [
+    448.0,
+    128.0
+   ],
+   "safe_anchor_south": [
+    272.0,
+    216.0
+   ],
+   "checkpoint": [
+    256.0,
+    224.0
+   ],
+   "entry_trigger_atrium": [
+    256.0,
+    224.0
+   ],
+   "dispatch_terminal": [
+    352.0,
+    176.0
+   ],
+   "digital_clock_2359": [
+    320.0,
+    50.0
+   ]
+  },
+  "street_exit": {
+   "door_entry_south": [
+    272.0,
+    184.0
+   ],
+   "safe_anchor_stairs": [
+    288.0,
+    176.0
+   ],
+   "checkpoint": [
+    288.0,
+    176.0
+   ],
+   "trigger_outro": [
+    384.0,
+    128.0
+   ],
+   "plaza_payphone": [
+    400.0,
+    136.0
+   ]
+  }
+ }
+}
