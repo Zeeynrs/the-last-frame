@@ -7,6 +7,8 @@ extends Sprite2D
 @export var state_textures: Dictionary = {
 	"discharged": preload("res://assets/props/ch01/ch01_prop_surge_capacitor_discharged.png"),
 	"charged": preload("res://assets/props/ch01/ch01_prop_surge_capacitor_charged.png"),
+	"frozen_charged": preload("res://assets/props/ch01/ch01_prop_surge_capacitor_frozen_charged.png"),
+	"frozen_discharged": preload("res://assets/props/ch01/ch01_prop_surge_capacitor_frozen_discharged.png"),
 	"frozen": preload("res://assets/props/ch01/ch01_prop_surge_capacitor_frozen.png"),
 }
 

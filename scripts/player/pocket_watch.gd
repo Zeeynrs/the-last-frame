@@ -127,15 +127,9 @@ func set_selected_ability(ability: StringName) -> bool:
 
 ## Returns true if an interactable can be targeted (supports 'use' or any watch ability).
 ## Checkpoints, trigger zones, and safe anchors return false.
+## Delegated to Player.is_targetable (TLF-046 dedupe).
 static func is_targetable(interactable: Interactable, actor: StringName = &"player") -> bool:
-	if interactable == null or not is_instance_valid(interactable):
-		return false
-	if interactable.can_interact(actor, &"use") != &"unsupported":
-		return true
-	for ability in Interactable.WATCH_ABILITIES:
-		if interactable.supports_ability(ability):
-			return true
-	return false
+	return Player.is_targetable(interactable, actor)
 
 
 ## Selects the best watch target per ADR-015:

@@ -82,8 +82,28 @@ shape = SubResource("SegmentShape2D_north_railing")
 polygon = PackedVector2Array(476, 190, 540, 222, 540, 260, 476, 260)
 
 [node name="NorthBarrierVisual" type="Polygon2D" parent="."]
-color = Color(0.18, 0.24, 0.32, 1)
-polygon = PackedVector2Array(476, 190, 540, 222, 540, 260, 476, 260)
+z_index = 6
+color = Color(0.106, 0.118, 0.141, 1)
+polygon = PackedVector2Array(476, 190, 528, 216, 476, 242)
+
+[node name="TopFace" type="Polygon2D" parent="NorthBarrierVisual"]
+color = Color(0.275, 0.306, 0.361, 1)
+polygon = PackedVector2Array(478, 192, 526, 216, 478, 240)
+
+[node name="TopBevel" type="Line2D" parent="NorthBarrierVisual"]
+points = PackedVector2Array(476, 190, 528, 216)
+width = 1.0
+default_color = Color(0.404, 0.451, 0.522, 1)
+
+[node name="FrontEdge" type="Line2D" parent="NorthBarrierVisual"]
+points = PackedVector2Array(476, 190, 476, 242)
+width = 2.0
+default_color = Color(0.039, 0.051, 0.078, 1)
+
+[node name="FloorEdge" type="Line2D" parent="NorthBarrierVisual"]
+points = PackedVector2Array(528, 216, 476, 242)
+width = 1.0
+default_color = Color(0.039, 0.051, 0.078, 1)
 
 [node name="door_entry_south" type="Area2D" parent="."]
 position = Vector2(272, 216)
