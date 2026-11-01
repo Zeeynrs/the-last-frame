@@ -7,6 +7,8 @@ extends Node
 signal interaction_applied(tick: int, actor_id: StringName, target_id: StringName, interaction_id: StringName, payload: Dictionary)
 signal trigger_entered(tick: int, actor_id: StringName, trigger_id: StringName)
 signal trigger_exited(tick: int, actor_id: StringName, trigger_id: StringName)
+## A request that was refused (no state change), with its reason (TLF-048 telemetry).
+signal interaction_failed(tick: int, actor_id: StringName, target_id: StringName, interaction_id: StringName, reason: StringName)
 
 @export var id_registry: IdRegistry
 @export var sim_clock: SimClock
@@ -41,25 +43,25 @@ func _get_id_registry() -> IdRegistry:
 func request(actor_id: StringName, target_id: StringName, interaction_id: StringName, payload: Dictionary = {}) -> InteractionResult:
 	var registry = _get_id_registry()
 	if registry == null:
-		return InteractionResult.failure(&"missing_registry")
+		return _fail(actor_id, target_id, interaction_id, &"missing_registry")
 
 	# 1. Resolve target; if missing -> &"missing_target"
 	var target = registry.resolve(target_id)
 	if target == null:
-		return InteractionResult.failure(&"missing_target")
+		return _fail(actor_id, target_id, interaction_id, &"missing_target")
 
 	# 2. Call can_interact; non-empty reason -> return it with no state change
 	if target.has_method("can_interact"):
 		var reason: StringName = target.call("can_interact", actor_id, interaction_id, payload)
 		if not String(reason).is_empty():
-			return InteractionResult.failure(reason)
+			return _fail(actor_id, target_id, interaction_id, reason)
 
 	# 3. If progression is true and actor ID starts with "echo." -> &"echo_forbidden"
 	var is_progression: bool = false
 	if "progression" in target:
 		is_progression = bool(target.get("progression"))
 	if is_progression and String(actor_id).begins_with("echo."):
-		return InteractionResult.failure(&"echo_forbidden")
+		return _fail(actor_id, target_id, interaction_id, &"echo_forbidden")
 
 	# 4. Call interact
 	if target.has_method("interact"):
@@ -70,6 +72,11 @@ func request(actor_id: StringName, target_id: StringName, interaction_id: String
 	interaction_applied.emit(current_tick, actor_id, target_id, interaction_id, payload)
 
 	return InteractionResult.success()
+
+
+func _fail(actor_id: StringName, target_id: StringName, interaction_id: StringName, reason: StringName) -> InteractionResult:
+	interaction_failed.emit(_get_current_tick(), actor_id, target_id, interaction_id, reason)
+	return InteractionResult.failure(reason)
 
 
 ## Dispatch trigger enter event for an actor (ADR-006 clarification: no reasons).

@@ -287,6 +287,9 @@ func complete_chapter() -> void:
 	chapter_complete = true
 	if session != null and session.narrative_state != null:
 		session.narrative_state.set_flag(&"ch01.flag.chapter_complete", true)
+	# TLF-048: stop the playtest log and write its JSON before the summary is shown.
+	if session != null and session.playtest_log != null:
+		session.playtest_log.finish_chapter()
 	_show_chapter_complete_ui()
 	chapter_completed.emit()
 
@@ -312,6 +315,18 @@ func _show_chapter_complete_ui() -> void:
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.set_anchors_preset(Control.PRESET_CENTER)
 	_complete_overlay.add_child(label)
+
+	# TLF-048: playtest summary (total + per-puzzle time) under the title.
+	if session != null and session.playtest_log != null:
+		var summary := Label.new()
+		summary.name = "PlaytestSummary"
+		summary.text = "\n".join(session.playtest_log.summary_lines())
+		summary.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		summary.add_theme_font_size_override(&"font_size", 12)
+		summary.set_anchors_preset(Control.PRESET_FULL_RECT)
+		summary.offset_top = 236
+		summary.offset_bottom = -44
+		_complete_overlay.add_child(summary)
 
 	add_child(_complete_overlay)
 

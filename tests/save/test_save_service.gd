@@ -147,13 +147,39 @@ func test_migrations_run_in_order_up_to_current_version() -> void:
 	save.current_version = 3
 	save.migrations = {1: _migrate_1_to_2, 2: _migrate_2_to_3}
 	var data := SaveStore.default_save()
+	data["save_version"] = 1
 	var result := save.upgrade(data)
 	_assert_true(result["ok"], "migrated")
 	_assert_eq(result["data"]["save_version"], 3, "version bumped")
 	_assert_eq(result["data"]["chapter"], "CH01", "migration 1 applied")
 	_assert_eq(result["data"]["narrative_flags"], {"migrated": true}, "migration 2 applied")
 	save.migrations.erase(2)
-	_assert_eq(save.upgrade(SaveStore.default_save())["reason"], &"unsupported_version", "gap in chain refused")
+	_assert_eq(save.upgrade(data)["reason"], &"unsupported_version", "gap in chain refused")
+	_wipe()
+
+
+## TLF-048: save v2 adds "playtest"; a v1 file (as the game wrote it before) still loads.
+func test_v1_save_migrates_to_v2_with_an_empty_playtest_log() -> void:
+	var save := _service()
+	_assert_eq(SaveStore.SAVE_VERSION, 2, "current save version")
+	_assert_true(save.migrations.has(1), "built-in v1 -> v2 migration")
+	var v1 := SaveStore.default_save()
+	v1.erase("playtest")
+	v1["save_version"] = 1
+	v1["checkpoint_id"] = "ch01.cp.maintenance_bay"
+	v1["puzzles"] = {"CH1-PZ-001": "SOLVED"}
+	v1["hints"] = {"CH1-PZ-002": 1}
+	_write_raw(save, 0, JSON.stringify(JSON.from_native(v1), "\t"))
+	var read := save.read_slot(0)
+	if _assert_true(read["ok"], "v1 file reads (%s)" % read["reason"]):
+		_assert_eq(read["data"]["save_version"], 2, "upgraded to v2")
+		_assert_eq(read["data"]["playtest"], {}, "empty playtest log")
+		_assert_eq(read["data"]["puzzles"], {"CH1-PZ-001": "SOLVED"}, "puzzles kept")
+		_assert_eq(read["data"]["hints"], {"CH1-PZ-002": 1}, "hints kept")
+		_assert_eq(read["data"]["checkpoint_id"], "ch01.cp.maintenance_bay", "checkpoint kept")
+	var bad := SaveStore.default_save()
+	bad["playtest"] = "not a dictionary"
+	_assert_eq(save.validate(bad)["reason"], &"invalid", "playtest must be a dictionary")
 	_wipe()
 
 
