@@ -17,9 +17,9 @@ def pos_s(p):
 
 w("# CH01 Placement Sheet — art kit → rooms 1–10 (`TLF-039`)")
 w("")
-w("**Author:** design-art agent (Claude Code, Sonnet 5.5, standing in for Argon) · **Audience:** Flash (integration task, `TLF-018`/follow-up) · **Inputs:** `design/ch01/ROOM_GRAPH.md` §1/§5/§7, `design/art/ART_BIBLE.md`, `design/art/ASSET_METADATA.md`, and the greybox `scenes/chapters/ch01/rooms/*.tscn` (read-only; every node position below is copied from those files by script, not typed).")
+w("**Author:** design-art agent (Claude Code, Sonnet 5.5, standing in for Argon) · **Audience:** Flash (integration task, `TLF-018`/follow-up) · **Inputs:** `design/ch01/ROOM_GRAPH.md` §1/§5/§7, `design/art/ART_BIBLE.md`, `design/art/ASSET_METADATA.md`, and the **frozen snapshot of the pre-integration room files** (commit `0be1959`, `tools/art/gen/placement_snapshot_ch01.json`; every node position below is copied from it by script, not typed). The live room files now belong to the art integration (TLF-041) and may differ: greybox nodes are gone, the intercom node moved to its mount, clocks sit on wall modules.")
 w("")
-w("**Scope of this sheet:** every kit piece and puzzle prop delivered by TLF-039 and TLF-042 is placed room by room (state mapping quotes the real `scripts/puzzle/objects/*.gd` fields, §11). *(decor)* marks optional dressing with no `.tscn` node yet. Layer/sorting rules follow ADR-019 (free-standing = `YSort_Actors` 10, wall-mounted = `Wall_Fixtures` 7).")
+w("**Scope of this sheet:** every kit piece and puzzle prop delivered by TLF-039 and TLF-042 is placed room by room (state mapping quotes the real `scripts/puzzle/objects/*.gd` fields, §11). *(decor)* marks optional dressing with no scene node yet. Layer/sorting rules follow ADR-019 (free-standing = `YSort_Actors` 10, wall-mounted = `Wall_Fixtures` 7).")
 w("")
 w("Mockups (`640×360`, true scale, kit pieces only): `design/art/mockups/ch01_arrival_platform_mockup.png` (validation against the approved target sheet), `ch01_concourse_west_mockup.png`, `ch01_signal_control_mockup.png`.")
 w("")
@@ -57,7 +57,7 @@ w("Every sprite's pivot is its base-line contact point (footprint centre for lar
 w("")
 w("### 0.6 Sprite placement rule")
 w("**Sprite pivot = the interactable node's `position`** (child `Sprite2D` at `(0,0)` with `offset = -pivot`, `centered = false`); this keeps every ADR-015 distance in ROOM_GRAPH §5 untouched. Exceptions are written out in the tables (`+ (0, 8)` for the free-standing pillar; wall mounts).")
-w("- **Wall mounts** (`mount` column): pivot = base midpoint of the named wall module (§0.3) `+ (0, -14)`; the node/trigger stays where the `.tscn` has it.")
+w("- **Wall mounts** (`mount` column): pivot = base midpoint of the named wall module (§0.3) `+ (0, -14)`; the node/trigger stays where the scene has it.")
 w("- **Wall clock:** pivot = base midpoint of the named N-wall module `+ (0, -38)` (metadata 2.8, `y_offset = -38`). The greybox `Clock` at `(320, 50)` floats above the room apex and should move to this position.")
 w("")
 w("### 0.7 Flip rule")
@@ -117,7 +117,7 @@ for r in rooms:
     base_name = {'dark': 'terrazzo_dark', 'concrete': 'concrete_service'}[r.base]
     w(f"## Room {r.num} — `{r.id}` ({r.W} × {r.H})")
     w("")
-    w(f"Footprint {r.W}×{r.H} tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/{r.key}.tscn`.")
+    w(f"Footprint {r.W}×{r.H} tiles · apex `(320, 64)` · room `ch01.{r.key}` (snapshot `0be1959`).")
     w("")
     w(f"### {r.num}.1 Floor")
     w(f"- **Base:** `{T[r.base]}.png` on every tile not listed below.")
@@ -163,7 +163,7 @@ for r in rooms:
             if pr.get('ov'): z, layer = 9, 'YSort_Props (overlay, above archway)'
             pos = pr['pos']
             if pr.get('mount'):
-                mp = mount_pivot(r, pr['mount']); ps = f"`{pos_s(mp)}` (mount; node stays `{pos_s(pos)}`)"
+                mp = mount_pivot(r, pr['mount']); ps = (f"`{pos_s(mp)}` (mount; snapshot node `{pos_s(pos)}`, moved to `{pos_s(pr['node_moved'])}` by ADR-019)" if pr.get('node_moved') else f"`{pos_s(mp)}` (mount; node stays `{pos_s(pos)}`)")
             elif pr.get('off'):
                 ps = f"`{pos_s((pos[0] + pr['off'][0], pos[1] + pr['off'][1]))}` (node `{pos_s(pos)}` + `{pr['off']}`)"
             else:

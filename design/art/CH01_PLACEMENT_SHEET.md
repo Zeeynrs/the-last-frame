@@ -1,8 +1,8 @@
 # CH01 Placement Sheet — art kit → rooms 1–10 (`TLF-039`)
 
-**Author:** design-art agent (Claude Code, Sonnet 5.5, standing in for Argon) · **Audience:** Flash (integration task, `TLF-018`/follow-up) · **Inputs:** `design/ch01/ROOM_GRAPH.md` §1/§5/§7, `design/art/ART_BIBLE.md`, `design/art/ASSET_METADATA.md`, and the greybox `scenes/chapters/ch01/rooms/*.tscn` (read-only; every node position below is copied from those files by script, not typed).
+**Author:** design-art agent (Claude Code, Sonnet 5.5, standing in for Argon) · **Audience:** Flash (integration task, `TLF-018`/follow-up) · **Inputs:** `design/ch01/ROOM_GRAPH.md` §1/§5/§7, `design/art/ART_BIBLE.md`, `design/art/ASSET_METADATA.md`, and the **frozen snapshot of the pre-integration room files** (commit `0be1959`, `tools/art/gen/placement_snapshot_ch01.json`; every node position below is copied from it by script, not typed). The live room files now belong to the art integration (TLF-041) and may differ: greybox nodes are gone, the intercom node moved to its mount, clocks sit on wall modules.
 
-**Scope of this sheet:** every kit piece and puzzle prop delivered by TLF-039 and TLF-042 is placed room by room (state mapping quotes the real `scripts/puzzle/objects/*.gd` fields, §11). *(decor)* marks optional dressing with no `.tscn` node yet. Layer/sorting rules follow ADR-019 (free-standing = `YSort_Actors` 10, wall-mounted = `Wall_Fixtures` 7).
+**Scope of this sheet:** every kit piece and puzzle prop delivered by TLF-039 and TLF-042 is placed room by room (state mapping quotes the real `scripts/puzzle/objects/*.gd` fields, §11). *(decor)* marks optional dressing with no scene node yet. Layer/sorting rules follow ADR-019 (free-standing = `YSort_Actors` 10, wall-mounted = `Wall_Fixtures` 7).
 
 Mockups (`640×360`, true scale, kit pieces only): `design/art/mockups/ch01_arrival_platform_mockup.png` (validation against the approved target sheet), `ch01_concourse_west_mockup.png`, `ch01_signal_control_mockup.png`.
 
@@ -40,7 +40,7 @@ Every sprite's pivot is its base-line contact point (footprint centre for large 
 
 ### 0.6 Sprite placement rule
 **Sprite pivot = the interactable node's `position`** (child `Sprite2D` at `(0,0)` with `offset = -pivot`, `centered = false`); this keeps every ADR-015 distance in ROOM_GRAPH §5 untouched. Exceptions are written out in the tables (`+ (0, 8)` for the free-standing pillar; wall mounts).
-- **Wall mounts** (`mount` column): pivot = base midpoint of the named wall module (§0.3) `+ (0, -14)`; the node/trigger stays where the `.tscn` has it.
+- **Wall mounts** (`mount` column): pivot = base midpoint of the named wall module (§0.3) `+ (0, -14)`; the node/trigger stays where the scene has it.
 - **Wall clock:** pivot = base midpoint of the named N-wall module `+ (0, -38)` (metadata 2.8, `y_offset = -38`). The greybox `Clock` at `(320, 50)` floats above the room apex and should move to this position.
 
 ### 0.7 Flip rule
@@ -100,7 +100,7 @@ Axis-run pieces (`wall_railing_iron`, `prop_station_bench`, `tile_cable_conduit_
 
 ## Room 1 — `ch01.arrival_platform` (14 × 10)
 
-Footprint 14×10 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/arrival_platform.tscn`.
+Footprint 14×10 tiles · apex `(320, 64)` · room `ch01.arrival_platform` (snapshot `0be1959`).
 
 ### 1.1 Floor
 - **Base:** `ch01_env_tile_terrazzo_dark_idle.png` on every tile not listed below.
@@ -129,7 +129,7 @@ Footprint 14×10 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 
 ## Room 2 — `ch01.concourse_west` (16 × 12)
 
-Footprint 16×12 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/concourse_west.tscn`.
+Footprint 16×12 tiles · apex `(320, 64)` · room `ch01.concourse_west` (snapshot `0be1959`).
 
 ### 2.1 Floor
 - **Base:** `ch01_env_tile_terrazzo_dark_idle.png` on every tile not listed below.
@@ -161,7 +161,7 @@ Footprint 16×12 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 
 ## Room 3 — `ch01.maintenance_bay` (14 × 10)
 
-Footprint 14×10 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/maintenance_bay.tscn`.
+Footprint 14×10 tiles · apex `(320, 64)` · room `ch01.maintenance_bay` (snapshot `0be1959`).
 
 ### 3.1 Floor
 - **Base:** `ch01_env_tile_concrete_service_idle.png` on every tile not listed below.
@@ -190,7 +190,7 @@ Footprint 14×10 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 
 ## Room 4 — `ch01.security_crossing` (16 × 12)
 
-Footprint 16×12 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/security_crossing.tscn`.
+Footprint 16×12 tiles · apex `(320, 64)` · room `ch01.security_crossing` (snapshot `0be1959`).
 
 ### 4.1 Floor
 - **Base:** `ch01_env_tile_concrete_service_idle.png` on every tile not listed below.
@@ -225,7 +225,7 @@ Footprint 16×12 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 
 ## Room 5 — `ch01.waiting_lounge` (12 × 10)
 
-Footprint 12×10 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/waiting_lounge.tscn`.
+Footprint 12×10 tiles · apex `(320, 64)` · room `ch01.waiting_lounge` (snapshot `0be1959`).
 
 ### 5.1 Floor
 - **Base:** `ch01_env_tile_terrazzo_dark_idle.png` on every tile not listed below.
@@ -253,7 +253,7 @@ Footprint 12×10 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 
 ## Room 6 — `ch01.signal_control` (16 × 12)
 
-Footprint 16×12 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/signal_control.tscn`.
+Footprint 16×12 tiles · apex `(320, 64)` · room `ch01.signal_control` (snapshot `0be1959`).
 
 ### 6.1 Floor
 - **Base:** `ch01_env_tile_concrete_service_idle.png` on every tile not listed below.
@@ -278,7 +278,7 @@ Footprint 16×12 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 | `ch01.signal_control.surge_capacitor` | `ch01_prop_surge_capacitor_discharged.png` / `ch01_prop_surge_capacitor_charged.png` / `ch01_prop_surge_capacitor_frozen_discharged.png` / `ch01_prop_surge_capacitor_frozen_charged.png` | `(charge_state, is_frozen())`: (`&"discharged"`, false) -> `_discharged`; (`&"charged"`, false) -> `_charged`; (`&"discharged"`, true) -> `_frozen_discharged`; (`&"charged"`, true) -> `_frozen_charged` (= `is_stabilized()` while `bus_powered`) | `(368, 168)` ((8, 5)) | YSort_Actors / 10 | none | `prop_surge_capacitor` (64×64). The old single `_frozen` file is deprecated (kept until TLF-041 has switched, do not use for new work) |
 | `ch01.signal_control.breaker_a` | `ch01_prop_lever_switch_off.png` (+ `_on`) | `lever_state` `&"open"` -> `_off`; `&"engaged"` -> `_on` (auto-releases after 180 ticks) | `(160, 144)` ((0, 10)) | Wall_Fixtures / 7 | none | stands at the foot of the W wall (`x = 0`): **wall-mounted, `Wall_Fixtures` 7**; badge A child at (3, -8) |
 | `ch01.signal_control.breaker_b` | `ch01_prop_lever_switch_off.png` (+ `_on`) | `lever_state` `&"open"` -> `_off`; `&"engaged"` -> `_on` | `(544, 192)` ((15, 1)) | YSort_Actors / 10 | none | free-standing at the E edge (`x = 15`, no wall drawn): **`YSort_Actors` 10** (ADR-019); badge B child at (3, -8) |
-| `ch01.signal_control.intercom` | `ch01_prop_call_box_phone_idle.png` | idle | `(528, 154)` (mount; node stays `(352, 160)`) | Wall_Fixtures / 7 | none | Operator intercom (shares `prop_call_box_phone`); node sits at the capacitor lane, so the sprite mounts on the N wall, module `k = 6`, offset (0, -14) (OQ-4) |
+| `ch01.signal_control.intercom` | `ch01_prop_call_box_phone_idle.png` | idle | `(528, 154)` (mount; snapshot node `(352, 160)`, moved to `(528, 154)` by ADR-019) | Wall_Fixtures / 7 | none | Operator intercom (shares `prop_call_box_phone`); the pre-integration node sat in the capacitor lane at the snapshot position, so the sprite mounts on the N wall, module `k = 6`, offset (0, -14) (OQ-4). **ADR-019 moved the node to this mount, `(528, 154)`** |
 | `ch01.signal_control.reset_anchor_01` | `ch01_prop_reset_console_idle.png` | idle | `(352, 192)` ((9, 7)) | YSort_Actors / 10 | none |  |
 | `ch01.signal_control.vestibule_door (`door_exit_north`)` | `ch01_env_archway_frame_n_idle.png` | locked / open -> `[■]` / `[▲]` transom glyph | `(448, 128)` ((8, 0)) | YSort_Walls / 6 | `Archway` n/a (greybox has none) | archway is the visual of the door; keep `Blocker` collision |
 
@@ -286,7 +286,7 @@ Footprint 16×12 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 
 ## Room 7 — `ch01.upper_vestibule` (14 × 14)
 
-Footprint 14×14 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/upper_vestibule.tscn`.
+Footprint 14×14 tiles · apex `(320, 64)` · room `ch01.upper_vestibule` (snapshot `0be1959`).
 
 ### 7.1 Floor
 - **Base:** `ch01_env_tile_terrazzo_dark_idle.png` on every tile not listed below.
@@ -319,7 +319,7 @@ Footprint 14×14 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 
 ## Room 8 — `ch01.vestibule_niche` (6 × 6)
 
-Footprint 6×6 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/vestibule_niche.tscn`.
+Footprint 6×6 tiles · apex `(320, 64)` · room `ch01.vestibule_niche` (snapshot `0be1959`).
 
 ### 8.1 Floor
 - **Base:** `ch01_env_tile_terrazzo_dark_idle.png` on every tile not listed below.
@@ -344,7 +344,7 @@ Footprint 6×6 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/ve
 
 ## Room 9 — `ch01.station_atrium` (16 × 14)
 
-Footprint 16×14 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/station_atrium.tscn`.
+Footprint 16×14 tiles · apex `(320, 64)` · room `ch01.station_atrium` (snapshot `0be1959`).
 
 ### 9.1 Floor
 - **Base:** `ch01_env_tile_terrazzo_dark_idle.png` on every tile not listed below.
@@ -374,7 +374,7 @@ Footprint 16×14 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/
 
 ## Room 10 — `ch01.street_exit` (12 × 10)
 
-Footprint 12×10 tiles · apex `(320, 64)` · scene `scenes/chapters/ch01/rooms/street_exit.tscn`.
+Footprint 12×10 tiles · apex `(320, 64)` · room `ch01.street_exit` (snapshot `0be1959`).
 
 ### 10.1 Floor
 - **Base:** `ch01_env_tile_terrazzo_dark_idle.png` on every tile not listed below.
