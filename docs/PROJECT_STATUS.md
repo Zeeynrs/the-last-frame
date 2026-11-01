@@ -35,13 +35,12 @@ This file states what the repository **actually** contains. Task-level detail li
 ## B. Partially implemented
 
 ## C. Implemented but not integrated
-- Art reproducibility check `verify_regen.py` is broken after the integration (ISSUE-036 -> TLF-045).
 
 ## D. Broken
 - Nothing known (validation green on `main`).
 
 ## E. Missing (next by priority)
-1. TLF-046 (Flash) barrier visual + capacitor frozen split; TLF-045 (design-art) art reproducibility snapshot; second playtest via F5 with the art
+1. Second playtest via F5 with the art (human); fix list from it
 2. Export smoke test (Windows build: theme font, translations, saves) once an export preset exists
 3. Human: physical controller spot-check (ISSUE-011, last item for M1); second playtest via F5
 4. Vertical-slice polish: audio, lighting/VFX, Beat 10 cinematic, accessibility pass
