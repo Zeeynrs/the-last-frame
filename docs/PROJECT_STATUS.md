@@ -1,6 +1,6 @@
 # Project Status
 
-**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 291/291 tests, 112 scripts, leak check clean (enforced by validate.ps1 since TLF-035)
+**Updated:** 2026-10-31 · **Main:** see `git log -1 origin/main` · **Engine:** Godot 4.7.2 · **Validation:** `tools/validate.ps1` → import clean, 300/300 tests, 114 scripts, leak check clean (enforced by validate.ps1 since TLF-035)
 
 This file states what the repository **actually** contains. Task-level detail lives in `ORCA_TASK_BOARD.md`; history lives in `PROGRESS.md`.
 
@@ -37,10 +37,12 @@ This file states what the repository **actually** contains. Task-level detail li
 ## C. Implemented but not integrated
 
 ## D. Broken
-- Nothing known (validation green on `main`).
+- Trace shows nothing in the game (ISSUE-039 -> TLF-050).
+- PZ-002 possibly solvable without Freeze (RISK-020 -> TLF-049).
+- Chapter-complete title runs off screen (ISSUE-040 -> TLF-051).
 
 ## E. Missing (next by priority)
-1. Chapter 1 length (ISSUE-038, ADR-020): TLF-047 expansion concepts (design), TLF-048 telemetry (Opus impl), then implementation
+1. Chapter 1 expansion Step 1 (ADR-020, concept `design/ch01/CH01_EXPANSION.md`): TLF-047 phase 2 specs (design), TLF-049 PZ-002 negative test + TLF-050 TraceMemory/unlocks (Opus impl), then Step 1 implementation and a telemetry playtest (target >= 15 min)
 2. Export smoke test (Windows build: theme font, translations, saves) once an export preset exists
 3. Human: physical controller spot-check (ISSUE-011, last item for M1)
 4. Vertical-slice polish: audio, lighting/VFX, Beat 10 cinematic, accessibility pass
