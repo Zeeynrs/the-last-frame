@@ -152,9 +152,16 @@
 | **Exactly one major revelation** | Beat 09 (*Ledger 23:59*) | Elias's own Level-0 clearance executed the `23:59` station containment seal (with an unnumbered scrolling column of `23:59` entries left as an ambiguous seed). |
 | **One cinematic beat** | Beat 10 (*Ascent to the Frozen City*) | Scripted camera reveal of the frozen city at `23:59` with suspended rain. |
 | **Exit hook into Chapter 2** | Beat 10 | Mira's image on the plaza broadcast screen + Operator's call via street payphone speaker leading into *The City That Remembers*. |
-| **Canon unchanged** | All beats + §6 | Preserves Elias, Mira, Operator (= future Elias, speaking only via old communication devices), Archivist, Elias-0, 23:59, loop, 4 endings. |
+| **Canon** | All beats + §6 | **Superseded 2026-11-05 by ADR-022** (Story Bible v2.0): the Operator's identity is never confirmed; no Elias-0. See the ADR-022 note below. |
 
 ---
+
+### ADR-022 note (2026-11-05): changes to the beats above
+- **Beat 01:** touching the watch plays a short Trace flash (`MEM_WATCH_1/2`). After the pickup, a silhouette checking a pocket watch stands at the far end of the platform and is gone when Elias approaches (TLF-058; journal `JRN_CH1_FIGURE`). Ending 3 reuses this composition.
+- **Beat 07 / CH1-PZ-004:** player-facing title *The Forgotten Sequence* (the Story Bible's Ch1 signature puzzle).
+- **Beat 09:** the terminal knows Elias's hand, but the user field is corrupted. "Did I do this?" is a question, not a confession; the log repeats a biometric match without a name. Still the chapter's single revelation: the station was sealed deliberately, from here, at Level-0.
+- **Beat 10:** a cinematic (TLF-059). The voice line is "You are late." / "Again." from an unidentified voice; Mira's broadcast image stays, silent; no "Central District" line.
+- **The Operator:** speaks through old devices **and** is seen once as a silhouette (Beat 01). Rules: `docs/OPERATOR_MYSTERY_GUIDELINES.md`.
 
 ## 4. Naming Proposal (ADR-014 — Accepted as `Trace`)
 

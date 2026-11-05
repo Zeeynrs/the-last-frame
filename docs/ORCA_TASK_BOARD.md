@@ -36,6 +36,13 @@
 | TLF-055 | BLOCKED (TLF-052, TLF-054) | Flash: `docs/tasks/TLF-055.md` (Step 1 rooms: new objects/colliders, TraceMemory nodes, 13 commuters, unlock triggers, Chapter 1 starts with Trace, unlock feedback) |
 | TLF-056 | BLOCKED (TLF-055) | Opus impl: `docs/tasks/TLF-056.md` (real-input playthrough with progressive unlocks + negative test per Step 1 puzzle; TLF-049 merged and green) |
 | TLF-057 | READY | **Argon** (re-assigned 2026-11-05 from Sonnet, which is excluded; ADR-017 am.), visual review **Sol**: `docs/tasks/TLF-057.md` (Step 1 art per `ART_WISHLIST_STEP1.md`: statues, shimmer, new props). Fallback owner: Sol |
+| TLF-058 | BLOCKED (TLF-055) | Flash: `docs/tasks/TLF-058.md` (Operator sighting at the far end of the Arrival Platform, once, saved; ADR-022 D3) |
+| TLF-059 | BLOCKED (TLF-055) | Flash: `docs/tasks/TLF-059.md` (Beat 10 cinematic: frozen city, silent Mira image, "You are late." / "Again."; skippable) |
+| TLF-060 | READY | Flash: `docs/tasks/TLF-060.md` (export preset + Windows smoke test from a renamed scratch copy; Linux if templates exist) |
+| TLF-061 | READY | **Sol**: `docs/tasks/TLF-061.md` (direction note from the owner's references: Elias v3 proposal, Operator per ADR-022 A4, Mira, hourglass, Ch1 palette, props list) |
+| TLF-062 | BLOCKED (TLF-061, after TLF-057) | Argon (fallback Sol): `docs/tasks/TLF-062.md` (Operator sighting sprite + Beat 10 city plate) |
+| TLF-063 | BLOCKED (TLF-061, after TLF-057) | Argon → Flash: `docs/tasks/TLF-063.md` (environmental props: NOWHERE 23:59 board, A1 → Research, R&D Access, Sector A, closed track) |
+| TLF-064 | READY (after TLF-052) | Flash: `docs/tasks/TLF-064.md` (basic audio pass from a reproducible SFX generator + Operator motif) |
 | TLF-046 | COMPLETE | Merged `21d892b` (Flash `6f7a63d`): barrier visual = collision ∩ floor (palette-styled wedge, z 6), collision unchanged (tlf-lead fingerprint identical; test asserts exact polygon); capacitor `frozen_charged/discharged`; `pocket_watch.is_targetable` delegates to `Player.is_targetable` |
 | TLF-044 | COMPLETE | Merged `2717059` (design-art `756d294`): capacitor `_frozen_charged`/`_frozen_discharged`. `check_assets.py` 57 PASS. `verify_regen.py` breaks on the integrated scenes (KeyError Clock) -> TLF-045 |
 | TLF-043 | COMPLETE | Merged `c38520d` (Flash `6575818`): `is_targetable` (use not unsupported or any watch ability) in player + watch selection, checkpoint no longer targeted at spawn; UITheme always sets styles, warns once without the font. tlf-lead behavioural red: 5 failures on old main incl. spawn target |

@@ -7,13 +7,15 @@ Read this first when resuming. Keep it short and current.
 |---|---|---|
 | Opus (Claude Opus 5.5) | Lead Architect and Senior Programmer, integration authority | `docs/`, ADRs, integration on `main`; core systems in `scripts/temporal/`, `scripts/echo/`, `scripts/puzzle/`, `scripts/save/`, `scripts/spatial/`, `scripts/session/` and their tests |
 | Flash (Gemini 3.8 Flash High) | Feature implementation + QA, follows Opus contracts | player, interaction feel, UI/HUD/menus, settings, input, camera, audio/VFX integration, scene setup, `project.godot` (single owner), regression tests |
-| Argon (Gemini 4) | **Primary creative asset specialist** (available again 2026-11-05), follows Sol's direction. Worktree `tlf-design-art`, new branch per task from `main` | `design/ch01/**`, `narrative/**`, `assets/source/**` (`.pxo`), art exports, `tools/art/gen/**`, `design/art/` except `ART_BIBLE.md` |
+| Argon (Gemini 4) | **Primary creative asset specialist** (available again 2026-11-05), follows Sol's direction. Worktree `tlf-design-art`, new branch per task from `main` | `design/ch01/**` (puzzle/level specs), `assets/source/**` (`.pxo`), art exports, `tools/art/gen/**`, `design/art/` except `ART_BIBLE.md` and `reference/` |
 | Sol (GPT-6.1) | **Art Director**, visual direction authority, and **full Argon fallback** (ADR-017 am.). Orca worktree `tlf-art-direction`, branch `adityadaffa522/tlf-art-direction` (create in Orca) | `design/art/ART_BIBLE.md`; visual review of every art delivery. Argon's paths **only** while it is the active specialist (fallback) |
 | ~~Sonnet 5.5~~ | **Excluded 2026-11-05**: no tasks, no fallback role. Its merged art/design work stays; `adityadaffa522/tlf-art-batch2` is history | — |
 
 **Argon fallback (ADR-017 am.):** if Argon is unavailable (limit, quota, access), stop assigning to it. Sol takes every unfinished Argon task from Argon's last pushed commit, and the owner line in the task file and the board change to Sol. Finished work is never redone, and no one waits for Argon. When Argon is back, it takes new and not-yet-started tasks. Sol finishes what it started and stays Art Director. One active asset specialist writes art sources at a time.
 
 Shared contract files (`interactable.gd`, `game_session.gd`, `GameSession.tscn`, `project.godot`) have **one owner per task**, named in the task file.
+
+**Story canon and dialogue (ADR-022 D5):** the Lead owns `docs/STORY_BIBLE.md` + its five companions and `narrative/**`. Every narrative merge passes the Operator checklist (`docs/OPERATOR_MYSTERY_GUIDELINES.md` §6). Owner references: `design/art/reference/ch01/`.
 
 ## Where work happens
 - Primary checkout `D:\TheLastFrame\the-last-frame` = `main`, Lead integration only.

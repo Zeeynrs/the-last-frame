@@ -11,7 +11,7 @@ A production-ready **planning, documentation, multi-agent workflow and toolchain
 - **Platform:** Windows and Linux PC
 - **Mode:** Single-player
 - **Visuals:** Premium HD Cinematic Pixel Art (not low-poly 3D)
-- **Target:** 5–8 hours, 6 chapters, 4 endings
+- **Target:** 5–8 hours, 6 chapters, 3 main endings + 1 secret (story canon: `docs/STORY_BIBLE.md`)
 - **Core pillars:** time manipulation, spatial manipulation, deterministic temporal echoes, environmental storytelling and fair mind-bending puzzles
 
 ## Start here — recommended order

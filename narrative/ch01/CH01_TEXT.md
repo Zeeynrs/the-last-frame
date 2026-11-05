@@ -6,7 +6,7 @@
 ## Rules applied
 - **ASCII only** (TLF Pixel Mono covers ASCII 32-126): no em dashes, curly quotes or ellipsis characters.
 - Length: `OP_`/`EL_` lines ≤ 120 chars; `PZ00N_FB_` ≤ 80; document pages ≤ 6 lines × 48 chars (`<br>` = line break; one key per page).
-- Canon (Lead review, TLF-003): exactly **one** revelation (Beat 09, self-implication); the loop is only an **ambiguous seed** (an unnumbered column of identical timestamps, no "exit", no count, no memory wipe); the Operator speaks only through **old devices** (call box, PA, wired intercom, payphone); **one** subtle phrase is shared by Elias and the Operator ("Time doesn't stop. It waits." in EL_B01_03 and OP_B03_03); no Archivist foreshadowing.
+- Canon (Lead review, TLF-003): exactly **one** revelation (Beat 09, self-implication); the loop is only an **ambiguous seed** (an unnumbered column of identical timestamps, no "exit", no count, no memory wipe); the Operator speaks through **old devices** (call box, PA, wired intercom, payphone) and is **seen once**, silent, as a silhouette at the far end of the Arrival Platform (ADR-022 D3; no text); the chapter ends on the unidentified voice line "You are late. Again." (OP_B10_01/02); Beat 09 implicates Elias only as a **question** (ADR-022 D1). Mystery rules: `docs/OPERATOR_MYSTERY_GUIDELINES.md`; **one** subtle phrase is shared by Elias and the Operator ("Time doesn't stop. It waits." in EL_B01_03 and OP_B03_03); no Archivist foreshadowing.
 - Puzzle feedback text is from the specs, made ASCII and shortened where it exceeded 80 chars (listed under Deltas).
 
 ## Text table
@@ -31,12 +31,12 @@
 | OP_B07_02 | operator | Operator (intercom) | 07 | ch01.signal_control.intercom | There's a dispatch terminal in the Atrium. Leave it alone. It won't help you. | suspicion seed (proposed object ID) |
 | EL_B08_01 | monologue | Elias | 08 | ch01.upper_vestibule | I walked north. I came out of the west arch. The building is lying to me. | first loop |
 | EL_B09_01 | monologue | Elias | 09 | ch01.station_atrium.dispatch_terminal | It knows my hand. | terminal unlocks |
-| EL_B09_02 | monologue | Elias | 09 | ch01.station_atrium.dispatch_terminal | Level-0 clearance. My clearance. I sealed this station. | THE revelation |
-| EL_B09_03 | monologue | Elias | 09 | ch01.station_atrium.dispatch_terminal | Why would I do that? | |
+| EL_B09_02 | monologue | Elias | 09 | ch01.station_atrium.dispatch_terminal | Level-0 clearance. Someone sealed this station from here. And it opened for my hand. | THE revelation (ADR-022 D1: a question, not a confession) |
+| EL_B09_03 | monologue | Elias | 09 | ch01.station_atrium.dispatch_terminal | Did I do this? | |
 | EL_B09_04 | monologue | Elias | 09 | ch01.station_atrium.dispatch_terminal | The same minute, over and over. Probably a clock fault. Probably. | ambiguous seed only |
 | EL_B10_01 | monologue | Elias | 10 | ch01.street_exit | The rain isn't falling. It's hanging in the air, waiting. | cinematic |
-| OP_B10_01 | operator | Operator (payphone) | 10 | ch01.street_exit.plaza_payphone | Now you see why I told you to leave the terminal alone. | from beat sheet |
-| OP_B10_02 | operator | Operator (payphone) | 10 | ch01.street_exit.plaza_payphone | Keep moving. She's in the Central District, and the city remembers what you lost. | chapter hook |
+| OP_B10_01 | operator | Operator (payphone) | 10 | ch01.street_exit.plaza_payphone | You are late. | Story Bible v2 Ch1 ending line, part 1 (ADR-022); Ending 3 replays it. The voice is not identified |
+| OP_B10_02 | operator | Operator (payphone) | 10 | ch01.street_exit.plaza_payphone | Again. | part 2, after a beat (ADR-022). No location for Mira (D2) |
 | SPK_ELIAS | speaker | System | any | | Elias | UI speaker label |
 | SPK_MIRA | speaker | System | any | | Mira | UI speaker label |
 | SPK_OPERATOR | speaker | System | any | | VOICE | UI speaker label (canon hides true identity) |
@@ -48,8 +48,8 @@
 | JRN_CH1_MIRA_PLEA | journal | | 06 | ch01.waiting_lounge.audio_mira_01 | Mira asked me not to come back for her if the stabilization failed. | fact |
 | JRN_CH1_OPERATOR_WARNING | journal | | 07 | ch01.signal_control.intercom | The voice on the intercom warned me away from the Atrium dispatch logs. What is it hiding? | theory, suspicion seed |
 | JRN_CH1_THRESHOLDS | journal | | 08 | ch01.vestibule_niche.doc_index_plaque | The ELYSIUM field indexes doorways. When time froze, some stopped leading where they should. | theory |
-| JRN_CH1_SEAL_ELIAS | journal | | 09 | ch01.station_atrium.dispatch_terminal | The containment lock was executed from the Atrium terminal with my Level-0 clearance. | fact |
-| JRN_CH1_REPEATS | journal | | 09 | ch01.station_atrium.dispatch_terminal | The terminal log repeats one line: 23:59:00, USER: ELIAS. A fault? | theory, ambiguous seed |
+| JRN_CH1_SEAL_ELIAS | journal | | 09 | ch01.station_atrium.dispatch_terminal | The containment lock was executed from the Atrium terminal at Level-0. The terminal knew my hand. Did I do this? | theory (ADR-022 D1) |
+| JRN_CH1_REPEATS | journal | | 09 | ch01.station_atrium.dispatch_terminal | The terminal log repeats one line: 23:59:00, the same biometric match. A fault? | theory, ambiguous seed |
 | FRAG_MIRA_DEPARTURE_TITLE | fragment | | 06 | ch01.fragment.mira_departure | Memory: The Lounge Bench | |
 | FRAG_MIRA_DEPARTURE_BODY | fragment | | 06 | ch01.fragment.mira_departure | Her hand on my sleeve. The departure board flickering. She was asking me for something, and I said no. | |
 | PZ001_FB_GATE_JAMMED | feedback | | 02 | ch01.concourse_west.turnstile_gate | The turnstile rotor is crushed shut. Force won't move it. | |
@@ -80,8 +80,8 @@
 | DOC_TRANSIT_PASS_TITLE | document | | 05 | ch01.security_crossing.transit_pass_pickup | STAFF TRANSIT PASS | progression pickup |
 | DOC_TRANSIT_PASS_BODY_1 | document | | 05 | ch01.security_crossing.transit_pass_pickup | ELYSIUM SITE ACCESS<br>Holder: [name scratched out]<br>Clearance: LEVEL-0<br>Valid until: 23:59<br><br>The photo has been torn away. | |
 | DOC_DISPATCH_TITLE | terminal | | 09 | ch01.station_atrium.dispatch_terminal | CENTRAL DISPATCH RECORDER | the revelation |
-| DOC_DISPATCH_BODY_1 | terminal | | 09 | ch01.station_atrium.dispatch_terminal | BIOMETRIC MATCH - ACCESS GRANTED<br>EVENT: CONTAINMENT PROTOCOL<br>STATUS: EXECUTED 23:59:00<br>AUTHORIZATION: LEVEL-0<br>USER: ELIAS<br>LOCATION: THIS TERMINAL | |
-| DOC_DISPATCH_BODY_2 | terminal | | 09 | ch01.station_atrium.dispatch_terminal | DIAGNOSTIC LOG<br>23:59:00 - USER: ELIAS<br>23:59:00 - USER: ELIAS<br>23:59:00 - USER: ELIAS<br>23:59:00 - USER: ELIAS<br>23:59:00 - USER: ELIAS | unnumbered, no "exit" |
+| DOC_DISPATCH_BODY_1 | terminal | | 09 | ch01.station_atrium.dispatch_terminal | BIOMETRIC MATCH - ACCESS GRANTED<br>EVENT: CONTAINMENT PROTOCOL<br>STATUS: EXECUTED 23:59:00<br>AUTHORIZATION: LEVEL-0<br>USER: [RECORD CORRUPTED]<br>LOCATION: THIS TERMINAL | user field corrupted (ADR-022 D1) |
+| DOC_DISPATCH_BODY_2 | terminal | | 09 | ch01.station_atrium.dispatch_terminal | DIAGNOSTIC LOG<br>23:59:00 - BIOMETRIC MATCH<br>23:59:00 - BIOMETRIC MATCH<br>23:59:00 - BIOMETRIC MATCH<br>23:59:00 - BIOMETRIC MATCH<br>23:59:00 - BIOMETRIC MATCH | unnumbered, no "exit", no name (ADR-022) |
 | SPK_MEM_N01 | speaker | System | any |  | Ines, conductor | frozen commuter speaker label |
 | MEM_N01_1 | memory | Ines, conductor | 01b | ch01.arrival_platform.n01_conductor | [23:57] Doors closing! Hollow Quay, rear car only. | Trace memory line 1 (time stamp first) |
 | MEM_N01_2 | memory | Ines, conductor | 01b | ch01.arrival_platform.n01_conductor | They keep changing it. Go by the last announcement. | Trace memory line 2 |
@@ -137,6 +137,9 @@
 | SPK_MEMORY | speaker | System | any |  | Memory | generic Trace speaker label |
 | MEM_ANCHOR_TURNSTILE_1 | memory | Memory | 02a | ch01.concourse_west.turnstile_trace_anchor | [23:59] A figure vaults the gate. Behind him a conduit tears loose. | scene memory, line 1 |
 | MEM_ANCHOR_TURNSTILE_2 | memory | Memory | 02a | ch01.concourse_west.turnstile_trace_anchor | It lands across the turnstile arm. | scene memory, line 2 |
+| MEM_WATCH_1 | memory | Memory | 01 | global.pocket_watch | [23:59] A hand sets this watch down on the tiles, face up. | first touch flash (Story Bible Ch1; ADR-022), line 1 |
+| MEM_WATCH_2 | memory | Memory | 01 | global.pocket_watch | Footsteps walk away down the platform. No one looks back. | line 2 |
+| JRN_CH1_FIGURE | journal | | 01 | ch01.arrival_platform.operator_sighting | Someone stood at the far end of the platform, checking a pocket watch. When I got closer, no one was there. | observation (sighting, ADR-022 D3) |
 | EL_UNLOCK_REWIND | monologue | Elias | 02a | ch01.concourse_west.n05_courier | It went back. One step. | Rewind unlock |
 | EL_UNLOCK_FREEZE | monologue | Elias | 04a | ch01.maintenance_bay.n11_hatch_tech | It can hold things still. | Freeze unlock |
 | EL_UNLOCK_ECHO | monologue | Elias | 05a | ch01.security_crossing.echo_recorder_pedestal | A second hand. It follows the first. | Echo unlock |
@@ -229,7 +232,7 @@
 | ch01.maintenance_bay.doc_tech_log | DOCUMENT | DOC_TECH_LOG_TITLE | DOC_TECH_LOG_BODY_1 | | | JRN_CH1_BACKFLOW | observation |
 | ch01.waiting_lounge.audio_mira_01 | AUDIO_LOG | DOC_MIRA_01_TITLE | DOC_MIRA_01_BODY_1 | ch01.flag.mira_trace_seen | ch01.fragment.mira_departure | JRN_CH1_MIRA_PLEA | fact |
 | ch01.vestibule_niche.doc_index_plaque | PLAQUE | DOC_INDEX_PLAQUE_TITLE | DOC_INDEX_PLAQUE_BODY_1 | | | JRN_CH1_THRESHOLDS | theory |
-| ch01.station_atrium.dispatch_terminal | TERMINAL | DOC_DISPATCH_TITLE | DOC_DISPATCH_BODY_1 | ch01.flag.ledger_2359_revealed | | JRN_CH1_SEAL_ELIAS | fact |
+| ch01.station_atrium.dispatch_terminal | TERMINAL | DOC_DISPATCH_TITLE | DOC_DISPATCH_BODY_1 | ch01.flag.ledger_2359_revealed | | JRN_CH1_SEAL_ELIAS | theory |
 
 ## Documents (Step 1, pending implementation)
 Not read by `gen_ch01_text.py` (the generator parses only the `## Documents` table above). These seven readables belong to the TLF-047 Step 1 specs; their `DocumentDef` resources are generated when the implementation task moves the rows into the table above (it also updates the document-count assertion in `tests/narrative/test_ch01_text.gd`, which expects exactly 5).
@@ -252,6 +255,6 @@ Not read by `gen_ch01_text.py` (the generator parses only the `## Documents` tab
 - **TLF-047 phase 2 (Step 1):** rows from `MEM_`, `SPK_MEM_`, `JRN_MEM_`, `UNLOCK_`, `EL_UNLOCK_`, `SO00N_`, `PZ006_`, `DOC_*` (7 new readables), `OP_B03_06` and the `PZ00N_FB_` additions are new. `UNLOCK_*`, `SO00N_*` labels and `PZ006_*` dial labels are display strings for the HUD/props. `MEM_*` lines start with a `[hh:mm]` time stamp (the memory UI shows them as is).
 - Hint keys for `CH1-SO-01`, `CH1-SO-02` and `CH1-PZ-006` (and the revised hints of PZ-001..005) come from `gen_ch01_puzzle_data.py` once it is extended (`design/ch01/expansion/gen_ch01_puzzle_data.patch`; the generator hard-codes `range(1, 6)`). The generated `data/puzzles/ch01/*.tres` and `localization/ch01_puzzles.csv` are **deferred to the implementation task**: `tests/puzzle/test_hint_service.gd:84` expects exactly 5 PuzzleDefs, and the hint button would otherwise show hints for objects that do not exist yet.
 
-## Open canon questions (for Argon's review when available)
+## Open canon questions (resolved 2026-11-05 by ADR-022; the Lead owns narrative text, D5)
 1. Is "Time doesn't stop. It waits." the right shared Elias/Operator phrase, or should it be subtler still?
 2. Should the transit pass's "Clearance: LEVEL-0" stay? It foreshadows Beat 09 without stating it.

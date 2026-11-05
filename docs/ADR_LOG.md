@@ -272,7 +272,7 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
     - **GPT-6.1 Sol:** **Art Director**, with visual direction authority: style, palette, light, composition, character/environment direction, cinematic identity. Owns `design/art/ART_BIBLE.md` and the visual review of every art delivery. It is also the **full Argon fallback** (below).
     - **Gemini 4 Argon:** **primary creative asset specialist**, available again (RISK-019 resolved). Original scope: narrative, puzzle and level specs (`design/ch01/**`, `narrative/**`), `.pxo` sources (`assets/source/**`), runtime exports, the art generators (`tools/art/gen/**`), `design/art/ASSET_METADATA.md`, placement sheet and mockups. It follows Sol's visual direction.
     - **Claude Sonnet 5.5:** **excluded**. It gets no tasks, no fallback role and no workflows. Its merged work (TLF-039/042/044/045/047/053) stays. Branch `adityadaffa522/tlf-art-batch2` is history.
-  - **Single writer:** at any time exactly one **active asset specialist** (Argon, or Sol in fallback) writes `assets/source/**`, art exports, `tools/art/gen/**`, `design/ch01/**` and `narrative/**`. The task file names it. Sol edits those paths only while it is the active specialist.
+  - **Single writer:** at any time exactly one **active asset specialist** (Argon, or Sol in fallback) writes `assets/source/**`, art exports, `tools/art/gen/**` and `design/ch01/**` (`narrative/**` moved to the Lead by ADR-022 D5). The task file names it. Sol edits those paths only while it is the active specialist.
   - **Fallback protocol (Argon unavailable: usage limit, quota, access or other problems):**
     1. Stop assigning to Argon at once.
     2. Sol takes over every unfinished Argon task. Its base is Argon's last **pushed** commit (unpushed work counts as lost, not as done). The task file's owner line and the board change to Sol.
@@ -364,3 +364,26 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - `ability_next/prev` (D-pad, mouse wheel, 1/2) stay as quick cycling and skip locked abilities.
   - Unlock state comes from TLF-050 (`AbilityUnlocks`); the wheel only reads it.
 - **Consequences:** A new UI scene (Flash), wheel art (design-art), one new input action (binding-conflict tests), one setting. Built after TLF-050.
+
+## ADR-022 — Story canon v2.0 ("Revised Operator Mystery") and Chapter 1 safe plan
+- **Date / status:** 2026-11-05 · Accepted (the owner approved every Lead recommendation in `docs/reviews/2026-11-05_STORY_BIBLE_V2_AUDIT.md` and `docs/CHAPTER1_SAFE_PLAN.md`)
+- **Context:** The owner issued Story Bible v2.0 (`docs/STORY_BIBLE_AND_NARRATIVE_MASTER_PROMPT.md`) and a Chapter 1 safe enhancement directive (`docs/THE_LAST_FRAME_CHAPTER_1_SAFE_ENHANCEMENT_DIRECTIVE.md`) with concept references (`design/art/reference/ch01/`). The old canon said the Operator *is* a future Elias and that the game reveals it.
+- **Decision:**
+  - **Canon:** `docs/STORY_BIBLE.md` and its five companion documents (`CHARACTER_BIBLE`, `CHAPTER_BREAKDOWN`, `ENDING_DESIGN`, `OPERATOR_MYSTERY_GUIDELINES`, `NARRATIVE_DESIGN`). They are in English; the owner's Indonesian directive stays the source (D6).
+  - **The Operator's identity is never confirmed.** Three interpretations stay open; Ending 3 is the strongest visual/audio hint. The Operator checklist (`OPERATOR_MYSTERY_GUIDELINES.md` §6) gates every narrative merge.
+  - **Superseded:** "Operator = future Elias"; **Elias-0** (D4, dropped; "Level-0" survives only as a clearance level); the old ending texts (A New Beginning keeps his memory, 00:00; The Paradox = the loop sequence); "a future Elias caused the catastrophe to prevent Mira's death"; the old Archivist description.
+  - **D1** Beat 09: the terminal knows Elias's hand, the user field is corrupted, and "Did I do this?" stays a question. Ch4 gives the answer.
+  - **D2** Beat 10: the unidentified voice line "You are late." / "Again." (OP_B10_01/02); Mira's broadcast image is kept, silent; no location line.
+  - **D3** The Operator is first seen at the far end of the **Arrival Platform**, after the watch pickup, checking a pocket watch, gone when approached. Ending 3 reuses this composition exactly.
+  - **D5** Narrative canon and dialogue text belong to the **Lead (Opus)**: `docs/` story documents and `narrative/**`. This amends ADR-017 (2026-11-05). Argon keeps puzzle/level specs (`design/ch01/**`) and all visual assets; Flash wires dialogue and narrative triggers.
+  - **A2** The map reference is a structure/mood reference. The built rooms and the street exit stay. Station Office / Power Room / Baggage Storage are candidates for the two Step 2 rooms. "Unfreeze time" is **not** canon.
+  - **A3** Elias v3 (lab coat, red scarf, goggles) waits for Sol's direction note (TLF-061) and then the owner's decision.
+  - **A4** The Operator's look: hood + mask, Elias's pocket watch (no hourglass), Elias's gesture and scarf colour, the same temporal VFX, **no attack animations**.
+  - **A1/A5:**
+    - Step 1 continues.
+    - P1 approved: environmental props from the references (TLF-063), the Operator motif + basic audio (TLF-064), and the character direction note (TLF-061).
+    - **Audio source** (no owner preference given, the Lead's choice): SFX generated by a reproducible script, like the art generators. CC0 packs are allowed with a licence record in `ASSET_INVENTORY.md`.
+  - **CH1-PZ-004** is titled *The Forgotten Sequence* (the Story Bible's Ch1 signature puzzle); its logic is unchanged.
+- **Consequences:**
+  - Old task files (TLF-001 audit, TLF-003) keep their historical text; `STORY_BIBLE.md` §5 lists what is superseded.
+  - New tasks TLF-058 (sighting), TLF-059 (Beat 10 cinematic), TLF-060 (export + smoke test), TLF-061 (Sol, character direction), TLF-062 (Argon, Operator silhouette + city plate), TLF-063 (environmental props), TLF-064 (audio). TLF-056 gains save/load tests around The Forgotten Sequence.

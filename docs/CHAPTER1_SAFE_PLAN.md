@@ -29,7 +29,18 @@ Effort: **S** ≈ under one agent day · **M** ≈ 1-3 days · **L** ≈ more.
 | P1-5 | **Audio affordance pass:** one distinct SFX per ability (Trace / Rewind / Freeze / Echo record / Echo play / refused) and the 23:59 clock tick, played from the existing `watch_used` and `ability_locked` signals and the existing buses | The game is currently **silent** | Flash (wiring), source: **your decision** (CC0 packs or made sounds) | M | No dynamic music system |
 | P1-6 | **Character references → art direction:** Sol turns `elias_ref` / `mira_ref` / `operator_ref` into a direction note inside the 32×48 / TLF-palette constraints (audit K4-K8); Argon makes it only after your approval | A consistent cast; the Operator–Elias visual link Ending 3 needs | Sol, then Argon | M (note) + L (Elias v3 sheet, if approved) | Elias v3 replaces a finished asset: approval required |
 
-## 3. Approval request (your answers decide what starts)
+**Approved 2026-11-05: the owner accepted every recommendation (ADR-022).** Tasks:
+- P0-1 → TLF-052/054/055/056/057
+- P0-2 → done by the Lead (text, `CH01_TEXT.md`)
+- P0-3 → TLF-058 + TLF-062
+- P0-4 → TLF-059 + TLF-062
+- P0-5 → TLF-060
+- P0-6 → TLF-056 item 5
+- P1-2 → TLF-063
+- P1-4/P1-5 → TLF-064 (generated SFX)
+- P1-6 → TLF-061
+
+## 3. Approval request (answered 2026-11-05: all recommendations)
 
 **Still open from the Story Bible audit** (recommendations in brackets):
 - **D1** Beat 09: [a question, not a fact]

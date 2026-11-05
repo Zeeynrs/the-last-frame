@@ -24,26 +24,17 @@ Do not begin by generating the entire game at once.
 **Mode:** Single-player  
 **Visual style:** Premium HD Cinematic Pixel Art  
 **Target full playtime:** 5–8 hours  
-**Structure:** 6 chapters and 4 endings
+**Structure:** 6 chapters, 3 main endings + 1 secret ending
 
 ## 3. Story
 
-Elias wakes in abandoned station Elysium-09 with amnesia and a pocket watch capable of manipulating time and space. The city outside is frozen at 23:59 after the failed ELYSIUM experiment. Elias explores the city, solves temporal and spatial puzzles and reconstructs memories. He eventually discovers that a future version of himself caused the catastrophe while trying to prevent Mira's death. The journey has repeated in a temporal loop.
+**Canon: `STORY_BIBLE.md` and its companion documents (ADR-022, Story Bible v2.0).** In 2097, Elias wakes in abandoned station Elysium-09 with amnesia and a pocket watch. Elysium City is frozen at 23:59 after the ELYSIUM experiment. He explores, solves temporal and spatial puzzles and reconstructs memories, and learns that the disaster is tied to his own refusal to lose Mira.
 
-Main characters:
-- Elias — protagonist.
-- Mira — person connected to the experiment and its emotional motivation.
-- The Operator — future Elias guiding the protagonist.
-- The Archivist — construct made from memories of erased people.
-- Elias-0 — original Elias.
+Main characters: Elias (protagonist), Mira (research partner; a consciousness reconstruction, revealed in Ch5), the Operator (helps and hinders; **identity never confirmed**, see `OPERATOR_MYSTERY_GUIDELINES.md`), the Archivist (keeper of memory recordings).
 
-Four endings:
-1. A New Beginning — restore original timeline; Elias loses his memories.
-2. Eternal Stillness — preserve the frozen world and Mira.
-3. The Paradox — merge timelines; Elias loses a singular identity.
-4. The Last Player — secret ending; discover and terminate the reconstruction process; clock reaches 00:01.
+Endings: A New Beginning, Eternal Stillness, The Paradox, and the secret The Last Player (`ENDING_DESIGN.md`).
 
-Follow `GDD.md` for complete chapter and narrative direction. Do not contradict established lore without documenting and approving a deliberate change.
+Follow `STORY_BIBLE.md` for story and `GDD.md` for gameplay. Do not contradict established lore without documenting and approving a deliberate change.
 
 ## 4. Core gameplay
 

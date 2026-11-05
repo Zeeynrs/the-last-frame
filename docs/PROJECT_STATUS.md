@@ -43,12 +43,13 @@ This file states what the repository **actually** contains. Task-level detail li
 ## D. Broken
 - Trace shows nothing in the game yet (ISSUE-039: mechanism merged, content -> TLF-055).
 - PZ-002 is solvable without Freeze (RISK-020 confirmed by TLF-049; fix -> TLF-054/055/056).
+- Story gaps against Story Bible v2 (ADR-022): no Operator sighting (TLF-058), Beat 10 is not a cinematic (TLF-059). The text is already aligned (Beat 09 as a question, "You are late. Again.").
 
 ## E. Missing (next by priority)
 1. Chapter 1 expansion Step 1 (ADR-020): TLF-052 ability wheel (Flash), TLF-054 puzzle logic (Opus impl), TLF-057 art (Argon, visual review Sol), then TLF-055 rooms (Flash), TLF-056 real-input proofs (Opus impl), then a telemetry playtest (target >= 15 min)
-2. Export smoke test (Windows build: theme font, translations, saves) once an export preset exists
+2. Export smoke test: TLF-060
 3. Human: physical controller spot-check (ISSUE-011, last item for M1)
-4. Vertical-slice polish: audio, lighting/VFX, Beat 10 cinematic, accessibility pass
+4. Vertical-slice polish: story (TLF-058/059/062), audio (TLF-064), cast direction (TLF-061), props (TLF-063), lighting/VFX, accessibility pass. Plan: `docs/CHAPTER1_SAFE_PLAN.md`
 5. External playtest (Gate C)
 
 ## F. Should be improved

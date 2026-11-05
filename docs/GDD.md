@@ -1,13 +1,13 @@
 # THE LAST FRAME — Game Design Document
 
-**Version:** 1.0  
+**Version:** 1.1 (story sections aligned with Story Bible v2.0, ADR-022)  
 **Status:** Production baseline  
 **Engine:** Godot 4.x  
 **Genre:** Isometric 2.5D psychological mystery / sci-fi puzzle adventure
 
 ## 1. High concept
 
-Elias wakes in an abandoned transit station called Elysium-09 with no memory of how he arrived. A damaged pocket watch allows him to manipulate time and perceive the traces of events that no longer exist. Beyond the station lies a futuristic city frozen at 23:59. As Elias explores impossible spaces and reconstructs fragmented memories, he discovers that the catastrophe was caused by a future version of himself in an attempt to prevent the death of Mira. The journey has happened before—and may be happening again.
+In 2097, Elias wakes in an abandoned transit station called Elysium-09 with no memory of how he arrived. A damaged pocket watch allows him to manipulate time and perceive the traces of events that no longer exist. Beyond the station lies Elysium City, frozen at 23:59 by the ELYSIUM experiment. As Elias explores impossible spaces and reconstructs fragmented memories, he discovers that the catastrophe is tied to his own refusal to lose Mira, and that a figure called the Operator knows his journey too well. Who the Operator is, the game never answers. Story canon: `STORY_BIBLE.md` (ADR-022).
 
 **Core hook:** The player does not simply manipulate time to solve puzzles; they use the recorded consequences of their own actions, alternate timelines and rearranged spaces to challenge what they believe happened.
 
@@ -25,15 +25,14 @@ The intended player enjoys atmospheric exploration, environmental storytelling, 
 
 ## 4. Narrative premise
 
-The ELYSIUM experiment attempted to preserve a human consciousness by stabilizing a moment in spacetime. The experiment failed and trapped the city in a fractured temporal state. Elias believes he is investigating the disaster, but he is also one of its causes. The Operator guiding him through communication devices is a future Elias. Mira is tied to the original experiment and appears differently across timelines. The player gradually discovers that memories, identities and even the apparent order of events cannot be trusted.
+ELYSIUM records past events, stores human consciousness and memory, and reconstructs events from temporal data; under some conditions it creates causal links between states of time. Its last experiment froze the city at 23:59. Elias believes he is investigating the disaster, but he is also tied to its cause. The Operator, who speaks through old devices and is glimpsed only as a silhouette, sometimes helps and sometimes blocks him; his identity is never confirmed (`OPERATOR_MYSTERY_GUIDELINES.md`). Mira is a consciousness reconstruction stored in ELYSIUM, revealed gradually. The player discovers that memories, identities and even the apparent order of events cannot be trusted. Full canon: `STORY_BIBLE.md`, `CHARACTER_BIBLE.md`.
 
 ### Main characters
 
 - **Elias:** The playable protagonist. Amnesiac at the beginning; his identity and responsibility are central mysteries.
-- **Mira:** A person connected to the ELYSIUM experiment and the emotional reason behind the temporal catastrophe.
-- **The Operator:** A voice guiding Elias through old communication devices; ultimately revealed as a future version of Elias.
-- **The Archivist:** A construct formed from memories of people erased by timeline changes.
-- **Elias-0:** The original Elias, whose history provides a crucial perspective on the experiment.
+- **Mira:** Elias's research partner and the person he could not let go; a reason for the experiment, with her own will. Revealed in Ch5 as a consciousness reconstruction.
+- **The Operator:** A voice on old devices and a hooded silhouette who helps and hinders Elias and knows things that haven't happened yet. **Never identified** (three interpretations stay open).
+- **The Archivist:** Keeper of ELYSIUM's memory recordings; knows possible events, not which one happened; may hide truths.
 
 ### Narrative delivery
 
@@ -47,8 +46,8 @@ The city is frozen at 23:59. The recurring clock motif should appear in UI, envi
 |---|---|---|---|
 | 1 | The Forgotten Station | Abandoned underground station | Teach movement, interaction, first time powers and basic echo logic |
 | 2 | The City That Remembers | Futuristic abandoned city | Introduce Mira, memory contradictions and broader timeline use |
-| 3 | The Infinite Library | Impossible library | Introduce room rotation, doorway connections and spatial graph puzzles |
-| 4 | Paradox Laboratory | ELYSIUM research facility | Reveal the experiment, deepen echo mechanics and introduce Elias-0 |
+| 3 | The Infinite Library | Impossible library (warm wood, gold, sunlight) | The Archivist; controllable Dual Elias; spatial-graph reading puzzles |
+| 4 | Paradox Laboratory | ELYSIUM research facility | Reveal the experiment and the tragedy; causality puzzles; deeper Dual Elias |
 | 5 | Beyond Reality | Fractured dimension | Combine overlapping timelines, spatial folding and repeated journeys |
 | 6 | The Last Frame | Temporal core | Final synthesis puzzle, confrontation and ending choice |
 
@@ -89,7 +88,7 @@ The pocket watch is the central tool. Its abilities must have clear visual langu
 - **Rewind:** Restore selected supported environmental objects to a prior recorded state.
 - **Fast Forward:** Accelerate supported processes such as plant growth, machinery cycles or aging.
 - **Freeze:** Stop a supported object's temporal progression.
-- **Echo:** Reveal residual traces of past events, actions or entities.
+- **Trace:** Reveal residual traces of past events, actions or entities (named Trace by ADR-014; **Echo** is the record/replay system in §9).
 - **Time Shift:** Move between supported timeline layers: Past, Present and Fractured.
 
 Not every object must support every ability. Each interactable declares supported abilities and state data. Do not imply that the player can rewind the entire world if only selected objects are supported.
@@ -161,10 +160,12 @@ See `PUZZLE_DESIGN.md` for templates and examples.
 
 The final chapter supports four outcomes:
 
-1. **A New Beginning:** Restore the original timeline; Elias loses his memories.
-2. **Eternal Stillness:** Preserve the frozen world and Mira.
-3. **The Paradox:** Merge timelines; Elias loses a singular identity.
-4. **The Last Player (secret):** Discover the reconstruction process and terminate it; the clock reaches 00:01.
+1. **A New Beginning:** Stop ELYSIUM; Elias keeps his memory of Mira and lets her go; the clock reaches 00:00.
+2. **Eternal Stillness:** Keep ELYSIUM running; Elias becomes its keeper; 23:59 forever.
+3. **The Paradox:** Merge with the core; a loop that strongly suggests, but never confirms, that Elias becomes the Operator.
+4. **The Last Player (secret):** Find an unrecorded room and stop the system outside procedure; the clock reaches 00:01; "Someone is still watching."
+
+Details, triggers and state: `ENDING_DESIGN.md`.
 
 Endings should be earned through understandable narrative choices and/or optional discoveries. The secret ending must not require obscure pixel hunting.
 

@@ -18,12 +18,12 @@ OP_B07_01,Power's back. Good. Now go straight to the street exit.
 OP_B07_02,There's a dispatch terminal in the Atrium. Leave it alone. It won't help you.
 EL_B08_01,I walked north. I came out of the west arch. The building is lying to me.
 EL_B09_01,It knows my hand.
-EL_B09_02,Level-0 clearance. My clearance. I sealed this station.
-EL_B09_03,Why would I do that?
+EL_B09_02,Level-0 clearance. Someone sealed this station from here. And it opened for my hand.
+EL_B09_03,Did I do this?
 EL_B09_04,"The same minute, over and over. Probably a clock fault. Probably."
 EL_B10_01,"The rain isn't falling. It's hanging in the air, waiting."
-OP_B10_01,Now you see why I told you to leave the terminal alone.
-OP_B10_02,"Keep moving. She's in the Central District, and the city remembers what you lost."
+OP_B10_01,You are late.
+OP_B10_02,Again.
 SPK_ELIAS,Elias
 SPK_MIRA,Mira
 SPK_OPERATOR,VOICE
@@ -35,8 +35,8 @@ JRN_CH1_TWO_SILHOUETTES,"Two traces on the lounge bench: a woman, and a man who 
 JRN_CH1_MIRA_PLEA,Mira asked me not to come back for her if the stabilization failed.
 JRN_CH1_OPERATOR_WARNING,The voice on the intercom warned me away from the Atrium dispatch logs. What is it hiding?
 JRN_CH1_THRESHOLDS,"The ELYSIUM field indexes doorways. When time froze, some stopped leading where they should."
-JRN_CH1_SEAL_ELIAS,The containment lock was executed from the Atrium terminal with my Level-0 clearance.
-JRN_CH1_REPEATS,"The terminal log repeats one line: 23:59:00, USER: ELIAS. A fault?"
+JRN_CH1_SEAL_ELIAS,The containment lock was executed from the Atrium terminal at Level-0. The terminal knew my hand. Did I do this?
+JRN_CH1_REPEATS,"The terminal log repeats one line: 23:59:00, the same biometric match. A fault?"
 FRAG_MIRA_DEPARTURE_TITLE,Memory: The Lounge Bench
 FRAG_MIRA_DEPARTURE_BODY,"Her hand on my sleeve. The departure board flickering. She was asking me for something, and I said no."
 PZ001_FB_GATE_JAMMED,The turnstile rotor is crushed shut. Force won't move it.
@@ -96,14 +96,14 @@ DOC_DISPATCH_BODY_1,"BIOMETRIC MATCH - ACCESS GRANTED
 EVENT: CONTAINMENT PROTOCOL
 STATUS: EXECUTED 23:59:00
 AUTHORIZATION: LEVEL-0
-USER: ELIAS
+USER: [RECORD CORRUPTED]
 LOCATION: THIS TERMINAL"
 DOC_DISPATCH_BODY_2,"DIAGNOSTIC LOG
-23:59:00 - USER: ELIAS
-23:59:00 - USER: ELIAS
-23:59:00 - USER: ELIAS
-23:59:00 - USER: ELIAS
-23:59:00 - USER: ELIAS"
+23:59:00 - BIOMETRIC MATCH
+23:59:00 - BIOMETRIC MATCH
+23:59:00 - BIOMETRIC MATCH
+23:59:00 - BIOMETRIC MATCH
+23:59:00 - BIOMETRIC MATCH"
 SPK_MEM_N01,"Ines, conductor"
 MEM_N01_1,"[23:57] Doors closing! Hollow Quay, rear car only."
 MEM_N01_2,They keep changing it. Go by the last announcement.
@@ -159,6 +159,9 @@ JRN_MEM_N21,"Ayo, a tourist, 23:55: walking north brought them out of the west a
 SPK_MEMORY,Memory
 MEM_ANCHOR_TURNSTILE_1,[23:59] A figure vaults the gate. Behind him a conduit tears loose.
 MEM_ANCHOR_TURNSTILE_2,It lands across the turnstile arm.
+MEM_WATCH_1,"[23:59] A hand sets this watch down on the tiles, face up."
+MEM_WATCH_2,Footsteps walk away down the platform. No one looks back.
+JRN_CH1_FIGURE,"Someone stood at the far end of the platform, checking a pocket watch. When I got closer, no one was there."
 EL_UNLOCK_REWIND,It went back. One step.
 EL_UNLOCK_FREEZE,It can hold things still.
 EL_UNLOCK_ECHO,A second hand. It follows the first.

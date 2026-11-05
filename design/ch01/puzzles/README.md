@@ -15,7 +15,7 @@
 | `CH1-PZ-001` | The Fractured Turnstile | Beat 02 | West Concourse (`ch01.concourse_west`) | **Taught:** Pocket Watch, `Trace`, `Rewind` (`initial_history`) | 4 min | `design/ch01/puzzles/CH1-PZ-001.md` |
 | `CH1-PZ-002` | The Runaway Shutter | Beat 04 | Maintenance Bay (`ch01.maintenance_bay`) | **Taught:** `Freeze` · **Tested:** `Rewind` + `Freeze` (non-lethal) | 5 min | `design/ch01/puzzles/CH1-PZ-002.md` |
 | `CH1-PZ-003` | The Delayed Platform | Beat 05 | Security Crossing (`ch01.security_crossing`) | **Taught:** `Echo` (record, replay, final-position occupancy, reset) | 6 min | `design/ch01/puzzles/CH1-PZ-003.md` |
-| `CH1-PZ-004` | The Synchronized Substation | Beat 07 | Signal Control (`ch01.signal_control`) | **Tested:** Two-step `Rewind` + `Freeze` (Step 1) then `Echo` (Step 2) | 5 min | `design/ch01/puzzles/CH1-PZ-004.md` |
+| `CH1-PZ-004` | The Forgotten Sequence (was: The Synchronized Substation, ADR-022) | Beat 07 | Signal Control (`ch01.signal_control`) | **Tested:** Two-step `Rewind` + `Freeze` (Step 1) then `Echo` (Step 2) | 5 min | `design/ch01/puzzles/CH1-PZ-004.md` |
 | `CH1-PZ-005` | The Displaced Corridor | Beat 08 | Upper Vestibule (`ch01.upper_vestibule` + `ch01.vestibule_niche`) | **Taught/Tested:** `Doorway Reassignment` (`SpatialGraph`) + `Trace` | 5 min | `design/ch01/puzzles/CH1-PZ-005.md` |
 
 ---
