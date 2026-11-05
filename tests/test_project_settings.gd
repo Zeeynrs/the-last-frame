@@ -19,7 +19,8 @@ const REQUIRED_ACTIONS: Array[String] = [
 	"cancel",
 	"journal",
 	"pause",
-	"hint"
+	"hint",
+	"ability_wheel"
 ]
 
 const GAMEPLAY_ACTIONS: Array[String] = [
@@ -34,7 +35,8 @@ const GAMEPLAY_ACTIONS: Array[String] = [
 	"echo_reset",
 	"journal",
 	"pause",
-	"hint"
+	"hint",
+	"ability_wheel"
 ]
 
 

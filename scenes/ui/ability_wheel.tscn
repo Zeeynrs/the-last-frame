@@ -1,0 +1,186 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfwhlability001"]
+
+[ext_resource type="Script" path="res://scripts/ui/ability_wheel.gd" id="1_wheel"]
+
+[node name="AbilityWheel" type="CanvasLayer"]
+layer = 15
+visible = false
+script = ExtResource("1_wheel")
+
+[node name="WheelContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -80.0
+offset_right = 80.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Segments" type="Control" parent="WheelContainer"]
+anchors_preset = 0
+offset_right = 160.0
+offset_bottom = 160.0
+
+[node name="Seg0" type="TextureRect" parent="WheelContainer/Segments"]
+layout_mode = 0
+offset_left = 43.0
+offset_right = 117.0
+offset_bottom = 43.0
+
+[node name="Seg1" type="TextureRect" parent="WheelContainer/Segments"]
+layout_mode = 0
+offset_left = 102.0
+offset_top = 12.0
+offset_right = 160.0
+offset_bottom = 90.0
+
+[node name="Seg2" type="TextureRect" parent="WheelContainer/Segments"]
+layout_mode = 0
+offset_left = 102.0
+offset_top = 81.0
+offset_right = 160.0
+offset_bottom = 148.0
+
+[node name="Seg3" type="TextureRect" parent="WheelContainer/Segments"]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 117.0
+offset_right = 117.0
+offset_bottom = 160.0
+
+[node name="Seg4" type="TextureRect" parent="WheelContainer/Segments"]
+layout_mode = 0
+offset_top = 81.0
+offset_right = 58.0
+offset_bottom = 148.0
+
+[node name="Seg5" type="TextureRect" parent="WheelContainer/Segments"]
+layout_mode = 0
+offset_top = 12.0
+offset_right = 58.0
+offset_bottom = 90.0
+
+[node name="Face" type="TextureRect" parent="WheelContainer"]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 50.0
+offset_right = 106.0
+offset_bottom = 106.0
+
+[node name="Pointer" type="TextureRect" parent="WheelContainer"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 75.0
+offset_right = 85.0
+offset_bottom = 85.0
+
+[node name="Icons" type="Control" parent="WheelContainer"]
+anchors_preset = 0
+offset_right = 160.0
+offset_bottom = 160.0
+
+[node name="Icon0" type="TextureRect" parent="WheelContainer/Icons"]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 4.0
+offset_right = 88.0
+offset_bottom = 20.0
+
+[node name="Icon1" type="TextureRect" parent="WheelContainer/Icons"]
+layout_mode = 0
+offset_left = 126.0
+offset_top = 35.0
+offset_right = 142.0
+offset_bottom = 51.0
+
+[node name="Icon2" type="TextureRect" parent="WheelContainer/Icons"]
+layout_mode = 0
+offset_left = 126.0
+offset_top = 97.0
+offset_right = 142.0
+offset_bottom = 113.0
+
+[node name="Icon3" type="TextureRect" parent="WheelContainer/Icons"]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 128.0
+offset_right = 88.0
+offset_bottom = 144.0
+
+[node name="Icon4" type="TextureRect" parent="WheelContainer/Icons"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 97.0
+offset_right = 34.0
+offset_bottom = 113.0
+
+[node name="Icon5" type="TextureRect" parent="WheelContainer/Icons"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 35.0
+offset_right = 34.0
+offset_bottom = 51.0
+
+[node name="Labels" type="Control" parent="WheelContainer"]
+anchors_preset = 0
+offset_right = 160.0
+offset_bottom = 160.0
+
+[node name="Label0" type="Label" parent="WheelContainer/Labels"]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 20.0
+offset_right = 104.0
+offset_bottom = 32.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label1" type="Label" parent="WheelContainer/Labels"]
+layout_mode = 0
+offset_left = 114.0
+offset_top = 51.0
+offset_right = 162.0
+offset_bottom = 63.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="WheelContainer/Labels"]
+layout_mode = 0
+offset_left = 114.0
+offset_top = 113.0
+offset_right = 162.0
+offset_bottom = 125.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="WheelContainer/Labels"]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 144.0
+offset_right = 104.0
+offset_bottom = 156.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label4" type="Label" parent="WheelContainer/Labels"]
+layout_mode = 0
+offset_left = -2.0
+offset_top = 113.0
+offset_right = 46.0
+offset_bottom = 125.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label5" type="Label" parent="WheelContainer/Labels"]
+layout_mode = 0
+offset_left = -2.0
+offset_top = 51.0
+offset_right = 46.0
+offset_bottom = 63.0
+horizontal_alignment = 1
+vertical_alignment = 1
