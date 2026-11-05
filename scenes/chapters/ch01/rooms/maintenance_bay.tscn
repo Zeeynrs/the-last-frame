@@ -74,18 +74,18 @@ b = Vector2(304, 200)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_bulkhead1"]
 a = Vector2(368, 88)
-b = Vector2(328, 108)
+b = Vector2(332, 106)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_bulkhead2"]
-a = Vector2(312, 116)
+a = Vector2(308, 118)
 b = Vector2(224, 160)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_innerdiv1"]
 a = Vector2(496, 152)
-b = Vector2(440, 180)
+b = Vector2(444, 178)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_innerdiv2"]
-a = Vector2(424, 188)
+a = Vector2(420, 190)
 b = Vector2(352, 224)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mb_gate16"]

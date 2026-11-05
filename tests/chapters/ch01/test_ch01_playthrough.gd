@@ -362,6 +362,90 @@ func test_passage_blockers_toggle_with_puzzle_state() -> void:
 	free_session(s)
 
 
+func test_interior_apertures_walkable_with_real_player_capsule() -> void:
+	var s := make_session()
+
+	# Player with real capsule collision shape (r=6, h=16, rotated 90 deg, offset (0, -4))
+	var player_scene := load("res://scenes/player/Player.tscn") as PackedScene
+	var player := player_scene.instantiate() as CharacterBody2D
+	s.add_child(player)
+
+	# 1. Maintenance Bay: hatch_01 (SO-02) and inner_shutter (PZ-002) widened to 1.5-tile opening (26.8 px)
+	var bay := (load(ROOM_PATHS[&"ch01.maintenance_bay"]) as PackedScene).instantiate()
+	s.add_child(bay)
+
+	# Disable completion triggers during aperture checks so premature solve does not toggle blockers
+	for child in bay.get_children():
+		if child is PuzzleCompletionZone:
+			child.collision_mask = 0
+
+	var hatch := bay.get_node("hatch_01") as Area2D
+	var hatch_blocker := hatch.get_node("Blocker/CollisionShape2D") as CollisionShape2D
+
+	# Hatch closed: Blocker stops the player capsule
+	player.global_position = Vector2(320, 90)
+	await physics_frames(2)
+	var hatch_closed_blocked := not (await walk_to(player, "hatch_closed", Vector2(320, 140), Callable(), 60, true))
+	_assert_true(hatch_closed_blocked, "hatch closed: 24x12 blocker stops real player capsule")
+
+	# Hatch open: player capsule walks straight through the 26.8 px widened gap
+	hatch_blocker.disabled = true
+	player.global_position = Vector2(320, 90)
+	await physics_frames(2)
+	var hatch_open_walked := await walk_to(player, "hatch_open", Vector2(320, 140), Callable(), 120, false)
+	_assert_true(hatch_open_walked, "hatch open: real player capsule walks through widened aperture (332,106)-(308,118)")
+
+	var inner := bay.get_node("inner_shutter") as Area2D
+	var inner_blocker := inner.get_node("Blocker/CollisionShape2D") as CollisionShape2D
+
+	# Inner shutter closed: Blocker stops the player capsule
+	player.global_position = Vector2(432, 160)
+	await physics_frames(2)
+	var inner_closed_blocked := not (await walk_to(player, "inner_closed", Vector2(432, 210), Callable(), 60, true))
+	_assert_true(inner_closed_blocked, "inner shutter closed: 24x12 blocker stops real player capsule")
+
+	# Inner shutter open: player capsule walks straight through the 26.8 px widened gap
+	inner_blocker.disabled = true
+	player.global_position = Vector2(432, 160)
+	await physics_frames(2)
+	var inner_open_walked := await walk_to(player, "inner_open", Vector2(432, 210), Callable(), 120, false)
+	_assert_true(inner_open_walked, "inner shutter open: real player capsule walks through widened aperture (444,178)-(420,190)")
+
+	s.remove_child(bay)
+	bay.free()
+
+	# 2. Security Crossing: staff_barrier_01 (PZ-003) widened to 1.5-tile opening (26.8 px)
+	var crossing := (load(ROOM_PATHS[&"ch01.security_crossing"]) as PackedScene).instantiate()
+	s.add_child(crossing)
+
+	for child in crossing.get_children():
+		if child is PuzzleCompletionZone:
+			child.collision_mask = 0
+
+	var barrier := crossing.get_node("staff_barrier_01") as Area2D
+	var barrier_blocker := barrier.get_node("Blocker/CollisionShape2D") as CollisionShape2D
+
+	# Staff barrier closed: Blocker stops the player capsule
+	player.global_position = Vector2(432, 175)
+	await physics_frames(2)
+	var barrier_closed_blocked := not (await walk_to(player, "barrier_closed", Vector2(432, 225), Callable(), 60, true))
+	_assert_true(barrier_closed_blocked, "staff barrier closed: 24x12 blocker stops real player capsule")
+
+	# Staff barrier open: player capsule walks straight through the 26.8 px widened gap
+	barrier_blocker.disabled = true
+	player.global_position = Vector2(432, 175)
+	await physics_frames(2)
+	var barrier_open_walked := await walk_to(player, "barrier_open", Vector2(432, 225), Callable(), 120, false)
+	_assert_true(barrier_open_walked, "staff barrier open: real player capsule walks through widened aperture (444,194)-(420,206)")
+
+	s.remove_child(crossing)
+	crossing.free()
+
+	s.remove_child(player)
+	player.free()
+	free_session(s)
+
+
 func test_pz004_route_is_at_least_600_px() -> void:
 	var sig := (load(ROOM_PATHS[&"ch01.signal_control"]) as PackedScene).instantiate() as Node2D
 	var perim_node := sig.get_node("PerimeterWalls/CollisionPolygon2D") as CollisionPolygon2D

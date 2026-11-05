@@ -77,10 +77,10 @@ b = Vector2(288, 224)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_barrier1"]
 a = Vector2(512, 160)
-b = Vector2(440, 196)
+b = Vector2(444, 194)
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_barrier2"]
-a = Vector2(424, 204)
+a = Vector2(420, 206)
 b = Vector2(336, 248)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sc_interact14"]
