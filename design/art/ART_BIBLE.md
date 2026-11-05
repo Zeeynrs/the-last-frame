@@ -312,3 +312,172 @@ Argon supplies the exact pushed branch/SHA, proof paths, inventory and a state m
 - Raw `check_assets.py` and `verify_regen.py` output; Pixelorama source-to-PNG pixel-equality evidence for **every** new `.pxo`, with the exact source count; complete asset metadata and open issues.
 
 Sol records **APPROVE** or **CHANGES REQUIRED**, tied to the reviewed SHA and concrete filenames/states, in the TLF-057 handoff after inspecting those proofs. Missing proofs or an unfinished delivery leave review **PENDING**. Lead retains technical acceptance and merge authority, including the repository's fresh-archive validation rule. No approval transfers to a later unreviewed SHA.
+---
+
+## Cast and Ch1 direction (TLF-061)
+
+**Sol, 2026-11-05. Direction only.** Based on `origin/main` at `690f370`, updated to Lead's merged `efed5ab` before this edit. Canon: `docs/STORY_BIBLE.md`, `CHARACTER_BIBLE.md`, `OPERATOR_MYSTERY_GUIDELINES.md`, ADR-022. All six images in `design/art/reference/ch01/` were inspected. Their composition, clothing masses and station materials inform this section; their printed biographies, dialogue, combat poses, room graphs and hourglass devices do not become canon. No reference pixels are shippable.
+
+### C.1 Decisions, authority and production boundary
+
+- **Binding direction for TLF-062/063:** Operator silhouette, pocket-watch motif, non-combat gesture specification, Mira's silent broadcast look, unchanged Ch1 palette and the four-purpose prop list below. Lead merges this note before those tasks proceed.
+- **Owner decision still required:** Elias v3, including whether to reveal a lab coat, introduce a red scarf, goggles or badge. This note proposes it; it does not replace Elias v2 or authorise a player-art rebuild.
+- Keep 640×360, nearest integer scaling, 32×48 character frames, foot pivot (16,44), 2:1 placement, top-left light, binary alpha, 1 px silhouette outlines and the existing reproducibility gates. Assets belong to Argon; runtime/camera/timing contracts and integration approval belong to Opus/Flash.
+- **Recommended approach:** retain the finished v2 for the present slice and build the Operator on separate robe/mask/watch/scarf layers. If the owner later chooses v3, use the restrained candidate below. A wholesale recreation of the reference sheet would add unsupported combat states and premature research symbolism; it is outside scope.
+
+### C.2 Elias v3 proposal — not approved for production
+
+Translate the reference into the same grounded adult proportions as v2, not its oversized anime head or ornate equipment. Preserve untidy dark hair, readable exposed face, split coat hem, two separate boots and the brass pocket watch. At 32×48, the hierarchy is face → scarf/shoulders → coat split → watch; tiny equipment must not compete with it.
+
+| Reference feature | Proposed treatment at 32×48 | Existing palette |
+|---|---|---|
+| Lab coat | Two broad light lapel/hem masses, dark centre and sleeve underside; no white flood-fill. Retain the v2 mid-thigh split hem, visible legs and 14×42 standing-body target; a full ankle-length coat would converge with the Operator. | shadow 12/13, body 14, upper-left edge 15; 31 only for an isolated specular pixel, never the coat body |
+| Red scarf | 2 px neck band and a short 3–5 px side tail; no huge fluttering banner. Identical material colours on Elias and the Operator if selected. | shadow 22 `#4A1C14`, mid 23 `#8C2D19`; no hot orange/red lamp colours |
+| Goggles | Optional two dark lens pixels and a short brass bridge at collar level; omit if the neck/watch becomes busy. No face-covering goggles. | 11/12 lenses, 25 bridge |
+| ID badge | Prefer **omit in Ch1**. If the owner insists, use a 2×3 unlettered tab without portrait, name, logo or clearance number. | 13/15; no readable ELYSIUM text |
+| Hair, face, trousers, boots | Keep the current head/skin and lower-body ramps and proportions. No new portrait or facial scar clue. | hair/boots 16–18, skin 20/21, trousers 02/03 |
+| Pocket watch | Same round brass case, crown and short chain as the existing watch; no hourglass at the belt. | 25/26, recessed face 13/15, dark hand 00 |
+
+**Spoiler flag:** a lab coat, especially with goggles or an ID, suggests Elias's research/ELYSIUM link before the chapter has earned it. It may make the uncertain Beat 09 association feel like confirmation. Recommendation: keep the brown v2 coat for Ch1, reserve an unmistakable lab coat for a later authorised memory/reveal. The owner may choose the reference-led lab-coat v3 despite that cost; do not quietly settle this in asset production.
+
+**Replacement cost, planning estimate rather than a quote:** v2 already ships 80 frames = 5 authored directions × (4 idle + 6 walk) = 50 authored poses, plus 30 mirrored frames. A costume/proportion replacement affects **all 80**, not a single portrait: rebuild and review 50 authored poses, regenerate 30 mirrors, preserve 16 tags and the 2560×48 sheet, pivot and movement cadence; check the three mirrored directions' scarf/goggle/chain compromises. Re-run palette/alpha/size/mirror and regen checks, Pixelorama equality, and in-room colour/greyscale animation proofs. Budget approximately 2–4 focused artist-days for the 50-pose redraw/generator work plus 1–2 for export, review, revisions and integration (3–6 total; Argon estimates after the owner selects the costume). A scarf-only addition still touches the 50 authored/80 delivered frames, though it is cheaper than repainting the coat. Retaining v2 has zero replacement-frame cost. Neither option includes Run, Hurt, Knockdown, attacks, new movement directions or combat.
+
+### C.3 Operator — TLF-062 sighting contract
+
+Take the reference's peaked hood, closed mask and long robe. Remove the hanging hourglass, elaborate gold filigree, floating weapons, clawed attack hand and purple floor sigils. The robe has a single broad lower mass, a hood higher/wider than Elias's hair, and almost no exposed leg gap. It must read as an observant person rather than a boss.
+
+- **Material:** robe 00/01/02/03, restrained 04 on top-left folds; mask 12/13/14 with a tiny 15 rim in later authorised views. No skin, eyes, mouth, facial anatomy, transparent mask, cracked-mask reveal or recognisable Elias hair/scar. The Ch1 back view shows no mask front at all; retain a closed mask beneath the hood in the source design.
+- **The watch is Elias's pocket watch:** same round case/crown/chain motif and 25/26 brass, not a similar-but-different hourglass or glowing crystal. A 3×3 round/square-stepped case with a dark centre and a 1 px crown is enough; keep it beside the hand, not an oversized chest medallion. Only pose/occlusion changes its apparent view.
+- **Scarf link:** proposed v3 red uses exactly 22/23 on both characters, a short under-robe neck/side fold, never the robe's main colour. **Current-build gap:** v2 has a dark slate collar (02), no scarf. TLF-061 cannot truthfully certify a shared scarf against unchanged v2. Argon should keep the scarf on its own named layer and supply the red candidate without repainting Elias. The owner must decide whether to approve a matching Elias scarf (with or without full v3), or explicitly defer that visible clue while retaining v2. Until then, the shared-scarf shipping check is pending, not passed; the independent Operator source work can proceed after this direction is merged.
+- **Gesture link:** right hand retrieves the watch, elbow closes toward the ribs, wrist lifts to lower chest, head tips slightly to check, wrist lowers. Calm, weary, deliberate. No pointing at Elias, casting attack, beckoning threat or face turn. Never mirror this gesture automatically: it would swap the watch hand.
+- **Current animation gap:** `elias_build.py` and the player currently expose idle/walk only; there is no dedicated Elias watch-check clip to copy. The shared four-key-pose/timing reference below is a proposed common gesture contract for future Elias use and the Operator, not a claim that a player clip exists. If Opus has an approved clip elsewhere, match that exact cadence before export. Adding a player clip is a separate authorised task; do not extend the 80-frame v2 sheet in TLF-062.
+
+| TLF-062 item | Authoring specification |
+|---|---|
+| View | One back three-quarter view facing away along the approved platform composition, nominal `ne`; enough side sleeve/hand visibility to see the watch, zero face rotation. Flash/Lead confirm facing at the chosen tile before export. |
+| Canvas / anchor | 32×48 per frame; foot pivot (16,44), foot sole fixed y=44; robe/hood approximately 22–24×43 within x=4..29, y=2..44. No runtime scale-down to simulate distance; no collider. |
+| Frame count / file | **4 unique frames**, horizontal 128×48 sheet; source layers `Robe`, `Hood_Mask`, `Scarf`, `Hand_Watch`, `Contact_Shadow`. Suggested stem `ch01_char_operator_sighting_ne_sheet`, tag `check_watch_ne` frames 1–4. |
+| F1 — rest | Hand/watch low at hip, body still; 2 ticks at 8 FPS = 0.25 s. This is the reusable static rest pose. |
+| F2 — lift | Elbow bends inward, wrist rising, short chain follows; 2 ticks = 0.25 s. |
+| F3 — check | Watch at lower-chest side, head inclines by at most 1 px, watch remains outside robe contour; 8 ticks = 1.00 s. This is the static `reduced_effects` pose. |
+| F4 — lower | Wrist descends without a face turn; 2 ticks = 0.25 s. One cycle totals 1.75 s; hold F1 a further 1 s between cycles if the sighting lasts. Frame durations belong in metadata and the Flash handoff, not four equal-duration playback assumptions. |
+| Temporal VFX | Reuse §7's existing ability pairs **and shapes/motion**: Trace violet/gold diamond/column signature; Rewind cyan chevrons/reverse motion; Freeze white/teal rigid corners; Echo cyan hollow/scanline signature. No Operator-only purple magic system. For this Ch1 shot use a restrained existing Trace signature on a separate effect layer/export, never inside the body silhouette or over the watch. No palette additions. |
+| Reduced effects / disappearance | Hold F3; suppress moving VFX. TLF-058 owns the 0.5 s approach fade and static cut for reduced effects; no extra disappearance/combat frames are requested. Binary sprite alpha remains 0/255; any runtime fade is Flash's presentation. |
+| Proof / repeat composition | Native and ×3 colour + greyscale against the actual dark platform, effects on/off; inspect F3 watch contour and scarf swatch separately. Lead approves the platform tile, screen framing, facing, watch-hand position and shot timing and records them for exact Ending 3 reuse. This note does not invent new coordinates or a second scene. |
+
+Do not infer identity from the matching objects. The future-Elias, memory/consciousness entity, and other-person-in-ELYSIUM readings all remain possible. A later front/side character sheet, walk set, interaction/barrier pose or other chapter animation is outside this four-frame sighting request. No attack poses at any stage.
+
+### C.4 Mira — look only; Ch1 is a silent image
+
+Keep shoulder-length lavender hair with a small asymmetric flower at one temple, open shoulders/short fitted jacket, narrow waist and a short flared lower garment. This separates her silhouette from Elias's split rectangular coat and the Operator's continuous robe. Use 13/15 for desaturated hair base/light, a **small** 30 lavender accent, 20/21 skin, 11/12 garment shadow and 14/15 lapel; flower is a 3×3 stepped petal mark in 30/31 with a 25 centre. No new lavender ramp; avoid colouring the entire figure bright temporal violet.
+
+The Ch1 Beat 10 screen uses a **single static, silent broadcast portrait**; frame the face, flower and shoulder line in a 32×48 source composition, then place it on its own layer in the TLF-062 city plate. No walking Mira in the platform, new encounter, new dialogue, subtitles copied from the concept sheet, rescue plea, biography card or explicit reconstruction label. Her look must not explain her Ch5 status. Existing authored Trace/story content stays with the Lead; this note authorises none of the sheet's Talk/Guide/Research/Fade animations. At a smaller in-plate display, simplify to hair contour + flower + face; validate at its actual native screen size, not just an enlarged portrait.
+
+### C.5 Native 32×48 greyscale silhouette study
+
+This is a **document-only schematic**, not finished sprite art or a new source/export. Each column is exactly 32 cells wide and 48 high. Left: Elias v3 candidate (same split-hem/leg-gap principle as v2); centre: Operator back/side watch check; right: Mira look study (not an in-world Ch1 appearance).
+
+`.` = background, `#` = one solid body value; `s` = scarf marker, `w` = shared watch marker. For the strict silhouette test, replace **all** `#sw` cells with the same grey. Distinctness must survive removing accents and effects. For a second greyscale-link pass, use #=96, s=144, w=224, background=24: Elias/Operator have the same scarf and watch marker values and watch-case geometry, Mira neither. The scarf study represents the **candidate** shared red design; it does not resolve the missing v2 scarf.
+
+```text
+ELIAS (candidate)                 | OPERATOR                         | MIRA (look only)
+................................ | ................................ | ................................
+................................ | ................................ | ................................
+................................ | ...............###.............. | ................................
+.............########........... | ...............###.............. | ................................
+...........##########........... | ..............#####............. | ............#########...........
+............###########......... | .............#######............ | ............#########...........
+............##########.......... | .............#######............ | ...........###########..........
+............##########.......... | ............#########........... | ...........###########..........
+............##########.......... | ...........###########.......... | ........###############.........
+............##########.......... | ..........#############......... | .......################.........
+............##########.......... | ..........#############......... | ........###############.........
+............##########.......... | ..........#############......... | ..........#############.........
+............##########.......... | ..........#############......... | ..........###.......###.........
+.........###ssssssssss##........ | .........###############........ | ..........#############.........
+.........###ssssssssss##........ | .........########sssss##........ | ..........#############.........
+.........##########sssss........ | .........########sssss##........ | ..........#############.........
+.........###############........ | .........###############........ | ..........#############.........
+.........###############........ | .........###############........ | ..........#############.........
+.........###############........ | .........###############........ | ..........#############.........
+..........###############....... | .........###############........ | ..........#############.........
+..........##############www..... | ........##################www... | ..........#############.........
+..........##############w.w..... | ........##################w.w... | .............#######............
+..........##############www..... | ........##################www... | .............#######............
+..........#############......... | ........###################..... | .............#######............
+..........#############......... | ........#################....... | .............#######............
+..........#############......... | ........#################....... | .............#######............
+..........#############......... | ........#################....... | ............#########...........
+..........#############......... | .......###################...... | ............#########...........
+..........#############......... | .......###################...... | ............#########...........
+..........#############......... | .......###################...... | ...........###########..........
+..........#############......... | .......###################...... | ...........###########..........
+..........#############......... | .......###################...... | ...........###########..........
+..........#############......... | .......###################...... | ..........#############.........
+..........#############......... | .......###################...... | ..........#############.........
+.........######..#######........ | ......#####################..... | ..........#############.........
+.........######..#######........ | ......#####################..... | .........###############........
+.........######..#######........ | ......#####################..... | .........###############........
+............###...###........... | ......#####################..... | ............###...###...........
+............###...###........... | ......#####################..... | ............###...###...........
+............###...###........... | ......#####################..... | ............###...###...........
+............###...###........... | ......#####################..... | ............###...###...........
+............###...###........... | .....#######################.... | ............###...###...........
+............###...###........... | .....#######################.... | ............###...###...........
+............###...###........... | ......#####################..... | ............###...###...........
+...........#####..#####......... | ...........####....####......... | ...........#####..#####.........
+................................ | ................................ | ................................
+................................ | ................................ | ................................
+................................ | ................................ | ................................
+```
+
+**Read criteria:** Elias has an uncovered irregular hair crown, squared coat shoulders, split hem and separated legs; Operator has a higher peaked hood, taper-to-broad robe hem with no long leg gap, and a watch-hand projection; Mira has the side flower/hair notch, inward waist and short flared hem with exposed lower legs. Watch/scarf are recognition clues across the first two, not the means of telling those silhouettes apart. Check native 1× and nearest ×3 on floor 02 and wall 08; no effect, labels, coloured edges or facial detail may be needed to tell the three apart. A production pass must retain these silhouette differences and prove them in Argon's own delivery. This schematic is not approval of a replacement Elias.
+
+### C.6 Chapter 1 mood and TLF-063 props
+
+**Keep TLF-CH01-32 unchanged: 32 colours, zero new RGB entries.** Choose the cool blue-teal architecture of `chapter1.1_map.png` as the mood emphasis within the existing palette: floor 00–05, ceramic 06–10 and steel 11–15. Borrow the warm pools, worn brass and quiet transit signage of `chapter1.2_map.png` locally using 22–26; do not globally warm/repaint the finished room tiles. Dark floor and grey commuters stay subordinate to Elias's face, watch and puzzle glyphs. Sparse amber station practicals are different from the cyan of active technology. Large purple environments, ubiquitous bloom, lush vines, new stairs/rooms and the overview's “unfreeze time” objective are not adopted. The approved room graph, 23:54 evacuation, 23:59 clocks and street exit stay.
+
+Use the **four existing TLF-063 items only**. Proposed canvases below are art briefs; Opus/Flash confirm placement, pivot, text handling and overlap before production. They are decorative, never new selectable controls, doors or colliders.
+
+| TLF-063 prop | Story reason / reference | Production direction |
+|---|---|---|
+| Departure board `DESTINATION: NOWHERE - 23:59` | Cool platform reference: service continuing to announce a destination that no longer exists. | 160×32 wall board, two lines `DESTINATION:` / `NOWHERE - 23:59`, native 5×7 pixel font at 8 px; steel 11–15, recessed 00, restrained 24/25 digits. One static state; no flickering clock or new route solution. |
+| Wall sign `A1 -> RESEARCH` + sealed `R&D ACCESS` panel/door dressing | Both platform references: transit fed an ELYSIUM research route; establishes place without naming Elias's role. | Sign 96×16, native font; door dressing 32×64 matching the existing appropriate archway axis, a visible sealed seam and small `R&D ACCESS` plaque (two lines if needed). Mounted over existing non-traversable dressing only; do not create a new traversable door. No glowing access prompt. |
+| Sector A pillar marks | Warm reference: civic wayfinding tying spaces together. | Reuse existing pillar; small 16×16 `A`/sector mark decal in steel/quiet amber. Put it away from lever A/B labels and plate glyphs so it cannot be mistaken for a puzzle answer. No new pillar geometry. |
+| `CLOSED TRACK` notice | Cool reference: a closure preceding the abandoned service. | 80×16 plaque (or two native-font lines on 48×24 if placement needs it), one dark diagonal closure stroke, no extra dates, commands, collectibles or invented readable lore. Clearly separate it from the playable exit signage. |
+
+No new bench, train, luggage, ivy or floor set: those roles already have assets, and filler would increase clutter/cost without advancing this story. Longer sign copy uses Lead-approved text keys if needed; source text remains under the Lead's ownership. Readability/palette/alpha/regen and greyscale proofs remain mandatory for Argon's TLF-063 delivery.
+
+### C.7 Hourglass and Chapter 3 boundary
+
+The **pocket watch is the only personal time device** for Elias and the Operator. An hourglass may appear solely as a small, static **ELYSIUM project emblem** on institutional signage/documents if the Lead approves that placement, or be omitted. It never hangs from a character, replaces the watch, powers a puzzle, or appears as a personal HUD icon. Default for TLF-062/063: omit it; the watch motif already carries the clue.
+
+**Chapter 3, Infinite Library:** warm wood, gold/brass and sunlight. Broad timber/book masses and warm light establish its identity. Purple is not its architectural palette, fog wash, dominant light or inherited Operator ambience. A local existing ability VFX may keep its functional colour/shape without turning the library purple. This records a later-chapter rule, not permission to build a Ch3 palette or assets now.
+
+### C.8 Handoff and Operator §6 gate
+
+| Mandatory question from OPERATOR_MYSTERY_GUIDELINES §6 | Answer for this direction |
+|---|---|
+| Is his identity revealed directly? | **No.** No name, identity assertion or confirming face is specified. |
+| Does any character confirm it? | **No.** This direction adds no dialogue or character testimony. |
+| Is a line too explicit? | **No.** No new line is written; reference-sheet text is excluded. |
+| Does any visual show his face or a feature that removes the mystery? | **No.** Back-facing hood/closed mask; watch, scarf and gesture remain circumstantial links. The Elias lab-coat spoiler is separately flagged for owner decision. |
+| Does Ending 3 still leave room for interpretation? | **Yes.** Repeated composition/gesture is a clue; all three readings remain possible, with no visual identity confirmation. |
+
+**Open decisions / limits:** owner chooses v2 retention vs v3 and the shared scarf treatment; Lead/Flash confirm the common watch-check cadence because v2 has no such clip, and approve the repeatable shot composition. These gaps must be disclosed in TLF-062's handoff; do not mark scarf/gesture parity against the current v2 as already tested. They do not require creating a new face, replacing the watch or postponing independent robe/watch/prop source work. Technical import/collision/sorting approval remains with Opus; the previously noted dead-relay layer reconciliation remains in TLF-055 integration, outside this document-only task.
+
+**Verification performed:** parsed the study directly from this document with Python, asserted 48 rows × three 32-cell columns, allowed only `. # s w`, checked pairwise-distinct collapsed foreground masks and matching hollow 3×3 watch markers. Rendered only a temporary QA view outside the repository and visually inspected native 1× and nearest ×3 on floor 02 and wall 08, both as solid silhouettes and with greyscale markers. The hair/split coat, peaked continuous robe and flower/waist/flared hem are distinguishable without colour. This is a schematic acceptance test; Argon's finished asset proofs still need their own visual review.
+
+Raw mask-check output (exit 0):
+
+```text
+Elias: 32x48 cells; foreground=488
+Operator: 32x48 cells; foreground=689
+Mira: 32x48 cells; foreground=425
+silhouette pair 1/2: distinct; IoU=0.658
+silhouette pair 1/3: distinct; IoU=0.763
+silhouette pair 2/3: distinct; IoU=0.565
+Watch: matching 3x3 case with hollow centre in both; scarf markers present in both candidate studies
+```
+
+IoU is the occupied-cell intersection/union, recorded for reproducibility rather than used as a substitute for visual judgement. `git diff --check` passed (exit 0); `git diff --name-only` returned only `design/art/ART_BIBLE.md`. No production asset files, sources, exports, generators, scenes, scripts or task files were created/edited. No Godot or gameplay validation was run for this direction-only edit. Final handoff reports the branch and pushed SHA with the open decisions above; Lead integrates.
