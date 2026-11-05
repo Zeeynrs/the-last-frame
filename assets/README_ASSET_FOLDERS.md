@@ -2,7 +2,7 @@
 
 Suggested folders once the Godot project is created:
 
-- `assets/source/` — editable `.pxo` (Pixelorama) files; Argon only.
+- `assets/source/` — editable `.pxo` (Pixelorama) files; the active asset specialist only (Argon; Sol while Argon is unavailable).
 - `assets/characters/` — runtime character exports.
 - `assets/environments/` — room backgrounds, tiles and set pieces.
 - `assets/props/` — interactive and decorative objects.

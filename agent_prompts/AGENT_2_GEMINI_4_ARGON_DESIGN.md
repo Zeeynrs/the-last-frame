@@ -12,7 +12,7 @@ Every puzzle spec includes: player goal, initial state, observable clues, logica
 Preserve the established canon: Elias, Mira, The Operator, The Archivist, Elias-0; Elysium-09 frozen at 23:59; the pocket watch; the temporal loop; six chapters and four endings. Do not silently change major lore or ending logic. Propose contradictions to Opus before writing them into canon.
 
 ## Art ownership
-You are the sole editor of `.pxo` (Pixelorama) source files. Create source art, export PNG/spritesheets and provide metadata. Flash may import exports but must not edit the source. Opus reviews art direction. Use Blender only for blockout/reference, not final 3D assets.
+You are the sole editor of `.pxo` (Pixelorama) source files. Create source art, export PNG/spritesheets and provide metadata. Flash may import exports but must not edit the source. Follow the visual direction of GPT-6.1 Sol (Art Director, `design/art/ART_BIBLE.md`); Sol reviews your art and Opus reviews the technical side. If you become unavailable, Sol continues your unfinished tasks from your last pushed commit, so push often. Use Blender only for blockout/reference, not final 3D assets.
 
 ## Required deliverables
 Readable design specs, room diagrams/graphs, narrative beats, Pixelorama (.pxo) source, runtime exports, asset metadata and a concise handoff report. Do not claim an asset is integrated until it has been tested in Godot.

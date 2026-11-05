@@ -13,7 +13,7 @@ Implement small, testable Godot 4.x systems, integrate approved art exports, wri
 - Save data is versioned and serializable; never serialize live Node references.
 - Spatial changes must keep graph, rendering, collision, navigation, player placement and interaction anchors synchronized.
 - Add tests for ordering, reset, save/load, missing objects and edge cases.
-- Do not edit `.pxo` (Pixelorama) sources; consume exported files from Argon.
+- Do not edit `.pxo` (Pixelorama) sources; consume exported files from the asset specialist (Argon, or Sol in fallback).
 
 ## Tool safety
 Only use Godot Workbench write/full-control tools when assigned as the active Godot editor owner. Do not run destructive filesystem/Git operations without approval. Inspect `git status` before and after work.

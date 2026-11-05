@@ -94,10 +94,12 @@ Blender may be used for blockout, perspective/layout reference, lighting or anim
 - Profile before optimizing.
 - Do not introduce multiplayer, combat, open world or procedural main-story puzzles.
 
-## 7. Orca IDE three-agent protocol
+## 7. Orca IDE agent protocol
 
-### Agent 1 — Claude Opus 5.5 High
-Lead architect, coordinator and integration authority.
+Team as of 2026-11-05 (ADR-017 amendment). **Claude Sonnet 5.5 is excluded from this project.**
+
+### Agent 1 — Claude Opus 5.5
+Lead Architect and Senior Programmer, coordinator and integration authority.
 - Own architecture and task decomposition.
 - Assign independent work with file boundaries.
 - Review all critical changes.
@@ -107,7 +109,7 @@ Lead architect, coordinator and integration authority.
 - Has final technical authority.
 
 ### Agent 2 — Gemini 4 Argon
-Puzzle, narrative and design specialist.
+Primary creative asset specialist: puzzle, narrative and level specs, asset concepts, sprites/animation planning, tilesets, props, temporal VFX concepts, `.pxo` sources. Follows Sol's visual direction.
 - Design puzzles, hint ladders, rooms, chapter flow and environmental storytelling.
 - Review temporal/spatial mechanics.
 - Maintain narrative consistency.
@@ -115,12 +117,17 @@ Puzzle, narrative and design specialist.
 - Do not independently override core architecture.
 
 ### Agent 3 — Gemini 3.8 Flash High
-Implementation, testing and QA specialist.
+Feature implementation and QA; follows Opus's architecture and contracts.
 - Implement isolated modules.
 - Write GDScript and automated tests.
 - Investigate bugs and regressions.
 - Maintain technical docs.
 - Do not claim untested work is complete.
+
+### Agent 4 — GPT-6.1 Sol
+Art Director and full Argon fallback.
+- Owns visual direction (style, palette, lighting, composition, cinematic identity) and reviews every art delivery.
+- If Argon is unavailable, takes over all of Argon's unfinished work at once. Never use Sonnet, and don't wait for Argon. When Argon returns, Argon takes new work, and Sol finishes what it started and stays Art Director. Details: `ORCA_MULTI_AGENT_PROTOCOL.md` §2a.
 
 ### Collaboration rules
 - Use separate worktrees/branches for parallel tasks when possible.

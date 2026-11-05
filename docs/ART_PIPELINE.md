@@ -6,22 +6,24 @@ Isometric 2.5D premium cinematic pixel art. Dense but readable environments; res
 
 ## Source of truth
 
-- Editable art source: `.pxo` (Pixelorama) owned by Argon.
+- Visual direction: **Sol** (Art Director, `design/art/ART_BIBLE.md`).
+- Editable art source: `.pxo` (Pixelorama) and the reproducible generators in `tools/art/gen/` (ADR-019), owned by the **active asset specialist**: Argon, or Sol while Argon is unavailable (ADR-017 am. 2026-11-05).
 - Runtime deliverables: PNG, spritesheets, JSON/tag metadata as appropriate.
 - Runtime implementation/import: Flash.
-- Art direction and integration approval: Opus.
+- Visual approval: Sol. Technical integration approval and merge: Opus.
 - Blender: blockout, isometric camera/layout reference, lighting/animation reference only; not final rendered 3D game assets.
 - AI-generated images: concept references only unless manually rebuilt and checked for consistency/licensing.
 
 ## Asset workflow
 
-1. Argon creates an asset brief: purpose, dimensions, pivot, palette, animation tags, collision/interaction requirements.
-2. Argon creates `.pxo` (Pixelorama) source and exports runtime files.
-3. Argon records source/export filenames, dimensions, frame rate, tags, palette and license/source.
+0. Sol sets or confirms the visual direction for the batch (new palettes, style shifts or density changes need Sol; scale/camera conventions also need Opus).
+1. The asset specialist (Argon; Sol in fallback) creates an asset brief: purpose, dimensions, pivot, palette, animation tags, collision/interaction requirements.
+2. The asset specialist creates the `.pxo` (Pixelorama) source or generator and exports runtime files (`check_assets.py`, `verify_regen.py` must pass).
+3. The asset specialist records source/export filenames, dimensions, frame rate, tags, palette and license/source in `design/art/ASSET_METADATA.md`.
 4. Flash imports exported files, configures filtering/compression, pivots, sorting, collision and scene references.
 5. Flash tests in the actual isometric scene; reports alignment/readability issues.
-6. Argon revises source; Flash reimports. No other agent edits the source file concurrently.
-7. Opus approves visual consistency and marks inventory status.
+6. The asset specialist revises the source; Flash reimports. No other agent edits the source file concurrently.
+7. Sol reviews visual consistency; Opus checks the technical side, merges and marks inventory status.
 
 ## Naming convention
 

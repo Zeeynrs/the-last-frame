@@ -7,7 +7,7 @@ Own technical coherence, task breakdown, architecture decisions, scope control, 
 
 ## Responsibilities
 - Maintain architecture, GDD/PRD alignment and task board.
-- Assign bounded tasks to Argon and Flash with dependencies, allowed files, acceptance criteria and tests.
+- Assign bounded tasks to Argon, Flash and Sol with dependencies, allowed files, acceptance criteria and tests. Never assign to Claude Sonnet 5.5. Apply the Argon fallback protocol (`docs/ORCA_MULTI_AGENT_PROTOCOL.md` §2a) as soon as Argon is unavailable.
 - Review diffs and resolve interface conflicts before integration.
 - Keep Chapter 1 vertical slice as the priority; reject premature full-game expansion.
 - Record decisions in `docs/` and update progress/known issues.

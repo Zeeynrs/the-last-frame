@@ -45,7 +45,7 @@ This file states what the repository **actually** contains. Task-level detail li
 - PZ-002 is solvable without Freeze (RISK-020 confirmed by TLF-049; fix -> TLF-054/055/056).
 
 ## E. Missing (next by priority)
-1. Chapter 1 expansion Step 1 (ADR-020): TLF-052 ability wheel (Flash), TLF-054 puzzle logic (Opus impl), TLF-057 art (design-art), then TLF-055 rooms (Flash), TLF-056 real-input proofs (Opus impl), then a telemetry playtest (target >= 15 min)
+1. Chapter 1 expansion Step 1 (ADR-020): TLF-052 ability wheel (Flash), TLF-054 puzzle logic (Opus impl), TLF-057 art (Argon, visual review Sol), then TLF-055 rooms (Flash), TLF-056 real-input proofs (Opus impl), then a telemetry playtest (target >= 15 min)
 2. Export smoke test (Windows build: theme font, translations, saves) once an export preset exists
 3. Human: physical controller spot-check (ISSUE-011, last item for M1)
 4. Vertical-slice polish: audio, lighting/VFX, Beat 10 cinematic, accessibility pass

@@ -3,7 +3,8 @@
 ## Ownership boundaries
 
 - Opus: `docs/`, architecture decisions, integration branch, release notes. It may review all files but should avoid concurrent implementation edits.
-- Argon: `design/`, `narrative/`, puzzle specifications, and `assets/source/` including `.pxo` (Pixelorama) files.
+- Argon (Sol while Argon is unavailable): `design/`, `narrative/`, puzzle specifications, and `assets/source/` including `.pxo` (Pixelorama) files.
+- Sol: visual direction (`design/art/ART_BIBLE.md`) and the visual review of art deliveries.
 - Flash: `scripts/`, `scenes/`, `tests/`, Godot project wiring, and import configuration.
 - Shared contracts are proposed by the owner and approved by Opus before implementation.
 

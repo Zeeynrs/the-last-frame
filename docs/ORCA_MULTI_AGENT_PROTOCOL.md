@@ -1,4 +1,4 @@
-# Orca IDE — Three-Agent Collaboration Protocol
+# Orca IDE — Multi-Agent Collaboration Protocol
 
 ## 1. Shared mission
 
@@ -6,8 +6,10 @@ All agents contribute to one coherent game. The GDD, PRD, architecture and accep
 
 ## 2. Roles
 
-### Agent 1 — Claude Opus 5.5 High
-**Role:** Lead Architect, Coordinator and Integration Authority
+Team as of 2026-11-05 (ADR-017 amendment). **Claude Sonnet 5.5 is excluded:** it gets no tasks, no fallback role and no workflows.
+
+### Agent 1 — Claude Opus 5.5
+**Role:** Lead Architect and Senior Programmer, Coordinator and Integration Authority (core gameplay, Temporal Echo, puzzle system and dual-Elias architecture; core systems are built by the Opus implementation agent in `wt-opus-core`)
 
 - Own architecture and cross-system consistency.
 - Break objectives into bounded tasks.
@@ -18,17 +20,17 @@ All agents contribute to one coherent game. The GDD, PRD, architecture and accep
 - Make final technical decisions.
 
 ### Agent 2 — Gemini 4 Argon
-**Role:** Puzzle, Narrative and Design Specialist
+**Role:** Primary Creative Asset Specialist: puzzle, narrative and level specs, character/environment/prop/VFX asset concepts and specifications, sprite and animation planning, tilesets, `.pxo` sources and exports, asset quality review. Follows Sol's visual direction.
 
 - Design puzzle logic and hint ladders.
 - Develop room layouts and chapter progression.
 - Maintain lore and character consistency.
 - Review temporal/spatial mechanics from a design perspective.
-- Propose visual direction and environmental storytelling.
+- Propose environmental storytelling; visual direction comes from Sol.
 - Provide design reviews before content is considered final.
 
 ### Agent 3 — Gemini 3.8 Flash High
-**Role:** Implementation, Testing and QA Specialist
+**Role:** Feature Implementation and QA (gameplay features, puzzles in scenes, UI, bug fixing, regression tests, performance, technical docs). Follows the architecture and contracts set by Opus.
 
 - Implement isolated modules and data definitions.
 - Write GDScript and automated tests.
@@ -36,6 +38,29 @@ All agents contribute to one coherent game. The GDD, PRD, architecture and accep
 - Perform regression checks.
 - Update technical documentation and reports.
 - Never claim untested functionality is complete.
+
+### Agent 4 — GPT-6.1 Sol
+**Role:** Art Director and full Argon fallback
+
+- Own the visual direction: style, palette, lighting, composition, character and environment direction, cinematic identity (`design/art/ART_BIBLE.md`).
+- Review every art delivery for visual consistency before the Lead merges it.
+- While Argon is unavailable, take over all of Argon's unfinished responsibilities (section 2a).
+
+## 2a. Argon fallback protocol (mandatory)
+
+When Argon is unavailable (usage limit, quota, access or other problems):
+1. Stop assigning new tasks to Argon immediately.
+2. Move every unfinished Argon task to Sol. Sol starts from Argon's last pushed commit, and the task file and the board name Sol as owner.
+3. Sol is Art Director and creative asset specialist until Argon returns.
+4. Keep all completed Argon work, and don't redo finished tasks.
+5. Never use Claude Sonnet 5.5 as a replacement, and don't wait for Argon.
+
+When Argon is available again:
+1. Argon is the primary creative asset specialist again for new tasks and for unfinished tasks Sol hasn't started.
+2. Sol finishes what it has started and stays Art Director.
+3. Keep Sol's work; don't produce the same asset twice.
+
+Only one **active asset specialist** (Argon, or Sol in fallback) writes `.pxo` sources, art exports, art generators, design specs and narrative at a time. Authority: Sol decides visual direction; Opus decides technical integration and has the final integration call.
 
 ## 3. Task assignment format
 
@@ -73,7 +98,7 @@ Tasks should be small enough to review and independent enough to run in parallel
 
 1. Agent 1 inspects the request and current repository state.
 2. Agent 1 creates bounded tasks with explicit file ownership.
-3. Agent 2 handles design/narrative/puzzle tasks.
+3. Agent 2 (or Agent 4 in fallback) handles design, narrative, puzzle and asset tasks, under Agent 4's visual direction.
 4. Agent 3 handles isolated implementation and tests.
 5. Agent 1 reviews architecture and diffs.
 6. Resolve conflicts and revise work as necessary.
@@ -94,7 +119,7 @@ A review must check:
 - Unintended scope changes.
 - Whether the implementation is actually present in the repository.
 
-Agent 2 may reject a puzzle design that is logically unfair. Agent 3 may flag untestable or unstable implementation. Agent 1 makes final integration decisions.
+Agent 2 may reject a puzzle design that is logically unfair. Agent 4 may reject art that breaks the visual direction. Agent 3 may flag untestable or unstable implementation. Agent 1 makes final integration decisions.
 
 ## 7. Conflict resolution
 

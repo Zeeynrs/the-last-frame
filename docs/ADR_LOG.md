@@ -265,6 +265,21 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
   - Status docs: `PROJECT_STATUS.md`, `DEVELOPMENT_ROADMAP.md`, `TECHNICAL_DEBT.md`, `AGENT_HANDOFF.md`.
   - Unchanged: destructive or irreversible actions, external credentials and creative-direction changes still go to the user.
 - **Consequences:** Shared contract files get exactly one owner per task (named in the task file). Opus may edit `scripts/interaction/interactable.gd` and `scripts/session/*` during TLF-008/016; Flash must not touch them until merged.
+- **Amendment 2026-11-05 (user directive: team update + Argon fallback protocol):**
+  - **Team:**
+    - **Claude Opus 5.5:** Lead Architect and Senior Programmer. The Lead session does review, integration on `main`, docs and delegation; the Opus implementation agent does core systems in `wt-opus-core`. Final technical and integration authority.
+    - **Gemini 3.8 Flash High:** feature implementation (gameplay features, puzzles in scenes, UI), bug fixing, testing and regression testing, performance, technical docs. Follows the Opus contracts.
+    - **GPT-6.1 Sol:** **Art Director**, with visual direction authority: style, palette, light, composition, character/environment direction, cinematic identity. Owns `design/art/ART_BIBLE.md` and the visual review of every art delivery. It is also the **full Argon fallback** (below).
+    - **Gemini 4 Argon:** **primary creative asset specialist**, available again (RISK-019 resolved). Original scope: narrative, puzzle and level specs (`design/ch01/**`, `narrative/**`), `.pxo` sources (`assets/source/**`), runtime exports, the art generators (`tools/art/gen/**`), `design/art/ASSET_METADATA.md`, placement sheet and mockups. It follows Sol's visual direction.
+    - **Claude Sonnet 5.5:** **excluded**. It gets no tasks, no fallback role and no workflows. Its merged work (TLF-039/042/044/045/047/053) stays. Branch `adityadaffa522/tlf-art-batch2` is history.
+  - **Single writer:** at any time exactly one **active asset specialist** (Argon, or Sol in fallback) writes `assets/source/**`, art exports, `tools/art/gen/**`, `design/ch01/**` and `narrative/**`. The task file names it. Sol edits those paths only while it is the active specialist.
+  - **Fallback protocol (Argon unavailable: usage limit, quota, access or other problems):**
+    1. Stop assigning to Argon at once.
+    2. Sol takes over every unfinished Argon task. Its base is Argon's last **pushed** commit (unpushed work counts as lost, not as done). The task file's owner line and the board change to Sol.
+    3. Don't redo what Argon finished.
+    4. Never use Sonnet, and don't wait for Argon.
+  - **Argon available again:** Argon is the primary specialist again for **new** tasks and for unfinished tasks that Sol hasn't started. Sol finishes what it has started and stays Art Director. Sol's assets are kept and are not reproduced.
+  - **Authority split:** Sol decides visual questions (style, palette, readability as art). Opus decides technical ones (formats, scale/camera conventions per ADR-003/019, import, collision, IDs, tests, merges). Where they meet (e.g. a clue's readability vs. collision), Opus decides after hearing Sol. Creative-direction changes still go to the user.
 
 ## ADR-018 — Room routing inside a chapter (world memory)
 - **Date / status:** 2026-10-31 · Accepted (implemented in TLF-021, `5fda100`)

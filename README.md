@@ -28,13 +28,16 @@ A production-ready **planning, documentation, multi-agent workflow and toolchain
 10. `docs/QA_AND_RELEASE_CHECKLIST.md` — quality gates.
 11. `docs/MASTER_PROMPT.md` and `agent_prompts/` — copy the relevant prompt into each agent.
 
-## Three-agent roles
+## Agent roles (ADR-017, amended 2026-11-05)
 
 | Agent | Requested model | Role |
 |---|---|---|
-| 1 | Claude Opus 5.5 High | Lead architect, core-systems programmer, reviewer, integration authority (ADR-017) |
+| 1 | Claude Opus 5.5 | Lead Architect and Senior Programmer, reviewer, integration authority |
 | 2 | Gemini 3.8 Flash High | Feature implementation (player, UI, settings, camera, audio/VFX, scenes), testing and QA |
-| 3 | Gemini 4 Argon | On-demand creative: narrative, puzzle/level design, Pixelorama source art |
+| 3 | Gemini 4 Argon | Primary creative asset specialist: narrative, puzzle/level design, Pixelorama source art (follows Sol) |
+| 4 | GPT-6.1 Sol | Art Director (visual direction authority) and full Argon fallback |
+
+Claude Sonnet 5.5 is not part of the team.
 
 Model availability and exact model labels depend on the provider account and CLI version. Orca provides isolated worktrees and agent terminals; it does not guarantee a particular model alias or automatically share one MCP configuration across every CLI.
 
@@ -51,7 +54,7 @@ Model availability and exact model labels depend on the provider account and CLI
 ## Safety rules
 
 - Separate worktree per agent/task.
-- Argon alone edits `.pxo` (Pixelorama) source files.
+- Only the active asset specialist (Argon; Sol while Argon is unavailable) edits `.pxo` (Pixelorama) source files.
 - Flash owns Godot implementation in its assigned worktree.
 - Only one agent uses Godot Workbench full write control at a time.
 - Opus reviews and integrates; no automatic merge of unreviewed work.
