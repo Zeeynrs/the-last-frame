@@ -1,0 +1,7 @@
+ch01_prop_departure_board_nowhere_idle: one static frame; serialized source == PNG; Wall_Fixtures7; layers=Mount_Shadow,Steel_Housing,Recessed_Screen,Display_Text
+ch01_prop_sign_a1_research_idle: one static frame; serialized source == PNG; Wall_Fixtures7; layers=Mount_Shadow,Sign_Housing,Sign_Glyphs
+ch01_prop_door_rd_access_sealed_idle: one static frame; serialized source == PNG; Wall_Fixtures7; layers=Cast_Shadow,Bulkhead_Frame,Sealed_Door_Leaves,RD_Access_Plaque
+ch01_prop_pillar_mark_sector_a_idle: one static frame; serialized source == PNG; Wall_Fixtures7; layers=Decal_Outline,Stencil_Plate,Sector_A_Mark
+ch01_prop_notice_closed_track_idle: one static frame; serialized source == PNG; Wall_Fixtures7; layers=Mount_Shadow,Plaque_Housing,Notice_Text,Closure_Stroke
+Five files cover four story items (research sign + sealed door are one item); decorative placement/collision remains Flash/Lead responsibility
+RESULT: FOCUSED SOURCE/LAYER CHECKS PASS

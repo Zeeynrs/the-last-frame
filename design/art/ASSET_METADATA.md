@@ -824,3 +824,34 @@ The greyscale proof `design/art/mockups/ch01_ability_wheel_greyscale_proof.png` 
 | M9 | Step 1 Room 1 (`R1`) nearest `×3` (`1920 × 1080`) presentation proof | `design/art/mockups/ch01_step1_room_statues_x3_proof.png` | `1920 × 1080 px` | **`concept`** |
 
 The three luminance-only greyscale proofs (`design/art/mockups/ch01_step1_room_statues_greyscale_proof.png` at `1920 × 1080 px`, `design/art/mockups/ch01_step1_statues_all13_greyscale_proof.png` at `1320 × 1664 px`, and `design/art/mockups/ch01_step1_props_greyscale_proof.png` at `1320 × 1580 px` — luminance `.convert("L")` so they are not palette-table-checked) are generated deterministically from delivered runtime PNGs by `tools/art/gen/step1_mockups.py` and verified by `verify_regen.py`.
+
+---
+
+## 8. Chapter 1 Environmental Storytelling Props (`TLF-063`)
+
+**Task:** TLF-063 · **Author:** Agent 2 (`Gemini 4 Argon`, Creative Asset Specialist, ADR-017) · **Art Director / Reviewer:** `GPT-6.1 Sol` (`ART_BIBLE.md` §C.6–C.7) · **Palette:** `TLF-CH01-32` (`0` new colours, `0` off-palette, `0` semi-transparent pixels) · **Generator:** `tools/art/gen/tlf063_story_props.py` (5 assets + 2 mockup/proof sheets), registered in `tools/art/gen/registry.py`, `gen_all.py`, and `verify_regen.py`.
+
+### 8.1 Story Reason & Visual Direction Summary (`ART_BIBLE.md` §C.6, `docs/NARRATIVE_DESIGN.md` §4)
+- **1. Departure Board (`ch01_prop_departure_board_nowhere_idle`, `160 × 32 px`):** Arrival Platform overhead display announcing `DESTINATION:` / `NOWHERE - 23:59` in native `5 × 7` pixel font (`24/25` digits on `00` recessed cavity inside a `11..15` steel housing). Shows transit service continuing to announce a destination that no longer exists after the `23:54` evacuation.
+- **2A. Directional Wall Sign (`ch01_prop_sign_a1_research_idle`, `96 × 16 px`):** Corridor wayfinding plaque reading `A1 -> RESEARCH` in native `5 × 7` font (`22/25` left sector badge + `15/25` directional text). Establishes that Station Elysium-09 fed the main ELYSIUM research facility without prematurely naming Elias's role.
+- **2B. Sealed `R&D ACCESS` Door Dressing (`ch01_prop_door_rd_access_sealed_idle`, `32 × 64 px`):** Non-traversable `2:1` down-left isometric steel bulkhead door dressing (`_y_iso(x, z) = (31 - x) // 2 + z`, pivot `(16, 56)`) with a bolted/clamped vertical seam, worn `22` caution stripes, and a small non-glowing `R&D ACCESS` padlock plaque. Mounted over existing non-traversable archway/wall dressing with zero glowing access prompt.
+- **3. Sector A Pillar Mark Decal (`ch01_prop_pillar_mark_sector_a_idle`, `16 × 16 px`):** Small `16 × 16 px` civic wayfinding stencil decal (`11..15` steel frame, `22/23` crimson transit stripe, `24/25` `A` mark) designed to mount onto existing `ch01_env_wall_corner_pillar_idle` geometry away from puzzle lever `A`/`B` badges and floor plates.
+- **4. `CLOSED TRACK` Notice Plaque (`ch01_prop_notice_closed_track_idle`, `80 × 16 px`):** Wall notice reading `CLOSED TRACK` in native `5 × 7` font (`14/15` on `12` slate plaque) crossed by a single bold `00/22/23` diagonal closure slash, recording track closure prior to the `23:59` standstill without invented lore text.
+
+### 8.2 `TLF-063` Asset Inventory Table (`row` 227–231)
+
+| Row | Asset ID | Category | Source `.pxo` (`assets/source/ch01/`) | Runtime Export (`res://assets/...`) | Canvas Size (`W×H px`) | Frames / FPS | Pivot `(px_x, px_y)` | Sorting / `z_index` | Palette Colors Used | QA State |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **227** | `ch01.prop.departure_board_nowhere_idle` | Props | `ch01_prop_departure_board_nowhere_idle.pxo` | `assets/props/ch01/ch01_prop_departure_board_nowhere_idle.png` | `160 × 32 px` | 1f (`static`) | `(80, 28)` | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **228** | `ch01.prop.sign_a1_research_idle` | Props | `ch01_prop_sign_a1_research_idle.pxo` | `assets/props/ch01/ch01_prop_sign_a1_research_idle.png` | `96 × 16 px` | 1f (`static`) | `(48, 14)` | `Wall_Fixtures (z_index = 7)` | `9 / 32` | **`exported`** |
+| **229** | `ch01.prop.door_rd_access_sealed_idle` | Props | `ch01_prop_door_rd_access_sealed_idle.pxo` | `assets/props/ch01/ch01_prop_door_rd_access_sealed_idle.png` | `32 × 64 px` | 1f (`static`) | `(16, 56)` | `Wall_Fixtures (z_index = 7)` | `11 / 32` | **`exported`** |
+| **230** | `ch01.prop.pillar_mark_sector_a_idle` | Props | `ch01_prop_pillar_mark_sector_a_idle.pxo` | `assets/props/ch01/ch01_prop_pillar_mark_sector_a_idle.png` | `16 × 16 px` | 1f (`static`) | `(8, 14)` | `Wall_Fixtures (z_index = 7)` | `9 / 32` | **`exported`** |
+| **231** | `ch01.prop.notice_closed_track_idle` | Props | `ch01_prop_notice_closed_track_idle.pxo` | `assets/props/ch01/ch01_prop_notice_closed_track_idle.png` | `80 × 16 px` | 1f (`static`) | `(40, 14)` | `Wall_Fixtures (z_index = 7)` | `9 / 32` | **`exported`** |
+
+### 8.3 `TLF-063` Mockups & Greyscale Proofs (`design/art/mockups/`)
+
+| # | Mockup | File | Canvas Size | QA State |
+|---|---|---|---|---|
+| M10 | Arrival Platform (`R1`) storytelling props room mockup + `2:1` sealed R&D door & Sector A pillar inset | `design/art/mockups/ch01_tlf063_story_props_room_mockup.png` | `640 × 360 px` | **`concept`** |
+
+The colour + luminance-greyscale contact sheet (`design/art/mockups/ch01_tlf063_story_props_greyscale_proof.png` at `1320 × 1040 px` — luminance `.convert("L")` lower half so it is not palette-table-checked) is generated deterministically from delivered runtime PNGs by `tools/art/gen/tlf063_story_props.py` and verified by `verify_regen.py`.
