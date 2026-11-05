@@ -5,10 +5,12 @@ extends "res://tests/support/base_test.gd"
 ## (Beat 08), atrium dispatch terminal (Beat 09) and the street-exit outro (Beat 10).
 ## Input actions and physics frames only (TLF-029 helpers); state is only read for assertions.
 ##
-## Start state (setup, not gameplay): Chapter01.tscn boots normally, then PZ-001..003 are
-## marked SOLVED through PuzzleService.mark_solved() and the router enters the room under test
-## (the waiting lounge via its west door, as after the TLF-030 segment). Rooms 1-4 are covered
-## with real input by test_ch01_real_playthrough.gd.
+## Start state (setup, not gameplay): Chapter01.tscn boots normally, then the rooms 1-4 puzzles
+## (SO-01, PZ-001, PZ-006, SO-02, PZ-002, PZ-003) are marked SOLVED through
+## PuzzleService.mark_solved(), the three unlock flags of rooms 2-4 are set (Step 1, TLF-055: the
+## chapter's AbilityUnlockTriggers then unlock Rewind, Freeze and Echo; a new game has only Trace)
+## and the router enters the room under test (the waiting lounge via its west door, as after the
+## TLF-030 segment). Rooms 1-4 are covered with real input by test_ch01_real_playthrough.gd.
 ## The SaveService autoload is pointed at a test folder for the run (ISSUE-016).
 ##
 ## Blocking TLF-032 UI (Beat 01 at boot, document pages, Beats 09/10) is advanced with real
@@ -21,7 +23,11 @@ extends "res://tests/support/base_test.gd"
 const CH01_SCENE_PATH := "res://scenes/chapters/ch01/Chapter01.tscn"
 const TEST_SAVE_ROOT := "user://tlf_test_ch01_late_saves"
 const REAL_SAVE_SLOT_0 := "user://saves/slot_0.json"
-const EARLIER_PUZZLES: Array[StringName] = [&"CH1-PZ-001", &"CH1-PZ-002", &"CH1-PZ-003"]
+const EARLIER_PUZZLES: Array[StringName] = [&"CH1-SO-01", &"CH1-PZ-001", &"CH1-PZ-006", &"CH1-SO-02",
+	&"CH1-PZ-002", &"CH1-PZ-003"]
+## Unlock flags of rooms 2-4 (ABILITY_UNLOCKS.md section 1): Rewind, Freeze, Echo.
+const EARLIER_UNLOCK_FLAGS: Array[StringName] = [&"ch01.npc.n05.traced", &"ch01.npc.n11.traced",
+	&"ch01.flag.echo_pedestal_used"]
 
 ## PZ-004 Z-route waypoints (design/ch01/ROOM_GRAPH.md 5.4).
 const W0 := Vector2(176, 152)   # breaker A spot, south lane
@@ -90,8 +96,8 @@ func _real_save_state() -> Dictionary:
 	return {"exists": exists, "mtime": FileAccess.get_modified_time(REAL_SAVE_SLOT_0) if exists else 0}
 
 
-## Boots Chapter01 with the SaveService autoload on the test root, marks PZ-001..003 SOLVED
-## and enters `room_id` through `door_id` (setup only).
+## Boots Chapter01 with the SaveService autoload on the test root, marks the rooms 1-4 puzzles
+## SOLVED, sets their unlock flags and enters `room_id` through `door_id` (setup only).
 func _start_chapter(room_id: StringName, door_id: StringName) -> bool:
 	_store = _tree().root.get_node_or_null("SaveService") as SaveStore
 	if not _assert_true(_store != null, "SaveService autoload is registered"):
@@ -114,6 +120,10 @@ func _start_chapter(room_id: StringName, door_id: StringName) -> bool:
 		return false
 	for puzzle_id in EARLIER_PUZZLES:
 		_session.puzzle_service.mark_solved(puzzle_id)
+	for flag in EARLIER_UNLOCK_FLAGS:
+		_session.narrative_state.set_flag(flag)
+	if not _assert_eq(_session.ability_unlocks.unlocked().size(), 4, "setup: all four abilities unlocked"):
+		return false
 	_router.enter_room(room_id, door_id)
 	await physics_frames(3)
 	_segment_start = Engine.get_physics_frames()
@@ -313,12 +323,27 @@ func _play_late() -> void:
 	await physics_frames(2)
 	_segment("6c PZ-004 exit")
 
-	# 7. Upper vestibule (Beat 08, PZ-005): lever A, then lever B, then the north archway
+	# 7. Upper vestibule (Beat 08, PZ-005): an Echo holds the standby plate (Step 1, TLF-055),
+	# then lever A, then lever B, then the north archway
 	var lever_a := _resolve(&"ch01.upper_vestibule.junction_lever_a")
 	var lever_b := _resolve(&"ch01.upper_vestibule.junction_lever_b")
 	var graph := _session.spatial_service.graph
 	_assert_eq(StringName(graph.get_destination(&"ch01.upper_vestibule", &"door_north").get("room_id", "")),
 		&"ch01.upper_vestibule", "door_north starts on the West Loop")
+	while watch.selected_ability != &"echo":
+		await tap(&"ability_next")
+	await tap(&"watch")
+	_assert_eq(echo.state, EchoService.State.RECORDING, "watch starts recording in the vestibule")
+	if not await walk_to(_player, "vestibule -> standby plate", Vector2(176, 168)):
+		return
+	await tap(&"watch")
+	_assert_eq(echo.state, EchoService.State.READY, "watch stops recording on the standby plate")
+	if not await walk_to(_player, "vestibule -> lever A", Vector2(256, 158), _targets(lever_a)):
+		return
+	await tap(&"watch")
+	var plate_held := func() -> bool: return echo.get_echo_occupied_triggers().has(&"ch01.upper_vestibule.standby_plate_01")
+	if not _assert_true(await until(plate_held, 600), "the Echo holds the standby plate"):
+		return
 	if not await walk_to(_player, "vestibule -> lever A", Vector2(256, 158), _targets(lever_a)):
 		return
 	await tap(&"interact")
