@@ -23,7 +23,8 @@ const GAMEPLAY_ACTIONS: Array[StringName] = [
 	&"ability_prev",
 	&"echo_reset",
 	&"journal",
-	&"pause"
+	&"pause",
+	&"ability_wheel"
 ]
 
 # Audio settings (0.0 to 1.0)
@@ -83,6 +84,11 @@ var screen_shake: float = 1.0:
 		screen_shake = clampf(val, 0.0, 1.0)
 		setting_changed.emit(&"screen_shake", screen_shake)
 
+var wheel_toggle_mode: bool = false:
+	set(val):
+		wheel_toggle_mode = bool(val)
+		setting_changed.emit(&"wheel_toggle_mode", wheel_toggle_mode)
+
 ## Resolved once in _init(); an explicit assignment (tests set their own paths) still wins.
 var settings_path: String = DEFAULT_SETTINGS_PATH
 
@@ -129,6 +135,7 @@ func reset_to_defaults() -> void:
 	reduced_effects = false
 	assist_extended_timing = false
 	screen_shake = 1.0
+	wheel_toggle_mode = false
 
 	apply_audio_volumes()
 	reset_all_bindings()
@@ -149,6 +156,7 @@ func save_settings() -> Error:
 	config.set_value("accessibility", "reduced_effects", reduced_effects)
 	config.set_value("accessibility", "assist_extended_timing", assist_extended_timing)
 	config.set_value("accessibility", "screen_shake", screen_shake)
+	config.set_value("accessibility", "wheel_toggle_mode", wheel_toggle_mode)
 
 	# Serialize custom bindings
 	for action in _custom_bindings:
@@ -184,6 +192,7 @@ func load_settings() -> Error:
 	reduced_effects = bool(config.get_value("accessibility", "reduced_effects", false))
 	assist_extended_timing = bool(config.get_value("accessibility", "assist_extended_timing", false))
 	screen_shake = clampf(float(config.get_value("accessibility", "screen_shake", 1.0)), 0.0, 1.0)
+	wheel_toggle_mode = bool(config.get_value("accessibility", "wheel_toggle_mode", false))
 
 	apply_audio_volumes()
 

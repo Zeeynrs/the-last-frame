@@ -8,6 +8,7 @@ extends CanvasLayer
 @onready var ability_icon: ColorRect = $AbilityPanel/Margin/HBox/AbilityIcon
 @onready var ability_label: Label = $AbilityPanel/Margin/HBox/AbilityLabel
 @onready var watch_prompt: Label = $AbilityPanel/Margin/HBox/WatchPrompt
+@onready var wheel_prompt: Label = get_node_or_null("AbilityPanel/Margin/HBox/WheelPrompt")
 @onready var hint_prompt: Label = get_node_or_null("AbilityPanel/Margin/HBox/HintPrompt")
 
 @onready var echo_panel: PanelContainer = $EchoPanel
@@ -27,6 +28,7 @@ var echo_service: Node = null
 var dialogue_box: DialogueBox = null
 var document_viewer: DocumentViewer = null
 var journal_screen: JournalScreen = null
+var ability_wheel: AbilityWheel = null
 
 var _toast_timer: float = 0.0
 
@@ -80,6 +82,22 @@ func _setup_sub_ui() -> void:
 				journal_screen = jrn_res.instantiate() as JournalScreen
 				add_child(journal_screen)
 
+	if ability_wheel == null:
+		var child_wheel = get_node_or_null("AbilityWheel")
+		if child_wheel is AbilityWheel:
+			ability_wheel = child_wheel
+		else:
+			var existing_wheel = get_tree().root.find_child("AbilityWheel", true, false)
+			if existing_wheel is AbilityWheel:
+				ability_wheel = existing_wheel
+			else:
+				var wheel_res = load("res://scenes/ui/ability_wheel.tscn")
+				if wheel_res != null:
+					ability_wheel = wheel_res.instantiate() as AbilityWheel
+					add_child(ability_wheel)
+	if ability_wheel != null and pocket_watch != null:
+		ability_wheel.bind_pocket_watch(pocket_watch)
+
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventJoypadButton or event is InputEventJoypadMotion:
@@ -98,6 +116,19 @@ func _input(event: InputEvent) -> void:
 
 
 func _process(delta: float) -> void:
+	if _is_chapter_complete_active():
+		if feedback_panel != null:
+			feedback_panel.visible = false
+		if ability_panel != null:
+			ability_panel.visible = false
+		if echo_panel != null:
+			echo_panel.visible = false
+		if target_highlight != null:
+			target_highlight.visible = false
+		return
+	elif ability_panel != null and not ability_panel.visible:
+		ability_panel.visible = true
+
 	if _toast_timer > 0.0:
 		_toast_timer -= delta
 		if _toast_timer <= 0.0 and feedback_panel != null:
@@ -116,7 +147,15 @@ func bind_pocket_watch(watch: Node) -> void:
 			pocket_watch.target_changed.connect(_on_target_changed)
 		if pocket_watch.has_signal("watch_used"):
 			pocket_watch.watch_used.connect(_on_watch_used)
+		if pocket_watch.has_signal("ability_selection_refused"):
+			pocket_watch.ability_selection_refused.connect(_on_ability_selection_refused)
+	if ability_wheel != null and pocket_watch is PocketWatch:
+		ability_wheel.bind_pocket_watch(pocket_watch as PocketWatch)
 	update_ability_ui()
+
+
+func _on_ability_selection_refused(_ability: StringName, reason: StringName) -> void:
+	show_feedback(reason, &"watch")
 
 
 func bind_echo_service(service: Node) -> void:
@@ -144,6 +183,8 @@ func _on_watch_used(_ability: StringName, _target_id: StringName, result: Intera
 
 ## Displays a temporary feedback toast for an interaction reason (closes ISSUE-006).
 func show_feedback(reason: StringName, context: StringName = &"watch") -> void:
+	if _is_chapter_complete_active():
+		return
 	var msg = UIFeedback.get_feedback_text(reason, context)
 	if msg == "" or feedback_label == null or feedback_panel == null:
 		return
@@ -179,6 +220,12 @@ func update_ability_ui() -> void:
 	if hint_prompt != null:
 		var hint_glyph = InputPrompts.get_action_glyph(&"hint")
 		hint_prompt.text = "%s %s" % [hint_glyph, tr("UI_PROMPT_HINT")]
+
+	if wheel_prompt != null:
+		var wheel_glyph = InputPrompts.get_action_glyph(&"ability_wheel")
+		if InputPrompts.is_joypad_mode and (wheel_glyph == "" or wheel_glyph == "[Z]"):
+			wheel_glyph = "[LT]"
+		wheel_prompt.text = "%s %s" % [wheel_glyph, tr("UI_PROMPT_ABILITIES")]
 
 	if current_ability == &"echo":
 		if echo_panel != null:
@@ -235,6 +282,8 @@ func _update_target_highlight_position() -> void:
 
 
 func show_message(msg: String, duration: float = 3.5) -> void:
+	if _is_chapter_complete_active():
+		return
 	if msg == "" or feedback_label == null or feedback_panel == null:
 		return
 	feedback_label.text = msg
@@ -276,3 +325,15 @@ func _find_session() -> GameSession:
 	if sess is GameSession:
 		return sess
 	return get_tree().root.find_child("GameSession", true, false) as GameSession
+
+
+func _is_chapter_complete_active() -> bool:
+	if not is_inside_tree():
+		return false
+	var overlay = get_tree().root.find_child("ChapterCompleteOverlay", true, false)
+	if overlay != null and overlay is CanvasLayer and overlay.visible:
+		return true
+	var sess = _find_session()
+	if sess != null and sess.narrative_state != null and sess.narrative_state.get_flag(&"ch01.flag.chapter_complete"):
+		return true
+	return false
