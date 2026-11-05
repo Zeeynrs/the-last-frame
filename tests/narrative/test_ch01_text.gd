@@ -79,7 +79,7 @@ func test_revelation_document_applies_its_effects() -> void:
 	spawn(s, reader, &"ch01.station_atrium.dispatch_terminal")
 	_assert_true(s.interaction_service.request(&"player", reader.object_id, &"use").ok, "read")
 	_assert_true(s.narrative_state.get_flag(&"ch01.flag.ledger_2359_revealed"), "revelation flag")
-	_assert_eq(s.narrative_state.get_journal(), [{"key": "JRN_CH1_SEAL_ELIAS", "category": "fact"}], "journal fact")
+	_assert_eq(s.narrative_state.get_journal(), [{"key": "JRN_CH1_SEAL_ELIAS", "category": "theory"}], "journal theory (ADR-022 D1: Beat 09 is a question)")
 	free_session(s)
 
 
