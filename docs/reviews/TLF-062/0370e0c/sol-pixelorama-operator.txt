@@ -1,0 +1,42 @@
+Pixelorama verification log (raw tool output, nothing paraphrased)
+git HEAD at run time: 
+Pixelorama: D:\Pixelorama\Pixelorama-Windows-64bit\Pixelorama.exe
+
+====================================================================================================
+FILE: assets/source/ch01/ch01_char_operator_sighting_ne_sheet.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_char_operator_sighting_ne_sheet.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 48)
+Time Pixelorama took to open: 2831ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_char_operator_sighting_ne_sheet.png ch01_char_operator_sighting_ne_sheet.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 2830ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 6fecb40dc095828d0bd50f24db47d5a878b59572e00c10dbe7f704b4f5472b23
+sha256 committed  : 6fecb40dc095828d0bd50f24db47d5a878b59572e00c10dbe7f704b4f5472b23
+BYTE-IDENTICAL: YES
+====================================================================================================
+SUMMARY (size-exit, export-exit, byte-identical)
+ch01_char_operator_sighting_ne_sheet                 0 0 YES
+TOTAL pxo: 1, all identical: True
