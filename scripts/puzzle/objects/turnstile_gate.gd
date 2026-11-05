@@ -6,6 +6,9 @@ extends PuzzleObject
 
 ## TriggerZone covering the gate footprint (optional).
 @export var footprint_zone_id: StringName = &""
+## CH1-PZ-001 R1 (TLF-054): the object pinning the arm (a ConduitProp). While it pins, Rewind is
+## refused with &"pinned" and nothing changes. Empty = the base turnstile.
+@export var pinned_by: StringName = &""
 
 var arm_state: StringName = &"collapsed"
 var passage_blocked: bool = true
@@ -28,6 +31,22 @@ func apply_state(state: Dictionary) -> void:
 
 func _can_use(_actor_id: StringName, _interaction_id: StringName, _payload: Dictionary) -> StringName:
 	return &"jammed" if arm_state == &"collapsed" else &"already_open"
+
+
+func _can_use_ability(_actor_id: StringName, ability_id: StringName, _payload: Dictionary) -> StringName:
+	return &"pinned" if ability_id == ABILITY_REWIND and is_pinned() else &""
+
+
+## True while `pinned_by` is set and that object still pins the arm (or cannot be found: fail closed).
+func is_pinned() -> bool:
+	if String(pinned_by).is_empty():
+		return false
+	var pin = resolve(pinned_by)
+	return pin == null or not pin.has_method("is_pinning") or pin.is_pinning()
+
+
+func _default_feedback_keys() -> Dictionary:
+	return {&"pinned": "PZ001_FB_PINNED"}
 
 
 func _apply_solved_state() -> void:

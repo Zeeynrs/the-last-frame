@@ -53,6 +53,20 @@ func test_room_hint_targets_first_unsolved_puzzle() -> void:
 	free_session(s)
 
 
+## TLF-054: two Ch1 rooms hold two puzzles; the room hint follows play order, not the id.
+func test_room_hint_follows_play_order_in_shared_rooms() -> void:
+	var s := make_session()
+	s.hint_service.load_defs_from("res://data/puzzles/ch01")
+	s.hint_service.request_hint_for_room(&"ch01.maintenance_bay")
+	_assert_eq([s.hint_service.get_level(&"CH1-SO-02"), s.hint_service.get_level(&"CH1-PZ-002")], [1, 0], "SO-02 before PZ-002")
+	s.puzzle_service.mark_solved(&"CH1-SO-02")
+	s.hint_service.request_hint_for_room(&"ch01.maintenance_bay")
+	_assert_eq(s.hint_service.get_level(&"CH1-PZ-002"), 1, "then PZ-002")
+	s.hint_service.request_hint_for_room(&"ch01.concourse_west")
+	_assert_eq([s.hint_service.get_level(&"CH1-PZ-001"), s.hint_service.get_level(&"CH1-PZ-006")], [1, 0], "PZ-001 before PZ-006")
+	free_session(s)
+
+
 func test_invalid_defs_are_rejected() -> void:
 	var s := make_session()
 	var bad := _def()
@@ -81,7 +95,7 @@ func test_hint_levels_survive_save_and_load() -> void:
 
 func test_ch01_puzzle_data_is_complete_and_translated() -> void:
 	var s := make_session()
-	_assert_eq(s.hint_service.load_defs_from("res://data/puzzles/ch01"), 5, "five Ch1 PuzzleDefs load")
+	_assert_eq(s.hint_service.load_defs_from("res://data/puzzles/ch01"), 8, "eight Ch1 PuzzleDefs load (Step 1: + SO-01, SO-02, PZ-006)")
 	var csv := {}
 	var file := FileAccess.open("res://localization/ch01_puzzles.csv", FileAccess.READ)
 	var header := file.get_csv_line()
@@ -91,13 +105,14 @@ func test_ch01_puzzle_data_is_complete_and_translated() -> void:
 		if row.size() >= 2:
 			csv[row[0]] = row[1]
 	var rooms := {}
-	for n in range(1, 6):
-		var def := load("res://data/puzzles/ch01/CH1-PZ-00%d.tres" % n) as PuzzleDef
+	for id in ["CH1-PZ-001", "CH1-PZ-002", "CH1-PZ-003", "CH1-PZ-004", "CH1-PZ-005", "CH1-SO-01", "CH1-SO-02", "CH1-PZ-006"]:
+		var def := load("res://data/puzzles/ch01/%s.tres" % id) as PuzzleDef
 		_assert_true(def.is_valid(), "%s valid" % def.puzzle_id)
 		rooms[def.room_id] = true
-		for key in [def.title_key] + Array(def.hint_keys):
+		_assert_true(String(csv.get(def.title_key, "")).length() >= 3, "%s has English text" % def.title_key)
+		for key in def.hint_keys:
 			_assert_true(String(csv.get(key, "")).length() > 10, "%s has English text" % key)
-	_assert_eq(rooms.size(), 5, "each puzzle in its own room")
+	_assert_eq(rooms.size(), 6, "six rooms (SO-02 shares the Maintenance Bay, PZ-006 the West Concourse)")
 	# The translation Godot generates on import must return the exact CSV text (commas, apostrophes).
 	var translation := load("res://localization/ch01_puzzles.en.translation") as Translation
 	_assert_true(translation != null, "generated translation loads")

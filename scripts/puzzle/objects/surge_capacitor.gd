@@ -21,6 +21,17 @@ func apply_state(state: Dictionary) -> void:
 	bus_powered = bool(state["bus_powered"])
 
 
+## CH1-PZ-004 R1 breaker C (TLF-054): drains the charge, unfreezes, and commits the discharged
+## state as a new history entry, so Rewind brings the charge back. Unused by A, B and the grid.
+func brownout() -> void:
+	var temporal := get_temporal()
+	if temporal != null:
+		temporal.set_frozen(false)
+	apply_state({"charge_state": &"discharged", "decay_ticks": 0, "bus_powered": false})
+	if temporal != null:
+		temporal.commit_history()
+
+
 func is_stabilized() -> bool:
 	return bus_powered and is_frozen()
 

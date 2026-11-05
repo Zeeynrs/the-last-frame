@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PuzzleDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/puzzle/puzzle_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+puzzle_id = &"CH1-SO-02"
+room_id = &"ch01.maintenance_bay"
+title_key = "SO002_TITLE"
+hint_keys = PackedStringArray("SO002_HINT_1", "SO002_HINT_2", "SO002_HINT_3")
+order = 4

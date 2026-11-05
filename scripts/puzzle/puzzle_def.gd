@@ -9,6 +9,8 @@ extends Resource
 @export var title_key: String = ""
 ## Escalating hint ladder (FR-010): [nudge, rule reminder, next action].
 @export var hint_keys: PackedStringArray = PackedStringArray()
+## Play order in the chapter (1 = first). The room hint picks the lowest unsolved one; 0 = unordered.
+@export var order: int = 0
 
 
 func is_valid() -> bool:

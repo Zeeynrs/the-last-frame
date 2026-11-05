@@ -15,8 +15,12 @@ OUT_CSV = os.path.join(ROOT, "localization/ch01_puzzles.csv")
 
 os.makedirs(OUT_DATA, exist_ok=True)
 rows = []
-for n in range(1, 6):
-    pid = f"CH1-PZ-00{n}"
+# TLF-047 phase 2: Step 1 adds CH1-SO-01, CH1-SO-02 and CH1-PZ-006 (key prefix = id without dashes: SO001, SO002, PZ006)
+PUZZLES = [f"CH1-PZ-00{n}" for n in range(1, 6)] + ["CH1-SO-01", "CH1-SO-02", "CH1-PZ-006"]
+# TLF-054: play order (beats 01b, 02, 03b, 04b, 04, 05, 07, 08). Two rooms hold two puzzles, and the
+# room hint must pick the one the player meets first (SO-02 before PZ-002, PZ-001 before PZ-006).
+PLAY_ORDER = ["CH1-SO-01", "CH1-PZ-001", "CH1-PZ-006", "CH1-SO-02", "CH1-PZ-002", "CH1-PZ-003", "CH1-PZ-004", "CH1-PZ-005"]
+for pid in PUZZLES:
     text = io.open(os.path.join(SPECS, f"{pid}.md"), encoding="utf-8").read()
     name = re.search(r"^- \*\*Name:\*\* (.+)$", text, re.M).group(1).strip()
     room = re.search(r"^- \*\*Chapter / Room:\*\*.*?\(`(ch01\.[a-z0-9_]+)`", text, re.M).group(1)
@@ -26,7 +30,8 @@ for n in range(1, 6):
         if m is None:
             raise SystemExit(f"{pid}: hint {level} not found")
         hints.append(m.group(1).strip())
-    prefix = f"PZ00{n}"
+    kind, num = pid.split("-")[1], pid.split("-")[2]
+    prefix = f"{kind}{int(num):03d}"
     rows.append((f"{prefix}_TITLE", name))
     for level, hint in enumerate(hints, 1):
         rows.append((f"{prefix}_HINT_{level}", hint))
@@ -39,6 +44,7 @@ for n in range(1, 6):
         f'room_id = &"{room}"\n'
         f'title_key = "{prefix}_TITLE"\n'
         f'hint_keys = PackedStringArray("{prefix}_HINT_1", "{prefix}_HINT_2", "{prefix}_HINT_3")\n'
+        f"order = {PLAY_ORDER.index(pid) + 1}\n"
     )
     io.open(os.path.join(OUT_DATA, f"{pid}.tres"), "w", encoding="utf-8", newline="\n").write(tres)
     print(pid, room, "|", name)

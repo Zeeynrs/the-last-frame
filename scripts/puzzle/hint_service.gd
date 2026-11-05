@@ -75,7 +75,8 @@ func request_hint(puzzle_id: StringName) -> Dictionary:
 	return {"ok": true, "reason": &"", "level": level, "text_key": key}
 
 
-## The hint button in a room: the first unsolved puzzle of that room (sorted by puzzle id).
+## The hint button in a room: the first unsolved puzzle of that room, in play order
+## (PuzzleDef.order, then puzzle id), so CH1-SO-02 comes before CH1-PZ-002 in the same room.
 func request_hint_for_room(room_id: StringName) -> Dictionary:
 	var ids: Array = []
 	for id in _defs.keys():
@@ -83,7 +84,10 @@ func request_hint_for_room(room_id: StringName) -> Dictionary:
 			ids.append(id)
 	if ids.is_empty():
 		return {"ok": false, "reason": &"no_active_puzzle", "level": 0, "text_key": ""}
-	ids.sort_custom(func(a, b): return String(a) < String(b))
+	ids.sort_custom(func(a, b):
+		if _defs[a].order != _defs[b].order:
+			return _defs[a].order < _defs[b].order
+		return String(a) < String(b))
 	return request_hint(ids[0])
 
 

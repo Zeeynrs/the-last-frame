@@ -7,12 +7,18 @@ extends Interactable
 ##   so nothing re-blocks a solved passage.
 ## - Optional "Blocker" child (StaticBody2D) gets its collision toggled by set_passage_blocked().
 ## Subclasses override _apply_solved_state() and _reset_unsolved().
+## - Object-specific feedback text (TLF-054): feedback_key(reason) maps a failure reason to the
+##   spec's text key (`PZ00x_FB_*`, `SO00x_FB_*`); feedback_requested carries non-failure messages.
 
 signal passage_changed(blocked: bool)
+## A message for the HUD that is not a failed request (e.g. "Ticket accepted.", a brown-out).
+signal feedback_requested(text_key: String)
 
 @export var puzzle_id: StringName = &""
 ## Where the player is sent if a reset or closing mechanism would trap them (ADR-016).
 @export var safe_anchor_id: StringName = &""
+## Per-instance reason -> text key overrides (StringName -> String); wins over the class defaults.
+@export var feedback_keys: Dictionary = {}
 
 var latched_solved: bool = false
 
@@ -72,6 +78,18 @@ func set_passage_blocked(blocked: bool) -> void:
 			if child is CollisionShape2D or child is CollisionPolygon2D:
 				child.set_deferred("disabled", not blocked)
 	passage_changed.emit(blocked)
+
+
+## Text key for a failure `reason` of this object, or "" for the shared UI_FB_* text.
+func feedback_key(reason: StringName) -> String:
+	if feedback_keys.has(reason):
+		return String(feedback_keys[reason])
+	return String(_default_feedback_keys().get(reason, ""))
+
+
+## Override: the class's spec feedback keys (reason -> text key).
+func _default_feedback_keys() -> Dictionary:
+	return {}
 
 
 func is_frozen() -> bool:

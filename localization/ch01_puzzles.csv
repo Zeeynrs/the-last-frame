@@ -1,21 +1,33 @@
 keys,en
 PZ001_TITLE,The Fractured Turnstile
-PZ001_HINT_1,The turnstile wasn't always crushed. Check what the pocket watch senses around the gate.
-PZ001_HINT_2,"Use Trace to inspect the distortion on the turnstile, then switch the pocket watch to Rewind."
-PZ001_HINT_3,"Select Rewind on the pocket watch and activate it on the crushed turnstile barrier to restore its open state, then walk through."
+PZ001_HINT_1,"The turnstile wasn't always crushed. Trace the gate, then look at who is standing beside it."
+PZ001_HINT_2,"Something fell on the gate after someone passed. It pins the turnstile, and it has a past too."
+PZ001_HINT_3,"Rewind the fallen conduit back onto its bracket, then Rewind the turnstile, then walk through."
 PZ002_TITLE,The Runaway Shutter
-PZ002_HINT_1,"Rewinding the shutter lifts it, but something on the wall is letting it slip back down."
-PZ002_HINT_2,"The shutter and its counterweight gear respond to different watch abilities. Lift the shutter first, then stop the gear from turning."
-PZ002_HINT_3,"Use Rewind on the dropped fire shutter to lift it, then switch to Freeze and lock the counterweight gear on the wall beside it before the shutter slides shut."
+PZ002_HINT_1,"Rewinding the shutter lifts it, but the gear on the wall lets it slip. The inner shutter hangs on the same gear."
+PZ002_HINT_2,"Lift the first shutter, then stop the gear. The inner shutter only lifts while the gear is locked."
+PZ002_HINT_3,"Rewind the first shutter, Freeze the counterweight gear, walk through, then Rewind the inner shutter and walk through it."
 PZ003_TITLE,The Delayed Platform
-PZ003_HINT_1,"The switch reacts to weight, not identity."
-PZ003_HINT_2,Something can remain on the switch while Elias moves away. An Echo stays at its final recorded position until you reset it.
-PZ003_HINT_3,"Start Echo recording, step onto the floor pressure switch on the south deck, stop recording while still standing on the switch, then walk to the security gate and replay the Echo."
-PZ004_TITLE,The Synchronized Substation
-PZ004_HINT_1,The two mezzanine breakers have no power while the central surge capacitor is dark. Solve the center console first.
-PZ004_HINT_2,"Step 1: Rewind the central surge capacitor to restore its charge, then Freeze it so the power bus stays on. Step 2: Use an Echo to pull one breaker while you pull the other."
+PZ003_HINT_1,"The switch reacts to weight, not identity. Which of the two plates feeds the gate?"
+PZ003_HINT_2,Something can remain on the switch while Elias moves away. An Echo stays at its final recorded position until you reset it. An Echo cannot take a pass.
+PZ003_HINT_3,"Take the staff pass, record an Echo on the south plate and replay it, cross the bridge, and use the pass at the card reader."
+PZ004_TITLE,The Forgotten Sequence
+PZ004_HINT_1,The two mezzanine breakers have no power while the central surge capacitor is dark. Check the wiring chart before touching a breaker.
+PZ004_HINT_2,"Step 1: Rewind the central surge capacitor, then Freeze it so the bus stays on. Step 2: use an Echo so breakers A and B are engaged at once. Leave breaker C alone."
 PZ004_HINT_3,"Rewind and Freeze the central surge capacitor. Then record an Echo pulling the west mezzanine breaker, walk to the east mezzanine breaker, replay the Echo, and pull the east breaker at the same time."
 PZ005_TITLE,The Displaced Corridor
-PZ005_HINT_1,Walking north brings you back from the west. Look at the route board in the center of the vestibule with Trace.
-PZ005_HINT_2,The North Archway cannot connect to the Station Atrium while it is still looped to the West Archway. Uncouple the loop first.
-PZ005_HINT_3,"Pull the West Junction Relay Lever first to break the archway loop, then pull the East Junction Relay Lever to route the North Archway directly to the Station Atrium."
+PZ005_HINT_1,The relays are dead. Something has to hold the standby plate while you reach the levers.
+PZ005_HINT_2,An Echo can stand on the plate. The North Archway cannot join the Atrium while it is still looped to the West Archway.
+PZ005_HINT_3,"Record an Echo on the standby plate and replay it, then pull the West lever first and the East lever second, and walk north."
+SO001_TITLE,Last Departure
+SO001_HINT_1,Four people on this platform said where the last train goes. Ask each one when they said it.
+SO001_HINT_2,"For the line, the platform and the car, the latest announcement counts. Compare the time stamps."
+SO001_HINT_3,"Set the panel to Hollow Quay, platform 3, rear car, then pull the release lever."
+SO002_TITLE,Held Open
+SO002_HINT_1,"The technician was holding something open. What was he doing with his hands, and where was he standing?"
+SO002_HINT_2,"The hatch opens only under weight. Freeze keeps a mechanism the way it is, so it can stay open without you."
+SO002_HINT_3,"Stand on the brass plate to open the hatch, switch to Freeze and activate it on the hatch, then step off and walk through."
+PZ006_TITLE,Last Ticket
+PZ006_HINT_1,"The staff door wants one particular ticket. Who in the queue bought theirs after the order, and for which line?"
+PZ006_HINT_2,"Trace each person in the queue to see line, platform and time. The notice sets the line and the time. The dials only turn back, one step per Rewind."
+PZ006_HINT_3,"Rewind the dials to Orchard Gate, platform 1 and 23:55 (the teenager's ticket), then use the validator."
