@@ -1,0 +1,965 @@
+assets/characters/ch01/ch01_char_elias_base_sheet.png  [PASS]
+  ok   size: 2560x48 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 12 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,16,17,18,19,20,21,25,26)
+  ok   elias layout: 2560x48 = 80 frames of 32x48
+  ok   elias mirror nw == flip_h(ne): pixel diff 0 (10 frames)
+  ok   elias mirror w  == flip_h(e ): pixel diff 0 (10 frames)
+  ok   elias mirror sw == flip_h(se): pixel diff 0 (10 frames)
+assets/characters/ch01/ch01_char_statue_body_a_pose1_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15)
+assets/characters/ch01/ch01_char_statue_body_a_pose1_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,26,30)
+assets/characters/ch01/ch01_char_statue_body_a_pose2_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15)
+assets/characters/ch01/ch01_char_statue_body_a_pose2_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,26,30)
+assets/characters/ch01/ch01_char_statue_body_b_pose1_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15)
+assets/characters/ch01/ch01_char_statue_body_b_pose1_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,26,30)
+assets/characters/ch01/ch01_char_statue_body_b_pose2_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15)
+assets/characters/ch01/ch01_char_statue_body_b_pose2_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,26,30)
+assets/characters/ch01/ch01_char_statue_body_c_pose1_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15)
+assets/characters/ch01/ch01_char_statue_body_c_pose1_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,26,30)
+assets/characters/ch01/ch01_char_statue_body_c_pose2_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15)
+assets/characters/ch01/ch01_char_statue_body_c_pose2_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,26,30)
+assets/characters/ch01/ch01_char_statue_commuter_n01_conductor_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,24,25)
+assets/characters/ch01/ch01_char_statue_commuter_n01_conductor_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,24,25,26,30)
+assets/characters/ch01/ch01_char_statue_commuter_n02_student_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,27)
+assets/characters/ch01/ch01_char_statue_commuter_n02_student_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,26,27,30)
+assets/characters/ch01/ch01_char_statue_commuter_n03_old_man_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,17,18)
+assets/characters/ch01/ch01_char_statue_commuter_n03_old_man_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,17,18,26,30)
+assets/characters/ch01/ch01_char_statue_commuter_n04_cleaner_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,07,08,11,12,13,14,15)
+assets/characters/ch01/ch01_char_statue_commuter_n04_cleaner_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 01,07,08,11,12,13,14,15,26,30)
+assets/characters/ch01/ch01_char_statue_commuter_n05_courier_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,17,18)
+assets/characters/ch01/ch01_char_statue_commuter_n05_courier_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,17,18,26,30)
+assets/characters/ch01/ch01_char_statue_commuter_n06_red_coat_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,22,23)
+assets/characters/ch01/ch01_char_statue_commuter_n06_red_coat_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,22,23,26,30)
+assets/characters/ch01/ch01_char_statue_commuter_n07_briefcase_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,17,18)
+assets/characters/ch01/ch01_char_statue_commuter_n07_briefcase_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,17,18,26,30)
+assets/characters/ch01/ch01_char_statue_commuter_n08_father_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,07,08,11,12,13,14,15)
+assets/characters/ch01/ch01_char_statue_commuter_n08_father_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 01,07,08,11,12,13,14,15,26,30)
+assets/characters/ch01/ch01_char_statue_commuter_n09_teen_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,22,23)
+assets/characters/ch01/ch01_char_statue_commuter_n09_teen_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,22,23,26,30)
+assets/characters/ch01/ch01_char_statue_commuter_n11_hatch_tech_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,22,23)
+assets/characters/ch01/ch01_char_statue_commuter_n11_hatch_tech_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,22,23,26,30)
+assets/characters/ch01/ch01_char_statue_commuter_n13_guard_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,22,23)
+assets/characters/ch01/ch01_char_statue_commuter_n13_guard_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,22,23,26,30)
+assets/characters/ch01/ch01_char_statue_commuter_n20_engineer_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,22,23)
+assets/characters/ch01/ch01_char_statue_commuter_n20_engineer_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,22,23,26,30)
+assets/characters/ch01/ch01_char_statue_commuter_n21_tourist_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,17,18)
+assets/characters/ch01/ch01_char_statue_commuter_n21_tourist_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,17,18,26,30)
+assets/characters/ch01/ch01_char_statue_n03_old_man_seated_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15)
+assets/characters/ch01/ch01_char_statue_n03_old_man_seated_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,26,30)
+assets/characters/ch01/ch01_char_statue_n04_cleaner_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15)
+assets/characters/ch01/ch01_char_statue_n04_cleaner_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,26,30)
+assets/characters/ch01/ch01_char_statue_n05_courier_vault_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15)
+assets/characters/ch01/ch01_char_statue_n05_courier_vault_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,26,30)
+assets/characters/ch01/ch01_char_statue_n11_tech_crank_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15)
+assets/characters/ch01/ch01_char_statue_n11_tech_crank_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 01,11,12,13,14,15,26,30)
+assets/environments/ch01/ch01_env_archway_frame_e_idle.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 11 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26,29)
+assets/environments/ch01/ch01_env_archway_frame_n_idle.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 11 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26,29)
+assets/environments/ch01/ch01_env_arrival_platform_target_sheet.png  [PASS]
+  ok   size: 640x360 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 30 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,28,29,31)
+assets/environments/ch01/ch01_env_tile_cable_conduit_off_idle.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 01,02,03,04,11,12,13,14)
+assets/environments/ch01/ch01_env_tile_cable_conduit_on_idle.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 01,02,03,04,11,14,25,26)
+assets/environments/ch01/ch01_env_tile_concrete_service_idle.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 11,12,13)
+assets/environments/ch01/ch01_env_tile_industrial_grating_idle.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 5 unique colours, all in TLF-CH01-32 (indices 00,01,11,13,14)
+assets/environments/ch01/ch01_env_tile_stone_step_wet_idle.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 5 unique colours, all in TLF-CH01-32 (indices 01,02,03,04,05)
+assets/environments/ch01/ch01_env_tile_tactile_amber_idle.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,12,14,22,23,25,26)
+assets/environments/ch01/ch01_env_tile_terrazzo_cracked_idle.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,04,05)
+assets/environments/ch01/ch01_env_tile_terrazzo_dark_idle.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 01,02,03,04)
+assets/environments/ch01/ch01_env_wall_bulkhead_module_idle.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,07,08,11,12,13,14,15,24)
+assets/environments/ch01/ch01_env_wall_corner_pillar_idle.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 11 unique colours, all in TLF-CH01-32 (indices 00,06,07,08,11,12,13,14,15,24,25)
+assets/environments/ch01/ch01_env_wall_railing_iron_idle.png  [PASS]
+  ok   size: 32x48 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,25)
+assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,06,07,08,09,11,12,24)
+assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,07,08,09,10,12,13,25)
+assets/props/ch01/ch01_prop_alarm_plate_idle.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,22,23)
+assets/props/ch01/ch01_prop_alarm_plate_ringing.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,23,24,26)
+assets/props/ch01/ch01_prop_bell_icon_idle.png  [PASS]
+  ok   size: 8x8 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 5 unique colours, all in TLF-CH01-32 (indices 00,12,13,14,15)
+assets/props/ch01/ch01_prop_bell_icon_ringing.png  [PASS]
+  ok   size: 8x8 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 00,24,25,26)
+assets/props/ch01/ch01_prop_breaker_c_browned_out.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,23)
+assets/props/ch01/ch01_prop_breaker_c_engaged.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_breaker_c_idle.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15)
+assets/props/ch01/ch01_prop_bridge_platform_extended.png  [PASS]
+  ok   size: 48x32 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,12,13,14,24,25)
+assets/props/ch01/ch01_prop_bridge_platform_retracted.png  [PASS]
+  ok   size: 48x32 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,22,24)
+assets/props/ch01/ch01_prop_call_box_phone_idle.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,22)
+assets/props/ch01/ch01_prop_call_box_phone_ringing.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_card_reader_accepted.png  [PASS]
+  ok   size: 16x24 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_card_reader_denied.png  [PASS]
+  ok   size: 16x24 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,24,26)
+assets/props/ch01/ch01_prop_card_reader_idle.png  [PASS]
+  ok   size: 16x24 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15)
+assets/props/ch01/ch01_prop_conduit_fallen.png  [PASS]
+  ok   size: 48x32 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 11 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,23,24,25,26)
+assets/props/ch01/ch01_prop_conduit_mounted.png  [PASS]
+  ok   size: 48x32 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,25)
+assets/props/ch01/ch01_prop_counterweight_gear_frozen.png  [PASS]
+  ok   size: 64x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,27,31)
+assets/props/ch01/ch01_prop_counterweight_gear_idle.png  [PASS]
+  ok   size: 64x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15)
+assets/props/ch01/ch01_prop_counterweight_gear_slipping.png  [PASS]
+  ok   size: 64x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,24,25,26)
+assets/props/ch01/ch01_prop_dead_relay_c_idle.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,24,25)
+assets/props/ch01/ch01_prop_dead_relay_c_shake.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,24,25,26)
+assets/props/ch01/ch01_prop_departure_board_nowhere_idle.png  [PASS]
+  ok   size: 160x32 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,22,24,25)
+assets/props/ch01/ch01_prop_digital_clock_2359_idle.png  [PASS]
+  ok   size: 32x24 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 11 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,22,23,24,25,26)
+assets/props/ch01/ch01_prop_dispatch_terminal_active.png  [PASS]
+  ok   size: 64x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,25,26,29,31)
+assets/props/ch01/ch01_prop_dispatch_terminal_idle.png  [PASS]
+  ok   size: 64x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,22)
+assets/props/ch01/ch01_prop_document_clipboard_idle.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,25,31)
+assets/props/ch01/ch01_prop_door_rd_access_sealed_idle.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 11 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,22,23,24)
+assets/props/ch01/ch01_prop_echo_pedestal_idle.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15)
+assets/props/ch01/ch01_prop_echo_pedestal_used.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 11 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26,30)
+assets/props/ch01/ch01_prop_fire_shutter_closed.png  [PASS]
+  ok   size: 64x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,24,25)
+assets/props/ch01/ch01_prop_fire_shutter_raised.png  [PASS]
+  ok   size: 64x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,24)
+assets/props/ch01/ch01_prop_flap_dial_line_idle.png  [PASS]
+  ok   size: 32x32 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 11 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_flap_dial_line_jammed.png  [PASS]
+  ok   size: 32x32 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 13 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,11,12,13,14,15,23,24,25,26)
+assets/props/ch01/ch01_prop_flap_dial_platform_idle.png  [PASS]
+  ok   size: 32x32 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,11,12,13,14,15,26)
+assets/props/ch01/ch01_prop_flap_dial_platform_jammed.png  [PASS]
+  ok   size: 32x32 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 12 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,11,12,13,14,15,23,24,26)
+assets/props/ch01/ch01_prop_flap_dial_time_idle.png  [PASS]
+  ok   size: 32x32 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 11 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_flap_dial_time_jammed.png  [PASS]
+  ok   size: 32x32 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 13 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,11,12,13,14,15,23,24,25,26)
+assets/props/ch01/ch01_prop_floor_plate_a_empty.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,24,25)
+assets/props/ch01/ch01_prop_floor_plate_a_pressed.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,25,26)
+assets/props/ch01/ch01_prop_floor_plate_b_empty.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,09,11,12,13,14,15,27)
+assets/props/ch01/ch01_prop_floor_plate_b_pressed.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,28,29)
+assets/props/ch01/ch01_prop_inner_shutter_closed.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 11 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,23,24,25)
+assets/props/ch01/ch01_prop_inner_shutter_raised.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_lever_badge_a_idle.png  [PASS]
+  ok   size: 5x7 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 2 unique colours, all in TLF-CH01-32 (indices 11,26)
+assets/props/ch01/ch01_prop_lever_badge_b_idle.png  [PASS]
+  ok   size: 5x7 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 2 unique colours, all in TLF-CH01-32 (indices 11,26)
+assets/props/ch01/ch01_prop_lever_switch_off.png  [PASS]
+  ok   size: 24x32 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,22,23)
+assets/props/ch01/ch01_prop_lever_switch_on.png  [PASS]
+  ok   size: 24x32 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,24,25,26)
+assets/props/ch01/ch01_prop_notice_closed_track_idle.png  [PASS]
+  ok   size: 80x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,22,23)
+assets/props/ch01/ch01_prop_pa_speaker_idle.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15)
+assets/props/ch01/ch01_prop_pillar_mark_sector_a_idle.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,11,12,14,15,22,23,24,25)
+assets/props/ch01/ch01_prop_platform_gate_closed.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,23,24)
+assets/props/ch01/ch01_prop_platform_gate_open.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_pocket_watch_idle.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 00,22,25,26)
+assets/props/ch01/ch01_prop_pressure_switch_pressed.png  [PASS]
+  ok   size: 32x20 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,24,25,26)
+assets/props/ch01/ch01_prop_pressure_switch_released.png  [PASS]
+  ok   size: 32x20 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 5 unique colours, all in TLF-CH01-32 (indices 00,12,13,14,22)
+assets/props/ch01/ch01_prop_release_lever_accepted.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 11 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,23,25,26)
+assets/props/ch01/ch01_prop_release_lever_buzzing.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 11 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,23,24,26)
+assets/props/ch01/ch01_prop_release_lever_idle.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15)
+assets/props/ch01/ch01_prop_reset_console_idle.png  [PASS]
+  ok   size: 32x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,22,24,25,26)
+assets/props/ch01/ch01_prop_route_board_state0.png  [PASS]
+  ok   size: 48x56 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,12,13,15,25,26)
+assets/props/ch01/ch01_prop_route_board_state1.png  [PASS]
+  ok   size: 48x56 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,12,13,15,25,26)
+assets/props/ch01/ch01_prop_route_board_state2.png  [PASS]
+  ok   size: 48x56 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,12,13,15,25,26)
+assets/props/ch01/ch01_prop_security_gate_closed.png  [PASS]
+  ok   size: 40x52 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,22,24)
+assets/props/ch01/ch01_prop_security_gate_open.png  [PASS]
+  ok   size: 40x52 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,24,25,26)
+assets/props/ch01/ch01_prop_selector_car_pos0.png  [PASS]
+  ok   size: 32x48 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_selector_car_pos1.png  [PASS]
+  ok   size: 32x48 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_selector_car_pos2.png  [PASS]
+  ok   size: 32x48 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_selector_line_pos0.png  [PASS]
+  ok   size: 32x48 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_selector_line_pos1.png  [PASS]
+  ok   size: 32x48 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_selector_line_pos2.png  [PASS]
+  ok   size: 32x48 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_selector_platform_pos0.png  [PASS]
+  ok   size: 32x48 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_selector_platform_pos1.png  [PASS]
+  ok   size: 32x48 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_selector_platform_pos2.png  [PASS]
+  ok   size: 32x48 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_service_hatch_closed.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,23,24)
+assets/props/ch01/ch01_prop_service_hatch_frozen_closed.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 14 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,23,24,25,26,28,29)
+assets/props/ch01/ch01_prop_service_hatch_frozen_open.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 12 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26,28,29)
+assets/props/ch01/ch01_prop_service_hatch_open.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_sign_a1_research_idle.png  [PASS]
+  ok   size: 96x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,22,25)
+assets/props/ch01/ch01_prop_staff_barrier_closed.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,23,24)
+assets/props/ch01/ch01_prop_staff_barrier_open.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_staff_door_closed.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 13 unique colours, all in TLF-CH01-32 (indices 00,01,02,06,08,11,12,13,14,15,23,24,25)
+assets/props/ch01/ch01_prop_staff_door_open.png  [PASS]
+  ok   size: 32x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_standby_plate_empty.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15)
+assets/props/ch01/ch01_prop_standby_plate_held.png  [PASS]
+  ok   size: 32x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,25,26)
+assets/props/ch01/ch01_prop_station_bench_idle.png  [PASS]
+  ok   size: 48x32 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15)
+assets/props/ch01/ch01_prop_statue_ov_breaker_handle_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,12,13,14,22,23)
+assets/props/ch01/ch01_prop_statue_ov_breaker_handle_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 12,13,14,22,23,30)
+assets/props/ch01/ch01_prop_statue_ov_briefcase_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 5 unique colours, all in TLF-CH01-32 (indices 00,13,14,17,18)
+assets/props/ch01/ch01_prop_statue_ov_briefcase_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 5 unique colours, all in TLF-CH01-32 (indices 13,14,17,18,30)
+assets/props/ch01/ch01_prop_statue_ov_courier_bag_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 00,14,17,18)
+assets/props/ch01/ch01_prop_statue_ov_courier_bag_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 14,17,18,30)
+assets/props/ch01/ch01_prop_statue_ov_gate_lever_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,12,13,14,22,23)
+assets/props/ch01/ch01_prop_statue_ov_gate_lever_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 12,13,14,22,23,30)
+assets/props/ch01/ch01_prop_statue_ov_hatch_crank_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,12,13,14,22,23)
+assets/props/ch01/ch01_prop_statue_ov_hatch_crank_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 12,13,14,22,23,30)
+assets/props/ch01/ch01_prop_statue_ov_headphones_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 00,22,23)
+assets/props/ch01/ch01_prop_statue_ov_headphones_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 22,23,26,30)
+assets/props/ch01/ch01_prop_statue_ov_map_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,13,14,15,17,18)
+assets/props/ch01/ch01_prop_statue_ov_map_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 13,14,15,17,18,30)
+assets/props/ch01/ch01_prop_statue_ov_paper_bag_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 00,14,17,18)
+assets/props/ch01/ch01_prop_statue_ov_paper_bag_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 14,17,18,30)
+assets/props/ch01/ch01_prop_statue_ov_phone_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 00,11,14,27)
+assets/props/ch01/ch01_prop_statue_ov_phone_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 11,14,27,30)
+assets/props/ch01/ch01_prop_statue_ov_red_coat_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 5 unique colours, all in TLF-CH01-32 (indices 13,14,15,22,23)
+assets/props/ch01/ch01_prop_statue_ov_red_coat_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 5 unique colours, all in TLF-CH01-32 (indices 13,14,15,22,23)
+assets/props/ch01/ch01_prop_statue_ov_sleeping_child_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,07,08,11,12,13,14)
+assets/props/ch01/ch01_prop_statue_ov_sleeping_child_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 07,08,11,12,13,14,30)
+assets/props/ch01/ch01_prop_statue_ov_suitcase_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,12,13,14,17,18)
+assets/props/ch01/ch01_prop_statue_ov_suitcase_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 12,13,14,17,18,30)
+assets/props/ch01/ch01_prop_statue_ov_trolley_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,07,08,11,12,13,14)
+assets/props/ch01/ch01_prop_statue_ov_trolley_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 07,08,11,12,13,14,30)
+assets/props/ch01/ch01_prop_statue_ov_whistle_idle.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 6 unique colours, all in TLF-CH01-32 (indices 00,12,13,14,24,25)
+assets/props/ch01/ch01_prop_statue_ov_whistle_read.png  [PASS]
+  ok   size: 16x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 12,13,14,24,25,26,30)
+assets/props/ch01/ch01_prop_surge_capacitor_charged.png  [PASS]
+  ok   size: 64x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,25,26,31)
+assets/props/ch01/ch01_prop_surge_capacitor_discharged.png  [PASS]
+  ok   size: 64x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 7 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,22)
+assets/props/ch01/ch01_prop_surge_capacitor_frozen.png  [PASS]
+  ok   size: 64x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,27,31)
+assets/props/ch01/ch01_prop_surge_capacitor_frozen_charged.png  [PASS]
+  ok   size: 64x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,27,31)
+assets/props/ch01/ch01_prop_surge_capacitor_frozen_discharged.png  [PASS]
+  ok   size: 64x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,14,15,27,31)
+assets/props/ch01/ch01_prop_ticket_terms_notice_idle.png  [PASS]
+  ok   size: 16x20 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,14,15,17,18,19,23)
+assets/props/ch01/ch01_prop_ticket_validator_accepted.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 10 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,25,26)
+assets/props/ch01/ch01_prop_ticket_validator_idle.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15)
+assets/props/ch01/ch01_prop_ticket_validator_rejecting.png  [PASS]
+  ok   size: 24x36 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 11 unique colours, all in TLF-CH01-32 (indices 00,01,02,11,12,13,14,15,23,24,26)
+assets/props/ch01/ch01_prop_trace_shimmer_ring_loop.png  [PASS]
+  ok   size: 96x12 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 00,26,30)
+assets/props/ch01/ch01_prop_trace_timestamp_glyph_idle.png  [PASS]
+  ok   size: 6x6 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 00,26,30)
+assets/props/ch01/ch01_prop_transit_car_stalled_idle.png  [PASS]
+  ok   size: 128x80 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 11 unique colours, all in TLF-CH01-32 (indices 00,01,11,12,13,15,22,23,24,27,28)
+assets/props/ch01/ch01_prop_turnstile_gate_collapsed.png  [PASS]
+  ok   size: 32x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,22,24)
+assets/props/ch01/ch01_prop_turnstile_gate_open.png  [PASS]
+  ok   size: 32x40 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 8 unique colours, all in TLF-CH01-32 (indices 00,11,12,13,14,15,25,26)
+assets/source/ch01/ch01_palette_elysium09.png  [PASS]
+  ok   size: 256x64 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 32 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31)
+assets/ui/ability_wheel/ch01_ui_icon_echo.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 01,28,29,31)
+assets/ui/ability_wheel/ch01_ui_icon_echo_locked.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 5 unique colours, all in TLF-CH01-32 (indices 00,12,13,14,15)
+assets/ui/ability_wheel/ch01_ui_icon_fast_forward.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 2 unique colours, all in TLF-CH01-32 (indices 25,26)
+assets/ui/ability_wheel/ch01_ui_icon_fast_forward_locked.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 00,13,14,15)
+assets/ui/ability_wheel/ch01_ui_icon_freeze.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 27,29,31)
+assets/ui/ability_wheel/ch01_ui_icon_freeze_locked.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 00,12,14,15)
+assets/ui/ability_wheel/ch01_ui_icon_rewind.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 2 unique colours, all in TLF-CH01-32 (indices 29,31)
+assets/ui/ability_wheel/ch01_ui_icon_rewind_locked.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 00,14,15)
+assets/ui/ability_wheel/ch01_ui_icon_trace.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 26,30,31)
+assets/ui/ability_wheel/ch01_ui_icon_trace_locked.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 00,14,15)
+assets/ui/ability_wheel/ch01_ui_icon_unknown.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 12,13,15)
+assets/ui/ability_wheel/ch01_ui_icon_unknown_locked.png  [PASS]
+  ok   size: 16x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 5 unique colours, all in TLF-CH01-32 (indices 00,12,13,14,15)
+assets/ui/ability_wheel/ch01_ui_lock_glyph.png  [PASS]
+  ok   size: 14x16 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 00,13,14,15)
+assets/ui/ability_wheel/ch01_ui_wheel_face.png  [PASS]
+  ok   size: 52x56 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 9 unique colours, all in TLF-CH01-32 (indices 00,12,13,14,15,23,25,26,31)
+assets/ui/ability_wheel/ch01_ui_wheel_pointer_0.png  [PASS]
+  ok   size: 18x18 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 00,25,26,31)
+assets/ui/ability_wheel/ch01_ui_wheel_pointer_1.png  [PASS]
+  ok   size: 18x18 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 00,25,26,31)
+assets/ui/ability_wheel/ch01_ui_wheel_pointer_2.png  [PASS]
+  ok   size: 18x18 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 00,25,26,31)
+assets/ui/ability_wheel/ch01_ui_wheel_pointer_3.png  [PASS]
+  ok   size: 18x18 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 00,25,26,31)
+assets/ui/ability_wheel/ch01_ui_wheel_pointer_4.png  [PASS]
+  ok   size: 18x18 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 00,25,26,31)
+assets/ui/ability_wheel/ch01_ui_wheel_pointer_5.png  [PASS]
+  ok   size: 18x18 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 4 unique colours, all in TLF-CH01-32 (indices 00,25,26,31)
+assets/ui/ability_wheel/ch01_ui_wheel_pointer_rest.png  [PASS]
+  ok   size: 10x10 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 1 unique colours, all in TLF-CH01-32 (indices 26)
+assets/ui/ability_wheel/ch01_ui_wheel_seg0_locked.png  [PASS]
+  ok   size: 74x43 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 01,12,13)
+assets/ui/ability_wheel/ch01_ui_wheel_seg0_normal.png  [PASS]
+  ok   size: 74x43 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 00,13,14)
+assets/ui/ability_wheel/ch01_ui_wheel_seg0_selected.png  [PASS]
+  ok   size: 74x43 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 27,29,31)
+assets/ui/ability_wheel/ch01_ui_wheel_seg1_locked.png  [PASS]
+  ok   size: 58x67 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 01,12,13)
+assets/ui/ability_wheel/ch01_ui_wheel_seg1_normal.png  [PASS]
+  ok   size: 58x67 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 00,13,14)
+assets/ui/ability_wheel/ch01_ui_wheel_seg1_selected.png  [PASS]
+  ok   size: 58x67 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 27,29,31)
+assets/ui/ability_wheel/ch01_ui_wheel_seg2_locked.png  [PASS]
+  ok   size: 58x67 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 01,12,13)
+assets/ui/ability_wheel/ch01_ui_wheel_seg2_normal.png  [PASS]
+  ok   size: 58x67 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 00,13,14)
+assets/ui/ability_wheel/ch01_ui_wheel_seg2_selected.png  [PASS]
+  ok   size: 58x67 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 27,29,31)
+assets/ui/ability_wheel/ch01_ui_wheel_seg3_locked.png  [PASS]
+  ok   size: 74x43 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 01,12,13)
+assets/ui/ability_wheel/ch01_ui_wheel_seg3_normal.png  [PASS]
+  ok   size: 74x43 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 00,13,14)
+assets/ui/ability_wheel/ch01_ui_wheel_seg3_selected.png  [PASS]
+  ok   size: 74x43 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 27,29,31)
+assets/ui/ability_wheel/ch01_ui_wheel_seg4_locked.png  [PASS]
+  ok   size: 58x67 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 01,12,13)
+assets/ui/ability_wheel/ch01_ui_wheel_seg4_normal.png  [PASS]
+  ok   size: 58x67 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 00,13,14)
+assets/ui/ability_wheel/ch01_ui_wheel_seg4_selected.png  [PASS]
+  ok   size: 58x67 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 27,29,31)
+assets/ui/ability_wheel/ch01_ui_wheel_seg5_locked.png  [PASS]
+  ok   size: 58x67 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 01,12,13)
+assets/ui/ability_wheel/ch01_ui_wheel_seg5_normal.png  [PASS]
+  ok   size: 58x67 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 00,13,14)
+assets/ui/ability_wheel/ch01_ui_wheel_seg5_selected.png  [PASS]
+  ok   size: 58x67 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 3 unique colours, all in TLF-CH01-32 (indices 27,29,31)
+design/art/mockups/ch01_ability_wheel_a_trace_only_mockup.png  [PASS]
+  ok   size: 640x360 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 13 unique colours, all in TLF-CH01-32 (indices 00,01,12,13,14,15,23,25,26,27,29,30,31)
+design/art/mockups/ch01_ability_wheel_b_all_four_mockup.png  [PASS]
+  ok   size: 640x360 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 14 unique colours, all in TLF-CH01-32 (indices 00,01,12,13,14,15,23,25,26,27,28,29,30,31)
+design/art/mockups/ch01_ability_wheel_c_rewind_selected_mockup.png  [PASS]
+  ok   size: 640x360 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 14 unique colours, all in TLF-CH01-32 (indices 00,01,12,13,14,15,23,25,26,27,28,29,30,31)
+design/art/mockups/ch01_arrival_platform_mockup.png  [PASS]
+  ok   size: 640x360 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 30 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29)
+design/art/mockups/ch01_concourse_west_mockup.png  [PASS]
+  ok   size: 640x360 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 29 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,29,31)
+design/art/mockups/ch01_security_crossing_mockup.png  [PASS]
+  ok   size: 640x360 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 28 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,04,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,29,31)
+design/art/mockups/ch01_signal_control_mockup.png  [PASS]
+  ok   size: 640x360 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 27 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,04,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,29)
+design/art/mockups/ch01_step1_room_statues_mockup.png  [PASS]
+  ok   size: 640x360 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 31 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)
+design/art/mockups/ch01_step1_room_statues_x3_proof.png  [PASS]
+  ok   size: 1920x1080 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 31 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)
+design/art/mockups/ch01_tlf063_story_props_room_mockup.png  [PASS]
+  ok   size: 640x360 == metadata
+  ok   alpha: binary (0/255 only)
+  ok   palette: 29 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28)
+RESULT: ALL PASS (240 file(s))
