@@ -26,8 +26,9 @@ RGB2IDX = {v: k for k, v in PAL.items()}
 
 
 class Layer:
-    def __init__(self, w, h, name):
+    def __init__(self, w, h, name, visible=True):
         self.w, self.h, self.name = w, h, name
+        self.visible = visible
         self.p = [[None] * w for _ in range(h)]
 
     def put(self, x, y, c):
@@ -79,12 +80,12 @@ class Layer:
         self.p = [[None] * self.w for _ in range(self.h)]
 
     def flip_h(self):
-        n = Layer(self.w, self.h, self.name)
+        n = Layer(self.w, self.h, self.name, visible=self.visible)
         n.p = [list(reversed(r)) for r in self.p]
         return n
 
     def copy(self):
-        n = Layer(self.w, self.h, self.name)
+        n = Layer(self.w, self.h, self.name, visible=self.visible)
         n.p = [list(r) for r in self.p]
         return n
 
@@ -105,7 +106,8 @@ def composite(layers):
     w, h = layers[0].w, layers[0].h
     c = Layer(w, h, 'final')
     for l in layers:  # layer 0 = bottom
-        c.blit(l)
+        if getattr(l, 'visible', True):
+            c.blit(l)
     return c
 
 
@@ -169,8 +171,11 @@ def pxo_bytes(w, h, layer_names, frames, fps=1.0, tags=None, user_data='TLF-039'
     import io
     d = _template()
     d['layers'] = []
-    for n in layer_names:
-        l = copy.deepcopy(_LAYER); l['name'] = n; d['layers'].append(l)
+    for li_idx, n in enumerate(layer_names):
+        l = copy.deepcopy(_LAYER); l['name'] = n
+        if frames and li_idx < len(frames[0]) and not getattr(frames[0][li_idx], 'visible', True):
+            l['visible'] = False
+        d['layers'].append(l)
     d['frames'] = [{'cels': [copy.deepcopy(_CEL) for _ in layer_names],
                     'duration': float(durations[idx]) if durations else 1.0, 'metadata': {}}
                    for idx, _ in enumerate(frames)]

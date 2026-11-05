@@ -85,7 +85,8 @@ def _build_operator_frame(frame_idx):
     shadow = Layer(w, h, 'Contact_Shadow')
     robe = Layer(w, h, 'Robe')
     hood = Layer(w, h, 'Hood_Mask')
-    scarf = Layer(w, h, 'Scarf')
+    # Per ADR-022 A3 & Sol review cb2acbd: retain populated Scarf layer (22/23) in .pxo, disabled by default for Ch1 export
+    scarf = Layer(w, h, 'Scarf', visible=False)
     hand_watch = Layer(w, h, 'Hand_Watch')
 
     # 1. Contact_Shadow: compact down-right floor ellipse around foot pivot (16, 44)
@@ -572,6 +573,92 @@ def _draw_clock_2359(layer, x0, y0, scale=1):
                 layer.put(x, y, 24)
 
 
+def _draw_iso_prism(layer, xN, yN, w_sw, w_se, height,
+                    col_top=13, col_top_bevel=15, col_top_inner=12,
+                    col_sw=12, col_sw_bevel=14, col_se=11, col_se_dark=2,
+                    draw_shadow=True):
+    """Draw a coherent 2:1 isometric 3D rectangular prism grounded on the 2:1 plaza plane.
+    - Back-North ground corner: (xN, yN)
+    - West ground corner:       (xW, yW) = (xN - w_sw, yN + w_sw // 2)  [2:1 down-left axis, abs(dy/dx) = 1/2]
+    - East ground corner:       (xE, yE) = (xN + w_se, yN + w_se // 2)  [2:1 down-right axis, abs(dy/dx) = 1/2]
+    - Front-South ground corner:(xS, yS) = (xN - w_sw + w_se, yN + (w_sw + w_se) // 2)
+    Follows ART_BIBLE.md top-left planar value hierarchy:
+      Top roof plane (col_top / col_top_bevel) > SW left-facing wall (col_sw) > SE right-facing wall (col_se) > 00 outline & shadow.
+    """
+    xW, yW = xN - w_sw, yN + w_sw // 2
+    xE, yE = xN + w_se, yN + w_se // 2
+    xS, yS = xW + w_se, yW + w_se // 2
+
+    # 1. Compact down-right 2:1 cast shadow along SE base edge (xS..xE)
+    if draw_shadow:
+        for x in range(xS, xE + 8):
+            yb = yS - (x - xS) // 2 if x <= xE else yE + (x - xE) // 2
+            for dy in range(1, 6):
+                layer.put(x, yb + dy, 0 if dy <= 2 else 1)
+
+    # 2. Left-facing (SW) 2:1 wall plane: x in [xW .. xS], base y_bot(x) = yW + (x - xW) // 2
+    for x in range(xW, xS + 1):
+        yb = yW + (x - xW) // 2
+        yt = yb - height
+        for y in range(yt, yb + 1):
+            if y == yt:
+                c = col_sw_bevel
+            elif y == yb or x == xW:
+                c = 0 if y == yb else col_sw_bevel
+            elif (y - yt) % 12 == 0:
+                c = col_se  # 2:1-sheared horizontal masonry/panel seam
+            else:
+                c = col_sw
+            layer.put(x, y, c)
+
+    # 3. Right-facing (SE) 2:1 wall plane: x in [xS .. xE], base y_bot(x) = yS - (x - xS) // 2
+    for x in range(xS, xE + 1):
+        yb = yS - (x - xS) // 2
+        yt = yb - height
+        for y in range(yt, yb + 1):
+            if x == xS:
+                c = col_sw_bevel if y < yb else 0  # front corner ridge highlight
+            elif x == xS + 1:
+                c = 0  # crisp vertical corner turn into shadow
+            elif x == xE or y == yb:
+                c = 0
+            elif y == yt:
+                c = col_sw
+            elif (y - yt) % 12 == 0:
+                c = col_se_dark  # 2:1-sheared horizontal course in shadow
+            else:
+                c = col_se
+            layer.put(x, y, c)
+
+    # 4. Visible Top Roof Cap (2:1 isometric diamond/parallelogram bounded by xW..xN..xE..xS at y - height)
+    for x in range(xW, xE + 1):
+        # Upper roof boundary (North-West edge xW..xN or North-East edge xN..xE)
+        if x <= xN:
+            y_roof_top = (yN - height) + (xN - x) // 2
+        else:
+            y_roof_top = (yN - height) + (x - xN) // 2
+        # Lower roof boundary (South-West edge xW..xS or South-East edge xS..xE)
+        if x <= xS:
+            y_roof_bot = (yW - height) + (x - xW) // 2
+        else:
+            y_roof_bot = (yS - height) - (x - xS) // 2
+
+        for y in range(y_roof_top, y_roof_bot + 1):
+            if y == y_roof_top:
+                c = 0
+            elif y == y_roof_top + 1:
+                c = col_top_bevel if x <= xN + (w_se // 2) else col_top
+            elif y == y_roof_bot:
+                c = col_sw_bevel if x <= xS else col_sw
+            elif y_roof_top + 3 <= y <= y_roof_bot - 3 and xW + 6 <= x <= xE - 6:
+                c = col_top_inner
+            else:
+                c = col_top
+            layer.put(x, y, c)
+
+    return (xW, yW, xS, yS, xE, yE)
+
+
 def _build_city_layers():
     w, h = CITY_PLATE_W, CITY_PLATE_H
     sky = Layer(w, h, 'Sky_And_Distant_Towers')
@@ -581,137 +668,363 @@ def _build_city_layers():
     rain = Layer(w, h, 'Suspended_Rain')
 
     # --- Layer 1: Sky_And_Distant_Towers ---
-    # Banded nocturnal sky (indices 00, 01, 02, 03)
-    sky.rect(0, 0, w - 1, 69, 0)
-    sky.rect(0, 70, w - 1, 139, 1)
-    sky.rect(0, 140, w - 1, 219, 2)
-    sky.rect(0, 220, w - 1, h - 1, 1)
+    # Banded nocturnal sky (indices 00, 01, 02, 03) above the plaza horizon (y=196)
+    sky.rect(0, 0, w - 1, 64, 0)
+    sky.rect(0, 65, w - 1, 134, 1)
+    sky.rect(0, 135, w - 1, 196, 2)
+    sky.rect(0, 197, w - 1, h - 1, 1)
 
-    # Distant Elysium City skyline silhouettes (cool slate 01..04 & steel 11..13)
-    towers = [
-        (40, 28, 110, 12),
-        (160, 44, 235, 11),
-        (260, 18, 355, 12),
-        (370, 52, 430, 1),
-        (485, 30, 560, 12),
-        (580, 14, 685, 11),
-        (700, 40, 770, 12),
-        (950, 22, 1045, 12),
-        (1060, 48, 1135, 11),
-        (1150, 16, 1255, 12),
+    # Distant Elysium City skyline towers rendered as 2:1 isometric prisms (visible 2:1 roof cap + lit SW face + dark SE face)
+    distant_prisms = [
+        # (xN, yN_base, w_sw, w_se, height, sw_col, se_col)
+        (86,  204, 48, 36, 168, 12, 11),
+        (198, 206, 44, 34, 152, 11, 2),
+        (308, 204, 56, 42, 178, 12, 11),
+        (398, 206, 36, 28, 144, 2,  1),
+        (524, 204, 48, 36, 166, 12, 11),
+        (632, 204, 60, 44, 182, 11, 2),
+        (736, 206, 44, 32, 156, 12, 11),
+        (996, 204, 56, 42, 174, 12, 11),
+        (1098, 206, 44, 34, 148, 11, 2),
+        (1204, 204, 56, 40, 180, 12, 11),
     ]
-    for (tx0, ty0, tx1, tcol) in towers:
-        sky.rect(tx0, ty0, tx1, 225, tcol)
-        sky.vline(tx0, ty0, 225, 13 if tcol == 12 else 2)
-        sky.hline(tx0, tx1, ty0, 14 if tcol == 12 else 3)
-        sky.vline(tx1, ty0, 225, 0)
-        # Sparse lit/unlit window grids in 03, 08, and occasional warm 25
-        for wy in range(ty0 + 10, 210, 14):
-            for wx in range(tx0 + 8, tx1 - 8, 12):
-                hval = (wx * 31 + wy * 17) % 19
-                if hval == 0:
-                    sky.rect(wx, wy, wx + 3, wy + 5, 25)
-                elif hval in (1, 2, 3):
-                    sky.rect(wx, wy, wx + 3, wy + 5, 8)
-                else:
-                    sky.rect(wx, wy, wx + 3, wy + 5, 1)
+    for (txN, tyN, tw_sw, tw_se, th, c_sw, c_se) in distant_prisms:
+        xW, yW, xS, yS, xE, yE = _draw_iso_prism(
+            sky, txN, tyN, tw_sw, tw_se, th,
+            col_top=13 if c_sw == 12 else 2,
+            col_top_bevel=14 if c_sw == 12 else 3,
+            col_top_inner=12 if c_sw == 12 else 1,
+            col_sw=c_sw,
+            col_sw_bevel=13 if c_sw == 12 else 2,
+            col_se=c_se,
+            col_se_dark=1 if c_se == 2 else 2,
+            draw_shadow=False,
+        )
+        # Sparse 2:1-sheared window slits on the lit SW face (dy = +(x - xW) // 2)
+        for dx in range(8, tw_sw - 8, 10):
+            wx = xW + dx
+            wy_base = (yW - th) + dx // 2
+            for dz in range(14, th - 18, 14):
+                hval = (wx * 31 + dz * 17) % 19
+                wcol = 25 if hval == 0 else (8 if hval in (1, 2, 3) else 1)
+                for sx in range(3):
+                    for sy in range(4):
+                        sky.put(wx + sx, wy_base + dz + sx // 2 + sy, wcol)
 
-    # Elevated transit viaduct spanning across the background (y=164..184) with a train frozen mid-span
-    sky.rect(0, 168, w - 1, 180, 11)
-    sky.hline(0, w - 1, 168, 14)
-    sky.hline(0, w - 1, 179, 0)
-    for px in range(60, w, 120):
-        sky.rect(px, 180, px + 18, 235, 11)
-        sky.vline(px, 180, 235, 13)
-        sky.vline(px + 18, 180, 235, 0)
-    # Stalled transit train frozen between stations on the viaduct (x=590..750, y=152..167)
-    sky.rect(590, 152, 750, 167, 13)
-    sky.hline(590, 750, 152, 15)
-    sky.hline(590, 750, 163, 24)   # transit orange stripe
-    for wx in range(600, 740, 18):
-        sky.rect(wx, 156, wx + 10, 160, 8)
-    sky.rect(590, 157, 593, 161, 24)   # frozen tail lamp
+    # Elevated transit viaduct deck & 2:1 isometric support piers across the upper plaza edge (y=162..204)
+    # Top deck plane (y=164..169, 13/14) + vertical girder face (y=170..178, 11/12)
+    sky.rect(0, 164, w - 1, 169, 13)
+    sky.hline(0, w - 1, 164, 14)
+    sky.hline(0, w - 1, 169, 15)
+    sky.rect(0, 170, w - 1, 178, 11)
+    sky.hline(0, w - 1, 178, 0)
+    for px in range(72, w, 144):
+        _draw_iso_prism(
+            sky, px, 198, 16, 12, 22,
+            col_top=13, col_top_bevel=14, col_top_inner=12,
+            col_sw=12, col_sw_bevel=13, col_se=11, col_se_dark=2,
+            draw_shadow=False,
+        )
+
+    # Stalled transit train frozen on the viaduct deck (x=584..748, y=146..165) with visible top roof plane (14/15) & side (12/13)
+    sky.rect(588, 146, 744, 150, 14)   # visible top roof cap of train
+    sky.hline(588, 744, 146, 15)
+    sky.rect(584, 151, 748, 165, 12)   # NW-lit side elevation
+    sky.hline(584, 748, 151, 14)
+    sky.hline(584, 748, 161, 24)       # transit orange stripe
+    for wx in range(596, 736, 18):
+        sky.rect(wx, 154, wx + 10, 158, 8)
+    sky.rect(584, 155, 587, 159, 24)   # frozen tail lamp
 
     # --- Layer 2: Plaza_And_Station_Exit ---
-    # Rain-slick plaza floor (y=232..359) with 2:1 perspective paving lines and wet reflections
-    plaza.rect(0, 232, w - 1, h - 1, 1)
-    plaza.hline(0, w - 1, 232, 13)
-    plaza.hline(0, w - 1, 233, 2)
-    for py in range(244, h, 16):
-        plaza.hline(0, w - 1, py, 2 if (py // 16) % 2 == 0 else 0)
-    for gx in range(-160, w + 160, 48):
-        plaza.line(gx, 234, gx - 120, h - 1, 2)
-    # Wet tactile amber edge along the station exit step (x=20..360, y=276..282)
-    plaza.rect(20, 276, 360, 282, 22)
-    for tx in range(24, 356, 8):
-        plaza.rect(tx, 277, tx + 4, 280, 25)
-        plaza.put(tx + 1, 278, 26)
+    # Coherent 2:1 isometric plaza ground (y=196..359) using BOTH 2:1 ground axes:
+    #   Axis A (down-left 2:1, abs(dy/dx) = 1/2):  a = x + 2 * (y - 196)
+    #   Axis B (down-right 2:1, abs(dy/dx) = 1/2): b = 2 * (y - 196) - x + 1280
+    # Zero horizontal floor cross-lines and zero 45-degree lines!
+    for y in range(196, h):
+        dy_p = y - 196
+        for x in range(w):
+            a = x + 2 * dy_p
+            b = 2 * dy_p - x + 1280
+            u_tile = a // 32
+            v_tile = b // 32
+            a_mod = a % 32
+            b_mod = b % 32
 
-    # Left pan viewport (x=0..640): Station Elysium-09 street exit headhouse (x=24..340, y=48..275)
-    plaza.rect(24, 48, 340, 275, 11)
-    plaza.rect(28, 52, 336, 275, 7)     # dark teal-slate subterranean station stone
-    plaza.hline(24, 340, 48, 15)
-    plaza.hline(24, 340, 49, 14)
-    plaza.vline(24, 48, 275, 14)
-    plaza.vline(340, 48, 275, 0)
-    # Station exit portal opening (x=76..288, y=108..275)
-    plaza.rect(76, 108, 288, 275, 0)
-    plaza.rect(82, 114, 282, 268, 1)
-    plaza.hline(76, 288, 108, 14)
-    # Wet descending stairs inside exit portal + iron railings
-    for sy in range(236, 272, 6):
-        plaza.hline(84, 280, sy, 13)
-        plaza.hline(84, 280, sy + 1, 2)
-    # Warm amber station practicals & hazard stripe inside exit canopy
-    plaza.hline(28, 336, 100, 24)
-    plaza.hline(84, 280, 116, 25)
+            # 2:1 diamond mortar joints along BOTH 2:1 ground axes (abs(dy/dx) = 1/2)
+            if a_mod in (0, 1) or b_mod in (0, 1):
+                col = 0
+            elif a_mod == 2 or b_mod == 2:
+                # Top-left NW bevel edge of each 32x16 2:1 diamond tile
+                col = 2 if (u_tile + v_tile) % 2 == 0 else 11
+            else:
+                # Checkerboard & courtyard 2:1 diamond paving in dark wet terrazzo (01 / 02 / 07)
+                if (u_tile + v_tile) % 2 == 0:
+                    col = 1
+                else:
+                    col = 2 if (u_tile % 4 != 0) else 7
+                # Wet specular glint inside diamond center
+                if a_mod in (14, 15, 16) and b_mod in (15, 16) and (u_tile * 7 + v_tile * 13) % 5 == 0:
+                    col = 3
+            plaza.put(x, y, col)
 
-    # Mid-plaza repeater pylon (x=432..480, y=110..256) housing the 1x (32x48) Mira broadcast screen at (440, 136)
-    plaza.rect(432, 110, 480, 256, 11)
-    plaza.hline(432, 480, 110, 15)
-    plaza.vline(432, 110, 256, 14)
-    plaza.vline(480, 110, 256, 0)
-    plaza.rect(438, 134, 473, 185, 0)   # 32x48 screen recess bezel around (440, 136)
+    # Raised 2:1 isometric retaining curb along the back edge of the plaza (y=194..201)
+    plaza.hline(0, w - 1, 194, 14)
+    plaza.hline(0, w - 1, 195, 13)
+    plaza.hline(0, w - 1, 196, 0)
 
-    # Street intercom / speaker post at x=524..546, y=192..264 (clicks on in Beat 10: "You are late. ... Again.")
-    plaza.rect(531, 220, 539, 264, 11)
-    plaza.vline(531, 220, 264, 14)
-    plaza.rect(524, 192, 546, 222, 12)
-    plaza.hline(524, 546, 192, 15)
-    plaza.rect(528, 197, 542, 209, 0)
-    for gy in range(199, 208, 2):
-        plaza.hline(530, 540, gy, 13)
-    plaza.rect(533, 213, 537, 217, 25)   # active amber call LED + reflection on wet floor
-    plaza.put(535, 215, 26)
-    plaza.hline(528, 542, 270, 24)
-    plaza.hline(531, 539, 274, 25)
+    # ========================================================================
+    # START PAN VIEWPORT (x = 0..640):
+    #   1) Station Elysium-09 Subterranean Exit Headhouse (2:1 isometric 3D volume)
+    #   2) 2:1 Tactile Amber Platform Threshold & Forecourt Apron
+    #   3) Mid-Plaza 2:1 Isometric Repeater Pylon (Mira screen @ (440, 136)) & Intercom Post
+    # ========================================================================
 
-    # Right pan viewport (x=640..1280): Grand Plaza Broadcast & Clock Tower (x=788..932, y=28..252)
-    plaza.rect(788, 28, 932, 252, 11)
-    plaza.rect(794, 34, 926, 252, 12)
-    plaza.hline(788, 932, 28, 15)
-    plaza.vline(788, 28, 252, 14)
-    plaza.vline(932, 28, 252, 0)
-    # Architectural frame around the central 32x48 Mira broadcast screen at (844, 104)
-    plaza.rect(836, 96, 883, 159, 0)
-    plaza.rect(838, 98, 881, 157, 13)
-    plaza.hline(838, 881, 98, 15)
+    # 1a. Stepped 2:1 Isometric Forecourt Plinth under Station Exit + Tactile Amber 2:1 Band
+    #     xN=168, yN=196, w_sw=144 (to xW=24, yW=268), w_se=192 (to xE=360, yE=292), height=8
+    _draw_iso_prism(
+        plaza, 168, 196, 144, 192, 8,
+        col_top=11, col_top_bevel=14, col_top_inner=2,
+        col_sw=12, col_sw_bevel=14, col_se=11, col_se_dark=1,
+        draw_shadow=True,
+    )
+    # 2:1 Tactile Amber Warning Strip along the SE exit apron edge (x=216..352, following 2:1 axis dy = -(x - 216)//2)
+    for x in range(220, 352):
+        yb = 352 - (x - 216) // 2
+        for dz in range(2, 9):
+            y = yb - dz
+            if 0 <= y < h:
+                blister = ((x + 2 * y) % 8 in (2, 3, 4)) and ((2 * y - x) % 8 in (2, 3, 4))
+                plaza.put(x, y, 26 if (blister and dz <= 4) else (25 if blister else 22))
+
+    # 1b. Main Station Elysium-09 Exit Headhouse — 2:1 Isometric 3D Building Block
+    #     xN=156, yN=158, w_sw=120 (xW=36, yW=218), w_se=168 (xE=324, yE=242), xS=204, yS=302, height=118
+    _draw_iso_prism(
+        plaza, 156, 158, 120, 168, 118,
+        col_top=13, col_top_bevel=15, col_top_inner=11,
+        col_sw=8, col_sw_bevel=14, col_se=7, col_se_dark=2,
+        draw_shadow=True,
+    )
+    # Rooftop 2:1 Isometric Ventilation / Elevator Penthouse on top of the Station Exit roof deck
+    _draw_iso_prism(
+        plaza, 152, 62, 52, 64, 22,
+        col_top=14, col_top_bevel=15, col_top_inner=12,
+        col_sw=12, col_sw_bevel=14, col_se=11, col_se_dark=2,
+        draw_shadow=False,
+    )
+    # Sheared 2:1 amber transit line stripe across the lit SW wall (x=38..202) and shadowed SE wall (x=205..322)
+    for x in range(38, 203):
+        yb = 218 + (x - 36) // 2
+        y_stripe = yb - 84
+        plaza.put(x, y_stripe, 25)
+        plaza.put(x, y_stripe + 1, 24)
+        plaza.put(x, y_stripe + 2, 0)
+    for x in range(205, 323):
+        yb = 302 - (x - 204) // 2
+        y_stripe = yb - 84
+        plaza.put(x, y_stripe, 24)
+        plaza.put(x, y_stripe + 1, 22)
+        plaza.put(x, y_stripe + 2, 0)
+
+    # Recessed 2:1 Isometric Portal Opening on the SE face of the Station Exit (x=218..308) with descending 2:1 stairs
+    for x in range(218, 309):
+        yb = 302 - (x - 204) // 2
+        yt = yb - 72
+        for y in range(yt, yb):
+            if x in (218, 219) or y in (yt, yt + 1):
+                plaza.put(x, y, 14 if y == yt else 12)
+            elif x >= 306:
+                plaza.put(x, y, 7)
+            else:
+                # Inside portal: dark subterranean stairwell (00/01) with 2:1 stair treads near bottom
+                rel_y = yb - y
+                if rel_y <= 28:
+                    step_idx = rel_y // 5
+                    is_riser = (rel_y % 5) in (0, 1)
+                    plaza.put(x, y, 12 if (not is_riser and step_idx % 2 == 0) else (8 if not is_riser else 1))
+                elif rel_y >= 64:
+                    plaza.put(x, y, 25 if rel_y == 66 else 22)  # warm interior canopy soffit strip
+                else:
+                    plaza.put(x, y, 0 if x < 260 else 1)
+
+    # Cantilevered 2:1 Isometric Entry Canopy projecting out from the SE portal header (xN=264, yN=192)
+    _draw_iso_prism(
+        plaza, 264, 192, 48, 24, 8,
+        col_top=14, col_top_bevel=15, col_top_inner=13,
+        col_sw=12, col_sw_bevel=14, col_se=11, col_se_dark=2,
+        draw_shadow=False,
+    )
+
+    # 2:1 Isometric Fascia Sign Housing on the Station Exit roof brow for the (148, 68) 23:59 Clock
+    # xN=172, w_sw=32 -> xW=140; w_se=88 -> xS=228 (so clock x=148..216 sits wholly on the broad SW lit face!)
+    _draw_iso_prism(
+        plaza, 172, 102, 32, 88, 34,
+        col_top=14, col_top_bevel=15, col_top_inner=13,
+        col_sw=12, col_sw_bevel=14, col_se=11, col_se_dark=2,
+        draw_shadow=False,
+    )
+
+    # 2. Mid-Plaza 2:1 Isometric Repeater Pylon (grounds Mira broadcast screen @ (440, 136) and clock @ (439, 116))
+    #    xN=452, w_sw=24 -> xW=428; w_se=60 -> xS=488, xE=512 (so clock x=439..473 & Mira x=440..472 sit wholly on SW lit face!)
+    _draw_iso_prism(
+        plaza, 452, 232, 32, 68, 10,
+        col_top=13, col_top_bevel=15, col_top_inner=12,
+        col_sw=12, col_sw_bevel=14, col_se=11, col_se_dark=2,
+        draw_shadow=True,
+    )
+    _draw_iso_prism(
+        plaza, 452, 224, 24, 60, 132,
+        col_top=14, col_top_bevel=15, col_top_inner=13,
+        col_sw=12, col_sw_bevel=14, col_se=11, col_se_dark=2,
+        draw_shadow=True,
+    )
+    # Recessed screen bezel for the 32x48 Mira portrait at (440, 136)
+    plaza.rect(438, 134, 473, 185, 0)
+    plaza.hline(438, 473, 134, 14)
+    plaza.vline(438, 134, 185, 14)
+
+    # 3. Street Intercom / Speaker Post at x=528..568 (2:1 isometric plinth + 2:1 speaker housing box)
+    #    Beat 10: a street speaker clicks on ("You are late. ... Again.")
+    _draw_iso_prism(
+        plaza, 546, 248, 14, 20, 8,
+        col_top=13, col_top_bevel=15, col_top_inner=12,
+        col_sw=12, col_sw_bevel=14, col_se=11, col_se_dark=2,
+        draw_shadow=True,
+    )
+    _draw_iso_prism(
+        plaza, 546, 242, 8, 10, 36,
+        col_top=13, col_top_bevel=14, col_top_inner=12,
+        col_sw=12, col_sw_bevel=14, col_se=11, col_se_dark=2,
+        draw_shadow=False,
+    )
+    _draw_iso_prism(
+        plaza, 544, 212, 12, 22, 26,
+        col_top=14, col_top_bevel=15, col_top_inner=13,
+        col_sw=12, col_sw_bevel=15, col_se=11, col_se_dark=2,
+        draw_shadow=False,
+    )
+    # Speaker louvres & active amber call LED (25/26) on the SW lit face of the speaker head (x=532..554)
+    for gy in range(196, 205, 2):
+        plaza.hline(535, 549, gy, 0)
+        plaza.hline(536, 548, gy + 1, 14)
+    plaza.rect(540, 207, 544, 210, 25)
+    plaza.put(541, 208, 26)
+    # Warm 2:1 diamond amber reflection on the wet plaza floor below the speaker
+    for dx in range(-8, 9, 2):
+        plaza.hline(542 + dx // 2, 548 + dx // 2, 264 + abs(dx) // 4, 24 if abs(dx) <= 4 else 22)
+
+    # ========================================================================
+    # END PAN VIEWPORT (x = 640..1280):
+    #   1) Grand Plaza Broadcast & Clock Tower (stepped 2:1 isometric 3D tower prism)
+    #      housing the master 23:59 clock @ (826, 52) and Mira screen @ (844, 104)
+    #   2) 2:1 Isometric Transit Ventilation Kiosk & Concourse Bench/Planter Volumes
+    # ========================================================================
+
+    # 1a. Stepped 2:1 Isometric Plaza Dais under the Grand Broadcast Tower
+    _draw_iso_prism(
+        plaza, 852, 210, 68, 124, 10,
+        col_top=13, col_top_bevel=15, col_top_inner=11,
+        col_sw=12, col_sw_bevel=14, col_se=11, col_se_dark=2,
+        draw_shadow=True,
+    )
+    _draw_iso_prism(
+        plaza, 852, 204, 56, 110, 12,
+        col_top=14, col_top_bevel=15, col_top_inner=12,
+        col_sw=12, col_sw_bevel=14, col_se=11, col_se_dark=2,
+        draw_shadow=False,
+    )
+    # 1b. Main Grand Plaza Broadcast & Clock Tower — 2:1 Isometric 3D Monumental Prism
+    #     xN=852, yN=196, w_sw=44 (xW=808, yW=218), w_se=96 (xS=904, yS=266, xE=948, yE=244), height=192
+    #     Clock (x=826..894) and Mira screen (x=844..876) sit wholly on the 96px-wide SW lit face (x=808..904)!
+    _draw_iso_prism(
+        plaza, 852, 196, 44, 96, 192,
+        col_top=14, col_top_bevel=15, col_top_inner=12,
+        col_sw=12, col_sw_bevel=15, col_se=11, col_se_dark=2,
+        draw_shadow=True,
+    )
+    # Upper 2:1 Isometric Crown Penthouse on top of the Broadcast Tower roof cap
+    _draw_iso_prism(
+        plaza, 852, 24, 28, 64, 18,
+        col_top=14, col_top_bevel=15, col_top_inner=13,
+        col_sw=13, col_sw_bevel=15, col_se=11, col_se_dark=2,
+        draw_shadow=False,
+    )
+    # Sheared 2:1 recessed service louvres on the shadowed SE face of the Broadcast Tower (x=908..942)
+    for dx in (8, 22):
+        bx = 904 + dx
+        by_bot = 266 - dx // 2
+        for dz in (40, 88, 136):
+            for sx in range(8):
+                for sy in range(18):
+                    plaza.put(bx + sx, by_bot - dz - sx // 2 - sy, 2 if sy not in (0, 17) else 0)
+
+    # Architectural bezel around the central 32x48 Mira broadcast screen at (844, 104)
+    plaza.rect(838, 98, 881, 157, 0)
+    plaza.rect(840, 100, 879, 155, 13)
+    plaza.hline(840, 879, 100, 15)
     plaza.rect(842, 102, 877, 153, 0)
-    # Wet lavender/cyan reflection on plaza floor below the broadcast tower
-    for ry in range(258, 320, 6):
-        plaza.hline(840, 880, ry, 8 if (ry // 6) % 2 == 0 else 3)
 
-    # Street lamps casting local warm amber pools (22..26) onto the plaza
-    for lx in (388, 692, 1020, 1188):
-        plaza.vline(lx, 144, 248, 12)
-        plaza.vline(lx + 1, 144, 248, 0)
-        plaza.hline(lx - 6, lx + 8, 144, 14)
-        plaza.rect(lx - 5, 146, lx + 7, 149, 25)
-        plaza.hline(lx - 3, lx + 5, 147, 26)
-        # Warm floor pool
-        plaza.rect(lx - 18, 250, lx + 20, 258, 22)
-        plaza.rect(lx - 10, 252, lx + 12, 256, 24)
-        plaza.hline(lx - 4, lx + 6, 254, 25)
+    # Wet 2:1 diamond cyan/slate screen reflection on the plaza floor in front of the Broadcast Tower
+    for dy_r in range(0, 36, 4):
+        y_r = 274 + dy_r
+        half_w = 24 - dy_r // 2
+        plaza.hline(856 - half_w, 856 + half_w, y_r, 8 if (dy_r // 4) % 2 == 0 else 3)
+
+    # 2. East Plaza 2:1 Isometric Transit Ventilation Kiosk & Planter Plinths (x=1036..1236)
+    #    Coherent 2:1 3D volumes anchoring the right half of the End Pan Viewport (640..1280)
+    _draw_iso_prism(
+        plaza, 1076, 232, 44, 36, 34,
+        col_top=13, col_top_bevel=15, col_top_inner=11,
+        col_sw=8, col_sw_bevel=14, col_se=7, col_se_dark=2,
+        draw_shadow=True,
+    )
+    # Sheared 2:1 amber transit band around the East Ventilation Kiosk
+    for x in range(1032, 1077):
+        yb = 254 + (x - 1032) // 2
+        plaza.put(x, yb - 12, 24)
+        plaza.put(x, yb - 11, 22)
+    for x in range(1077, 1112):
+        yb = 272 - (x - 1076) // 2
+        plaza.put(x, yb - 12, 22)
+
+    # Foreground 2:1 Isometric Concourse Bench / Bollard Plinth at x=692..756
+    _draw_iso_prism(
+        plaza, 720, 262, 28, 20, 14,
+        col_top=14, col_top_bevel=15, col_top_inner=13,
+        col_sw=12, col_sw_bevel=14, col_se=11, col_se_dark=2,
+        draw_shadow=True,
+    )
+
+    # 2:1 Isometric Street Lamp Pylons casting 2:1 diamond warm amber pools (22..26) onto the plaza tiles
+    for (lx, ly_base) in ((384, 248), (648, 244), (984, 246), (1184, 252)):
+        # 2:1 diamond lamp base plinth
+        _draw_iso_prism(
+            plaza, lx, ly_base, 8, 8, 8,
+            col_top=13, col_top_bevel=14, col_top_inner=12,
+            col_sw=12, col_sw_bevel=14, col_se=11, col_se_dark=2,
+            draw_shadow=False,
+        )
+        plaza.vline(lx - 1, ly_base - 92, ly_base - 4, 13)
+        plaza.vline(lx, ly_base - 92, ly_base - 4, 11)
+        plaza.vline(lx + 1, ly_base - 92, ly_base - 4, 0)
+        # 2:1 isometric lamp hood
+        _draw_iso_prism(
+            plaza, lx, ly_base - 92, 10, 10, 6,
+            col_top=14, col_top_bevel=15, col_top_inner=13,
+            col_sw=25, col_sw_bevel=26, col_se=24, col_se_dark=22,
+            draw_shadow=False,
+        )
+        # 2:1 diamond warm amber floor pool around (lx, ly_base + 12)
+        for dy_p in range(-8, 9):
+            span = (8 - abs(dy_p)) * 2
+            y_pool = ly_base + 12 + dy_p
+            if 0 <= y_pool < h:
+                for dx_p in range(-span, span + 1):
+                    x_pool = lx + dx_p
+                    if 0 <= x_pool < w:
+                        dist = abs(dx_p) + 2 * abs(dy_p)
+                        pcol = 25 if dist <= 4 else (24 if dist <= 9 else 22)
+                        plaza.put(x_pool, y_pool, pcol)
 
     # --- Layer 3: Clocks_2359 ---
     # 1) Station exit headhouse clock (visible in initial 0..640 pan frame)
@@ -743,7 +1056,7 @@ def _build_city_layers():
         for dy in range(length - 1):
             rain.put(rx, ry + dy, col_top)
         rain.put(rx, ry + length - 1, col_bot)
-        # Every 6th drop above the plaza floor has a frozen mid-air splash ring
+        # Every 6th drop above the plaza floor has a frozen mid-air 2:1 splash ring
         if ry >= 242 and idx % 6 == 0 and rx + 2 < w - 1:
             rain.put(rx - 2, ry + 4, 8)
             rain.put(rx - 1, ry + 5, 9)
@@ -842,6 +1155,8 @@ MOCKUP_FILES = [
     'ch01_operator_sighting_platform_mockup.png',
     'ch01_operator_cast_silhouette_greyscale_proof.png',
     'ch01_beat10_city_plate_greyscale_proof.png',
+    'ch01_beat10_city_pan_start_640x360_mockup.png',
+    'ch01_beat10_city_pan_end_640x360_mockup.png',
 ]
 
 
@@ -954,20 +1269,23 @@ def build_operator_cast_silhouette_proof():
         half.alpha_composite(cell_w.resize((96, 144), Image.NEAREST), (450 + i * 106, 36))
         _draw_text_img(half, 454 + i * 106, 186, f"F{i+1}:WL08-NOFX", PAL[26] if i == 2 else PAL[14], scale=1)
 
-    # Scarf-on vs Scarf-off & x6 Watch/Scarf callout on the right of Band 1 (x=890..1300)
-    f3_layers = _build_operator_frame(2)  # [shadow, robe, hood, scarf, hand_watch]
-    no_scarf_im = to_image(composite([f3_layers[0], f3_layers[1], f3_layers[2], f3_layers[4]]))
-    cell_ns = Image.new('RGBA', (32, 48), PAL[2] + (255,))
-    cell_ns.alpha_composite(no_scarf_im, (0, 0))
-    half.alpha_composite(cell_ns.resize((96, 144), Image.NEAREST), (890, 36))
-    _draw_text_img(half, 890, 186, "F3 SCARF-OFF", PAL[15], scale=1)
+    # Optional Scarf-on source-layer comparison & x8 Watch callout on the right of Band 1 (x=890..1300)
+    # Shipped F1..F4 on the left are SCARF-HIDDEN per ADR-022 A3 / Sol cb2acbd; this cell shows optional Scarf layer toggled on:
+    f3_layers = _build_operator_frame(2)  # [shadow, robe, hood, scarf(visible=False), hand_watch]
+    scarf_on_layer = f3_layers[3].copy()
+    scarf_on_layer.visible = True
+    scarf_on_im = to_image(composite([f3_layers[0], f3_layers[1], f3_layers[2], scarf_on_layer, f3_layers[4]]))
+    cell_so = Image.new('RGBA', (32, 48), PAL[2] + (255,))
+    cell_so.alpha_composite(scarf_on_im, (0, 0))
+    half.alpha_composite(cell_so.resize((96, 144), Image.NEAREST), (890, 36))
+    _draw_text_img(half, 890, 186, "F3 SCARF-ON(OPT)", PAL[14], scale=1)
 
-    # x6 zoom callout of F3 upper torso + watch + scarf (crop x=14..30, y=10..26 -> 16x16 @ x8 = 128x128)
+    # x8 zoom callout of shipped F3 upper torso + watch (scarf-hidden default export, crop x=14..30, y=10..26 -> 16x16 @ x8 = 128x128)
     f3_crop = op_frames[2].crop((14, 10, 30, 26))
     callout_bg = Image.new('RGBA', (128, 128), PAL[2] + (255,))
     callout_bg.alpha_composite(f3_crop.resize((128, 128), Image.NEAREST), (0, 0))
     half.alpha_composite(callout_bg, (1010, 44))
-    _draw_text_img(half, 1010, 180, "F3 WATCH(25/26/00)+SCARF(22/23) X8", PAL[26], scale=1)
+    _draw_text_img(half, 1010, 180, "SHIPPED F3 WATCH(25/26/00) NO-SCARF X8", PAL[26], scale=1)
 
     # Band 2 (y=212..490): C.5 32x48 Cast Silhouette & Watch/Scarf Link Study (Elias v2, Operator F3, Mira)
     _draw_text_img(half, 16, 212, "C.5 32X48 CAST SILHOUETTE & LINK STUDY : COLOUR, SOLID MASK (#=96), LINK (S/W)", PAL[15], scale=2)
@@ -993,10 +1311,10 @@ def build_operator_cast_silhouette_proof():
         half.alpha_composite(bg.resize((96, 144), Image.NEAREST), (bx, 242))
         _draw_text_img(half, bx, 392, label, PAL[15], scale=1)
 
-    # Strict solid-grey silhouette test (#=96 on bg=24) + link marker pass (#=96, s=144, w=224 on bg=24)
+    # Strict solid-grey silhouette test (#=96 on bg=24) + link marker pass (#=96, w=224 on bg=24; scarf hidden in Ch1 per ADR-022 A3)
     solid_trio = [
         ("ELIAS MASK", elias_idle_s, set(), {(19, 25), (20, 25), (21, 25), (19, 26), (21, 26), (19, 27), (20, 27), (21, 27)}),
-        ("OPER. MASK", op_frames[2], {(x, y) for y in (13, 14) for x in range(17, 22)} | {(19, 15), (20, 15)},
+        ("OPER. MASK", op_frames[2], set(),
          {(26 + dx, 20 + dy) for dy in range(3) for dx in range(3) if not (dx == 1 and dy == 1)}),
         ("MIRA MASK", mira_fig_im, set(), set()),
     ]
@@ -1040,7 +1358,7 @@ def build_operator_cast_silhouette_proof():
     gs_half = half.convert('L').convert('RGBA')
     canvas.alpha_composite(gs_half, (0, 520))
     _draw_text_img(canvas, 16, 1040, "LUMINANCE GREYSCALE PROOF ABOVE — ALL 3 CAST SILHOUETTES DISTINCT ON FLOOR 02 & WALL 08", PAL[15], scale=2)
-    _draw_text_img(canvas, 16, 1070, "NOTE: ELIAS V2 HAS NO SCARF / WATCH CLIP (OWNER DECISION PENDING PER TLF-061; SCARF IS SEPARATE LAYER)", PAL[25], scale=2)
+    _draw_text_img(canvas, 16, 1070, "ADR-022 A3: OPERATOR SCARF HIDDEN IN CH1 EXPORTS (RETAINED AS SEPARATE .PXO LAYER WITH 0 GAPS)", PAL[25], scale=2)
     return canvas
 
 
@@ -1104,6 +1422,18 @@ def build_beat10_city_plate_proof():
     return canvas
 
 
+def build_beat10_city_pan_start_mockup():
+    """Native 640x360 start pan crop (x=0..640, y=0..360) from delivered runtime ch01_env_beat10_city_plate_idle.png."""
+    plate = _png('environments', 'ch01_env_beat10_city_plate_idle')
+    return plate.crop((0, 0, 640, 360))
+
+
+def build_beat10_city_pan_end_mockup():
+    """Native 640x360 end pan crop (x=640..1280, y=0..360) from delivered runtime ch01_env_beat10_city_plate_idle.png."""
+    plate = _png('environments', 'ch01_env_beat10_city_plate_idle')
+    return plate.crop((640, 0, 1280, 360))
+
+
 def write_mockups(out_dir=None):
     os.makedirs(out_dir if out_dir is not None else os.path.join(REPO, 'design', 'art', 'mockups'), exist_ok=True)
     m1 = build_operator_platform_mockup()
@@ -1112,3 +1442,7 @@ def write_mockups(out_dir=None):
     m2.save(mockup_path('ch01_operator_cast_silhouette_greyscale_proof.png', out_dir))
     m3 = build_beat10_city_plate_proof()
     m3.save(mockup_path('ch01_beat10_city_plate_greyscale_proof.png', out_dir))
+    m4 = build_beat10_city_pan_start_mockup()
+    m4.save(mockup_path('ch01_beat10_city_pan_start_640x360_mockup.png', out_dir))
+    m5 = build_beat10_city_pan_end_mockup()
+    m5.save(mockup_path('ch01_beat10_city_pan_end_640x360_mockup.png', out_dir))
