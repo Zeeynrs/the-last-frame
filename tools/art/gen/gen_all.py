@@ -63,6 +63,8 @@ def main():
         step1_mockups.write_mockups()
         import tlf063_story_props
         tlf063_story_props.write_mockups()
+        import tlf062_operator_city
+        tlf062_operator_city.write_mockups()
         with open(placement_md.SHEET_PATH, 'w', encoding='utf-8', newline='\n') as fh:
             fh.write(placement_md.SHEET_TEXT)
         print('wrote sheet + mockups (incl. the ability wheel and Step 1 mockups and greyscale proofs)')
