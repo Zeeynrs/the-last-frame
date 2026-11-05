@@ -25,6 +25,16 @@
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png" id="art_wall_n"]
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png" id="art_wall_w"]
 
+[ext_resource type="Script" path="res://scripts/puzzle/objects/lamp_ring_breaker.gd" id="sig_breakerc"]
+[ext_resource type="Script" path="res://scripts/narrative/readable_document.gd" id="sig_readable"]
+[ext_resource type="Resource" path="res://data/documents/ch01/doc_bus_chart.tres" id="sig_doc_bus"]
+[ext_resource type="Script" path="res://scripts/narrative/trace_memory.gd" id="sig_tracemem"]
+[ext_resource type="Script" path="res://scripts/chapters/ch01/visuals/breaker_c_presenter.gd" id="sig_breakerc_pres"]
+[ext_resource type="Script" path="res://scripts/chapters/ch01/visuals/commuter_statue_presenter.gd" id="sig_commuter_pres"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_document_clipboard_idle.png" id="sig_clip_tex"]
+[ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n20_engineer_idle.png" id="sig_n20_idle"]
+[ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n20_engineer_read.png" id="sig_n20_read"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_door"]
 radius = 10.0
 
@@ -56,6 +66,15 @@ b = Vector2(384, 224)
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_north_railing"]
 a = Vector2(320, 112)
 b = Vector2(532, 218)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sig_interact14"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sig_doc12"]
+radius = 12.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sig_footprint12x8"]
+size = Vector2(12, 8)
 
 [node name="SignalControl" type="Node2D"]
 y_sort_enabled = true
@@ -470,3 +489,72 @@ z_as_relative = false
 offset = Vector2(-12, -32)
 centered = false
 texture = ExtResource("art_callbox")
+
+[node name="breaker_c" type="Area2D" parent="."]
+position = Vector2(224, 112)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("sig_breakerc")
+capacitor_id = &"ch01.signal_control.surge_capacitor"
+grid_id = &"ch01.signal_control.substation_grid"
+brownout_text_key = "PZ004_FB_BROWNOUT"
+feedback_keys = {
+&"unpowered": "PZ004_FB_C_DEAD"
+}
+puzzle_id = &"CH1-PZ-004"
+object_id = &"ch01.signal_control.breaker_c"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="breaker_c"]
+shape = SubResource("CircleShape2D_sig_interact14")
+
+[node name="Presenter" type="Sprite2D" parent="breaker_c"]
+z_index = 7
+z_as_relative = false
+script = ExtResource("sig_breakerc_pres")
+
+[node name="n20_engineer" type="Area2D" parent="."]
+position = Vector2(304, 168)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("sig_tracemem")
+lines = [["SPK_MEM_N20", "MEM_N20_1"], ["SPK_MEM_N20", "MEM_N20_2"]]
+flag_id = &"ch01.npc.n20.traced"
+journal_key = "JRN_MEM_N20"
+auto_advance = 4.0
+object_id = &"ch01.signal_control.n20_engineer"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="n20_engineer"]
+shape = SubResource("CircleShape2D_sig_interact14")
+
+[node name="Footprint" type="StaticBody2D" parent="n20_engineer"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="n20_engineer/Footprint"]
+shape = SubResource("RectangleShape2D_sig_footprint12x8")
+
+[node name="Presenter" type="Sprite2D" parent="n20_engineer"]
+z_index = 10
+z_as_relative = false
+script = ExtResource("sig_commuter_pres")
+tex_idle = ExtResource("sig_n20_idle")
+tex_read = ExtResource("sig_n20_read")
+
+[node name="doc_bus_chart" type="Area2D" parent="."]
+position = Vector2(272, 88)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("sig_readable")
+document = ExtResource("sig_doc_bus")
+object_id = &"ch01.signal_control.doc_bus_chart"
+traceable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="doc_bus_chart"]
+shape = SubResource("CircleShape2D_sig_doc12")
+
+[node name="DocSprite" type="Sprite2D" parent="doc_bus_chart"]
+z_index = 7
+z_as_relative = false
+offset = Vector2(-8, -12)
+centered = false
+texture = ExtResource("sig_clip_tex")

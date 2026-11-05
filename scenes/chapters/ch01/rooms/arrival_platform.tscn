@@ -14,6 +14,38 @@
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png" id="art_wall_w"]
 [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_pocket_watch_idle.png" id="art_watch"]
 
+[ext_resource type="Script" path="res://scripts/puzzle/objects/selector_switch.gd" id="so_selector"]
+[ext_resource type="Script" path="res://scripts/puzzle/objects/code_lock.gd" id="so_codelock"]
+[ext_resource type="Script" path="res://scripts/puzzle/objects/release_lever.gd" id="so_lever"]
+[ext_resource type="Script" path="res://scripts/puzzle/objects/powered_door.gd" id="so_door"]
+[ext_resource type="Script" path="res://scripts/narrative/readable_document.gd" id="so_readable"]
+[ext_resource type="Resource" path="res://data/documents/ch01/doc_last_service.tres" id="so_doc_last_service"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_document_clipboard_idle.png" id="so_clip_tex"]
+[ext_resource type="Script" path="res://scripts/narrative/trace_memory.gd" id="so_tracemem"]
+[ext_resource type="Script" path="res://scripts/chapters/ch01/visuals/selector_switch_presenter.gd" id="so_sel_pres"]
+[ext_resource type="Script" path="res://scripts/chapters/ch01/visuals/release_lever_presenter.gd" id="so_lever_pres"]
+[ext_resource type="Script" path="res://scripts/chapters/ch01/visuals/security_gate_presenter.gd" id="so_gate_pres"]
+[ext_resource type="Script" path="res://scripts/chapters/ch01/visuals/commuter_statue_presenter.gd" id="so_commuter_pres"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_platform_gate_closed.png" id="so_gate_closed"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_platform_gate_open.png" id="so_gate_open"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_line_pos0.png" id="so_sel_line_0"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_line_pos1.png" id="so_sel_line_1"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_line_pos2.png" id="so_sel_line_2"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_platform_pos0.png" id="so_sel_plat_0"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_platform_pos1.png" id="so_sel_plat_1"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_platform_pos2.png" id="so_sel_plat_2"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_car_pos0.png" id="so_sel_car_0"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_car_pos1.png" id="so_sel_car_1"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_car_pos2.png" id="so_sel_car_2"]
+[ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n01_conductor_idle.png" id="so_n01_idle"]
+[ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n01_conductor_read.png" id="so_n01_read"]
+[ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n02_student_idle.png" id="so_n02_idle"]
+[ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n02_student_read.png" id="so_n02_read"]
+[ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n03_old_man_idle.png" id="so_n03_idle"]
+[ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n03_old_man_read.png" id="so_n03_read"]
+[ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n04_cleaner_idle.png" id="so_n04_idle"]
+[ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n04_cleaner_read.png" id="so_n04_read"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_door"]
 radius = 10.0
 
@@ -25,6 +57,21 @@ radius = 14.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_clock"]
 radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_so_interact14"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_so_gate16"]
+radius = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_so_blocker24x12"]
+size = Vector2(24, 12)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_so_doc12"]
+radius = 12.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_so_footprint12x8"]
+size = Vector2(12, 8)
 
 [node name="ArrivalPlatform" type="Node2D"]
 y_sort_enabled = true
@@ -75,7 +122,7 @@ collision_layer = 4
 collision_mask = 2
 script = ExtResource("6_trigger")
 sequence_id = &"ch01_b01_watch"
-lines = [["SPK_ELIAS", "EL_B01_04"]]
+lines = [["SPK_MEMORY", "MEM_WATCH_1"], ["SPK_MEMORY", "MEM_WATCH_2"], ["SPK_ELIAS", "EL_B01_04"]]
 flag_id = &"ch01.flag.pocket_watch_acquired"
 object_id = &"global.pocket_watch"
 
@@ -203,3 +250,249 @@ z_as_relative = false
 offset = Vector2(-8, -12)
 centered = false
 texture = ExtResource("art_watch")
+
+[node name="selector_line" type="Area2D" parent="."]
+position = Vector2(416, 128)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("so_selector")
+puzzle_id = &"CH1-SO-01"
+count = 3
+label_keys = PackedStringArray("SO001_LINE_0", "SO001_LINE_1", "SO001_LINE_2")
+object_id = &"ch01.arrival_platform.selector_line"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="selector_line"]
+shape = SubResource("CircleShape2D_so_interact14")
+
+[node name="Presenter" type="Sprite2D" parent="selector_line"]
+z_index = 7
+z_as_relative = false
+script = ExtResource("so_sel_pres")
+textures = [ExtResource("so_sel_line_0"), ExtResource("so_sel_line_1"), ExtResource("so_sel_line_2")]
+
+[node name="selector_platform" type="Area2D" parent="."]
+position = Vector2(448, 144)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("so_selector")
+puzzle_id = &"CH1-SO-01"
+count = 3
+label_keys = PackedStringArray("SO001_PLAT_0", "SO001_PLAT_1", "SO001_PLAT_2")
+object_id = &"ch01.arrival_platform.selector_platform"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="selector_platform"]
+shape = SubResource("CircleShape2D_so_interact14")
+
+[node name="Presenter" type="Sprite2D" parent="selector_platform"]
+z_index = 7
+z_as_relative = false
+script = ExtResource("so_sel_pres")
+textures = [ExtResource("so_sel_plat_0"), ExtResource("so_sel_plat_1"), ExtResource("so_sel_plat_2")]
+
+[node name="selector_car" type="Area2D" parent="."]
+position = Vector2(480, 160)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("so_selector")
+puzzle_id = &"CH1-SO-01"
+count = 3
+label_keys = PackedStringArray("SO001_CAR_0", "SO001_CAR_1", "SO001_CAR_2")
+object_id = &"ch01.arrival_platform.selector_car"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="selector_car"]
+shape = SubResource("CircleShape2D_so_interact14")
+
+[node name="Presenter" type="Sprite2D" parent="selector_car"]
+z_index = 7
+z_as_relative = false
+script = ExtResource("so_sel_pres")
+textures = [ExtResource("so_sel_car_0"), ExtResource("so_sel_car_1"), ExtResource("so_sel_car_2")]
+
+[node name="release_lock" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("so_codelock")
+puzzle_id = &"CH1-SO-01"
+selector_ids = [&"ch01.arrival_platform.selector_line", &"ch01.arrival_platform.selector_platform", &"ch01.arrival_platform.selector_car"]
+answer = PackedInt32Array(1, 2, 1)
+lockout_base_ticks = 360
+solved_journal_key = "JRN_SO001_SOLVED"
+object_id = &"ch01.arrival_platform.release_lock"
+
+[node name="release_lever" type="Area2D" parent="."]
+position = Vector2(496, 184)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("so_lever")
+lock_id = &"ch01.arrival_platform.release_lock"
+puzzle_id = &"CH1-SO-01"
+object_id = &"ch01.arrival_platform.release_lever"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="release_lever"]
+shape = SubResource("CircleShape2D_so_interact14")
+
+[node name="Presenter" type="Sprite2D" parent="release_lever"]
+z_index = 7
+z_as_relative = false
+script = ExtResource("so_lever_pres")
+
+[node name="platform_gate" type="Area2D" parent="."]
+position = Vector2(448, 208)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("so_door")
+grid_id = &"ch01.arrival_platform.release_lock"
+closed_reason = &"locked"
+feedback_keys = {
+&"locked": "SO001_FB_GATE_SEALED"
+}
+puzzle_id = &"CH1-SO-01"
+object_id = &"ch01.arrival_platform.platform_gate"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="platform_gate"]
+shape = SubResource("CircleShape2D_so_gate16")
+
+[node name="Blocker" type="StaticBody2D" parent="platform_gate"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="platform_gate/Blocker"]
+shape = SubResource("RectangleShape2D_so_blocker24x12")
+
+[node name="Presenter" type="Sprite2D" parent="platform_gate"]
+z_index = 7
+z_as_relative = false
+script = ExtResource("so_gate_pres")
+tex_closed = ExtResource("so_gate_closed")
+tex_open = ExtResource("so_gate_open")
+
+[node name="doc_last_service" type="Area2D" parent="."]
+position = Vector2(288, 96)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("so_readable")
+document = ExtResource("so_doc_last_service")
+object_id = &"ch01.arrival_platform.doc_last_service"
+traceable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="doc_last_service"]
+shape = SubResource("CircleShape2D_so_doc12")
+
+[node name="DocSprite" type="Sprite2D" parent="doc_last_service"]
+z_index = 7
+z_as_relative = false
+offset = Vector2(-8, -12)
+centered = false
+texture = ExtResource("so_clip_tex")
+
+[node name="n01_conductor" type="Area2D" parent="."]
+position = Vector2(352, 208)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("so_tracemem")
+lines = [["SPK_MEM_N01", "MEM_N01_1"], ["SPK_MEM_N01", "MEM_N01_2"]]
+flag_id = &"ch01.npc.n01.traced"
+journal_key = "JRN_MEM_N01"
+auto_advance = 4.0
+object_id = &"ch01.arrival_platform.n01_conductor"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="n01_conductor"]
+shape = SubResource("CircleShape2D_so_interact14")
+
+[node name="Footprint" type="StaticBody2D" parent="n01_conductor"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="n01_conductor/Footprint"]
+shape = SubResource("RectangleShape2D_so_footprint12x8")
+
+[node name="Presenter" type="Sprite2D" parent="n01_conductor"]
+z_index = 10
+z_as_relative = false
+script = ExtResource("so_commuter_pres")
+tex_idle = ExtResource("so_n01_idle")
+tex_read = ExtResource("so_n01_read")
+
+[node name="n02_student" type="Area2D" parent="."]
+position = Vector2(272, 168)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("so_tracemem")
+lines = [["SPK_MEM_N02", "MEM_N02_1"], ["SPK_MEM_N02", "MEM_N02_2"]]
+flag_id = &"ch01.npc.n02.traced"
+journal_key = "JRN_MEM_N02"
+auto_advance = 4.0
+object_id = &"ch01.arrival_platform.n02_student"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="n02_student"]
+shape = SubResource("CircleShape2D_so_interact14")
+
+[node name="Footprint" type="StaticBody2D" parent="n02_student"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="n02_student/Footprint"]
+shape = SubResource("RectangleShape2D_so_footprint12x8")
+
+[node name="Presenter" type="Sprite2D" parent="n02_student"]
+z_index = 10
+z_as_relative = false
+script = ExtResource("so_commuter_pres")
+tex_idle = ExtResource("so_n02_idle")
+tex_read = ExtResource("so_n02_read")
+
+[node name="n03_old_man" type="Area2D" parent="."]
+position = Vector2(352, 112)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("so_tracemem")
+lines = [["SPK_MEM_N03", "MEM_N03_1"], ["SPK_MEM_N03", "MEM_N03_2"]]
+flag_id = &"ch01.npc.n03.traced"
+journal_key = "JRN_MEM_N03"
+auto_advance = 4.0
+object_id = &"ch01.arrival_platform.n03_old_man"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="n03_old_man"]
+shape = SubResource("CircleShape2D_so_interact14")
+
+[node name="Footprint" type="StaticBody2D" parent="n03_old_man"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="n03_old_man/Footprint"]
+shape = SubResource("RectangleShape2D_so_footprint12x8")
+
+[node name="Presenter" type="Sprite2D" parent="n03_old_man"]
+z_index = 10
+z_as_relative = false
+script = ExtResource("so_commuter_pres")
+tex_idle = ExtResource("so_n03_idle")
+tex_read = ExtResource("so_n03_read")
+
+[node name="n04_cleaner" type="Area2D" parent="."]
+position = Vector2(400, 216)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("so_tracemem")
+lines = [["SPK_MEM_N04", "MEM_N04_1"], ["SPK_MEM_N04", "MEM_N04_2"]]
+flag_id = &"ch01.npc.n04.traced"
+journal_key = "JRN_MEM_N04"
+auto_advance = 4.0
+object_id = &"ch01.arrival_platform.n04_cleaner"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="n04_cleaner"]
+shape = SubResource("CircleShape2D_so_interact14")
+
+[node name="Footprint" type="StaticBody2D" parent="n04_cleaner"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="n04_cleaner/Footprint"]
+shape = SubResource("RectangleShape2D_so_footprint12x8")
+
+[node name="Presenter" type="Sprite2D" parent="n04_cleaner"]
+z_index = 10
+z_as_relative = false
+script = ExtResource("so_commuter_pres")
+tex_idle = ExtResource("so_n04_idle")
+tex_read = ExtResource("so_n04_read")

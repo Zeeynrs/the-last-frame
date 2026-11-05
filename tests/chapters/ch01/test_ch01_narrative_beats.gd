@@ -106,7 +106,7 @@ func test_beat01_platform_awakening_and_watch_pickup() -> void:
 	_assert_true(fired, "watch trigger fired")
 	_assert_true(diag.is_active, "Beat 01 watch dialogue is active")
 	_assert_eq(diag.current_sequence_id, &"ch01_b01_watch", "sequence is ch01_b01_watch")
-	_assert_eq(diag.current_lines.size(), 1, "watch line has 1 line (EL_B01_04)")
+	_assert_eq(diag.current_lines.size(), 3, "watch line has 3 lines (MEM_WATCH_1, MEM_WATCH_2, EL_B01_04)")
 	_assert_true(ch01.session.narrative_state.get_flag(&"ch01.flag.pocket_watch_acquired"), "pocket_watch_acquired flag set")
 	_assert_true(ch01.session.narrative_state.get_flag(&"heard.ch01_b01_watch"), "heard.ch01_b01_watch flag set")
 

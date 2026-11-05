@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DocumentDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/narrative/document_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+document_id = &"ch01.upper_vestibule.doc_relay_memo"
+kind = 0
+title_key = "DOC_RELAY_MEMO_TITLE"
+body_key = "DOC_RELAY_MEMO_BODY_1"
+flag_id = &"ch01.flag.relay_memo_read"
+fragment_id = &""
+journal_entry_key = "JRN_DOC_RELAY_MEMO"
+journal_category = "fact"

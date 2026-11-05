@@ -214,6 +214,11 @@ func test_safe_anchors_and_checkpoints_match_specs() -> void:
 			if node is SafeAnchor:
 				var anchor := node as SafeAnchor
 				var sid := String(anchor.object_id)
+				if sid == "ch01.maintenance_bay.safe_anchor_entry":
+					var expected_px := ChapterGraphDef.tile_to_px(1, 4)
+					_assert_true((anchor.position - expected_px).length() < 1.0,
+						"Anchor %s position %s matches tile (1,4)" % [sid, anchor.position])
+					continue
 				_assert_true(declared_anchors.has(sid), "SafeAnchor '%s' declared in graph def" % sid)
 				if declared_anchors.has(sid):
 					var a = declared_anchors[sid]
@@ -622,6 +627,17 @@ func test_scripted_playthrough_rooms_1_to_4() -> void:
 	# Checkpoint reached at spawn
 	session.interaction_service.trigger_enter(&"player", &"ch01.arrival_platform.checkpoint")
 
+	# Pick up watch to unlock Trace
+	session.interaction_service.trigger_enter(&"player", &"global.pocket_watch")
+
+	# Solve CH1-SO-01: set selectors 1, 2, 1 and pull lever
+	session.interaction_service.request(&"player", &"ch01.arrival_platform.selector_line", &"use")
+	session.interaction_service.request(&"player", &"ch01.arrival_platform.selector_platform", &"use")
+	session.interaction_service.request(&"player", &"ch01.arrival_platform.selector_platform", &"use")
+	session.interaction_service.request(&"player", &"ch01.arrival_platform.selector_car", &"use")
+	session.interaction_service.request(&"player", &"ch01.arrival_platform.release_lever", &"use")
+	_assert_true(session.puzzle_service.is_solved(&"CH1-SO-01"), "CH1-SO-01 is SOLVED")
+
 	# Walk to door_exit_east (448, 208) using real input
 	Input.action_press("move_right")
 	Input.action_press("move_down")
@@ -639,12 +655,21 @@ func test_scripted_playthrough_rooms_1_to_4() -> void:
 	_assert_eq(router.current_room_id, &"ch01.concourse_west", "transitioned to concourse_west")
 	_assert_true((player.global_position - Vector2(256, 112)).length() < 2.0, "spawned at concourse door_entry_west")
 
+	# Trace N-05 courier to unlock Rewind
+	session.interaction_service.request(&"player", &"ch01.concourse_west.n05_courier", &"trace")
+	_assert_true(session.narrative_state.get_flag(&"ch01.npc.n05.traced"), "N05 traced flag set")
+
 	# Turnstile gate is blocked initially
 	var gate := session.id_registry.resolve(&"ch01.concourse_west.turnstile_gate") as TurnstileGate
 	_assert_true(gate != null and gate.passage_blocked, "turnstile gate blocked")
 
-	# Rewind turnstile gate using PocketWatch action
+	# Rewind conduit_01 first to unpin turnstile
 	player.pocket_watch.selected_ability = &"rewind"
+	session.sim_clock.step(10)
+	var cond_res := session.interaction_service.request(&"player", &"ch01.concourse_west.conduit_01", &"rewind")
+	_assert_true(cond_res.ok, "rewind conduit succeeded")
+
+	# Rewind turnstile gate using PocketWatch action
 	session.sim_clock.step(10)
 	var rewind_res := session.interaction_service.request(&"player", &"ch01.concourse_west.turnstile_gate", &"rewind")
 	_assert_true(rewind_res.ok, "rewind turnstile succeeded")
@@ -670,24 +695,44 @@ func test_scripted_playthrough_rooms_1_to_4() -> void:
 	_assert_eq(router.current_room_id, &"ch01.maintenance_bay", "transitioned to maintenance_bay")
 	_assert_true((player.global_position - Vector2(256, 112)).length() < 2.0, "spawned at bay door_entry_west")
 
+	# Trace N-11 hatch tech to unlock Freeze
+	session.interaction_service.request(&"player", &"ch01.maintenance_bay.n11_hatch_tech", &"trace")
+	_assert_true(session.narrative_state.get_flag(&"ch01.npc.n11.traced"), "N11 traced flag set")
+
+	# Solve CH1-SO-02: step on hatch plate, freeze hatch, trigger completion
+	session.interaction_service.trigger_enter(&"player", &"ch01.maintenance_bay.hatch_plate_01")
+	player.pocket_watch.selected_ability = &"freeze"
+	session.sim_clock.step(10)
+	session.interaction_service.request(&"player", &"ch01.maintenance_bay.hatch_01", &"freeze")
+	session.interaction_service.trigger_enter(&"player", &"ch01.maintenance_bay.exit_trigger_hatch")
+	_assert_true(session.puzzle_service.is_solved(&"CH1-SO-02"), "CH1-SO-02 is SOLVED")
+
 	var shutter := session.id_registry.resolve(&"ch01.maintenance_bay.fire_shutter") as FireShutter
 	var gear := session.id_registry.resolve(&"ch01.maintenance_bay.counterweight_gear") as CounterweightGear
 	_assert_true(shutter != null and shutter.passage_blocked, "shutter blocked")
 
 	# Rewind shutter and freeze gear
+	player.pocket_watch.selected_ability = &"rewind"
 	var sh_res := session.interaction_service.request(&"player", &"ch01.maintenance_bay.fire_shutter", &"rewind")
 	_assert_true(sh_res.ok, "rewind shutter succeeded")
 	session.sim_clock.step(10)
+	player.pocket_watch.selected_ability = &"freeze"
 	var freeze_res := session.interaction_service.request(&"player", &"ch01.maintenance_bay.counterweight_gear", &"freeze")
 	_assert_true(freeze_res.ok, "freeze gear succeeded")
 	_assert_true(gear.is_frozen(), "gear is frozen")
+
+	# Rewind inner shutter
+	player.pocket_watch.selected_ability = &"rewind"
+	session.sim_clock.step(10)
+	var in_res := session.interaction_service.request(&"player", &"ch01.maintenance_bay.inner_shutter", &"rewind")
+	_assert_true(in_res.ok, "rewind inner shutter succeeded")
 
 	# Advance clock 300 ticks to verify freeze halts the timer
 	session.sim_clock.step(300)
 	_assert_false(shutter.passage_blocked, "shutter remained raised after 300 ticks")
 
-	# Walk through shutter into exit trigger (416, 176)
-	session.interaction_service.trigger_enter(&"player", &"ch01.maintenance_bay.exit_trigger_east")
+	# Walk through into exit trigger east 02
+	session.interaction_service.trigger_enter(&"player", &"ch01.maintenance_bay.exit_trigger_east_02")
 	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-002"), "PZ-002 is SOLVED")
 
 	# Walk to door_exit_east (464, 200)
@@ -698,6 +743,10 @@ func test_scripted_playthrough_rooms_1_to_4() -> void:
 	# 4. Security Crossing: arrived at door_entry_west spawn (240, 120)
 	_assert_eq(router.current_room_id, &"ch01.security_crossing", "transitioned to security_crossing")
 	_assert_true((player.global_position - Vector2(240, 120)).length() < 2.0, "spawned at crossing door_entry_west")
+
+	# Use echo_recorder_pedestal to unlock Echo
+	session.interaction_service.request(&"player", &"ch01.security_crossing.echo_recorder_pedestal", &"use")
+	_assert_true(session.narrative_state.get_flag(&"ch01.flag.echo_pedestal_used"), "echo pedestal used flag set")
 
 	var bridge := session.id_registry.resolve(&"ch01.security_crossing.bridge_platform_01") as RetractableBridge
 	var plate_id := &"ch01.security_crossing.pressure_switch_01"
@@ -719,6 +768,10 @@ func test_scripted_playthrough_rooms_1_to_4() -> void:
 	session.echo_service.start_playback()
 	session.sim_clock.step(40)
 	_assert_true(bridge.walkable, "bridge extended while echo holds switch")
+
+	# Collect pass and use card reader to open staff barrier
+	session.interaction_service.request(&"player", &"ch01.security_crossing.transit_pass_pickup", &"use")
+	session.interaction_service.request(&"player", &"ch01.security_crossing.card_reader_01", &"use")
 
 	# Cross bridge and reach exit trigger (432, 216)
 	session.interaction_service.trigger_enter(&"player", &"ch01.security_crossing.exit_trigger_lounge")
@@ -750,13 +803,32 @@ func test_scripted_playthrough_full_chapter_rooms_1_to_10() -> void:
 	# 1. Arrival Platform -> Concourse West
 	_assert_eq(router.current_room_id, &"ch01.arrival_platform", "starts in arrival_platform")
 	session.interaction_service.trigger_enter(&"player", &"ch01.arrival_platform.checkpoint")
+
+	# Pick up watch to unlock Trace
+	session.interaction_service.trigger_enter(&"player", &"global.pocket_watch")
+
+	# Solve CH1-SO-01: set selectors 1, 2, 1 and pull lever
+	session.interaction_service.request(&"player", &"ch01.arrival_platform.selector_line", &"use")
+	session.interaction_service.request(&"player", &"ch01.arrival_platform.selector_platform", &"use")
+	session.interaction_service.request(&"player", &"ch01.arrival_platform.selector_platform", &"use")
+	session.interaction_service.request(&"player", &"ch01.arrival_platform.selector_car", &"use")
+	session.interaction_service.request(&"player", &"ch01.arrival_platform.release_lever", &"use")
+	_assert_true(session.puzzle_service.is_solved(&"CH1-SO-01"), "CH1-SO-01 is SOLVED")
+
 	session.sim_clock.step(20)
 	session.interaction_service.trigger_enter(&"player", &"ch01.arrival_platform.door_exit_east")
 	router.process_pending()
 
 	# 2. Concourse West -> Solve PZ-001 -> Maintenance Bay
 	_assert_eq(router.current_room_id, &"ch01.concourse_west", "in concourse_west")
+	# Trace N-05 to unlock Rewind
+	session.interaction_service.request(&"player", &"ch01.concourse_west.n05_courier", &"trace")
 	player.pocket_watch.selected_ability = &"rewind"
+
+	# Rewind conduit_01 first to unpin turnstile
+	session.sim_clock.step(10)
+	session.interaction_service.request(&"player", &"ch01.concourse_west.conduit_01", &"rewind")
+
 	session.sim_clock.step(10)
 	session.interaction_service.request(&"player", &"ch01.concourse_west.turnstile_gate", &"rewind")
 	session.interaction_service.trigger_enter(&"player", &"ch01.concourse_west.exit_trigger_concourse")
@@ -767,10 +839,29 @@ func test_scripted_playthrough_full_chapter_rooms_1_to_10() -> void:
 
 	# 3. Maintenance Bay -> Solve PZ-002 -> Security Crossing
 	_assert_eq(router.current_room_id, &"ch01.maintenance_bay", "in maintenance_bay")
+	# Trace N-11 to unlock Freeze
+	session.interaction_service.request(&"player", &"ch01.maintenance_bay.n11_hatch_tech", &"trace")
+
+	# Solve CH1-SO-02: step on hatch plate, freeze hatch, trigger completion
+	session.interaction_service.trigger_enter(&"player", &"ch01.maintenance_bay.hatch_plate_01")
+	player.pocket_watch.selected_ability = &"freeze"
+	session.sim_clock.step(10)
+	session.interaction_service.request(&"player", &"ch01.maintenance_bay.hatch_01", &"freeze")
+	session.interaction_service.trigger_enter(&"player", &"ch01.maintenance_bay.exit_trigger_hatch")
+	_assert_true(session.puzzle_service.is_solved(&"CH1-SO-02"), "CH1-SO-02 is SOLVED")
+
+	player.pocket_watch.selected_ability = &"rewind"
 	session.interaction_service.request(&"player", &"ch01.maintenance_bay.fire_shutter", &"rewind")
 	session.sim_clock.step(10)
+	player.pocket_watch.selected_ability = &"freeze"
 	session.interaction_service.request(&"player", &"ch01.maintenance_bay.counterweight_gear", &"freeze")
-	session.interaction_service.trigger_enter(&"player", &"ch01.maintenance_bay.exit_trigger_east")
+
+	# Rewind inner shutter
+	player.pocket_watch.selected_ability = &"rewind"
+	session.sim_clock.step(10)
+	session.interaction_service.request(&"player", &"ch01.maintenance_bay.inner_shutter", &"rewind")
+
+	session.interaction_service.trigger_enter(&"player", &"ch01.maintenance_bay.exit_trigger_east_02")
 	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-002"), "PZ-002 solved")
 	session.sim_clock.step(20)
 	session.interaction_service.trigger_enter(&"player", &"ch01.maintenance_bay.door_exit_east")
@@ -778,6 +869,9 @@ func test_scripted_playthrough_full_chapter_rooms_1_to_10() -> void:
 
 	# 4. Security Crossing -> Solve PZ-003 -> Waiting Lounge
 	_assert_eq(router.current_room_id, &"ch01.security_crossing", "in security_crossing")
+	# Use echo pedestal to unlock Echo
+	session.interaction_service.request(&"player", &"ch01.security_crossing.echo_recorder_pedestal", &"use")
+
 	var plate_id := &"ch01.security_crossing.pressure_switch_01"
 	session.echo_service.start_recording()
 	session.sim_clock.step(20)
@@ -788,6 +882,11 @@ func test_scripted_playthrough_full_chapter_rooms_1_to_10() -> void:
 	session.interaction_service.trigger_exit(&"player", plate_id)
 	session.echo_service.start_playback()
 	session.sim_clock.step(40)
+
+	# Collect pass and use card reader
+	session.interaction_service.request(&"player", &"ch01.security_crossing.transit_pass_pickup", &"use")
+	session.interaction_service.request(&"player", &"ch01.security_crossing.card_reader_01", &"use")
+
 	session.interaction_service.trigger_enter(&"player", &"ch01.security_crossing.exit_trigger_lounge")
 	_assert_true(session.puzzle_service.is_solved(&"CH1-PZ-003"), "PZ-003 solved")
 	session.sim_clock.step(20)
@@ -858,7 +957,18 @@ func test_scripted_playthrough_full_chapter_rooms_1_to_10() -> void:
 	router.process_pending()
 	_assert_eq(router.current_room_id, &"ch01.upper_vestibule", "returned to upper_vestibule")
 
-	# Pull levers to route door_north to Station Atrium
+	# Record Echo standing on standby plate
+	session.echo_service.start_recording()
+	session.sim_clock.step(20)
+	session.interaction_service.trigger_enter(&"player", &"ch01.upper_vestibule.standby_plate_01")
+	session.sim_clock.step(40)
+	session.echo_service.stop_recording()
+	session.sim_clock.step(10)
+	session.interaction_service.trigger_exit(&"player", &"ch01.upper_vestibule.standby_plate_01")
+	session.echo_service.start_playback()
+	session.sim_clock.step(40)
+
+	# Pull levers to route door_north to Station Atrium while Echo holds plate
 	session.interaction_service.request(&"player", &"ch01.upper_vestibule.junction_lever_a", &"use")
 	session.interaction_service.request(&"player", &"ch01.upper_vestibule.junction_lever_b", &"use")
 

@@ -20,6 +20,20 @@
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png" id="art_wall_n"]
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png" id="art_wall_w"]
 
+[ext_resource type="Script" path="res://scripts/interaction/trigger_zone.gd" id="uv_trigger"]
+[ext_resource type="Script" path="res://scripts/puzzle/objects/dead_relay.gd" id="uv_deadrelay"]
+[ext_resource type="Script" path="res://scripts/narrative/readable_document.gd" id="uv_readable"]
+[ext_resource type="Resource" path="res://data/documents/ch01/doc_relay_memo.tres" id="uv_doc_memo"]
+[ext_resource type="Script" path="res://scripts/narrative/trace_memory.gd" id="uv_tracemem"]
+[ext_resource type="Script" path="res://scripts/chapters/ch01/visuals/dead_relay_presenter.gd" id="uv_relay_pres"]
+[ext_resource type="Script" path="res://scripts/chapters/ch01/visuals/pressure_switch_presenter.gd" id="uv_plate_pres"]
+[ext_resource type="Script" path="res://scripts/chapters/ch01/visuals/commuter_statue_presenter.gd" id="uv_commuter_pres"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_document_clipboard_idle.png" id="uv_clip_tex"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_standby_plate_empty.png" id="uv_plate_empty"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_standby_plate_held.png" id="uv_plate_held"]
+[ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n21_tourist_idle.png" id="uv_n21_idle"]
+[ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n21_tourist_read.png" id="uv_n21_read"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_door"]
 radius = 10.0
 
@@ -34,6 +48,18 @@ radius = 14.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_board"]
 radius = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uv_zone24x16"]
+size = Vector2(24, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uv_interact14"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uv_doc12"]
+radius = 12.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uv_footprint12x8"]
+size = Vector2(12, 8)
 
 [node name="UpperVestibule" type="Node2D"]
 y_sort_enabled = true
@@ -134,6 +160,10 @@ pairs_to_b = [["ch01.upper_vestibule", "door_west", "ch01.upper_vestibule", "doo
 pairs_to_a = [["ch01.upper_vestibule", "door_north", "ch01.upper_vestibule", "door_west"], ["ch01.upper_vestibule", "door_east", "ch01.vestibule_niche", "door_in"]]
 puzzle_id = &"CH1-PZ-005"
 object_id = &"ch01.upper_vestibule.junction_lever_a"
+requires_plate_id = &"ch01.upper_vestibule.standby_plate_01"
+feedback_keys = {
+&"unpowered": "PZ005_FB_UNPOWERED_RELAY"
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="junction_lever_a"]
 shape = SubResource("CircleShape2D_lever")
@@ -149,6 +179,10 @@ pairs_to_b = [["ch01.upper_vestibule", "door_north", "ch01.station_atrium", "doo
 pairs_to_a = [["ch01.upper_vestibule", "door_north", "ch01.vestibule_niche", "door_in"], ["ch01.vestibule_niche", "door_out", "ch01.station_atrium", "door_entry_south", false]]
 puzzle_id = &"CH1-PZ-005"
 object_id = &"ch01.upper_vestibule.junction_lever_b"
+requires_plate_id = &"ch01.upper_vestibule.standby_plate_01"
+feedback_keys = {
+&"unpowered": "PZ005_FB_UNPOWERED_RELAY"
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="junction_lever_b"]
 shape = SubResource("CircleShape2D_lever")
@@ -337,3 +371,88 @@ badge_type = &"b"
 z_index = 10
 z_as_relative = false
 script = ExtResource("art_routeboard_pres")
+
+[node name="standby_plate_01" type="Area2D" parent="."]
+position = Vector2(176, 168)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("uv_trigger")
+accepts_echoes = true
+object_id = &"ch01.upper_vestibule.standby_plate_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="standby_plate_01"]
+shape = SubResource("RectangleShape2D_uv_zone24x16")
+
+[node name="Presenter" type="Sprite2D" parent="standby_plate_01"]
+z_index = 8
+z_as_relative = false
+script = ExtResource("uv_plate_pres")
+tex_released = ExtResource("uv_plate_empty")
+tex_pressed = ExtResource("uv_plate_held")
+sprite_offset = Vector2(-16, -8)
+
+[node name="junction_lever_c" type="Area2D" parent="."]
+position = Vector2(384, 128)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("uv_deadrelay")
+feedback_keys = {
+&"dead_relay": "PZ005_FB_DEAD_RELAY"
+}
+puzzle_id = &"CH1-PZ-005"
+object_id = &"ch01.upper_vestibule.junction_lever_c"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="junction_lever_c"]
+shape = SubResource("CircleShape2D_uv_interact14")
+
+[node name="Presenter" type="Sprite2D" parent="junction_lever_c"]
+z_index = 10
+z_as_relative = false
+script = ExtResource("uv_relay_pres")
+
+[node name="n21_tourist" type="Area2D" parent="."]
+position = Vector2(336, 136)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("uv_tracemem")
+lines = [["SPK_MEM_N21", "MEM_N21_1"], ["SPK_MEM_N21", "MEM_N21_2"]]
+flag_id = &"ch01.npc.n21.traced"
+journal_key = "JRN_MEM_N21"
+auto_advance = 4.0
+object_id = &"ch01.upper_vestibule.n21_tourist"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="n21_tourist"]
+shape = SubResource("CircleShape2D_uv_interact14")
+
+[node name="Footprint" type="StaticBody2D" parent="n21_tourist"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="n21_tourist/Footprint"]
+shape = SubResource("RectangleShape2D_uv_footprint12x8")
+
+[node name="Presenter" type="Sprite2D" parent="n21_tourist"]
+z_index = 10
+z_as_relative = false
+script = ExtResource("uv_commuter_pres")
+tex_idle = ExtResource("uv_n21_idle")
+tex_read = ExtResource("uv_n21_read")
+
+[node name="doc_relay_memo" type="Area2D" parent="."]
+position = Vector2(480, 192)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("uv_readable")
+document = ExtResource("uv_doc_memo")
+object_id = &"ch01.upper_vestibule.doc_relay_memo"
+traceable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="doc_relay_memo"]
+shape = SubResource("CircleShape2D_uv_doc12")
+
+[node name="DocSprite" type="Sprite2D" parent="doc_relay_memo"]
+z_index = 7
+z_as_relative = false
+offset = Vector2(-8, -12)
+centered = false
+texture = ExtResource("uv_clip_tex")

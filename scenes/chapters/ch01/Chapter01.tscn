@@ -1,7 +1,31 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/chapter/ChapterRoot.tscn" id="1_root"]
 [ext_resource type="Script" path="res://scripts/chapters/ch01/chapter01.gd" id="2_ch01"]
+[ext_resource type="Script" path="res://scripts/puzzle/ability_unlock_trigger.gd" id="3_trigger"]
 
 [node name="Chapter01" instance=ExtResource("1_root")]
 script = ExtResource("2_ch01")
+
+[node name="GameSession" parent="." index="0"]
+starting_abilities = [&"trace"]
+
+[node name="UnlockTrace" type="Node" parent="." index="4"]
+script = ExtResource("3_trigger")
+ability = &"trace"
+on_flag = &"ch01.flag.pocket_watch_acquired"
+
+[node name="UnlockRewind" type="Node" parent="." index="5"]
+script = ExtResource("3_trigger")
+ability = &"rewind"
+on_flag = &"ch01.npc.n05.traced"
+
+[node name="UnlockFreeze" type="Node" parent="." index="6"]
+script = ExtResource("3_trigger")
+ability = &"freeze"
+on_flag = &"ch01.npc.n11.traced"
+
+[node name="UnlockEcho" type="Node" parent="." index="7"]
+script = ExtResource("3_trigger")
+ability = &"echo"
+on_flag = &"ch01.flag.echo_pedestal_used"

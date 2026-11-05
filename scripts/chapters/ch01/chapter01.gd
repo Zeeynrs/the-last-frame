@@ -29,6 +29,10 @@ func _ready() -> void:
 	UIFeedback.init_translations()
 	if session == null:
 		session = get_node_or_null("GameSession") as GameSession
+	if session != null and session.starting_abilities.is_empty():
+		session.starting_abilities = [&"trace"]
+		if session.ability_unlocks != null:
+			session.ability_unlocks.set_unlocked([&"trace"])
 	if room_router == null:
 		room_router = get_node_or_null("RoomRouter") as RoomRouter
 
@@ -77,10 +81,13 @@ func _ready() -> void:
 			session.puzzle_service.puzzle_solved.connect(_on_puzzle_solved)
 		if session.interaction_service != null:
 			session.interaction_service.trigger_entered.connect(_on_trigger_entered)
+			session.interaction_service.interaction_failed.connect(_on_interaction_failed)
 		if session.narrative_state != null:
 			session.narrative_state.document_read.connect(_on_document_read)
 		if session.echo_service != null:
 			session.echo_service.state_changed.connect(_on_echo_state_changed)
+		if session.ability_unlocks != null:
+			session.ability_unlocks.ability_unlocked.connect(_on_ability_unlocked)
 
 	_setup_document_viewer_listener()
 
@@ -99,6 +106,10 @@ func _on_room_entered(room_id: StringName) -> void:
 		for child in room_router.current_room.find_children("*", "ReadableDocument", true, false):
 			if child is ReadableDocument and not child.opened.is_connected(_on_readable_opened):
 				child.opened.connect(_on_readable_opened)
+		# Connect feedback_requested on puzzle objects and decoy plates
+		for child in room_router.current_room.find_children("*", "", true, false):
+			if child.has_signal("feedback_requested") and not child.feedback_requested.is_connected(_on_puzzle_feedback_requested):
+				child.feedback_requested.connect(_on_puzzle_feedback_requested)
 
 	# Beat 01: Awakening monologue
 	if room_id == &"ch01.arrival_platform":
@@ -126,6 +137,56 @@ func _trigger_beat01_start() -> void:
 			false,
 			4.0
 		)
+
+
+func _on_interaction_failed(_tick: int, actor_id: StringName, target_id: StringName, interaction_id: StringName, reason: StringName) -> void:
+	if actor_id != &"player":
+		return
+	var hud := _find_hud()
+	if hud == null:
+		return
+	var custom_key := ""
+	if session != null and session.id_registry != null:
+		var target_node = session.id_registry.resolve(target_id)
+		if target_node is PuzzleObject:
+			custom_key = target_node.feedback_key(reason)
+	if not custom_key.is_empty():
+		hud.show_message(tr(custom_key), 2.0)
+	else:
+		var context := &"use" if interaction_id == &"use" else &"watch"
+		hud.show_feedback(reason, context)
+
+
+func _on_puzzle_feedback_requested(text_key: String) -> void:
+	var hud := _find_hud()
+	if hud != null and not text_key.is_empty():
+		hud.show_message(tr(text_key), 2.0)
+
+
+func _on_ability_unlocked(ability: StringName) -> void:
+	var hud := _find_hud()
+	if hud != null:
+		var toast_key := "UNLOCK_" + String(ability).to_upper()
+		hud.show_message(tr(toast_key), 2.0)
+
+	var elias_key := ""
+	match ability:
+		&"rewind": elias_key = "EL_UNLOCK_REWIND"
+		&"freeze": elias_key = "EL_UNLOCK_FREEZE"
+		&"echo": elias_key = "EL_UNLOCK_ECHO"
+
+	if not elias_key.is_empty():
+		var diag := get_dialogue_box()
+		if diag != null:
+			diag.play_sequence(StringName("unlock." + String(ability)), [["SPK_ELIAS", elias_key]], false, 4.0)
+
+	# Auto-select newly unlocked ability once, except during a blocking dialogue
+	var diag_box := get_dialogue_box()
+	var is_blocking: bool = diag_box != null and diag_box.is_active and diag_box.is_blocking
+	if not is_blocking and player != null:
+		var watch = player.get("pocket_watch")
+		if watch != null and watch.has_method("set_selected_ability"):
+			watch.set_selected_ability(ability)
 
 
 func _update_movement_hint(delta: float) -> void:

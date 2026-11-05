@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DocumentDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/narrative/document_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+document_id = &"ch01.signal_control.doc_bus_chart"
+kind = 0
+title_key = "DOC_BUS_CHART_TITLE"
+body_key = "DOC_BUS_CHART_BODY_1"
+flag_id = &"ch01.flag.bus_chart_read"
+fragment_id = &""
+journal_entry_key = "JRN_DOC_BUS_CHART"
+journal_category = "fact"

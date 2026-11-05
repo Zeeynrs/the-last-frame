@@ -69,7 +69,7 @@ func test_documents_reference_existing_keys_and_load() -> void:
 			if not key.is_empty():
 				_assert_true(rows.has(key), "%s: %s has text" % [file, key])
 		_assert_true(doc.journal_category in NarrativeState.JOURNAL_CATEGORIES, "%s category" % file)
-	_assert_eq(count, 5, "five Ch1 documents")
+	_assert_eq(count, 12, "twelve Ch1 documents")
 
 
 func test_revelation_document_applies_its_effects() -> void:
