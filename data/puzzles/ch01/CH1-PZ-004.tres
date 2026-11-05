@@ -8,3 +8,4 @@ puzzle_id = &"CH1-PZ-004"
 room_id = &"ch01.signal_control"
 title_key = "PZ004_TITLE"
 hint_keys = PackedStringArray("PZ004_HINT_1", "PZ004_HINT_2", "PZ004_HINT_3")
+order = 7

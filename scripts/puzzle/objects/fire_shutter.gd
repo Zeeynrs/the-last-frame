@@ -6,10 +6,14 @@ extends PuzzleObject
 ## unless the coupled gear is frozen. Reaching zero is a discrete transition (raised -> closed) and
 ## commits history, so it can be rewound again without a reset (TEST-PZ002-05).
 ## Safety clutch: a player in the threshold zone when it closes is moved to safety first.
+## `requires_gear_frozen` (CH1-PZ-002 R1 inner shutter, TLF-054): the opposite rule. Rewind is
+## refused with &"unanchored" unless the gear is frozen. A state rule, not a timing gate, so the
+## timing assist cannot weaken it. Default false = the base shutter.
 
 @export var gear_id: StringName = &""
 @export var threshold_zone_id: StringName = &""
 @export var hold_ticks_base: int = 180
+@export var requires_gear_frozen: bool = false
 
 var shutter_state: StringName = &"closed"
 var hold_ticks: int = 0
@@ -44,9 +48,17 @@ func _can_use(_actor_id: StringName, _interaction_id: StringName, _payload: Dict
 
 
 func _can_use_ability(_actor_id: StringName, ability_id: StringName, _payload: Dictionary) -> StringName:
-	if ability_id == ABILITY_REWIND and gear_locked():
+	if ability_id != ABILITY_REWIND:
+		return &""
+	if requires_gear_frozen:
+		return &"" if gear_locked() else &"unanchored"
+	if gear_locked():
 		return &"frozen"  # the frozen counterweight spindle blocks the shutter (spec rule 4)
 	return &""
+
+
+func _default_feedback_keys() -> Dictionary:
+	return {&"unanchored": "PZ002_FB_UNANCHORED"}
 
 
 func _puzzle_tick(_tick: int) -> void:

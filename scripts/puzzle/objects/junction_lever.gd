@@ -6,6 +6,8 @@ extends PuzzleObject
 ## invalid order (e.g. lever B before lever A) is refused with the graph's reason and changes nothing.
 ## Spatial index relays are outside local time: no temporal component, so abilities are unsupported.
 ## Latched (no further changes) once the puzzle is solved: State 2 stays permanent (ADR-016).
+## `requires_plate_id` (CH1-PZ-005 R1, TLF-054): the relay is dead (&"unpowered") unless that
+## TriggerZone is occupied (player or echo) at pull time. Empty = the base lever.
 
 signal relay_changed(relay_state: StringName)
 
@@ -14,6 +16,7 @@ signal relay_changed(relay_state: StringName)
 ## Pairings applied when switching a -> b, and b -> a ([room, door, room, door, traversable?]).
 @export var pairs_to_b: Array = []
 @export var pairs_to_a: Array = []
+@export var requires_plate_id: StringName = &""
 
 var relay_state: StringName = &""
 
@@ -26,6 +29,10 @@ func _ready() -> void:
 func _can_use(_actor_id: StringName, _interaction_id: StringName, _payload: Dictionary) -> StringName:
 	if latched_solved:
 		return &"locked"
+	if not String(requires_plate_id).is_empty():
+		var plate := resolve(requires_plate_id) as TriggerZone
+		if plate == null or not plate.is_occupied():
+			return &"unpowered"
 	var spatial := _spatial()
 	if spatial == null:
 		return &"missing_target"
@@ -37,6 +44,10 @@ func _on_use(_actor_id: StringName, _interaction_id: StringName, _payload: Dicti
 	if result.ok:
 		relay_state = state_b if relay_state == state_a else state_a
 		relay_changed.emit(relay_state)
+
+
+func _default_feedback_keys() -> Dictionary:
+	return {&"unpowered": "PZ005_FB_UNPOWERED_RELAY"}
 
 
 ## Reset: the SpatialStateResetter restores the graph atomically; the lever only resets its label.

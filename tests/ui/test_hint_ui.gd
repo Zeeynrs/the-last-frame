@@ -78,6 +78,7 @@ func test_hint_hud_request_and_escalation() -> void:
 
 	# 3. Solved puzzle feedback
 	session.puzzle_service.mark_solved(&"CH1-PZ-001")
+	session.puzzle_service.mark_solved(&"CH1-PZ-006")  # TLF-054: the concourse also holds CH1-PZ-006 (Step 1)
 	hud.request_hint()
 	_assert_true(hud.feedback_panel.visible, "feedback shown when puzzle already solved")
 	_assert_eq(hud.feedback_label.text, "This puzzle is already solved.", "feedback matches UI_FB_ALREADY_SOLVED")
