@@ -78,9 +78,27 @@ func _start(assist: bool) -> bool:
 	await physics_frames(2)
 	await dismiss_blocking_ui()
 	_session.puzzle_service.mark_solved(&"CH1-PZ-001")
+	# Step 1 layout (TLF-055, Lead-approved setup change): a new game has only Trace and the bay
+	# has the SO-02 bulkhead. Set the courier and technician flags (the chapter's unlock triggers
+	# give Rewind and Freeze; Freeze stays unused), latch SO-02 so the hatch is open, then walk
+	# through the hatch to the east side of the bulkhead. The checks below are unchanged.
+	_session.narrative_state.set_flag(&"ch01.npc.n05.traced")
+	_session.narrative_state.set_flag(&"ch01.npc.n11.traced")
+	_session.puzzle_service.mark_solved(&"CH1-SO-02")
 	_router.enter_room(BAY, &"door_entry_west")
 	await physics_frames(3)
-	return _assert_eq(_router.current_room_id, BAY, "setup entered the maintenance bay")
+	if not _assert_eq(_router.current_room_id, BAY, "setup entered the maintenance bay"):
+		return false
+	if not (_assert_true(_session.ability_unlocks.is_unlocked(&"rewind"), "setup: Rewind unlocked")
+			and _assert_true(_session.ability_unlocks.is_unlocked(&"freeze"), "setup: Freeze unlocked")):
+		return false
+	# Provisional waypoints (spec geometry, hatch at (320,112), N-11 at (304,104)); confirm them
+	# against the TLF-055 colliders before this goes into the TLF-056 PR.
+	var hatch_walk: Array[Vector2] = [Vector2(288, 92), Vector2(320, 92), Vector2(321, 140)]
+	for point in hatch_walk:
+		if not await walk_to(_player, "setup: bay -> through the hatch", point):
+			return false
+	return true
 
 
 func _stop() -> void:
