@@ -73,6 +73,7 @@ func test_default_settings() -> void:
 	_assert_false(s.reduced_effects, "Default reduced_effects should be false")
 	_assert_false(s.assist_extended_timing, "Default assist_extended_timing should be false")
 	_assert_eq(s.screen_shake, 1.0, "Default screen_shake should be 1.0")
+	_assert_false(s.wheel_toggle_mode, "Default wheel_toggle_mode should be false")
 
 
 func test_save_load_round_trip() -> void:
@@ -91,6 +92,7 @@ func test_save_load_round_trip() -> void:
 	s.reduced_effects = true
 	s.assist_extended_timing = true
 	s.screen_shake = 0.4
+	s.wheel_toggle_mode = true
 
 	var save_err = s.save_settings()
 	_assert_eq(save_err, OK, "Saving settings should succeed")
@@ -99,6 +101,7 @@ func test_save_load_round_trip() -> void:
 	s.reset_to_defaults()
 	_assert_eq(s.master_volume, 1.0)
 	_assert_false(s.assist_extended_timing)
+	_assert_false(s.wheel_toggle_mode)
 
 	# Load from file
 	var load_err = s.load_settings()
@@ -115,6 +118,7 @@ func test_save_load_round_trip() -> void:
 	_assert_true(s.reduced_effects, "reduced_effects should restore to true")
 	_assert_true(s.assist_extended_timing, "assist_extended_timing should restore to true")
 	_assert_true(abs(s.screen_shake - 0.4) < 0.001, "screen_shake should restore to 0.4")
+	_assert_true(s.wheel_toggle_mode, "wheel_toggle_mode should restore to true")
 
 	s.reset_to_defaults()
 	s.settings_path = original_path
@@ -256,6 +260,25 @@ func test_remap_allow_list_interact_confirm() -> void:
 	_assert_eq(res, &"", "Allow-list must permit interact and confirm to share binding")
 
 	s.reset_action(&"interact")
+
+
+func test_ability_wheel_remap_and_conflict() -> void:
+	var s = _get_settings()
+
+	# Key Z is default for ability_wheel. Remapping to Key B should succeed.
+	var new_key = InputEventKey.new()
+	new_key.physical_keycode = KEY_B
+
+	var res = s.remap_action(&"ability_wheel", &"keyboard", new_key)
+	_assert_eq(res, &"", "Remap of ability_wheel to Key B should succeed")
+
+	# Conflict: trying to remap watch (Key Q) to Key B should conflict
+	var conflict_key = InputEventKey.new()
+	conflict_key.physical_keycode = KEY_B
+	var conflict_res = s.remap_action(&"watch", &"keyboard", conflict_key)
+	_assert_eq(conflict_res, &"conflict", "Binding conflicting key to watch should return &\"conflict\"")
+
+	s.reset_action(&"ability_wheel")
 
 
 func test_remap_persisted_and_reapplied() -> void:
