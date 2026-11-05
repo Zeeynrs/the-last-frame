@@ -164,15 +164,16 @@ def _zwrite(zf, name, data):
     zf.writestr(zi, data)
 
 
-def pxo_bytes(w, h, layer_names, frames, fps=1.0, tags=None, user_data='TLF-039'):
+def pxo_bytes(w, h, layer_names, frames, fps=1.0, tags=None, user_data='TLF-039', durations=None):
     """frames: list of list[Layer] (one Layer per layer name, bottom->top). Returns the .pxo file bytes."""
     import io
     d = _template()
     d['layers'] = []
     for n in layer_names:
         l = copy.deepcopy(_LAYER); l['name'] = n; d['layers'].append(l)
-    d['frames'] = [{'cels': [copy.deepcopy(_CEL) for _ in layer_names], 'duration': 1.0, 'metadata': {}}
-                   for _ in frames]
+    d['frames'] = [{'cels': [copy.deepcopy(_CEL) for _ in layer_names],
+                    'duration': float(durations[idx]) if durations else 1.0, 'metadata': {}}
+                   for idx, _ in enumerate(frames)]
     d['size_x'], d['size_y'] = w, h
     d['symmetry_points'] = [float(w), float(h)]
     d['tile_mode_x_basis_x'] = w

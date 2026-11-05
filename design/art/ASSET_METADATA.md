@@ -824,3 +824,35 @@ The greyscale proof `design/art/mockups/ch01_ability_wheel_greyscale_proof.png` 
 | M9 | Step 1 Room 1 (`R1`) nearest `×3` (`1920 × 1080`) presentation proof | `design/art/mockups/ch01_step1_room_statues_x3_proof.png` | `1920 × 1080 px` | **`concept`** |
 
 The three luminance-only greyscale proofs (`design/art/mockups/ch01_step1_room_statues_greyscale_proof.png` at `1920 × 1080 px`, `design/art/mockups/ch01_step1_statues_all13_greyscale_proof.png` at `1320 × 1664 px`, and `design/art/mockups/ch01_step1_props_greyscale_proof.png` at `1320 × 1580 px` — luminance `.convert("L")` so they are not palette-table-checked) are generated deterministically from delivered runtime PNGs by `tools/art/gen/step1_mockups.py` and verified by `verify_regen.py`.
+
+---
+
+## 8. Operator Sighting Sprite & Beat 10 City Plate (`TLF-062`)
+
+**Task:** TLF-062 · **Author:** Agent 2 (`Gemini 4 Argon`, Creative Asset Specialist, ADR-017) · **Art Director / Reviewer:** `GPT-6.1 Sol` (`ART_BIBLE.md` §C.3–C.5, §C.7, §C.8) · **Palette:** `TLF-CH01-32` (`0` new colours, `0` off-palette, `0` semi-transparent pixels) · **Generator:** `tools/art/gen/tlf062_operator_city.py` (6 assets + 3 mockup/proof sheets), registered in `tools/art/gen/registry.py`, `gen_all.py`, and `verify_regen.py`.
+
+### 8.1 Visual Direction & Technical Contract Summary (`ART_BIBLE.md` §C.3–C.5)
+- **Operator Sighting Sprite (`ch01_char_operator_sighting_ne_sheet`):** `128 × 48 px` horizontal 4-frame sheet (`4 × 32 × 48 px`), foot pivot `(16, 44)`, foot sole fixed at `y = 44`, `YSort_Actors (z_index = 10)`, back-three-quarter `ne` view facing away along the Arrival Platform (`R1`). Authored across 5 named `.pxo` layers (`Contact_Shadow`, `Robe`, `Hood_Mask`, `Scarf`, `Hand_Watch`) with tag `check_watch_ne` (frames `1–4`, base `8 FPS`, frame durations `[2.0, 2.0, 8.0, 2.0]` ticks = **`0.25 s / 0.25 s / 1.00 s / 0.25 s`**, `1.75 s` per cycle; hold `F1` a further `1.00 s` between cycles if sighting persists; **`F3` (`check`, frame 3) is the static `reduced_effects` pose**).
+- **Operator Secrecy & Link Rules (`OPERATOR_MYSTERY_GUIDELINES.md` §4 & §6):** Peaked hood and closed mask (`00..04` robe, `12..14` closed mask rim under right hood edge) with **zero visible face, skin (`20/21`), eyes (`31`), mouth, or hair (`16..19`)**, and **no hourglass or combat poses**. Carries Elias's `3 × 3` brass pocket watch (`25/26`, hollow `00` dial centre, `1 px` `26` crown, short `25` chain) outside the robe contour on `F3` (`x = 26..28, y = 20..22`).
+- **Disclosed Current-Build Parity Gaps (`ART_BIBLE.md` §C.2/C.3, Lead Decisions 1 & 2):** Current Elias `v2` (`ch01_char_elias_base_sheet`) has a dark slate collar (`02`, no red scarf) and idle/walk animations only (no watch-check clip). Per Lead instruction, Elias `v2` is untouched pending the owner's `v2` vs `v3` decision, and the Operator's red scarf (`22` `#4A1C14` / `23` `#8C2D19`) is authored on its own separate `Scarf` layer over a gap-free `Robe` layer so it can be kept or toggled off cleanly.
+- **Restrained Trace Signature (`ch01_fx_operator_sighting_trace_ring_idle`):** Separate `32 × 48 px` ground effect export (`YSort_Props (z_index = 8)`, pivot `(16, 44)`) using the existing Trace `#9E7BFF` (`30`) + sparse `#FFD166` (`26`) isometric diamond/ellipse strictly outside the body and watch silhouette (`y >= 41`); suppressed in `reduced_effects` mode.
+- **Beat 10 Frozen City Plate & Silent Mira Broadcast (`ART_BIBLE.md` §C.4):** `1280 × 360 px` nocturnal plate (`ch01_env_beat10_city_plate_idle`, `CanvasLayer (z_index = 20)`) authored across 5 `.pxo` layers (`Sky_And_Distant_Towers`, `Plaza_And_Station_Exit`, `Clocks_2359`, `Mira_Broadcast_Screen`, `Suspended_Rain`), plus standalone layer exports for independent runtime compositing (`ch01_env_beat10_city_backdrop_idle` at `1280 × 360`, `ch01_ui_mira_broadcast_portrait_idle` at `32 × 48`, and `ch01_env_beat10_suspended_rain_idle` at `1280 × 360` — alpha-compositing backdrop + Mira portrait at `(440, 136)` and `(844, 104)` + suspended rain reproduces `ch01_env_beat10_city_plate_idle` with **`0` differing pixels**).
+
+### 8.2 `TLF-062` Asset Inventory Table (`row` 227–232)
+
+| Row | Asset ID | Category | Source `.pxo` (`assets/source/ch01/`) | Runtime Export (`res://assets/...`) | Canvas Size (`W×H px`) | Frames / FPS / Cadence | Pivot `(px_x, px_y)` | Sorting / `z_index` | Palette Colors Used | QA State |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **227** | `ch01.char.operator_sighting_ne_sheet` | Characters | `ch01_char_operator_sighting_ne_sheet.pxo` | `assets/characters/ch01/ch01_char_operator_sighting_ne_sheet.png` | `128 × 48 px (4× 32×48)` | 4f @ 8 FPS (`0.25/0.25/1.00/0.25s`, tag `check_watch_ne`, `F3` static reduced-FX) | `(16, 44)` | `YSort_Actors (z_index = 10)` | `12 / 32` | **`exported`** |
+| **228** | `ch01.fx.operator_sighting_trace_ring_idle` | Props | `ch01_fx_operator_sighting_trace_ring_idle.pxo` | `assets/props/ch01/ch01_fx_operator_sighting_trace_ring_idle.png` | `32 × 48 px` | 1f (`static`) | `(16, 44)` | `YSort_Props (z_index = 8)` | `3 / 32` | **`exported`** |
+| **229** | `ch01.ui.mira_broadcast_portrait_idle` | Ui | `ch01_ui_mira_broadcast_portrait_idle.pxo` | `assets/ui/ch01/ch01_ui_mira_broadcast_portrait_idle.png` | `32 × 48 px` | 1f (`static`) | `(0, 0)` | `CanvasLayer (z_index = 21)` | `14 / 32` | **`exported`** |
+| **230** | `ch01.env.beat10_city_plate_idle` | Environments | `ch01_env_beat10_city_plate_idle.pxo` | `assets/environments/ch01/ch01_env_beat10_city_plate_idle.png` | `1280 × 360 px` | 1f (`static`) | `(0, 0)` | `CanvasLayer (z_index = 20)` | `22 / 32` | **`exported`** |
+| **231** | `ch01.env.beat10_city_backdrop_idle` | Environments | `ch01_env_beat10_city_backdrop_idle.pxo` | `assets/environments/ch01/ch01_env_beat10_city_backdrop_idle.png` | `1280 × 360 px` | 1f (`static`) | `(0, 0)` | `CanvasLayer (z_index = 20)` | `15 / 32` | **`exported`** |
+| **232** | `ch01.env.beat10_suspended_rain_idle` | Environments | `ch01_env_beat10_suspended_rain_idle.pxo` | `assets/environments/ch01/ch01_env_beat10_suspended_rain_idle.png` | `1280 × 360 px` | 1f (`static`) | `(0, 0)` | `CanvasLayer (z_index = 22)` | `4 / 32` | **`exported`** |
+
+### 8.3 `TLF-062` Mockups & Greyscale Proofs (`design/art/mockups/`)
+
+| # | Mockup | File | Canvas Size | QA State |
+|---|---|---|---|---|
+| M10 | Arrival Platform (`R1`) Operator sighting native mockup with `F1..F4` + `reduced_effects` static `F3` inset | `design/art/mockups/ch01_operator_sighting_platform_mockup.png` | `640 × 360 px` | **`concept`** |
+
+The two colour + luminance-greyscale proof sheets (`design/art/mockups/ch01_operator_cast_silhouette_greyscale_proof.png` at `1320 × 1160 px` and `design/art/mockups/ch01_beat10_city_plate_greyscale_proof.png` at `1320 × 1260 px` — luminance `.convert("L")` sections so they are not palette-table-checked) are generated deterministically from delivered runtime PNGs by `tools/art/gen/tlf062_operator_city.py` and verified by `verify_regen.py`.
