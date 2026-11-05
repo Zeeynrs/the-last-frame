@@ -1,10 +1,10 @@
-# TLF-055 Handoff Report: Chapter 1 Puzzle Wiring, Commuter Statues, Unlock Feedback & Documents
+# TLF-055 Handoff Report: Chapter 1 Puzzle Wiring, Commuter Statues, Unlock Feedback, Documents & Widened Interior Apertures
 
 - **Task:** TLF-055 (P0 Critical Path) — Chapter 1 Puzzle Wiring & Integration
 - **Owner:** Agent 2 (Flash)
 - **Branch:** `adityadaffa522/tlf-055-ch01-puzzle-wiring`
-- **Delivered Commit SHA:** `dd6c8090ce505efbc111ec2fdafbd9928a8580c2`
-- **Base Tree:** `origin/main` @ `267b419` + Opus addendum commit `2ef1caa`
+- **Delivered Commit SHA:** `bd231a9b63e6bb559d34b672bf1cc89a4ea618a4`
+- **Base Tree:** `origin/main` @ `267b419` + Opus addendum commit `2ef1caa` + aperture review script `f574fde`
 - **Validation Run:** Isolated Git archive extracted to `C:\temp\tlf_val_055` (`config/name = "TLF Validation 055"`)
 - **Zero Leaks:** Clean leak check on script check and zero RID/ObjectDB leaks at exit.
 
@@ -56,21 +56,24 @@
      - `doc_ticket_terms` at (416, 80).
      - 5 commuter statues (`n05_courier` to `n09_teen`) with footprint colliders.
    - **`maintenance_bay.tscn`**:
-     - `Bulkhead` StaticBody2D with 2 segment shapes forming aperture at (240, 160).
-     - `hatch_01` with Blocker body (layer 1) and TemporalComponent.
+     - `Bulkhead` StaticBody2D with 2 segment shapes forming aperture:
+       - Widened to 1.5-tile opening (26.8 px): `(332, 106) ... (308, 118)` per Lead Decision.
+     - `hatch_01` with 24x12 Blocker body (layer 1) and TemporalComponent.
      - `hatch_plate_01` (TriggerZone) at (272, 176).
      - `bell_plate_01` (DecoyPlate) at (208, 144).
      - `hatch_threshold` and `exit_trigger_hatch` at (240, 160).
      - `n11_hatch_tech` statue and `hatch_residue` at (256, 152).
      - `safe_anchor_entry` at (224, 152).
-     - `InnerDivider` StaticBody2D with 2 segment shapes forming inner aperture at (432, 184).
-     - `inner_shutter` with Blocker body (layer 1) and TemporalComponent.
+     - `InnerDivider` StaticBody2D with 2 segment shapes forming inner aperture:
+       - Widened to 1.5-tile opening (26.8 px): `(444, 178) ... (420, 190)` per Lead Decision.
+     - `inner_shutter` with 24x12 Blocker body (layer 1) and TemporalComponent.
      - `inner_shutter_threshold` and `exit_trigger_east_02` at (432, 184) and (448, 176).
      - `gear_residue` at (400, 200).
      - `doc_hatch_chart` at (192, 120) and `doc_inner_shutter_plate` at (400, 168).
    - **`security_crossing.tscn`**:
-     - `StaffBarrier` StaticBody2D with 2 segment shapes forming aperture at (448, 208).
-     - `staff_barrier_01` with Blocker body (layer 1).
+     - `StaffBarrier` StaticBody2D with 2 segment shapes forming aperture:
+       - Widened to 1.5-tile opening (26.8 px): `(444, 194) ... (420, 206)` per Lead Decision.
+     - `staff_barrier_01` with 24x12 Blocker body (layer 1).
      - `card_reader_01` at (432, 200) with presenter.
      - `alarm_plate_01` (DecoyPlate) at (304, 136).
      - `echo_recorder_pedestal` at (272, 120) with presenter.
@@ -92,20 +95,37 @@
 5. **Import Files**:
    - Committed 133 `.import` files for all TLF-057 visual assets.
 6. **Tests Updated**:
-   - `tests/chapters/ch01/test_ch01_playthrough.gd`: Updated scripted solutions and expectations to account for new gates, pinned state, staff door, and `requires_plate_id`. 17/17 tests GREEN.
-   - `tests/chapters/ch01/test_ch01_art_integration.gd`: Updated collision freeze baseline dictionary. 6/6 tests GREEN.
-   - `tests/chapters/ch01/test_ch01_narrative_beats.gd`: Updated Beat 01 to verify watch memory lines before unlock. 12/12 tests GREEN.
-   - `tests/narrative/test_ch01_text.gd`: Updated document count assertion from 5 to 12 per Lead decision §F(c). GREEN.
+   - `tests/chapters/ch01/test_ch01_playthrough.gd`:
+     - Added `test_interior_apertures_walkable_with_real_player_capsule()`:
+       - Uses real player CharacterBody2D capsule collision shape (r=6, h=16, rotated 90 deg, offset (0, -4)).
+       - Verifies that closed 24x12 blockers stop the capsule.
+       - Verifies that open widened 1.5-tile apertures allow the capsule to traverse freely without clipping.
+       - Disables completion triggers during the aperture isolation checks to prevent premature puzzle solving.
+     - Updated scripted solutions and expectations to account for new gates, pinned state, staff door, and `requires_plate_id`.
+     - 18/18 tests GREEN.
+   - `tests/chapters/ch01/test_ch01_art_integration.gd`:
+     - All 6/6 tests GREEN.
+   - `tests/chapters/ch01/test_ch01_narrative_beats.gd`:
+     - Updated Beat 01 to verify watch memory lines before unlock. 12/12 tests GREEN.
+   - `tests/narrative/test_ch01_text.gd`:
+     - Updated document count assertion from 5 to 12 per Lead decision §F(c). GREEN.
 
 ---
 
 ## 2. Lead Decisions & Architectural Reconciliations
 
-1. **`dead_relay_c` Sorting: Freestanding on `YSort_Actors` (`z_index = 10`)**:
+1. **Widened Interior Apertures (1.5 tiles / 26.8 px)**:
+   - Per Lead Decision and Opus TLF-055 Section G review, the three interior aperture gaps were widened to 26.8 px (matching the existing fire shutter):
+     - `hatch_01`: `(332, 106) ... (308, 118)`
+     - `inner_shutter`: `(444, 178) ... (420, 190)`
+     - `staff_barrier_01`: `(444, 194) ... (420, 206)`
+   - The 24x12 blockers stay at each aperture.
+   - Verified with `docs/reviews/tlf055_aperture_check.py` yielding `down 4.00 px` and `down-right 5.31 px` clearance (all reported `PASSABLE`).
+2. **`dead_relay_c` Sorting: Freestanding on `YSort_Actors` (`z_index = 10`)**:
    - Placed freestanding at `(384, 128)` on `YSort_Actors` per Lead Decision §C. It has no static collision body, matching levers A and B.
-2. **Document Definitions**:
+3. **Document Definitions**:
    - All 7 `DocumentDef` resources match `doc_evac_notice.tres` and reference exact strings in `ch01_text.csv`.
-3. **Opus Real-Input Tests (TLF-056)**:
+4. **Opus Real-Input Tests (TLF-056)**:
    - Per Section E & F of `docs/tasks/TLF-055.md`, Flash was strictly forbidden from modifying `test_ch01_real_playthrough.gd` and `test_ch01_real_playthrough_late.gd`.
    - The 6 test assertion failures in validate are solely from those files (and `test_playtest_log.gd`, which exercises the same real-input path) because they assume all 4 abilities are unlocked by default. They will be rewritten by Opus in TLF-056 branched from this commit.
    - All scripted playthrough, art integration, narrative beats, project settings, ability wheel, HUD, and layout tests are 100% GREEN.
@@ -125,9 +145,6 @@ Saved in `docs/handoffs/TLF-055/` at exact 640x360 game resolution:
 ## 4. Complete Raw Validate Output (`tools/validate.ps1`)
 
 ```
-Command exited with code 1.
-
-Command output:
 === Validating The Last Frame Project ===
 Using Godot executable: D:\Godot\Godot_v4.7.2-stable_win64_console.exe
 Project root: C:\temp\tlf_val_055
@@ -135,934 +152,934 @@ Project root: C:\temp\tlf_val_055
 [1/3] Running headless import check...
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
-[   0% ] first_scan_filesystem | Started Project initialization (5 steps)
-[   0% ] first_scan_filesystem | Scanning file structure...
-[  16% ] first_scan_filesystem | Loading global class names...
-[  33% ] first_scan_filesystem | Verifying GDExtensions...
-[  50% ] first_scan_filesystem | Creating autoload scripts...
-[  66% ] first_scan_filesystem | Initializing plugins...
-[  83% ] first_scan_filesystem | Starting file scan...
-[ DONE ] first_scan_filesystem
-
-[   0% ] update_scripts_classes | Started Registering global classes... (146 steps)
-[   0% ] update_scripts_classes | BreakerCPresenter
-[   0% ] update_scripts_classes | CableConduitPresenter
-[   1% ] update_scripts_classes | CardReaderPresenter
-[   2% ] update_scripts_classes | CommuterStatuePresenter
-[   2% ] update_scripts_classes | ConduitPropPresenter
-[   3% ] update_scripts_classes | CounterweightGearPresenter
-[   4% ] update_scripts_classes | DeadRelayPresenter
-[   4% ] update_scripts_classes | DispatchTerminalPresenter
-[   5% ] update_scripts_classes | EchoPedestalPresenter
-[   6% ] update_scripts_classes | FireShutterPresenter
-[   6% ] update_scripts_classes | HistoryDialPresenter
-[   7% ] update_scripts_classes | LeverPresenter
-[   8% ] update_scripts_classes | PressureSwitchPresenter
-[   8% ] update_scripts_classes | ReleaseLeverPresenter
-[   9% ] update_scripts_classes | RetractableBridgePresenter
-[  10% ] update_scripts_classes | RoomVisuals
-[  10% ] update_scripts_classes | RouteBoardPresenter
-[  11% ] update_scripts_classes | SecurityGatePresenter
-[  12% ] update_scripts_classes | SelectorSwitchPresenter
-[  12% ] update_scripts_classes | ServiceHatchPresenter
-[  13% ] update_scripts_classes | SurgeCapacitorPresenter
-[  14% ] update_scripts_classes | TicketValidatorPresenter
-[  14% ] update_scripts_classes | TurnstilePresenter
-[  15% ] update_scripts_classes | Chapter01
-[  16% ] update_scripts_classes | SignalControlIntercom
-[  17% ] update_scripts_classes |
-[  17% ] update_scripts_classes |
-[  18% ] update_scripts_classes | EchoService
-[  19% ] update_scripts_classes | Interactable
-[  19% ] update_scripts_classes | Lever
-[  20% ] update_scripts_classes | TriggerZone
-[  21% ] update_scripts_classes | AbilityUnlocks
-[  21% ] update_scripts_classes | DocumentDef
-[  22% ] update_scripts_classes | NarrativeState
-[  23% ] update_scripts_classes | ReadableDocument
-[  23% ] update_scripts_classes | TraceMemory
-[  24% ] update_scripts_classes | Player
-[  25% ] update_scripts_classes | PocketWatch
-[  25% ] update_scripts_classes | CardReader
-[  26% ] update_scripts_classes | CodeLock
-[  27% ] update_scripts_classes | ConduitProp
-[  27% ] update_scripts_classes | CounterweightGear
-[  28% ] update_scripts_classes | DeadRelay
-[  29% ] update_scripts_classes | DecoyPlate
-[  29% ] update_scripts_classes | FireShutter
-[  30% ] update_scripts_classes | HistoryDial
-[  31% ] update_scripts_classes | JunctionLever
-[  31% ] update_scripts_classes | LampRingBreaker
-[  32% ] update_scripts_classes | PlateLinkedGate
-[  33% ] update_scripts_classes | PoweredDoor
-[  34% ] update_scripts_classes | ProgressionPickup
-[  34% ] update_scripts_classes | PuzzleObject
-[  35% ] update_scripts_classes | ReleaseLever
-[  36% ] update_scripts_classes | RetractableBridge
-[  36% ] update_scripts_classes | SelectorSwitch
-[  37% ] update_scripts_classes | SpatialStateResetter
-[  38% ] update_scripts_classes | SubstationGrid
-[  38% ] update_scripts_classes | SurgeCapacitor
-[  39% ] update_scripts_classes | TicketValidator
-[  40% ] update_scripts_classes | TimedBreaker
-[  40% ] update_scripts_classes | TurnstileGate
-[  41% ] update_scripts_classes | AbilityUnlockTrigger
-[  42% ] update_scripts_classes | HintService
-[  42% ] update_scripts_classes | PuzzleCompletionZone
-[  43% ] update_scripts_classes | PuzzleDef
-[  44% ] update_scripts_classes | PuzzleService
-[  44% ] update_scripts_classes | ResetAnchor
-[  45% ] update_scripts_classes | CheckpointZone
-[  46% ] update_scripts_classes | RoomRouter
-[  46% ] update_scripts_classes | SafeAnchor
-[  47% ] update_scripts_classes | SaveStore
-[  48% ] update_scripts_classes | GameSession
-[  48% ] update_scripts_classes | IdRegistry
-[  49% ] update_scripts_classes | InteractionResult
-[  50% ] update_scripts_classes | InteractionService
-[  51% ] update_scripts_classes | SimClock
-[  51% ] update_scripts_classes |
-[  52% ] update_scripts_classes | ChapterGraphDef
-[  53% ] update_scripts_classes | DoorwayPresenter
-[  53% ] update_scripts_classes | SpatialGraph
-[  54% ] update_scripts_classes | SpatialService
-[  55% ] update_scripts_classes | PlaytestLog
-[  55% ] update_scripts_classes | TemporalComponent
-[  56% ] update_scripts_classes | TemporalTestGate
-[  57% ] update_scripts_classes | TemporalTestGear
-[  57% ] update_scripts_classes | TemporalTestShutter
-[  58% ] update_scripts_classes | AbilityWheel
-[  59% ] update_scripts_classes | ChapterCompleteOverlay
-[  59% ] update_scripts_classes | DialogueBox
-[  60% ] update_scripts_classes | DialogueTrigger
-[  61% ] update_scripts_classes | DocumentViewer
-[  61% ] update_scripts_classes | HUD
-[  62% ] update_scripts_classes | InputPrompts
-[  63% ] update_scripts_classes | JournalScreen
-[  63% ] update_scripts_classes |
-[  64% ] update_scripts_classes | UIFeedback
-[  65% ] update_scripts_classes | UITheme
-[  65% ] update_scripts_classes |
-[  66% ] update_scripts_classes |
-[  67% ] update_scripts_classes |
-[  68% ] update_scripts_classes |
-[  68% ] update_scripts_classes |
-[  69% ] update_scripts_classes |
-[  70% ] update_scripts_classes |
-[  70% ] update_scripts_classes |
-[  71% ] update_scripts_classes |
-[  72% ] update_scripts_classes |
-[  72% ] update_scripts_classes |
-[  73% ] update_scripts_classes |
-[  74% ] update_scripts_classes |
-[  74% ] update_scripts_classes |
-[  75% ] update_scripts_classes |
-[  76% ] update_scripts_classes |
-[  76% ] update_scripts_classes |
-[  77% ] update_scripts_classes |
-[  78% ] update_scripts_classes |
-[  78% ] update_scripts_classes |
-[  79% ] update_scripts_classes |
-[  80% ] update_scripts_classes |
-[  80% ] update_scripts_classes |
-[  81% ] update_scripts_classes |
-[  82% ] update_scripts_classes |
-[  82% ] update_scripts_classes |
-[  83% ] update_scripts_classes |
-[  84% ] update_scripts_classes |
-[  85% ] update_scripts_classes |
-[  85% ] update_scripts_classes |
-[  86% ] update_scripts_classes |
-[  87% ] update_scripts_classes |
-[  87% ] update_scripts_classes |
-[  88% ] update_scripts_classes |
-[  89% ] update_scripts_classes |
-[  89% ] update_scripts_classes |
-[  90% ] update_scripts_classes |
-[  91% ] update_scripts_classes |
-[  91% ] update_scripts_classes |
-[  92% ] update_scripts_classes |
-[  93% ] update_scripts_classes |
-[  93% ] update_scripts_classes |
-[  94% ] update_scripts_classes |
-[  95% ] update_scripts_classes |
-[  95% ] update_scripts_classes |
-[  96% ] update_scripts_classes |
-[  97% ] update_scripts_classes |
-[  97% ] update_scripts_classes |
-[  98% ] update_scripts_classes |
-[ DONE ] update_scripts_classes
-
-[   0% ] _update_scan_actions | Started Scanning actions... (251 steps)
-[   0% ] _update_scan_actions | ch01_char_elias_base_sheet.png
-[   0% ] _update_scan_actions | ch01_char_statue_body_a_pose1_idle.png
-[   0% ] _update_scan_actions | ch01_char_statue_body_a_pose1_read.png
-[   1% ] _update_scan_actions | ch01_char_statue_body_a_pose2_idle.png
-[   1% ] _update_scan_actions | ch01_char_statue_body_a_pose2_read.png
-[   1% ] _update_scan_actions | ch01_char_statue_body_b_pose1_idle.png
-[   2% ] _update_scan_actions | ch01_char_statue_body_b_pose1_read.png
-[   2% ] _update_scan_actions | ch01_char_statue_body_b_pose2_idle.png
-[   3% ] _update_scan_actions | ch01_char_statue_body_b_pose2_read.png
-[   3% ] _update_scan_actions | ch01_char_statue_body_c_pose1_idle.png
-[   3% ] _update_scan_actions | ch01_char_statue_body_c_pose1_read.png
-[   4% ] _update_scan_actions | ch01_char_statue_body_c_pose2_idle.png
-[   4% ] _update_scan_actions | ch01_char_statue_body_c_pose2_read.png
-[   5% ] _update_scan_actions | ch01_char_statue_commuter_n01_conductor_idle.png
-[   5% ] _update_scan_actions | ch01_char_statue_commuter_n01_conductor_read.png
-[   5% ] _update_scan_actions | ch01_char_statue_commuter_n02_student_idle.png
-[   6% ] _update_scan_actions | ch01_char_statue_commuter_n02_student_read.png
-[   6% ] _update_scan_actions | ch01_char_statue_commuter_n03_old_man_idle.png
-[   7% ] _update_scan_actions | ch01_char_statue_commuter_n03_old_man_read.png
-[   7% ] _update_scan_actions | ch01_char_statue_commuter_n04_cleaner_idle.png
-[   7% ] _update_scan_actions | ch01_char_statue_commuter_n04_cleaner_read.png
-[   8% ] _update_scan_actions | ch01_char_statue_commuter_n05_courier_idle.png
-[   8% ] _update_scan_actions | ch01_char_statue_commuter_n05_courier_read.png
-[   9% ] _update_scan_actions | ch01_char_statue_commuter_n06_red_coat_idle.png
-[   9% ] _update_scan_actions | ch01_char_statue_commuter_n06_red_coat_read.png
-[   9% ] _update_scan_actions | ch01_char_statue_commuter_n07_briefcase_idle.png
-[  10% ] _update_scan_actions | ch01_char_statue_commuter_n07_briefcase_read.png
-[  10% ] _update_scan_actions | ch01_char_statue_commuter_n08_father_idle.png
-[  11% ] _update_scan_actions | ch01_char_statue_commuter_n08_father_read.png
-[  11% ] _update_scan_actions | ch01_char_statue_commuter_n09_teen_idle.png
-[  11% ] _update_scan_actions | ch01_char_statue_commuter_n09_teen_read.png
-[  12% ] _update_scan_actions | ch01_char_statue_commuter_n11_hatch_tech_idle.png
-[  12% ] _update_scan_actions | ch01_char_statue_commuter_n11_hatch_tech_read.png
-[  13% ] _update_scan_actions | ch01_char_statue_commuter_n13_guard_idle.png
-[  13% ] _update_scan_actions | ch01_char_statue_commuter_n13_guard_read.png
-[  13% ] _update_scan_actions | ch01_char_statue_commuter_n20_engineer_idle.png
-[  14% ] _update_scan_actions | ch01_char_statue_commuter_n20_engineer_read.png
-[  14% ] _update_scan_actions | ch01_char_statue_commuter_n21_tourist_idle.png
-[  15% ] _update_scan_actions | ch01_char_statue_commuter_n21_tourist_read.png
-[  15% ] _update_scan_actions | ch01_char_statue_n03_old_man_seated_idle.png
-[  15% ] _update_scan_actions | ch01_char_statue_n03_old_man_seated_read.png
-[  16% ] _update_scan_actions | ch01_char_statue_n04_cleaner_idle.png
-[  16% ] _update_scan_actions | ch01_char_statue_n04_cleaner_read.png
-[  17% ] _update_scan_actions | ch01_char_statue_n05_courier_vault_idle.png
-[  17% ] _update_scan_actions | ch01_char_statue_n05_courier_vault_read.png
-[  17% ] _update_scan_actions | ch01_char_statue_n11_tech_crank_idle.png
-[  18% ] _update_scan_actions | ch01_char_statue_n11_tech_crank_read.png
-[  18% ] _update_scan_actions | ch01_env_archway_frame_e_idle.png
-[  19% ] _update_scan_actions | ch01_env_archway_frame_n_idle.png
-[  19% ] _update_scan_actions | ch01_env_arrival_platform_target_sheet.png
-[  19% ] _update_scan_actions | ch01_env_tile_cable_conduit_off_idle.png
-[  20% ] _update_scan_actions | ch01_env_tile_cable_conduit_on_idle.png
-[  20% ] _update_scan_actions | ch01_env_tile_concrete_service_idle.png
-[  21% ] _update_scan_actions | ch01_env_tile_industrial_grating_idle.png
-[  21% ] _update_scan_actions | ch01_env_tile_stone_step_wet_idle.png
-[  21% ] _update_scan_actions | ch01_env_tile_tactile_amber_idle.png
-[  22% ] _update_scan_actions | ch01_env_tile_terrazzo_cracked_idle.png
-[  22% ] _update_scan_actions | ch01_env_tile_terrazzo_dark_idle.png
-[  23% ] _update_scan_actions | ch01_env_wall_bulkhead_module_idle.png
-[  23% ] _update_scan_actions | ch01_env_wall_corner_pillar_idle.png
-[  23% ] _update_scan_actions | ch01_env_wall_railing_iron_idle.png
-[  24% ] _update_scan_actions | ch01_env_wall_subterranean_n_idle.png
-[  24% ] _update_scan_actions | ch01_env_wall_subterranean_w_idle.png
-[  25% ] _update_scan_actions | ch01_prop_alarm_plate_idle.png
-[  25% ] _update_scan_actions | ch01_prop_alarm_plate_ringing.png
-[  25% ] _update_scan_actions | ch01_prop_bell_icon_idle.png
-[  26% ] _update_scan_actions | ch01_prop_bell_icon_ringing.png
-[  26% ] _update_scan_actions | ch01_prop_breaker_c_browned_out.png
-[  26% ] _update_scan_actions | ch01_prop_breaker_c_engaged.png
-[  27% ] _update_scan_actions | ch01_prop_breaker_c_idle.png
-[  27% ] _update_scan_actions | ch01_prop_bridge_platform_extended.png
-[  28% ] _update_scan_actions | ch01_prop_bridge_platform_retracted.png
-[  28% ] _update_scan_actions | ch01_prop_call_box_phone_idle.png
-[  28% ] _update_scan_actions | ch01_prop_call_box_phone_ringing.png
-[  29% ] _update_scan_actions | ch01_prop_card_reader_accepted.png
-[  29% ] _update_scan_actions | ch01_prop_card_reader_denied.png
-[  30% ] _update_scan_actions | ch01_prop_card_reader_idle.png
-[  30% ] _update_scan_actions | ch01_prop_conduit_fallen.png
-[  30% ] _update_scan_actions | ch01_prop_conduit_mounted.png
-[  31% ] _update_scan_actions | ch01_prop_counterweight_gear_frozen.png
-[  31% ] _update_scan_actions | ch01_prop_counterweight_gear_idle.png
-[  32% ] _update_scan_actions | ch01_prop_counterweight_gear_slipping.png
-[  32% ] _update_scan_actions | ch01_prop_dead_relay_c_idle.png
-[  32% ] _update_scan_actions | ch01_prop_dead_relay_c_shake.png
-[  33% ] _update_scan_actions | ch01_prop_departure_board_nowhere_idle.png
-[  33% ] _update_scan_actions | ch01_prop_digital_clock_2359_idle.png
-[  34% ] _update_scan_actions | ch01_prop_dispatch_terminal_active.png
-[  34% ] _update_scan_actions | ch01_prop_dispatch_terminal_idle.png
-[  34% ] _update_scan_actions | ch01_prop_document_clipboard_idle.png
-[  35% ] _update_scan_actions | ch01_prop_door_rd_access_sealed_idle.png
-[  35% ] _update_scan_actions | ch01_prop_echo_pedestal_idle.png
-[  36% ] _update_scan_actions | ch01_prop_echo_pedestal_used.png
-[  36% ] _update_scan_actions | ch01_prop_fire_shutter_closed.png
-[  36% ] _update_scan_actions | ch01_prop_fire_shutter_raised.png
-[  37% ] _update_scan_actions | ch01_prop_flap_dial_line_idle.png
-[  37% ] _update_scan_actions | ch01_prop_flap_dial_line_jammed.png
-[  38% ] _update_scan_actions | ch01_prop_flap_dial_platform_idle.png
-[  38% ] _update_scan_actions | ch01_prop_flap_dial_platform_jammed.png
-[  38% ] _update_scan_actions | ch01_prop_flap_dial_time_idle.png
-[  39% ] _update_scan_actions | ch01_prop_flap_dial_time_jammed.png
-[  39% ] _update_scan_actions | ch01_prop_floor_plate_a_empty.png
-[  40% ] _update_scan_actions | ch01_prop_floor_plate_a_pressed.png
-[  40% ] _update_scan_actions | ch01_prop_floor_plate_b_empty.png
-[  40% ] _update_scan_actions | ch01_prop_floor_plate_b_pressed.png
-[  41% ] _update_scan_actions | ch01_prop_inner_shutter_closed.png
-[  41% ] _update_scan_actions | ch01_prop_inner_shutter_raised.png
-[  42% ] _update_scan_actions | ch01_prop_lever_badge_a_idle.png
-[  42% ] _update_scan_actions | ch01_prop_lever_badge_b_idle.png
-[  42% ] _update_scan_actions | ch01_prop_lever_switch_off.png
-[  43% ] _update_scan_actions | ch01_prop_lever_switch_on.png
-[  43% ] _update_scan_actions | ch01_prop_notice_closed_track_idle.png
-[  44% ] _update_scan_actions | ch01_prop_pa_speaker_idle.png
-[  44% ] _update_scan_actions | ch01_prop_pillar_mark_sector_a_idle.png
-[  44% ] _update_scan_actions | ch01_prop_platform_gate_closed.png
-[  45% ] _update_scan_actions | ch01_prop_platform_gate_open.png
-[  45% ] _update_scan_actions | ch01_prop_pocket_watch_idle.png
-[  46% ] _update_scan_actions | ch01_prop_pressure_switch_pressed.png
-[  46% ] _update_scan_actions | ch01_prop_pressure_switch_released.png
-[  46% ] _update_scan_actions | ch01_prop_release_lever_accepted.png
-[  47% ] _update_scan_actions | ch01_prop_release_lever_buzzing.png
-[  47% ] _update_scan_actions | ch01_prop_release_lever_idle.png
-[  48% ] _update_scan_actions | ch01_prop_reset_console_idle.png
-[  48% ] _update_scan_actions | ch01_prop_route_board_state0.png
-[  48% ] _update_scan_actions | ch01_prop_route_board_state1.png
-[  49% ] _update_scan_actions | ch01_prop_route_board_state2.png
-[  49% ] _update_scan_actions | ch01_prop_security_gate_closed.png
-[  50% ] _update_scan_actions | ch01_prop_security_gate_open.png
-[  50% ] _update_scan_actions | ch01_prop_selector_car_pos0.png
-[  50% ] _update_scan_actions | ch01_prop_selector_car_pos1.png
-[  51% ] _update_scan_actions | ch01_prop_selector_car_pos2.png
-[  51% ] _update_scan_actions | ch01_prop_selector_line_pos0.png
-[  51% ] _update_scan_actions | ch01_prop_selector_line_pos1.png
-[  52% ] _update_scan_actions | ch01_prop_selector_line_pos2.png
-[  52% ] _update_scan_actions | ch01_prop_selector_platform_pos0.png
-[  53% ] _update_scan_actions | ch01_prop_selector_platform_pos1.png
-[  53% ] _update_scan_actions | ch01_prop_selector_platform_pos2.png
-[  53% ] _update_scan_actions | ch01_prop_service_hatch_closed.png
-[  54% ] _update_scan_actions | ch01_prop_service_hatch_frozen_closed.png
-[  54% ] _update_scan_actions | ch01_prop_service_hatch_frozen_open.png
-[  55% ] _update_scan_actions | ch01_prop_service_hatch_open.png
-[  55% ] _update_scan_actions | ch01_prop_sign_a1_research_idle.png
-[  55% ] _update_scan_actions | ch01_prop_staff_barrier_closed.png
-[  56% ] _update_scan_actions | ch01_prop_staff_barrier_open.png
-[  56% ] _update_scan_actions | ch01_prop_staff_door_closed.png
-[  57% ] _update_scan_actions | ch01_prop_staff_door_open.png
-[  57% ] _update_scan_actions | ch01_prop_standby_plate_empty.png
-[  57% ] _update_scan_actions | ch01_prop_standby_plate_held.png
-[  58% ] _update_scan_actions | ch01_prop_station_bench_idle.png
-[  58% ] _update_scan_actions | ch01_prop_statue_ov_breaker_handle_idle.png
-[  59% ] _update_scan_actions | ch01_prop_statue_ov_breaker_handle_read.png
-[  59% ] _update_scan_actions | ch01_prop_statue_ov_briefcase_idle.png
-[  59% ] _update_scan_actions | ch01_prop_statue_ov_briefcase_read.png
-[  60% ] _update_scan_actions | ch01_prop_statue_ov_courier_bag_idle.png
-[  60% ] _update_scan_actions | ch01_prop_statue_ov_courier_bag_read.png
-[  61% ] _update_scan_actions | ch01_prop_statue_ov_gate_lever_idle.png
-[  61% ] _update_scan_actions | ch01_prop_statue_ov_gate_lever_read.png
-[  61% ] _update_scan_actions | ch01_prop_statue_ov_hatch_crank_idle.png
-[  62% ] _update_scan_actions | ch01_prop_statue_ov_hatch_crank_read.png
-[  62% ] _update_scan_actions | ch01_prop_statue_ov_headphones_idle.png
-[  63% ] _update_scan_actions | ch01_prop_statue_ov_headphones_read.png
-[  63% ] _update_scan_actions | ch01_prop_statue_ov_map_idle.png
-[  63% ] _update_scan_actions | ch01_prop_statue_ov_map_read.png
-[  64% ] _update_scan_actions | ch01_prop_statue_ov_paper_bag_idle.png
-[  64% ] _update_scan_actions | ch01_prop_statue_ov_paper_bag_read.png
-[  65% ] _update_scan_actions | ch01_prop_statue_ov_phone_idle.png
-[  65% ] _update_scan_actions | ch01_prop_statue_ov_phone_read.png
-[  65% ] _update_scan_actions | ch01_prop_statue_ov_red_coat_idle.png
-[  66% ] _update_scan_actions | ch01_prop_statue_ov_red_coat_read.png
-[  66% ] _update_scan_actions | ch01_prop_statue_ov_sleeping_child_idle.png
-[  67% ] _update_scan_actions | ch01_prop_statue_ov_sleeping_child_read.png
-[  67% ] _update_scan_actions | ch01_prop_statue_ov_suitcase_idle.png
-[  67% ] _update_scan_actions | ch01_prop_statue_ov_suitcase_read.png
-[  68% ] _update_scan_actions | ch01_prop_statue_ov_trolley_idle.png
-[  68% ] _update_scan_actions | ch01_prop_statue_ov_trolley_read.png
-[  69% ] _update_scan_actions | ch01_prop_statue_ov_whistle_idle.png
-[  69% ] _update_scan_actions | ch01_prop_statue_ov_whistle_read.png
-[  69% ] _update_scan_actions | ch01_prop_surge_capacitor_charged.png
-[  70% ] _update_scan_actions | ch01_prop_surge_capacitor_discharged.png
-[  70% ] _update_scan_actions | ch01_prop_surge_capacitor_frozen.png
-[  71% ] _update_scan_actions | ch01_prop_surge_capacitor_frozen_charged.png
-[  71% ] _update_scan_actions | ch01_prop_surge_capacitor_frozen_discharged.png
-[  71% ] _update_scan_actions | ch01_prop_ticket_terms_notice_idle.png
-[  72% ] _update_scan_actions | ch01_prop_ticket_validator_accepted.png
-[  72% ] _update_scan_actions | ch01_prop_ticket_validator_idle.png
-[  73% ] _update_scan_actions | ch01_prop_ticket_validator_rejecting.png
-[  73% ] _update_scan_actions | ch01_prop_trace_shimmer_ring_loop.png
-[  73% ] _update_scan_actions | ch01_prop_trace_timestamp_glyph_idle.png
-[  74% ] _update_scan_actions | ch01_prop_transit_car_stalled_idle.png
-[  74% ] _update_scan_actions | ch01_prop_turnstile_gate_collapsed.png
-[  75% ] _update_scan_actions | ch01_prop_turnstile_gate_open.png
-[  75% ] _update_scan_actions | ch01_ui_icon_echo.png
-[  75% ] _update_scan_actions | ch01_ui_icon_echo_locked.png
-[  76% ] _update_scan_actions | ch01_ui_icon_fast_forward.png
-[  76% ] _update_scan_actions | ch01_ui_icon_fast_forward_locked.png
-[  76% ] _update_scan_actions | ch01_ui_icon_freeze.png
-[  77% ] _update_scan_actions | ch01_ui_icon_freeze_locked.png
-[  77% ] _update_scan_actions | ch01_ui_icon_rewind.png
-[  78% ] _update_scan_actions | ch01_ui_icon_rewind_locked.png
-[  78% ] _update_scan_actions | ch01_ui_icon_trace.png
-[  78% ] _update_scan_actions | ch01_ui_icon_trace_locked.png
-[  79% ] _update_scan_actions | ch01_ui_icon_unknown.png
-[  79% ] _update_scan_actions | ch01_ui_icon_unknown_locked.png
-[  80% ] _update_scan_actions | ch01_ui_lock_glyph.png
-[  80% ] _update_scan_actions | ch01_ui_wheel_face.png
-[  80% ] _update_scan_actions | ch01_ui_wheel_pointer_0.png
-[  81% ] _update_scan_actions | ch01_ui_wheel_pointer_1.png
-[  81% ] _update_scan_actions | ch01_ui_wheel_pointer_2.png
-[  82% ] _update_scan_actions | ch01_ui_wheel_pointer_3.png
-[  82% ] _update_scan_actions | ch01_ui_wheel_pointer_4.png
-[  82% ] _update_scan_actions | ch01_ui_wheel_pointer_5.png
-[  83% ] _update_scan_actions | ch01_ui_wheel_pointer_rest.png
-[  83% ] _update_scan_actions | ch01_ui_wheel_seg0_locked.png
-[  84% ] _update_scan_actions | ch01_ui_wheel_seg0_normal.png
-[  84% ] _update_scan_actions | ch01_ui_wheel_seg0_selected.png
-[  84% ] _update_scan_actions | ch01_ui_wheel_seg1_locked.png
-[  85% ] _update_scan_actions | ch01_ui_wheel_seg1_normal.png
-[  85% ] _update_scan_actions | ch01_ui_wheel_seg1_selected.png
-[  86% ] _update_scan_actions | ch01_ui_wheel_seg2_locked.png
-[  86% ] _update_scan_actions | ch01_ui_wheel_seg2_normal.png
-[  86% ] _update_scan_actions | ch01_ui_wheel_seg2_selected.png
-[  87% ] _update_scan_actions | ch01_ui_wheel_seg3_locked.png
-[  87% ] _update_scan_actions | ch01_ui_wheel_seg3_normal.png
-[  88% ] _update_scan_actions | ch01_ui_wheel_seg3_selected.png
-[  88% ] _update_scan_actions | ch01_ui_wheel_seg4_locked.png
-[  88% ] _update_scan_actions | ch01_ui_wheel_seg4_normal.png
-[  89% ] _update_scan_actions | ch01_ui_wheel_seg4_selected.png
-[  89% ] _update_scan_actions | ch01_ui_wheel_seg5_locked.png
-[  90% ] _update_scan_actions | ch01_ui_wheel_seg5_normal.png
-[  90% ] _update_scan_actions | ch01_ui_wheel_seg5_selected.png
-[  90% ] _update_scan_actions | tlf_pixel_mono.ttf
-[  91% ] _update_scan_actions | ch01_ability_wheel_a_trace_only_mockup.png
-[  91% ] _update_scan_actions | ch01_ability_wheel_b_all_four_mockup.png
-[  92% ] _update_scan_actions | ch01_ability_wheel_c_rewind_selected_mockup.png
-[  92% ] _update_scan_actions | ch01_ability_wheel_greyscale_proof.png
-[  92% ] _update_scan_actions | ch01_arrival_platform_mockup.png
-[  93% ] _update_scan_actions | ch01_concourse_west_mockup.png
-[  93% ] _update_scan_actions | ch01_security_crossing_mockup.png
-[  94% ] _update_scan_actions | ch01_signal_control_mockup.png
-[  94% ] _update_scan_actions | ch01_step1_props_greyscale_proof.png
-[  94% ] _update_scan_actions | ch01_step1_room_statues_greyscale_proof.png
-[  95% ] _update_scan_actions | ch01_step1_room_statues_mockup.png
-[  95% ] _update_scan_actions | ch01_step1_room_statues_x3_proof.png
-[  96% ] _update_scan_actions | ch01_step1_statues_all13_greyscale_proof.png
-[  96% ] _update_scan_actions | ch01_tlf063_story_props_greyscale_proof.png
-[  96% ] _update_scan_actions | ch01_tlf063_story_props_room_mockup.png
-[  97% ] _update_scan_actions | TLF-044_capacitor_states.png
-[  97% ] _update_scan_actions | TLF-044_capacitor_states_grey.png
-[  98% ] _update_scan_actions | ch01_puzzles.csv
-[  98% ] _update_scan_actions | ch01_text.csv
-[  98% ] _update_scan_actions | ui_feedback.csv
-[  99% ] _update_scan_actions | icon.svg
-[ DONE ] _update_scan_actions
-
-[   0% ] reimport | Started (Re)Importing Assets (251 steps)
-[   0% ] reimport | Preparing files to reimport...
-[   0% ] reimport | Preparing files to reimport...
-[   0% ] reimport | Preparing files to reimport...
-[   1% ] reimport | Preparing files to reimport...
-[   1% ] reimport | Preparing files to reimport...
-[   1% ] reimport | Preparing files to reimport...
-[   2% ] reimport | Preparing files to reimport...
-[   2% ] reimport | Preparing files to reimport...
-[   3% ] reimport | Preparing files to reimport...
-[   3% ] reimport | Preparing files to reimport...
-[   3% ] reimport | Preparing files to reimport...
-[   4% ] reimport | Preparing files to reimport...
-[   4% ] reimport | Preparing files to reimport...
-[   5% ] reimport | Preparing files to reimport...
-[   5% ] reimport | Preparing files to reimport...
-[   5% ] reimport | Preparing files to reimport...
-[   6% ] reimport | Preparing files to reimport...
-[   6% ] reimport | Preparing files to reimport...
-[   7% ] reimport | Preparing files to reimport...
-[   7% ] reimport | Preparing files to reimport...
-[   7% ] reimport | Preparing files to reimport...
-[   8% ] reimport | Preparing files to reimport...
-[   8% ] reimport | Preparing files to reimport...
-[   9% ] reimport | Preparing files to reimport...
-[   9% ] reimport | Preparing files to reimport...
-[   9% ] reimport | Preparing files to reimport...
-[  10% ] reimport | Preparing files to reimport...
-[  10% ] reimport | Preparing files to reimport...
-[  11% ] reimport | Preparing files to reimport...
-[  11% ] reimport | Preparing files to reimport...
-[  11% ] reimport | Preparing files to reimport...
-[  12% ] reimport | Preparing files to reimport...
-[  12% ] reimport | Preparing files to reimport...
-[  13% ] reimport | Preparing files to reimport...
-[  13% ] reimport | Preparing files to reimport...
-[  13% ] reimport | Preparing files to reimport...
-[  14% ] reimport | Preparing files to reimport...
-[  14% ] reimport | Preparing files to reimport...
-[  15% ] reimport | Preparing files to reimport...
-[  15% ] reimport | Preparing files to reimport...
-[  15% ] reimport | Preparing files to reimport...
-[  16% ] reimport | Preparing files to reimport...
-[  16% ] reimport | Preparing files to reimport...
-[  17% ] reimport | Preparing files to reimport...
-[  17% ] reimport | Preparing files to reimport...
-[  17% ] reimport | Preparing files to reimport...
-[  18% ] reimport | Preparing files to reimport...
-[  18% ] reimport | Preparing files to reimport...
-[  19% ] reimport | Preparing files to reimport...
-[  19% ] reimport | Preparing files to reimport...
-[  19% ] reimport | Preparing files to reimport...
-[  20% ] reimport | Preparing files to reimport...
-[  20% ] reimport | Preparing files to reimport...
-[  21% ] reimport | Preparing files to reimport...
-[  21% ] reimport | Preparing files to reimport...
-[  21% ] reimport | Preparing files to reimport...
-[  22% ] reimport | Preparing files to reimport...
-[  22% ] reimport | Preparing files to reimport...
-[  23% ] reimport | Preparing files to reimport...
-[  23% ] reimport | Preparing files to reimport...
-[  23% ] reimport | Preparing files to reimport...
-[  24% ] reimport | Preparing files to reimport...
-[  24% ] reimport | Preparing files to reimport...
-[  25% ] reimport | Preparing files to reimport...
-[  25% ] reimport | Preparing files to reimport...
-[  25% ] reimport | Preparing files to reimport...
-[  26% ] reimport | Preparing files to reimport...
-[  26% ] reimport | Preparing files to reimport...
-[  26% ] reimport | Preparing files to reimport...
-[  27% ] reimport | Preparing files to reimport...
-[  27% ] reimport | Preparing files to reimport...
-[  28% ] reimport | Preparing files to reimport...
-[  28% ] reimport | Preparing files to reimport...
-[  28% ] reimport | Preparing files to reimport...
-[  29% ] reimport | Preparing files to reimport...
-[  29% ] reimport | Preparing files to reimport...
-[  30% ] reimport | Preparing files to reimport...
-[  30% ] reimport | Preparing files to reimport...
-[  30% ] reimport | Preparing files to reimport...
-[  31% ] reimport | Preparing files to reimport...
-[  31% ] reimport | Preparing files to reimport...
-[  32% ] reimport | Preparing files to reimport...
-[  32% ] reimport | Preparing files to reimport...
-[  32% ] reimport | Preparing files to reimport...
-[  33% ] reimport | Preparing files to reimport...
-[  33% ] reimport | Preparing files to reimport...
-[  34% ] reimport | Preparing files to reimport...
-[  34% ] reimport | Preparing files to reimport...
-[  34% ] reimport | Preparing files to reimport...
-[  35% ] reimport | Preparing files to reimport...
-[  35% ] reimport | Preparing files to reimport...
-[  36% ] reimport | Preparing files to reimport...
-[  36% ] reimport | Preparing files to reimport...
-[  36% ] reimport | Preparing files to reimport...
-[  37% ] reimport | Preparing files to reimport...
-[  37% ] reimport | Preparing files to reimport...
-[  38% ] reimport | Preparing files to reimport...
-[  38% ] reimport | Preparing files to reimport...
-[  38% ] reimport | Preparing files to reimport...
-[  39% ] reimport | Preparing files to reimport...
-[  39% ] reimport | Preparing files to reimport...
-[  40% ] reimport | Preparing files to reimport...
-[  40% ] reimport | Preparing files to reimport...
-[  40% ] reimport | Preparing files to reimport...
-[  41% ] reimport | Preparing files to reimport...
-[  41% ] reimport | Preparing files to reimport...
-[  42% ] reimport | Preparing files to reimport...
-[  42% ] reimport | Preparing files to reimport...
-[  42% ] reimport | Preparing files to reimport...
-[  43% ] reimport | Preparing files to reimport...
-[  43% ] reimport | Preparing files to reimport...
-[  44% ] reimport | Preparing files to reimport...
-[  44% ] reimport | Preparing files to reimport...
-[  44% ] reimport | Preparing files to reimport...
-[  45% ] reimport | Preparing files to reimport...
-[  45% ] reimport | Preparing files to reimport...
-[  46% ] reimport | Preparing files to reimport...
-[  46% ] reimport | Preparing files to reimport...
-[  46% ] reimport | Preparing files to reimport...
-[  47% ] reimport | Preparing files to reimport...
-[  47% ] reimport | Preparing files to reimport...
-[  48% ] reimport | Preparing files to reimport...
-[  48% ] reimport | Preparing files to reimport...
-[  48% ] reimport | Preparing files to reimport...
-[  49% ] reimport | Preparing files to reimport...
-[  49% ] reimport | Preparing files to reimport...
-[  50% ] reimport | Preparing files to reimport...
-[  50% ] reimport | Preparing files to reimport...
-[  50% ] reimport | Preparing files to reimport...
-[  51% ] reimport | Preparing files to reimport...
-[  51% ] reimport | Preparing files to reimport...
-[  51% ] reimport | Preparing files to reimport...
-[  52% ] reimport | Preparing files to reimport...
-[  52% ] reimport | Preparing files to reimport...
-[  53% ] reimport | Preparing files to reimport...
-[  53% ] reimport | Preparing files to reimport...
-[  53% ] reimport | Preparing files to reimport...
-[  54% ] reimport | Preparing files to reimport...
-[  54% ] reimport | Preparing files to reimport...
-[  55% ] reimport | Preparing files to reimport...
-[  55% ] reimport | Preparing files to reimport...
-[  55% ] reimport | Preparing files to reimport...
-[  56% ] reimport | Preparing files to reimport...
-[  56% ] reimport | Preparing files to reimport...
-[  57% ] reimport | Preparing files to reimport...
-[  57% ] reimport | Preparing files to reimport...
-[  57% ] reimport | Preparing files to reimport...
-[  58% ] reimport | Preparing files to reimport...
-[  58% ] reimport | Preparing files to reimport...
-[  59% ] reimport | Preparing files to reimport...
-[  59% ] reimport | Preparing files to reimport...
-[  59% ] reimport | Preparing files to reimport...
-[  60% ] reimport | Preparing files to reimport...
-[  60% ] reimport | Preparing files to reimport...
-[  61% ] reimport | Preparing files to reimport...
-[  61% ] reimport | Preparing files to reimport...
-[  61% ] reimport | Preparing files to reimport...
-[  62% ] reimport | Preparing files to reimport...
-[  62% ] reimport | Preparing files to reimport...
-[  63% ] reimport | Preparing files to reimport...
-[  63% ] reimport | Preparing files to reimport...
-[  63% ] reimport | Preparing files to reimport...
-[  64% ] reimport | Preparing files to reimport...
-[  64% ] reimport | Preparing files to reimport...
-[  65% ] reimport | Preparing files to reimport...
-[  65% ] reimport | Preparing files to reimport...
-[  65% ] reimport | Preparing files to reimport...
-[  66% ] reimport | Preparing files to reimport...
-[  66% ] reimport | Preparing files to reimport...
-[  67% ] reimport | Preparing files to reimport...
-[  67% ] reimport | Preparing files to reimport...
-[  67% ] reimport | Preparing files to reimport...
-[  68% ] reimport | Preparing files to reimport...
-[  68% ] reimport | Preparing files to reimport...
-[  69% ] reimport | Preparing files to reimport...
-[  69% ] reimport | Preparing files to reimport...
-[  69% ] reimport | Preparing files to reimport...
-[  70% ] reimport | Preparing files to reimport...
-[  70% ] reimport | Preparing files to reimport...
-[  71% ] reimport | Preparing files to reimport...
-[  71% ] reimport | Preparing files to reimport...
-[  71% ] reimport | Preparing files to reimport...
-[  72% ] reimport | Preparing files to reimport...
-[  72% ] reimport | Preparing files to reimport...
-[  73% ] reimport | Preparing files to reimport...
-[  73% ] reimport | Preparing files to reimport...
-[  73% ] reimport | Preparing files to reimport...
-[  74% ] reimport | Preparing files to reimport...
-[  74% ] reimport | Preparing files to reimport...
-[  75% ] reimport | Preparing files to reimport...
-[  75% ] reimport | Preparing files to reimport...
-[  75% ] reimport | Preparing files to reimport...
-[  76% ] reimport | Preparing files to reimport...
-[  76% ] reimport | Preparing files to reimport...
-[  76% ] reimport | Preparing files to reimport...
-[  77% ] reimport | Preparing files to reimport...
-[  77% ] reimport | Preparing files to reimport...
-[  78% ] reimport | Preparing files to reimport...
-[  78% ] reimport | Preparing files to reimport...
-[  78% ] reimport | Preparing files to reimport...
-[  79% ] reimport | Preparing files to reimport...
-[  79% ] reimport | Preparing files to reimport...
-[  80% ] reimport | Preparing files to reimport...
-[  80% ] reimport | Preparing files to reimport...
-[  80% ] reimport | Preparing files to reimport...
-[  81% ] reimport | Preparing files to reimport...
-[  81% ] reimport | Preparing files to reimport...
-[  82% ] reimport | Preparing files to reimport...
-[  82% ] reimport | Preparing files to reimport...
-[  82% ] reimport | Preparing files to reimport...
-[  83% ] reimport | Preparing files to reimport...
-[  83% ] reimport | Preparing files to reimport...
-[  84% ] reimport | Preparing files to reimport...
-[  84% ] reimport | Preparing files to reimport...
-[  84% ] reimport | Preparing files to reimport...
-[  85% ] reimport | Preparing files to reimport...
-[  85% ] reimport | Preparing files to reimport...
-[  86% ] reimport | Preparing files to reimport...
-[  86% ] reimport | Preparing files to reimport...
-[  86% ] reimport | Preparing files to reimport...
-[  87% ] reimport | Preparing files to reimport...
-[  87% ] reimport | Preparing files to reimport...
-[  88% ] reimport | Preparing files to reimport...
-[  88% ] reimport | Preparing files to reimport...
-[  88% ] reimport | Preparing files to reimport...
-[  89% ] reimport | Preparing files to reimport...
-[  89% ] reimport | Preparing files to reimport...
-[  90% ] reimport | Preparing files to reimport...
-[  90% ] reimport | Preparing files to reimport...
-[  90% ] reimport | Preparing files to reimport...
-[  91% ] reimport | Preparing files to reimport...
-[  91% ] reimport | Preparing files to reimport...
-[  92% ] reimport | Preparing files to reimport...
-[  92% ] reimport | Preparing files to reimport...
-[  92% ] reimport | Preparing files to reimport...
-[  93% ] reimport | Preparing files to reimport...
-[  93% ] reimport | Preparing files to reimport...
-[  94% ] reimport | Preparing files to reimport...
-[  94% ] reimport | Preparing files to reimport...
-[  94% ] reimport | Preparing files to reimport...
-[  95% ] reimport | Preparing files to reimport...
-[  95% ] reimport | Preparing files to reimport...
-[  96% ] reimport | Preparing files to reimport...
-[  96% ] reimport | Preparing files to reimport...
-[  96% ] reimport | Preparing files to reimport...
-[  97% ] reimport | Preparing files to reimport...
-[  97% ] reimport | Preparing files to reimport...
-[  98% ] reimport | Preparing files to reimport...
-[  98% ] reimport | Preparing files to reimport...
-[  98% ] reimport | Preparing files to reimport...
-[  99% ] reimport | Preparing files to reimport...
-[   0% ] reimport | Executing pre-reimport operations...
-[   0% ] reimport | ui_feedback.csv
-[   0% ] reimport | ch01_text.csv
-[   0% ] reimport | ch01_puzzles.csv
-[   1% ] reimport | tlf_pixel_mono.ttf
-[   1% ] reimport | ui_feedback.csv
-[   1% ] reimport | ch01_text.csv
-[   2% ] reimport | ch01_puzzles.csv
-[   2% ] reimport | tlf_pixel_mono.ttf
-[   3% ] reimport | ch01_prop_statue_ov_sleeping_child_read.png
-[   3% ] reimport | ch01_prop_statue_ov_sleeping_child_idle.png
-[   3% ] reimport | ch01_prop_statue_ov_red_coat_read.png
-[   4% ] reimport | ch01_prop_statue_ov_red_coat_idle.png
-[   4% ] reimport | ch01_prop_statue_ov_phone_read.png
-[   5% ] reimport | ch01_prop_statue_ov_phone_idle.png
-[   5% ] reimport | ch01_prop_statue_ov_paper_bag_read.png
-[   5% ] reimport | ch01_prop_statue_ov_paper_bag_idle.png
-[   6% ] reimport | ch01_prop_statue_ov_map_read.png
-[   6% ] reimport | ch01_prop_statue_ov_map_idle.png
-[   7% ] reimport | ch01_prop_statue_ov_headphones_read.png
-[   7% ] reimport | ch01_prop_statue_ov_headphones_idle.png
-[   7% ] reimport | ch01_prop_statue_ov_hatch_crank_read.png
-[   8% ] reimport | ch01_prop_statue_ov_hatch_crank_idle.png
-[   8% ] reimport | ch01_prop_statue_ov_suitcase_idle.png
-[   9% ] reimport | ch01_prop_statue_ov_suitcase_read.png
-[   9% ] reimport | ch01_prop_statue_ov_trolley_idle.png
-[   9% ] reimport | ch01_prop_statue_ov_trolley_read.png
-[  10% ] reimport | ch01_prop_statue_ov_whistle_idle.png
-[  10% ] reimport | ch01_prop_statue_ov_whistle_read.png
-[  11% ] reimport | ch01_prop_surge_capacitor_charged.png
-[  11% ] reimport | ch01_prop_surge_capacitor_discharged.png
-[  11% ] reimport | ch01_prop_surge_capacitor_frozen.png
-[  12% ] reimport | ch01_prop_surge_capacitor_frozen_charged.png
-[  12% ] reimport | ch01_prop_surge_capacitor_frozen_discharged.png
-[  13% ] reimport | ch01_prop_ticket_terms_notice_idle.png
-[  13% ] reimport | ch01_prop_ticket_validator_accepted.png
-[  13% ] reimport | ch01_prop_ticket_validator_idle.png
-[  14% ] reimport | ch01_prop_ticket_validator_rejecting.png
-[  14% ] reimport | ch01_prop_trace_shimmer_ring_loop.png
-[  15% ] reimport | ch01_prop_security_gate_open.png
-[  15% ] reimport | ch01_prop_selector_car_pos0.png
-[  15% ] reimport | ch01_prop_selector_car_pos1.png
-[  16% ] reimport | ch01_prop_selector_car_pos2.png
-[  16% ] reimport | ch01_prop_selector_line_pos0.png
-[  17% ] reimport | ch01_prop_selector_line_pos1.png
-[  17% ] reimport | ch01_prop_selector_line_pos2.png
-[  17% ] reimport | ch01_prop_selector_platform_pos0.png
-[  18% ] reimport | ch01_prop_selector_platform_pos1.png
-[  18% ] reimport | ch01_prop_selector_platform_pos2.png
-[  19% ] reimport | ch01_prop_service_hatch_closed.png
-[  19% ] reimport | ch01_prop_service_hatch_frozen_closed.png
-[  19% ] reimport | ch01_prop_service_hatch_frozen_open.png
-[  20% ] reimport | ch01_prop_service_hatch_open.png
-[  20% ] reimport | ch01_prop_sign_a1_research_idle.png
-[  21% ] reimport | ch01_prop_staff_barrier_closed.png
-[  21% ] reimport | ch01_prop_staff_barrier_open.png
-[  21% ] reimport | ch01_prop_staff_door_closed.png
-[  22% ] reimport | ch01_prop_staff_door_open.png
-[  22% ] reimport | ch01_prop_standby_plate_empty.png
-[  23% ] reimport | ch01_prop_standby_plate_held.png
-[  23% ] reimport | ch01_prop_station_bench_idle.png
-[  23% ] reimport | ch01_prop_statue_ov_breaker_handle_idle.png
-[  24% ] reimport | ch01_prop_statue_ov_breaker_handle_read.png
-[  24% ] reimport | ch01_prop_statue_ov_briefcase_idle.png
-[  25% ] reimport | ch01_prop_statue_ov_briefcase_read.png
-[  25% ] reimport | ch01_prop_statue_ov_courier_bag_idle.png
-[  25% ] reimport | ch01_prop_statue_ov_courier_bag_read.png
-[  26% ] reimport | ch01_prop_statue_ov_gate_lever_idle.png
-[  26% ] reimport | ch01_prop_statue_ov_gate_lever_read.png
-[  26% ] reimport | ch01_ui_wheel_seg2_locked.png
-[  27% ] reimport | ch01_ui_wheel_seg2_normal.png
-[  27% ] reimport | ch01_ui_wheel_seg2_selected.png
-[  28% ] reimport | ch01_ui_wheel_seg3_locked.png
-[  28% ] reimport | ch01_ui_wheel_seg3_normal.png
-[  28% ] reimport | ch01_ui_wheel_seg3_selected.png
-[  29% ] reimport | ch01_ui_wheel_seg4_locked.png
-[  29% ] reimport | ch01_ui_wheel_seg4_normal.png
-[  30% ] reimport | ch01_ui_wheel_seg4_selected.png
-[  30% ] reimport | ch01_ui_wheel_seg5_locked.png
-[  30% ] reimport | ch01_ui_wheel_seg5_normal.png
-[  31% ] reimport | ch01_ui_wheel_seg5_selected.png
-[  31% ] reimport | ch01_ability_wheel_a_trace_only_mockup.png
-[  32% ] reimport | ch01_ability_wheel_b_all_four_mockup.png
-[  32% ] reimport | ch01_ability_wheel_c_rewind_selected_mockup.png
-[  32% ] reimport | ch01_ability_wheel_greyscale_proof.png
-[  33% ] reimport | ch01_arrival_platform_mockup.png
-[  33% ] reimport | ch01_concourse_west_mockup.png
-[  34% ] reimport | ch01_security_crossing_mockup.png
-[  34% ] reimport | ch01_signal_control_mockup.png
-[  34% ] reimport | ch01_step1_props_greyscale_proof.png
-[  35% ] reimport | ch01_step1_room_statues_greyscale_proof.png
-[  35% ] reimport | ch01_step1_room_statues_mockup.png
-[  36% ] reimport | ch01_step1_room_statues_x3_proof.png
-[  36% ] reimport | ch01_step1_statues_all13_greyscale_proof.png
-[  36% ] reimport | ch01_tlf063_story_props_greyscale_proof.png
-[  37% ] reimport | ch01_tlf063_story_props_room_mockup.png
-[  37% ] reimport | TLF-044_capacitor_states.png
-[  38% ] reimport | TLF-044_capacitor_states_grey.png
-[  38% ] reimport | icon.svg
-[  38% ] reimport | ch01_prop_trace_timestamp_glyph_idle.png
-[  39% ] reimport | ch01_prop_transit_car_stalled_idle.png
-[  39% ] reimport | ch01_prop_turnstile_gate_collapsed.png
-[  40% ] reimport | ch01_prop_turnstile_gate_open.png
-[  40% ] reimport | ch01_ui_icon_echo.png
-[  40% ] reimport | ch01_ui_icon_echo_locked.png
-[  41% ] reimport | ch01_ui_icon_fast_forward.png
-[  41% ] reimport | ch01_ui_icon_fast_forward_locked.png
-[  42% ] reimport | ch01_ui_icon_freeze.png
-[  42% ] reimport | ch01_ui_icon_freeze_locked.png
-[  42% ] reimport | ch01_ui_icon_rewind.png
-[  43% ] reimport | ch01_ui_icon_rewind_locked.png
-[  43% ] reimport | ch01_ui_icon_trace.png
-[  44% ] reimport | ch01_ui_icon_trace_locked.png
-[  44% ] reimport | ch01_ui_icon_unknown.png
-[  44% ] reimport | ch01_ui_icon_unknown_locked.png
-[  45% ] reimport | ch01_ui_lock_glyph.png
-[  45% ] reimport | ch01_ui_wheel_face.png
-[  46% ] reimport | ch01_ui_wheel_pointer_0.png
-[  46% ] reimport | ch01_ui_wheel_pointer_1.png
-[  46% ] reimport | ch01_ui_wheel_pointer_2.png
-[  47% ] reimport | ch01_ui_wheel_pointer_3.png
-[  47% ] reimport | ch01_ui_wheel_pointer_4.png
-[  48% ] reimport | ch01_ui_wheel_pointer_5.png
-[  48% ] reimport | ch01_ui_wheel_pointer_rest.png
-[  48% ] reimport | ch01_ui_wheel_seg0_locked.png
-[  49% ] reimport | ch01_ui_wheel_seg0_normal.png
-[  49% ] reimport | ch01_ui_wheel_seg0_selected.png
-[  50% ] reimport | ch01_ui_wheel_seg1_locked.png
-[  50% ] reimport | ch01_ui_wheel_seg1_normal.png
-[  50% ] reimport | ch01_ui_wheel_seg1_selected.png
-[  51% ] reimport | ch01_char_statue_commuter_n11_hatch_tech_read.png
-[  51% ] reimport | ch01_char_statue_commuter_n13_guard_idle.png
-[  51% ] reimport | ch01_char_statue_commuter_n13_guard_read.png
-[  52% ] reimport | ch01_char_statue_commuter_n20_engineer_idle.png
-[  52% ] reimport | ch01_char_statue_commuter_n20_engineer_read.png
-[  53% ] reimport | ch01_char_statue_commuter_n21_tourist_idle.png
-[  53% ] reimport | ch01_char_statue_commuter_n21_tourist_read.png
-[  53% ] reimport | ch01_char_statue_n03_old_man_seated_idle.png
-[  54% ] reimport | ch01_char_statue_n03_old_man_seated_read.png
-[  54% ] reimport | ch01_char_statue_n04_cleaner_idle.png
-[  55% ] reimport | ch01_char_statue_n04_cleaner_read.png
-[  55% ] reimport | ch01_char_statue_n05_courier_vault_idle.png
-[  55% ] reimport | ch01_char_statue_n05_courier_vault_read.png
-[  56% ] reimport | ch01_char_statue_n11_tech_crank_idle.png
-[  56% ] reimport | ch01_char_statue_n11_tech_crank_read.png
-[  57% ] reimport | ch01_env_archway_frame_e_idle.png
-[  57% ] reimport | ch01_env_archway_frame_n_idle.png
-[  57% ] reimport | ch01_env_arrival_platform_target_sheet.png
-[  58% ] reimport | ch01_env_tile_cable_conduit_off_idle.png
-[  58% ] reimport | ch01_env_tile_cable_conduit_on_idle.png
-[  59% ] reimport | ch01_env_tile_concrete_service_idle.png
-[  59% ] reimport | ch01_env_tile_industrial_grating_idle.png
-[  59% ] reimport | ch01_env_tile_stone_step_wet_idle.png
-[  60% ] reimport | ch01_env_tile_tactile_amber_idle.png
-[  60% ] reimport | ch01_env_tile_terrazzo_cracked_idle.png
-[  61% ] reimport | ch01_env_tile_terrazzo_dark_idle.png
-[  61% ] reimport | ch01_env_wall_bulkhead_module_idle.png
-[  61% ] reimport | ch01_env_wall_corner_pillar_idle.png
-[  62% ] reimport | ch01_env_wall_railing_iron_idle.png
-[  62% ] reimport | ch01_env_wall_subterranean_n_idle.png
-[  63% ] reimport | ch01_env_wall_subterranean_w_idle.png
-[  63% ] reimport | ch01_char_elias_base_sheet.png
-[  63% ] reimport | ch01_char_statue_body_a_pose1_idle.png
-[  64% ] reimport | ch01_char_statue_body_a_pose1_read.png
-[  64% ] reimport | ch01_char_statue_body_a_pose2_idle.png
-[  65% ] reimport | ch01_char_statue_body_a_pose2_read.png
-[  65% ] reimport | ch01_char_statue_body_b_pose1_idle.png
-[  65% ] reimport | ch01_char_statue_body_b_pose1_read.png
-[  66% ] reimport | ch01_char_statue_body_b_pose2_idle.png
-[  66% ] reimport | ch01_char_statue_body_b_pose2_read.png
-[  67% ] reimport | ch01_char_statue_body_c_pose1_idle.png
-[  67% ] reimport | ch01_char_statue_body_c_pose1_read.png
-[  67% ] reimport | ch01_char_statue_body_c_pose2_idle.png
-[  68% ] reimport | ch01_char_statue_body_c_pose2_read.png
-[  68% ] reimport | ch01_char_statue_commuter_n01_conductor_idle.png
-[  69% ] reimport | ch01_char_statue_commuter_n01_conductor_read.png
-[  69% ] reimport | ch01_char_statue_commuter_n02_student_idle.png
-[  69% ] reimport | ch01_char_statue_commuter_n02_student_read.png
-[  70% ] reimport | ch01_char_statue_commuter_n03_old_man_idle.png
-[  70% ] reimport | ch01_char_statue_commuter_n03_old_man_read.png
-[  71% ] reimport | ch01_char_statue_commuter_n04_cleaner_idle.png
-[  71% ] reimport | ch01_char_statue_commuter_n04_cleaner_read.png
-[  71% ] reimport | ch01_char_statue_commuter_n05_courier_idle.png
-[  72% ] reimport | ch01_char_statue_commuter_n05_courier_read.png
-[  72% ] reimport | ch01_char_statue_commuter_n06_red_coat_idle.png
-[  73% ] reimport | ch01_char_statue_commuter_n06_red_coat_read.png
-[  73% ] reimport | ch01_char_statue_commuter_n07_briefcase_idle.png
-[  73% ] reimport | ch01_char_statue_commuter_n07_briefcase_read.png
-[  74% ] reimport | ch01_char_statue_commuter_n08_father_idle.png
-[  74% ] reimport | ch01_char_statue_commuter_n08_father_read.png
-[  75% ] reimport | ch01_char_statue_commuter_n09_teen_idle.png
-[  75% ] reimport | ch01_char_statue_commuter_n09_teen_read.png
-[  75% ] reimport | ch01_char_statue_commuter_n11_hatch_tech_idle.png
-[  76% ] reimport | ch01_prop_flap_dial_line_jammed.png
-[  76% ] reimport | ch01_prop_flap_dial_platform_idle.png
-[  76% ] reimport | ch01_prop_flap_dial_platform_jammed.png
-[  77% ] reimport | ch01_prop_flap_dial_time_idle.png
-[  77% ] reimport | ch01_prop_flap_dial_time_jammed.png
-[  78% ] reimport | ch01_prop_floor_plate_a_empty.png
-[  78% ] reimport | ch01_prop_floor_plate_a_pressed.png
-[  78% ] reimport | ch01_prop_floor_plate_b_empty.png
-[  79% ] reimport | ch01_prop_floor_plate_b_pressed.png
-[  79% ] reimport | ch01_prop_inner_shutter_closed.png
-[  80% ] reimport | ch01_prop_inner_shutter_raised.png
-[  80% ] reimport | ch01_prop_lever_badge_a_idle.png
-[  80% ] reimport | ch01_prop_lever_badge_b_idle.png
-[  81% ] reimport | ch01_prop_lever_switch_off.png
-[  81% ] reimport | ch01_prop_lever_switch_on.png
-[  82% ] reimport | ch01_prop_notice_closed_track_idle.png
-[  82% ] reimport | ch01_prop_pa_speaker_idle.png
-[  82% ] reimport | ch01_prop_pillar_mark_sector_a_idle.png
-[  83% ] reimport | ch01_prop_platform_gate_closed.png
-[  83% ] reimport | ch01_prop_platform_gate_open.png
-[  84% ] reimport | ch01_prop_pocket_watch_idle.png
-[  84% ] reimport | ch01_prop_pressure_switch_pressed.png
-[  84% ] reimport | ch01_prop_pressure_switch_released.png
-[  85% ] reimport | ch01_prop_release_lever_accepted.png
-[  85% ] reimport | ch01_prop_release_lever_buzzing.png
-[  86% ] reimport | ch01_prop_release_lever_idle.png
-[  86% ] reimport | ch01_prop_reset_console_idle.png
-[  86% ] reimport | ch01_prop_route_board_state0.png
-[  87% ] reimport | ch01_prop_route_board_state1.png
-[  87% ] reimport | ch01_prop_route_board_state2.png
-[  88% ] reimport | ch01_prop_security_gate_closed.png
-[  88% ] reimport | ch01_prop_alarm_plate_idle.png
-[  88% ] reimport | ch01_prop_alarm_plate_ringing.png
-[  89% ] reimport | ch01_prop_bell_icon_idle.png
-[  89% ] reimport | ch01_prop_bell_icon_ringing.png
-[  90% ] reimport | ch01_prop_breaker_c_browned_out.png
-[  90% ] reimport | ch01_prop_breaker_c_engaged.png
-[  90% ] reimport | ch01_prop_breaker_c_idle.png
-[  91% ] reimport | ch01_prop_bridge_platform_extended.png
-[  91% ] reimport | ch01_prop_bridge_platform_retracted.png
-[  92% ] reimport | ch01_prop_call_box_phone_idle.png
-[  92% ] reimport | ch01_prop_call_box_phone_ringing.png
-[  92% ] reimport | ch01_prop_card_reader_accepted.png
-[  93% ] reimport | ch01_prop_card_reader_denied.png
-[  93% ] reimport | ch01_prop_card_reader_idle.png
-[  94% ] reimport | ch01_prop_conduit_fallen.png
-[  94% ] reimport | ch01_prop_conduit_mounted.png
-[  94% ] reimport | ch01_prop_counterweight_gear_frozen.png
-[  95% ] reimport | ch01_prop_counterweight_gear_idle.png
-[  95% ] reimport | ch01_prop_counterweight_gear_slipping.png
-[  96% ] reimport | ch01_prop_dead_relay_c_idle.png
-[  96% ] reimport | ch01_prop_dead_relay_c_shake.png
-[  96% ] reimport | ch01_prop_departure_board_nowhere_idle.png
-[  97% ] reimport | ch01_prop_digital_clock_2359_idle.png
-[  97% ] reimport | ch01_prop_dispatch_terminal_active.png
-[  98% ] reimport | ch01_prop_dispatch_terminal_idle.png
-[  98% ] reimport | ch01_prop_document_clipboard_idle.png
-[  98% ] reimport | ch01_prop_door_rd_access_sealed_idle.png
-[  99% ] reimport | ch01_prop_echo_pedestal_idle.png
-[  99% ] reimport | Finalizing Asset Import...
-[ DONE ] reimport
-
-[   0% ] reimport | Started (Re)Importing Assets (251 steps)
-[   0% ] reimport | Executing post-reimport operations...
-[ DONE ] reimport
-
-[   0% ] loading_editor_layout | Started Loading editor (5 steps)
-[   0% ] loading_editor_layout | Loading editor layout...
-[  16% ] loading_editor_layout | Loading docks...
-[ DONE ] loading_editor_layout
-
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (146 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | BreakerCPresenter[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | CableConduitPresenter[39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | CardReaderPresenter[39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | CommuterStatuePresenter[39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | ConduitPropPresenter[39m[0m
+[   3% ] [90m[1mupdate_scripts_classes[22m | CounterweightGearPresenter[39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | DeadRelayPresenter[39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | DispatchTerminalPresenter[39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | EchoPedestalPresenter[39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | FireShutterPresenter[39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | HistoryDialPresenter[39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | LeverPresenter[39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | PressureSwitchPresenter[39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | ReleaseLeverPresenter[39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | RetractableBridgePresenter[39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | RoomVisuals[39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | RouteBoardPresenter[39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | SecurityGatePresenter[39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | SelectorSwitchPresenter[39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | ServiceHatchPresenter[39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | SurgeCapacitorPresenter[39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | TicketValidatorPresenter[39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | TurnstilePresenter[39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | Chapter01[39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | SignalControlIntercom[39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | EchoService[39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | Interactable[39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | Lever[39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | TriggerZone[39m[0m
+[  21% ] [90m[1mupdate_scripts_classes[22m | AbilityUnlocks[39m[0m
+[  21% ] [90m[1mupdate_scripts_classes[22m | DocumentDef[39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | NarrativeState[39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | ReadableDocument[39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | TraceMemory[39m[0m
+[  24% ] [90m[1mupdate_scripts_classes[22m | Player[39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | PocketWatch[39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | CardReader[39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | CodeLock[39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | ConduitProp[39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | CounterweightGear[39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | DeadRelay[39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | DecoyPlate[39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | FireShutter[39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | HistoryDial[39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | JunctionLever[39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | LampRingBreaker[39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | PlateLinkedGate[39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | PoweredDoor[39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | ProgressionPickup[39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | PuzzleObject[39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | ReleaseLever[39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | RetractableBridge[39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | SelectorSwitch[39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | SpatialStateResetter[39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | SubstationGrid[39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | SurgeCapacitor[39m[0m
+[  39% ] [90m[1mupdate_scripts_classes[22m | TicketValidator[39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | TimedBreaker[39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | TurnstileGate[39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | AbilityUnlockTrigger[39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | HintService[39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | PuzzleCompletionZone[39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | PuzzleDef[39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | PuzzleService[39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | ResetAnchor[39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | CheckpointZone[39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | RoomRouter[39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | SafeAnchor[39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | SaveStore[39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | GameSession[39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | IdRegistry[39m[0m
+[  49% ] [90m[1mupdate_scripts_classes[22m | InteractionResult[39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | InteractionService[39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | SimClock[39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | ChapterGraphDef[39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | DoorwayPresenter[39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | SpatialGraph[39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | SpatialService[39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | PlaytestLog[39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | TemporalComponent[39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | TemporalTestGate[39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | TemporalTestGear[39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | TemporalTestShutter[39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | AbilityWheel[39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | ChapterCompleteOverlay[39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | DialogueBox[39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | DialogueTrigger[39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | DocumentViewer[39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | HUD[39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | InputPrompts[39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | JournalScreen[39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | UIFeedback[39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | UITheme[39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  78% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  78% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  87% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  87% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  90% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  96% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1m_update_scan_actions[22m | Started Scanning actions... (251 steps)[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | ch01_char_elias_base_sheet.png[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_body_a_pose1_idle.png[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_body_a_pose1_read.png[39m[0m
+[   1% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_body_a_pose2_idle.png[39m[0m
+[   1% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_body_a_pose2_read.png[39m[0m
+[   1% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_body_b_pose1_idle.png[39m[0m
+[   2% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_body_b_pose1_read.png[39m[0m
+[   2% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_body_b_pose2_idle.png[39m[0m
+[   3% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_body_b_pose2_read.png[39m[0m
+[   3% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_body_c_pose1_idle.png[39m[0m
+[   3% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_body_c_pose1_read.png[39m[0m
+[   4% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_body_c_pose2_idle.png[39m[0m
+[   4% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_body_c_pose2_read.png[39m[0m
+[   5% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n01_conductor_idle.png[39m[0m
+[   5% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n01_conductor_read.png[39m[0m
+[   5% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n02_student_idle.png[39m[0m
+[   6% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n02_student_read.png[39m[0m
+[   6% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n03_old_man_idle.png[39m[0m
+[   7% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n03_old_man_read.png[39m[0m
+[   7% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n04_cleaner_idle.png[39m[0m
+[   7% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n04_cleaner_read.png[39m[0m
+[   8% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n05_courier_idle.png[39m[0m
+[   8% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n05_courier_read.png[39m[0m
+[   9% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n06_red_coat_idle.png[39m[0m
+[   9% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n06_red_coat_read.png[39m[0m
+[   9% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n07_briefcase_idle.png[39m[0m
+[  10% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n07_briefcase_read.png[39m[0m
+[  10% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n08_father_idle.png[39m[0m
+[  11% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n08_father_read.png[39m[0m
+[  11% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n09_teen_idle.png[39m[0m
+[  11% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n09_teen_read.png[39m[0m
+[  12% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n11_hatch_tech_idle.png[39m[0m
+[  12% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n11_hatch_tech_read.png[39m[0m
+[  13% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n13_guard_idle.png[39m[0m
+[  13% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n13_guard_read.png[39m[0m
+[  13% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n20_engineer_idle.png[39m[0m
+[  14% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n20_engineer_read.png[39m[0m
+[  14% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n21_tourist_idle.png[39m[0m
+[  15% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_commuter_n21_tourist_read.png[39m[0m
+[  15% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_n03_old_man_seated_idle.png[39m[0m
+[  15% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_n03_old_man_seated_read.png[39m[0m
+[  16% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_n04_cleaner_idle.png[39m[0m
+[  16% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_n04_cleaner_read.png[39m[0m
+[  17% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_n05_courier_vault_idle.png[39m[0m
+[  17% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_n05_courier_vault_read.png[39m[0m
+[  17% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_n11_tech_crank_idle.png[39m[0m
+[  18% ] [90m[1m_update_scan_actions[22m | ch01_char_statue_n11_tech_crank_read.png[39m[0m
+[  18% ] [90m[1m_update_scan_actions[22m | ch01_env_archway_frame_e_idle.png[39m[0m
+[  19% ] [90m[1m_update_scan_actions[22m | ch01_env_archway_frame_n_idle.png[39m[0m
+[  19% ] [90m[1m_update_scan_actions[22m | ch01_env_arrival_platform_target_sheet.png[39m[0m
+[  19% ] [90m[1m_update_scan_actions[22m | ch01_env_tile_cable_conduit_off_idle.png[39m[0m
+[  20% ] [90m[1m_update_scan_actions[22m | ch01_env_tile_cable_conduit_on_idle.png[39m[0m
+[  20% ] [90m[1m_update_scan_actions[22m | ch01_env_tile_concrete_service_idle.png[39m[0m
+[  21% ] [90m[1m_update_scan_actions[22m | ch01_env_tile_industrial_grating_idle.png[39m[0m
+[  21% ] [90m[1m_update_scan_actions[22m | ch01_env_tile_stone_step_wet_idle.png[39m[0m
+[  21% ] [90m[1m_update_scan_actions[22m | ch01_env_tile_tactile_amber_idle.png[39m[0m
+[  22% ] [90m[1m_update_scan_actions[22m | ch01_env_tile_terrazzo_cracked_idle.png[39m[0m
+[  22% ] [90m[1m_update_scan_actions[22m | ch01_env_tile_terrazzo_dark_idle.png[39m[0m
+[  23% ] [90m[1m_update_scan_actions[22m | ch01_env_wall_bulkhead_module_idle.png[39m[0m
+[  23% ] [90m[1m_update_scan_actions[22m | ch01_env_wall_corner_pillar_idle.png[39m[0m
+[  23% ] [90m[1m_update_scan_actions[22m | ch01_env_wall_railing_iron_idle.png[39m[0m
+[  24% ] [90m[1m_update_scan_actions[22m | ch01_env_wall_subterranean_n_idle.png[39m[0m
+[  24% ] [90m[1m_update_scan_actions[22m | ch01_env_wall_subterranean_w_idle.png[39m[0m
+[  25% ] [90m[1m_update_scan_actions[22m | ch01_prop_alarm_plate_idle.png[39m[0m
+[  25% ] [90m[1m_update_scan_actions[22m | ch01_prop_alarm_plate_ringing.png[39m[0m
+[  25% ] [90m[1m_update_scan_actions[22m | ch01_prop_bell_icon_idle.png[39m[0m
+[  26% ] [90m[1m_update_scan_actions[22m | ch01_prop_bell_icon_ringing.png[39m[0m
+[  26% ] [90m[1m_update_scan_actions[22m | ch01_prop_breaker_c_browned_out.png[39m[0m
+[  26% ] [90m[1m_update_scan_actions[22m | ch01_prop_breaker_c_engaged.png[39m[0m
+[  27% ] [90m[1m_update_scan_actions[22m | ch01_prop_breaker_c_idle.png[39m[0m
+[  27% ] [90m[1m_update_scan_actions[22m | ch01_prop_bridge_platform_extended.png[39m[0m
+[  28% ] [90m[1m_update_scan_actions[22m | ch01_prop_bridge_platform_retracted.png[39m[0m
+[  28% ] [90m[1m_update_scan_actions[22m | ch01_prop_call_box_phone_idle.png[39m[0m
+[  28% ] [90m[1m_update_scan_actions[22m | ch01_prop_call_box_phone_ringing.png[39m[0m
+[  29% ] [90m[1m_update_scan_actions[22m | ch01_prop_card_reader_accepted.png[39m[0m
+[  29% ] [90m[1m_update_scan_actions[22m | ch01_prop_card_reader_denied.png[39m[0m
+[  30% ] [90m[1m_update_scan_actions[22m | ch01_prop_card_reader_idle.png[39m[0m
+[  30% ] [90m[1m_update_scan_actions[22m | ch01_prop_conduit_fallen.png[39m[0m
+[  30% ] [90m[1m_update_scan_actions[22m | ch01_prop_conduit_mounted.png[39m[0m
+[  31% ] [90m[1m_update_scan_actions[22m | ch01_prop_counterweight_gear_frozen.png[39m[0m
+[  31% ] [90m[1m_update_scan_actions[22m | ch01_prop_counterweight_gear_idle.png[39m[0m
+[  32% ] [90m[1m_update_scan_actions[22m | ch01_prop_counterweight_gear_slipping.png[39m[0m
+[  32% ] [90m[1m_update_scan_actions[22m | ch01_prop_dead_relay_c_idle.png[39m[0m
+[  32% ] [90m[1m_update_scan_actions[22m | ch01_prop_dead_relay_c_shake.png[39m[0m
+[  33% ] [90m[1m_update_scan_actions[22m | ch01_prop_departure_board_nowhere_idle.png[39m[0m
+[  33% ] [90m[1m_update_scan_actions[22m | ch01_prop_digital_clock_2359_idle.png[39m[0m
+[  34% ] [90m[1m_update_scan_actions[22m | ch01_prop_dispatch_terminal_active.png[39m[0m
+[  34% ] [90m[1m_update_scan_actions[22m | ch01_prop_dispatch_terminal_idle.png[39m[0m
+[  34% ] [90m[1m_update_scan_actions[22m | ch01_prop_document_clipboard_idle.png[39m[0m
+[  35% ] [90m[1m_update_scan_actions[22m | ch01_prop_door_rd_access_sealed_idle.png[39m[0m
+[  35% ] [90m[1m_update_scan_actions[22m | ch01_prop_echo_pedestal_idle.png[39m[0m
+[  36% ] [90m[1m_update_scan_actions[22m | ch01_prop_echo_pedestal_used.png[39m[0m
+[  36% ] [90m[1m_update_scan_actions[22m | ch01_prop_fire_shutter_closed.png[39m[0m
+[  36% ] [90m[1m_update_scan_actions[22m | ch01_prop_fire_shutter_raised.png[39m[0m
+[  37% ] [90m[1m_update_scan_actions[22m | ch01_prop_flap_dial_line_idle.png[39m[0m
+[  37% ] [90m[1m_update_scan_actions[22m | ch01_prop_flap_dial_line_jammed.png[39m[0m
+[  38% ] [90m[1m_update_scan_actions[22m | ch01_prop_flap_dial_platform_idle.png[39m[0m
+[  38% ] [90m[1m_update_scan_actions[22m | ch01_prop_flap_dial_platform_jammed.png[39m[0m
+[  38% ] [90m[1m_update_scan_actions[22m | ch01_prop_flap_dial_time_idle.png[39m[0m
+[  39% ] [90m[1m_update_scan_actions[22m | ch01_prop_flap_dial_time_jammed.png[39m[0m
+[  39% ] [90m[1m_update_scan_actions[22m | ch01_prop_floor_plate_a_empty.png[39m[0m
+[  40% ] [90m[1m_update_scan_actions[22m | ch01_prop_floor_plate_a_pressed.png[39m[0m
+[  40% ] [90m[1m_update_scan_actions[22m | ch01_prop_floor_plate_b_empty.png[39m[0m
+[  40% ] [90m[1m_update_scan_actions[22m | ch01_prop_floor_plate_b_pressed.png[39m[0m
+[  41% ] [90m[1m_update_scan_actions[22m | ch01_prop_inner_shutter_closed.png[39m[0m
+[  41% ] [90m[1m_update_scan_actions[22m | ch01_prop_inner_shutter_raised.png[39m[0m
+[  42% ] [90m[1m_update_scan_actions[22m | ch01_prop_lever_badge_a_idle.png[39m[0m
+[  42% ] [90m[1m_update_scan_actions[22m | ch01_prop_lever_badge_b_idle.png[39m[0m
+[  42% ] [90m[1m_update_scan_actions[22m | ch01_prop_lever_switch_off.png[39m[0m
+[  43% ] [90m[1m_update_scan_actions[22m | ch01_prop_lever_switch_on.png[39m[0m
+[  43% ] [90m[1m_update_scan_actions[22m | ch01_prop_notice_closed_track_idle.png[39m[0m
+[  44% ] [90m[1m_update_scan_actions[22m | ch01_prop_pa_speaker_idle.png[39m[0m
+[  44% ] [90m[1m_update_scan_actions[22m | ch01_prop_pillar_mark_sector_a_idle.png[39m[0m
+[  44% ] [90m[1m_update_scan_actions[22m | ch01_prop_platform_gate_closed.png[39m[0m
+[  45% ] [90m[1m_update_scan_actions[22m | ch01_prop_platform_gate_open.png[39m[0m
+[  45% ] [90m[1m_update_scan_actions[22m | ch01_prop_pocket_watch_idle.png[39m[0m
+[  46% ] [90m[1m_update_scan_actions[22m | ch01_prop_pressure_switch_pressed.png[39m[0m
+[  46% ] [90m[1m_update_scan_actions[22m | ch01_prop_pressure_switch_released.png[39m[0m
+[  46% ] [90m[1m_update_scan_actions[22m | ch01_prop_release_lever_accepted.png[39m[0m
+[  47% ] [90m[1m_update_scan_actions[22m | ch01_prop_release_lever_buzzing.png[39m[0m
+[  47% ] [90m[1m_update_scan_actions[22m | ch01_prop_release_lever_idle.png[39m[0m
+[  48% ] [90m[1m_update_scan_actions[22m | ch01_prop_reset_console_idle.png[39m[0m
+[  48% ] [90m[1m_update_scan_actions[22m | ch01_prop_route_board_state0.png[39m[0m
+[  48% ] [90m[1m_update_scan_actions[22m | ch01_prop_route_board_state1.png[39m[0m
+[  49% ] [90m[1m_update_scan_actions[22m | ch01_prop_route_board_state2.png[39m[0m
+[  49% ] [90m[1m_update_scan_actions[22m | ch01_prop_security_gate_closed.png[39m[0m
+[  50% ] [90m[1m_update_scan_actions[22m | ch01_prop_security_gate_open.png[39m[0m
+[  50% ] [90m[1m_update_scan_actions[22m | ch01_prop_selector_car_pos0.png[39m[0m
+[  50% ] [90m[1m_update_scan_actions[22m | ch01_prop_selector_car_pos1.png[39m[0m
+[  51% ] [90m[1m_update_scan_actions[22m | ch01_prop_selector_car_pos2.png[39m[0m
+[  51% ] [90m[1m_update_scan_actions[22m | ch01_prop_selector_line_pos0.png[39m[0m
+[  51% ] [90m[1m_update_scan_actions[22m | ch01_prop_selector_line_pos1.png[39m[0m
+[  52% ] [90m[1m_update_scan_actions[22m | ch01_prop_selector_line_pos2.png[39m[0m
+[  52% ] [90m[1m_update_scan_actions[22m | ch01_prop_selector_platform_pos0.png[39m[0m
+[  53% ] [90m[1m_update_scan_actions[22m | ch01_prop_selector_platform_pos1.png[39m[0m
+[  53% ] [90m[1m_update_scan_actions[22m | ch01_prop_selector_platform_pos2.png[39m[0m
+[  53% ] [90m[1m_update_scan_actions[22m | ch01_prop_service_hatch_closed.png[39m[0m
+[  54% ] [90m[1m_update_scan_actions[22m | ch01_prop_service_hatch_frozen_closed.png[39m[0m
+[  54% ] [90m[1m_update_scan_actions[22m | ch01_prop_service_hatch_frozen_open.png[39m[0m
+[  55% ] [90m[1m_update_scan_actions[22m | ch01_prop_service_hatch_open.png[39m[0m
+[  55% ] [90m[1m_update_scan_actions[22m | ch01_prop_sign_a1_research_idle.png[39m[0m
+[  55% ] [90m[1m_update_scan_actions[22m | ch01_prop_staff_barrier_closed.png[39m[0m
+[  56% ] [90m[1m_update_scan_actions[22m | ch01_prop_staff_barrier_open.png[39m[0m
+[  56% ] [90m[1m_update_scan_actions[22m | ch01_prop_staff_door_closed.png[39m[0m
+[  57% ] [90m[1m_update_scan_actions[22m | ch01_prop_staff_door_open.png[39m[0m
+[  57% ] [90m[1m_update_scan_actions[22m | ch01_prop_standby_plate_empty.png[39m[0m
+[  57% ] [90m[1m_update_scan_actions[22m | ch01_prop_standby_plate_held.png[39m[0m
+[  58% ] [90m[1m_update_scan_actions[22m | ch01_prop_station_bench_idle.png[39m[0m
+[  58% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_breaker_handle_idle.png[39m[0m
+[  59% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_breaker_handle_read.png[39m[0m
+[  59% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_briefcase_idle.png[39m[0m
+[  59% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_briefcase_read.png[39m[0m
+[  60% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_courier_bag_idle.png[39m[0m
+[  60% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_courier_bag_read.png[39m[0m
+[  61% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_gate_lever_idle.png[39m[0m
+[  61% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_gate_lever_read.png[39m[0m
+[  61% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_hatch_crank_idle.png[39m[0m
+[  62% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_hatch_crank_read.png[39m[0m
+[  62% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_headphones_idle.png[39m[0m
+[  63% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_headphones_read.png[39m[0m
+[  63% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_map_idle.png[39m[0m
+[  63% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_map_read.png[39m[0m
+[  64% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_paper_bag_idle.png[39m[0m
+[  64% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_paper_bag_read.png[39m[0m
+[  65% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_phone_idle.png[39m[0m
+[  65% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_phone_read.png[39m[0m
+[  65% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_red_coat_idle.png[39m[0m
+[  66% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_red_coat_read.png[39m[0m
+[  66% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_sleeping_child_idle.png[39m[0m
+[  67% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_sleeping_child_read.png[39m[0m
+[  67% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_suitcase_idle.png[39m[0m
+[  67% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_suitcase_read.png[39m[0m
+[  68% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_trolley_idle.png[39m[0m
+[  68% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_trolley_read.png[39m[0m
+[  69% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_whistle_idle.png[39m[0m
+[  69% ] [90m[1m_update_scan_actions[22m | ch01_prop_statue_ov_whistle_read.png[39m[0m
+[  69% ] [90m[1m_update_scan_actions[22m | ch01_prop_surge_capacitor_charged.png[39m[0m
+[  70% ] [90m[1m_update_scan_actions[22m | ch01_prop_surge_capacitor_discharged.png[39m[0m
+[  70% ] [90m[1m_update_scan_actions[22m | ch01_prop_surge_capacitor_frozen.png[39m[0m
+[  71% ] [90m[1m_update_scan_actions[22m | ch01_prop_surge_capacitor_frozen_charged.png[39m[0m
+[  71% ] [90m[1m_update_scan_actions[22m | ch01_prop_surge_capacitor_frozen_discharged.png[39m[0m
+[  71% ] [90m[1m_update_scan_actions[22m | ch01_prop_ticket_terms_notice_idle.png[39m[0m
+[  72% ] [90m[1m_update_scan_actions[22m | ch01_prop_ticket_validator_accepted.png[39m[0m
+[  72% ] [90m[1m_update_scan_actions[22m | ch01_prop_ticket_validator_idle.png[39m[0m
+[  73% ] [90m[1m_update_scan_actions[22m | ch01_prop_ticket_validator_rejecting.png[39m[0m
+[  73% ] [90m[1m_update_scan_actions[22m | ch01_prop_trace_shimmer_ring_loop.png[39m[0m
+[  73% ] [90m[1m_update_scan_actions[22m | ch01_prop_trace_timestamp_glyph_idle.png[39m[0m
+[  74% ] [90m[1m_update_scan_actions[22m | ch01_prop_transit_car_stalled_idle.png[39m[0m
+[  74% ] [90m[1m_update_scan_actions[22m | ch01_prop_turnstile_gate_collapsed.png[39m[0m
+[  75% ] [90m[1m_update_scan_actions[22m | ch01_prop_turnstile_gate_open.png[39m[0m
+[  75% ] [90m[1m_update_scan_actions[22m | ch01_ui_icon_echo.png[39m[0m
+[  75% ] [90m[1m_update_scan_actions[22m | ch01_ui_icon_echo_locked.png[39m[0m
+[  76% ] [90m[1m_update_scan_actions[22m | ch01_ui_icon_fast_forward.png[39m[0m
+[  76% ] [90m[1m_update_scan_actions[22m | ch01_ui_icon_fast_forward_locked.png[39m[0m
+[  76% ] [90m[1m_update_scan_actions[22m | ch01_ui_icon_freeze.png[39m[0m
+[  77% ] [90m[1m_update_scan_actions[22m | ch01_ui_icon_freeze_locked.png[39m[0m
+[  77% ] [90m[1m_update_scan_actions[22m | ch01_ui_icon_rewind.png[39m[0m
+[  78% ] [90m[1m_update_scan_actions[22m | ch01_ui_icon_rewind_locked.png[39m[0m
+[  78% ] [90m[1m_update_scan_actions[22m | ch01_ui_icon_trace.png[39m[0m
+[  78% ] [90m[1m_update_scan_actions[22m | ch01_ui_icon_trace_locked.png[39m[0m
+[  79% ] [90m[1m_update_scan_actions[22m | ch01_ui_icon_unknown.png[39m[0m
+[  79% ] [90m[1m_update_scan_actions[22m | ch01_ui_icon_unknown_locked.png[39m[0m
+[  80% ] [90m[1m_update_scan_actions[22m | ch01_ui_lock_glyph.png[39m[0m
+[  80% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_face.png[39m[0m
+[  80% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_pointer_0.png[39m[0m
+[  81% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_pointer_1.png[39m[0m
+[  81% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_pointer_2.png[39m[0m
+[  82% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_pointer_3.png[39m[0m
+[  82% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_pointer_4.png[39m[0m
+[  82% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_pointer_5.png[39m[0m
+[  83% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_pointer_rest.png[39m[0m
+[  83% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg0_locked.png[39m[0m
+[  84% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg0_normal.png[39m[0m
+[  84% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg0_selected.png[39m[0m
+[  84% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg1_locked.png[39m[0m
+[  85% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg1_normal.png[39m[0m
+[  85% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg1_selected.png[39m[0m
+[  86% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg2_locked.png[39m[0m
+[  86% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg2_normal.png[39m[0m
+[  86% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg2_selected.png[39m[0m
+[  87% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg3_locked.png[39m[0m
+[  87% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg3_normal.png[39m[0m
+[  88% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg3_selected.png[39m[0m
+[  88% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg4_locked.png[39m[0m
+[  88% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg4_normal.png[39m[0m
+[  89% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg4_selected.png[39m[0m
+[  89% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg5_locked.png[39m[0m
+[  90% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg5_normal.png[39m[0m
+[  90% ] [90m[1m_update_scan_actions[22m | ch01_ui_wheel_seg5_selected.png[39m[0m
+[  90% ] [90m[1m_update_scan_actions[22m | tlf_pixel_mono.ttf[39m[0m
+[  91% ] [90m[1m_update_scan_actions[22m | ch01_ability_wheel_a_trace_only_mockup.png[39m[0m
+[  91% ] [90m[1m_update_scan_actions[22m | ch01_ability_wheel_b_all_four_mockup.png[39m[0m
+[  92% ] [90m[1m_update_scan_actions[22m | ch01_ability_wheel_c_rewind_selected_mockup.png[39m[0m
+[  92% ] [90m[1m_update_scan_actions[22m | ch01_ability_wheel_greyscale_proof.png[39m[0m
+[  92% ] [90m[1m_update_scan_actions[22m | ch01_arrival_platform_mockup.png[39m[0m
+[  93% ] [90m[1m_update_scan_actions[22m | ch01_concourse_west_mockup.png[39m[0m
+[  93% ] [90m[1m_update_scan_actions[22m | ch01_security_crossing_mockup.png[39m[0m
+[  94% ] [90m[1m_update_scan_actions[22m | ch01_signal_control_mockup.png[39m[0m
+[  94% ] [90m[1m_update_scan_actions[22m | ch01_step1_props_greyscale_proof.png[39m[0m
+[  94% ] [90m[1m_update_scan_actions[22m | ch01_step1_room_statues_greyscale_proof.png[39m[0m
+[  95% ] [90m[1m_update_scan_actions[22m | ch01_step1_room_statues_mockup.png[39m[0m
+[  95% ] [90m[1m_update_scan_actions[22m | ch01_step1_room_statues_x3_proof.png[39m[0m
+[  96% ] [90m[1m_update_scan_actions[22m | ch01_step1_statues_all13_greyscale_proof.png[39m[0m
+[  96% ] [90m[1m_update_scan_actions[22m | ch01_tlf063_story_props_greyscale_proof.png[39m[0m
+[  96% ] [90m[1m_update_scan_actions[22m | ch01_tlf063_story_props_room_mockup.png[39m[0m
+[  97% ] [90m[1m_update_scan_actions[22m | TLF-044_capacitor_states.png[39m[0m
+[  97% ] [90m[1m_update_scan_actions[22m | TLF-044_capacitor_states_grey.png[39m[0m
+[  98% ] [90m[1m_update_scan_actions[22m | ch01_puzzles.csv[39m[0m
+[  98% ] [90m[1m_update_scan_actions[22m | ch01_text.csv[39m[0m
+[  98% ] [90m[1m_update_scan_actions[22m | ui_feedback.csv[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon.svg[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (251 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   1% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   1% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   1% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   2% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   2% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   3% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   3% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   3% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   4% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   4% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   5% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   5% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   5% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   6% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   6% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   7% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   7% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   7% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   8% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   8% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   9% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   9% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   9% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  10% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  10% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  11% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  11% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  11% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  12% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  12% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  13% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  13% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  13% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  14% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  14% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  15% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  15% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  15% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  16% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  16% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  17% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  17% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  17% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  18% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  18% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  19% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  19% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  19% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  20% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  20% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  21% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  21% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  21% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  22% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  22% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  23% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  23% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  23% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  24% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  24% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  25% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  25% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  25% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  26% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  26% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  26% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  27% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  27% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  28% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  28% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  28% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  29% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  29% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  30% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  30% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  30% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  31% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  31% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  32% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  32% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  32% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  33% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  33% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  34% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  34% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  34% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  35% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  35% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  36% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  36% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  36% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  37% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  37% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  38% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  38% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  38% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  39% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  39% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  40% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  40% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  40% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  41% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  41% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  42% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  42% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  42% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  43% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  43% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  44% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  44% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  44% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  45% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  45% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  46% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  46% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  46% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  47% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  47% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  48% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  48% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  48% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  49% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  49% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  50% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  50% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  50% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  51% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  51% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  51% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  52% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  52% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  53% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  53% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  53% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  54% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  54% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  55% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  55% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  55% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  56% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  56% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  57% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  57% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  57% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  58% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  58% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  59% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  59% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  59% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  60% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  60% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  61% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  61% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  61% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  62% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  62% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  63% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  63% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  63% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  64% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  64% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  65% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  65% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  65% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  66% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  66% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  67% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  67% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  67% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  68% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  68% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  69% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  69% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  69% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  70% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  70% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  71% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  71% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  71% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  72% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  72% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  73% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  73% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  73% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  74% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  74% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  75% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  75% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  75% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  76% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  76% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  76% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  77% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  77% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  78% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  78% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  78% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  79% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  79% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  80% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  80% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  80% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  81% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  81% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  82% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  82% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  82% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  83% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  83% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  84% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  84% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  84% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  85% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  85% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  86% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  86% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  86% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  87% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  87% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  88% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  88% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  88% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  89% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  89% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  90% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  90% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  90% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  91% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  91% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  92% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  92% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  92% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  93% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  93% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  94% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  94% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  94% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  95% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  95% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  96% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  96% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  96% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  97% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  97% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  98% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  98% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  98% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  99% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing pre-reimport operations...[39m[0m
+[   0% ] [90m[1mreimport[22m | ui_feedback.csv[39m[0m
+[   0% ] [90m[1mreimport[22m | ch01_text.csv[39m[0m
+[   0% ] [90m[1mreimport[22m | ch01_puzzles.csv[39m[0m
+[   1% ] [90m[1mreimport[22m | tlf_pixel_mono.ttf[39m[0m
+[   1% ] [90m[1mreimport[22m | ui_feedback.csv[39m[0m
+[   1% ] [90m[1mreimport[22m | ch01_text.csv[39m[0m
+[   2% ] [90m[1mreimport[22m | ch01_puzzles.csv[39m[0m
+[   2% ] [90m[1mreimport[22m | tlf_pixel_mono.ttf[39m[0m
+[   3% ] [90m[1mreimport[22m | ch01_prop_statue_ov_sleeping_child_read.png[39m[0m
+[   3% ] [90m[1mreimport[22m | ch01_prop_statue_ov_sleeping_child_idle.png[39m[0m
+[   3% ] [90m[1mreimport[22m | ch01_prop_statue_ov_red_coat_read.png[39m[0m
+[   4% ] [90m[1mreimport[22m | ch01_prop_statue_ov_red_coat_idle.png[39m[0m
+[   4% ] [90m[1mreimport[22m | ch01_prop_statue_ov_phone_read.png[39m[0m
+[   5% ] [90m[1mreimport[22m | ch01_prop_statue_ov_phone_idle.png[39m[0m
+[   5% ] [90m[1mreimport[22m | ch01_prop_statue_ov_paper_bag_read.png[39m[0m
+[   5% ] [90m[1mreimport[22m | ch01_prop_statue_ov_paper_bag_idle.png[39m[0m
+[   6% ] [90m[1mreimport[22m | ch01_prop_statue_ov_map_read.png[39m[0m
+[   6% ] [90m[1mreimport[22m | ch01_prop_statue_ov_map_idle.png[39m[0m
+[   7% ] [90m[1mreimport[22m | ch01_prop_statue_ov_headphones_read.png[39m[0m
+[   7% ] [90m[1mreimport[22m | ch01_prop_statue_ov_headphones_idle.png[39m[0m
+[   7% ] [90m[1mreimport[22m | ch01_prop_statue_ov_hatch_crank_read.png[39m[0m
+[   8% ] [90m[1mreimport[22m | ch01_prop_statue_ov_hatch_crank_idle.png[39m[0m
+[   8% ] [90m[1mreimport[22m | ch01_prop_statue_ov_suitcase_idle.png[39m[0m
+[   9% ] [90m[1mreimport[22m | ch01_prop_statue_ov_suitcase_read.png[39m[0m
+[   9% ] [90m[1mreimport[22m | ch01_prop_statue_ov_trolley_idle.png[39m[0m
+[   9% ] [90m[1mreimport[22m | ch01_prop_statue_ov_trolley_read.png[39m[0m
+[  10% ] [90m[1mreimport[22m | ch01_prop_statue_ov_whistle_idle.png[39m[0m
+[  10% ] [90m[1mreimport[22m | ch01_prop_statue_ov_whistle_read.png[39m[0m
+[  11% ] [90m[1mreimport[22m | ch01_prop_surge_capacitor_charged.png[39m[0m
+[  11% ] [90m[1mreimport[22m | ch01_prop_surge_capacitor_discharged.png[39m[0m
+[  11% ] [90m[1mreimport[22m | ch01_prop_surge_capacitor_frozen.png[39m[0m
+[  12% ] [90m[1mreimport[22m | ch01_prop_surge_capacitor_frozen_charged.png[39m[0m
+[  12% ] [90m[1mreimport[22m | ch01_prop_surge_capacitor_frozen_discharged.png[39m[0m
+[  13% ] [90m[1mreimport[22m | ch01_prop_ticket_terms_notice_idle.png[39m[0m
+[  13% ] [90m[1mreimport[22m | ch01_prop_ticket_validator_accepted.png[39m[0m
+[  13% ] [90m[1mreimport[22m | ch01_prop_ticket_validator_idle.png[39m[0m
+[  14% ] [90m[1mreimport[22m | ch01_prop_ticket_validator_rejecting.png[39m[0m
+[  14% ] [90m[1mreimport[22m | ch01_prop_trace_shimmer_ring_loop.png[39m[0m
+[  15% ] [90m[1mreimport[22m | ch01_prop_security_gate_open.png[39m[0m
+[  15% ] [90m[1mreimport[22m | ch01_prop_selector_car_pos0.png[39m[0m
+[  15% ] [90m[1mreimport[22m | ch01_prop_selector_car_pos1.png[39m[0m
+[  16% ] [90m[1mreimport[22m | ch01_prop_selector_car_pos2.png[39m[0m
+[  16% ] [90m[1mreimport[22m | ch01_prop_selector_line_pos0.png[39m[0m
+[  17% ] [90m[1mreimport[22m | ch01_prop_selector_line_pos1.png[39m[0m
+[  17% ] [90m[1mreimport[22m | ch01_prop_selector_line_pos2.png[39m[0m
+[  17% ] [90m[1mreimport[22m | ch01_prop_selector_platform_pos0.png[39m[0m
+[  18% ] [90m[1mreimport[22m | ch01_prop_selector_platform_pos1.png[39m[0m
+[  18% ] [90m[1mreimport[22m | ch01_prop_selector_platform_pos2.png[39m[0m
+[  19% ] [90m[1mreimport[22m | ch01_prop_service_hatch_closed.png[39m[0m
+[  19% ] [90m[1mreimport[22m | ch01_prop_service_hatch_frozen_closed.png[39m[0m
+[  19% ] [90m[1mreimport[22m | ch01_prop_service_hatch_frozen_open.png[39m[0m
+[  20% ] [90m[1mreimport[22m | ch01_prop_service_hatch_open.png[39m[0m
+[  20% ] [90m[1mreimport[22m | ch01_prop_sign_a1_research_idle.png[39m[0m
+[  21% ] [90m[1mreimport[22m | ch01_prop_staff_barrier_closed.png[39m[0m
+[  21% ] [90m[1mreimport[22m | ch01_prop_staff_barrier_open.png[39m[0m
+[  21% ] [90m[1mreimport[22m | ch01_prop_staff_door_closed.png[39m[0m
+[  22% ] [90m[1mreimport[22m | ch01_prop_staff_door_open.png[39m[0m
+[  22% ] [90m[1mreimport[22m | ch01_prop_standby_plate_empty.png[39m[0m
+[  23% ] [90m[1mreimport[22m | ch01_prop_standby_plate_held.png[39m[0m
+[  23% ] [90m[1mreimport[22m | ch01_prop_station_bench_idle.png[39m[0m
+[  23% ] [90m[1mreimport[22m | ch01_prop_statue_ov_breaker_handle_idle.png[39m[0m
+[  24% ] [90m[1mreimport[22m | ch01_prop_statue_ov_breaker_handle_read.png[39m[0m
+[  24% ] [90m[1mreimport[22m | ch01_prop_statue_ov_briefcase_idle.png[39m[0m
+[  25% ] [90m[1mreimport[22m | ch01_prop_statue_ov_briefcase_read.png[39m[0m
+[  25% ] [90m[1mreimport[22m | ch01_prop_statue_ov_courier_bag_idle.png[39m[0m
+[  25% ] [90m[1mreimport[22m | ch01_prop_statue_ov_courier_bag_read.png[39m[0m
+[  26% ] [90m[1mreimport[22m | ch01_prop_statue_ov_gate_lever_idle.png[39m[0m
+[  26% ] [90m[1mreimport[22m | ch01_prop_statue_ov_gate_lever_read.png[39m[0m
+[  26% ] [90m[1mreimport[22m | ch01_ui_wheel_seg2_locked.png[39m[0m
+[  27% ] [90m[1mreimport[22m | ch01_ui_wheel_seg2_normal.png[39m[0m
+[  27% ] [90m[1mreimport[22m | ch01_ui_wheel_seg2_selected.png[39m[0m
+[  28% ] [90m[1mreimport[22m | ch01_ui_wheel_seg3_locked.png[39m[0m
+[  28% ] [90m[1mreimport[22m | ch01_ui_wheel_seg3_normal.png[39m[0m
+[  28% ] [90m[1mreimport[22m | ch01_ui_wheel_seg3_selected.png[39m[0m
+[  29% ] [90m[1mreimport[22m | ch01_ui_wheel_seg4_locked.png[39m[0m
+[  29% ] [90m[1mreimport[22m | ch01_ui_wheel_seg4_normal.png[39m[0m
+[  30% ] [90m[1mreimport[22m | ch01_ui_wheel_seg4_selected.png[39m[0m
+[  30% ] [90m[1mreimport[22m | ch01_ui_wheel_seg5_locked.png[39m[0m
+[  30% ] [90m[1mreimport[22m | ch01_ui_wheel_seg5_normal.png[39m[0m
+[  31% ] [90m[1mreimport[22m | ch01_ui_wheel_seg5_selected.png[39m[0m
+[  31% ] [90m[1mreimport[22m | ch01_ability_wheel_a_trace_only_mockup.png[39m[0m
+[  32% ] [90m[1mreimport[22m | ch01_ability_wheel_b_all_four_mockup.png[39m[0m
+[  32% ] [90m[1mreimport[22m | ch01_ability_wheel_c_rewind_selected_mockup.png[39m[0m
+[  32% ] [90m[1mreimport[22m | ch01_ability_wheel_greyscale_proof.png[39m[0m
+[  33% ] [90m[1mreimport[22m | ch01_arrival_platform_mockup.png[39m[0m
+[  33% ] [90m[1mreimport[22m | ch01_concourse_west_mockup.png[39m[0m
+[  34% ] [90m[1mreimport[22m | ch01_security_crossing_mockup.png[39m[0m
+[  34% ] [90m[1mreimport[22m | ch01_signal_control_mockup.png[39m[0m
+[  34% ] [90m[1mreimport[22m | ch01_step1_props_greyscale_proof.png[39m[0m
+[  35% ] [90m[1mreimport[22m | ch01_step1_room_statues_greyscale_proof.png[39m[0m
+[  35% ] [90m[1mreimport[22m | ch01_step1_room_statues_mockup.png[39m[0m
+[  36% ] [90m[1mreimport[22m | ch01_step1_room_statues_x3_proof.png[39m[0m
+[  36% ] [90m[1mreimport[22m | ch01_step1_statues_all13_greyscale_proof.png[39m[0m
+[  36% ] [90m[1mreimport[22m | ch01_tlf063_story_props_greyscale_proof.png[39m[0m
+[  37% ] [90m[1mreimport[22m | ch01_tlf063_story_props_room_mockup.png[39m[0m
+[  37% ] [90m[1mreimport[22m | TLF-044_capacitor_states.png[39m[0m
+[  38% ] [90m[1mreimport[22m | TLF-044_capacitor_states_grey.png[39m[0m
+[  38% ] [90m[1mreimport[22m | icon.svg[39m[0m
+[  38% ] [90m[1mreimport[22m | ch01_prop_trace_timestamp_glyph_idle.png[39m[0m
+[  39% ] [90m[1mreimport[22m | ch01_prop_transit_car_stalled_idle.png[39m[0m
+[  39% ] [90m[1mreimport[22m | ch01_prop_turnstile_gate_collapsed.png[39m[0m
+[  40% ] [90m[1mreimport[22m | ch01_prop_turnstile_gate_open.png[39m[0m
+[  40% ] [90m[1mreimport[22m | ch01_ui_icon_echo.png[39m[0m
+[  40% ] [90m[1mreimport[22m | ch01_ui_icon_echo_locked.png[39m[0m
+[  41% ] [90m[1mreimport[22m | ch01_ui_icon_fast_forward.png[39m[0m
+[  41% ] [90m[1mreimport[22m | ch01_ui_icon_fast_forward_locked.png[39m[0m
+[  42% ] [90m[1mreimport[22m | ch01_ui_icon_freeze.png[39m[0m
+[  42% ] [90m[1mreimport[22m | ch01_ui_icon_freeze_locked.png[39m[0m
+[  42% ] [90m[1mreimport[22m | ch01_ui_icon_rewind.png[39m[0m
+[  43% ] [90m[1mreimport[22m | ch01_ui_icon_rewind_locked.png[39m[0m
+[  43% ] [90m[1mreimport[22m | ch01_ui_icon_trace.png[39m[0m
+[  44% ] [90m[1mreimport[22m | ch01_ui_icon_trace_locked.png[39m[0m
+[  44% ] [90m[1mreimport[22m | ch01_ui_icon_unknown.png[39m[0m
+[  44% ] [90m[1mreimport[22m | ch01_ui_icon_unknown_locked.png[39m[0m
+[  45% ] [90m[1mreimport[22m | ch01_ui_lock_glyph.png[39m[0m
+[  45% ] [90m[1mreimport[22m | ch01_ui_wheel_face.png[39m[0m
+[  46% ] [90m[1mreimport[22m | ch01_ui_wheel_pointer_0.png[39m[0m
+[  46% ] [90m[1mreimport[22m | ch01_ui_wheel_pointer_1.png[39m[0m
+[  46% ] [90m[1mreimport[22m | ch01_ui_wheel_pointer_2.png[39m[0m
+[  47% ] [90m[1mreimport[22m | ch01_ui_wheel_pointer_3.png[39m[0m
+[  47% ] [90m[1mreimport[22m | ch01_ui_wheel_pointer_4.png[39m[0m
+[  48% ] [90m[1mreimport[22m | ch01_ui_wheel_pointer_5.png[39m[0m
+[  48% ] [90m[1mreimport[22m | ch01_ui_wheel_pointer_rest.png[39m[0m
+[  48% ] [90m[1mreimport[22m | ch01_ui_wheel_seg0_locked.png[39m[0m
+[  49% ] [90m[1mreimport[22m | ch01_ui_wheel_seg0_normal.png[39m[0m
+[  49% ] [90m[1mreimport[22m | ch01_ui_wheel_seg0_selected.png[39m[0m
+[  50% ] [90m[1mreimport[22m | ch01_ui_wheel_seg1_locked.png[39m[0m
+[  50% ] [90m[1mreimport[22m | ch01_ui_wheel_seg1_normal.png[39m[0m
+[  50% ] [90m[1mreimport[22m | ch01_ui_wheel_seg1_selected.png[39m[0m
+[  51% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n11_hatch_tech_read.png[39m[0m
+[  51% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n13_guard_idle.png[39m[0m
+[  51% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n13_guard_read.png[39m[0m
+[  52% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n20_engineer_idle.png[39m[0m
+[  52% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n20_engineer_read.png[39m[0m
+[  53% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n21_tourist_idle.png[39m[0m
+[  53% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n21_tourist_read.png[39m[0m
+[  53% ] [90m[1mreimport[22m | ch01_char_statue_n03_old_man_seated_idle.png[39m[0m
+[  54% ] [90m[1mreimport[22m | ch01_char_statue_n03_old_man_seated_read.png[39m[0m
+[  54% ] [90m[1mreimport[22m | ch01_char_statue_n04_cleaner_idle.png[39m[0m
+[  55% ] [90m[1mreimport[22m | ch01_char_statue_n04_cleaner_read.png[39m[0m
+[  55% ] [90m[1mreimport[22m | ch01_char_statue_n05_courier_vault_idle.png[39m[0m
+[  55% ] [90m[1mreimport[22m | ch01_char_statue_n05_courier_vault_read.png[39m[0m
+[  56% ] [90m[1mreimport[22m | ch01_char_statue_n11_tech_crank_idle.png[39m[0m
+[  56% ] [90m[1mreimport[22m | ch01_char_statue_n11_tech_crank_read.png[39m[0m
+[  57% ] [90m[1mreimport[22m | ch01_env_archway_frame_e_idle.png[39m[0m
+[  57% ] [90m[1mreimport[22m | ch01_env_archway_frame_n_idle.png[39m[0m
+[  57% ] [90m[1mreimport[22m | ch01_env_arrival_platform_target_sheet.png[39m[0m
+[  58% ] [90m[1mreimport[22m | ch01_env_tile_cable_conduit_off_idle.png[39m[0m
+[  58% ] [90m[1mreimport[22m | ch01_env_tile_cable_conduit_on_idle.png[39m[0m
+[  59% ] [90m[1mreimport[22m | ch01_env_tile_concrete_service_idle.png[39m[0m
+[  59% ] [90m[1mreimport[22m | ch01_env_tile_industrial_grating_idle.png[39m[0m
+[  59% ] [90m[1mreimport[22m | ch01_env_tile_stone_step_wet_idle.png[39m[0m
+[  60% ] [90m[1mreimport[22m | ch01_env_tile_tactile_amber_idle.png[39m[0m
+[  60% ] [90m[1mreimport[22m | ch01_env_tile_terrazzo_cracked_idle.png[39m[0m
+[  61% ] [90m[1mreimport[22m | ch01_env_tile_terrazzo_dark_idle.png[39m[0m
+[  61% ] [90m[1mreimport[22m | ch01_env_wall_bulkhead_module_idle.png[39m[0m
+[  61% ] [90m[1mreimport[22m | ch01_env_wall_corner_pillar_idle.png[39m[0m
+[  62% ] [90m[1mreimport[22m | ch01_env_wall_railing_iron_idle.png[39m[0m
+[  62% ] [90m[1mreimport[22m | ch01_env_wall_subterranean_n_idle.png[39m[0m
+[  63% ] [90m[1mreimport[22m | ch01_env_wall_subterranean_w_idle.png[39m[0m
+[  63% ] [90m[1mreimport[22m | ch01_char_elias_base_sheet.png[39m[0m
+[  63% ] [90m[1mreimport[22m | ch01_char_statue_body_a_pose1_idle.png[39m[0m
+[  64% ] [90m[1mreimport[22m | ch01_char_statue_body_a_pose1_read.png[39m[0m
+[  64% ] [90m[1mreimport[22m | ch01_char_statue_body_a_pose2_idle.png[39m[0m
+[  65% ] [90m[1mreimport[22m | ch01_char_statue_body_a_pose2_read.png[39m[0m
+[  65% ] [90m[1mreimport[22m | ch01_char_statue_body_b_pose1_idle.png[39m[0m
+[  65% ] [90m[1mreimport[22m | ch01_char_statue_body_b_pose1_read.png[39m[0m
+[  66% ] [90m[1mreimport[22m | ch01_char_statue_body_b_pose2_idle.png[39m[0m
+[  66% ] [90m[1mreimport[22m | ch01_char_statue_body_b_pose2_read.png[39m[0m
+[  67% ] [90m[1mreimport[22m | ch01_char_statue_body_c_pose1_idle.png[39m[0m
+[  67% ] [90m[1mreimport[22m | ch01_char_statue_body_c_pose1_read.png[39m[0m
+[  67% ] [90m[1mreimport[22m | ch01_char_statue_body_c_pose2_idle.png[39m[0m
+[  68% ] [90m[1mreimport[22m | ch01_char_statue_body_c_pose2_read.png[39m[0m
+[  68% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n01_conductor_idle.png[39m[0m
+[  69% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n01_conductor_read.png[39m[0m
+[  69% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n02_student_idle.png[39m[0m
+[  69% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n02_student_read.png[39m[0m
+[  70% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n03_old_man_idle.png[39m[0m
+[  70% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n03_old_man_read.png[39m[0m
+[  71% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n04_cleaner_idle.png[39m[0m
+[  71% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n04_cleaner_read.png[39m[0m
+[  71% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n05_courier_idle.png[39m[0m
+[  72% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n05_courier_read.png[39m[0m
+[  72% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n06_red_coat_idle.png[39m[0m
+[  73% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n06_red_coat_read.png[39m[0m
+[  73% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n07_briefcase_idle.png[39m[0m
+[  73% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n07_briefcase_read.png[39m[0m
+[  74% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n08_father_idle.png[39m[0m
+[  74% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n08_father_read.png[39m[0m
+[  75% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n09_teen_idle.png[39m[0m
+[  75% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n09_teen_read.png[39m[0m
+[  75% ] [90m[1mreimport[22m | ch01_char_statue_commuter_n11_hatch_tech_idle.png[39m[0m
+[  76% ] [90m[1mreimport[22m | ch01_prop_flap_dial_line_jammed.png[39m[0m
+[  76% ] [90m[1mreimport[22m | ch01_prop_flap_dial_platform_idle.png[39m[0m
+[  76% ] [90m[1mreimport[22m | ch01_prop_flap_dial_platform_jammed.png[39m[0m
+[  77% ] [90m[1mreimport[22m | ch01_prop_flap_dial_time_idle.png[39m[0m
+[  77% ] [90m[1mreimport[22m | ch01_prop_flap_dial_time_jammed.png[39m[0m
+[  78% ] [90m[1mreimport[22m | ch01_prop_floor_plate_a_empty.png[39m[0m
+[  78% ] [90m[1mreimport[22m | ch01_prop_floor_plate_a_pressed.png[39m[0m
+[  78% ] [90m[1mreimport[22m | ch01_prop_floor_plate_b_empty.png[39m[0m
+[  79% ] [90m[1mreimport[22m | ch01_prop_floor_plate_b_pressed.png[39m[0m
+[  79% ] [90m[1mreimport[22m | ch01_prop_inner_shutter_closed.png[39m[0m
+[  80% ] [90m[1mreimport[22m | ch01_prop_inner_shutter_raised.png[39m[0m
+[  80% ] [90m[1mreimport[22m | ch01_prop_lever_badge_a_idle.png[39m[0m
+[  80% ] [90m[1mreimport[22m | ch01_prop_lever_badge_b_idle.png[39m[0m
+[  81% ] [90m[1mreimport[22m | ch01_prop_lever_switch_off.png[39m[0m
+[  81% ] [90m[1mreimport[22m | ch01_prop_lever_switch_on.png[39m[0m
+[  82% ] [90m[1mreimport[22m | ch01_prop_notice_closed_track_idle.png[39m[0m
+[  82% ] [90m[1mreimport[22m | ch01_prop_pa_speaker_idle.png[39m[0m
+[  82% ] [90m[1mreimport[22m | ch01_prop_pillar_mark_sector_a_idle.png[39m[0m
+[  83% ] [90m[1mreimport[22m | ch01_prop_platform_gate_closed.png[39m[0m
+[  83% ] [90m[1mreimport[22m | ch01_prop_platform_gate_open.png[39m[0m
+[  84% ] [90m[1mreimport[22m | ch01_prop_pocket_watch_idle.png[39m[0m
+[  84% ] [90m[1mreimport[22m | ch01_prop_pressure_switch_pressed.png[39m[0m
+[  84% ] [90m[1mreimport[22m | ch01_prop_pressure_switch_released.png[39m[0m
+[  85% ] [90m[1mreimport[22m | ch01_prop_release_lever_accepted.png[39m[0m
+[  85% ] [90m[1mreimport[22m | ch01_prop_release_lever_buzzing.png[39m[0m
+[  86% ] [90m[1mreimport[22m | ch01_prop_release_lever_idle.png[39m[0m
+[  86% ] [90m[1mreimport[22m | ch01_prop_reset_console_idle.png[39m[0m
+[  86% ] [90m[1mreimport[22m | ch01_prop_route_board_state0.png[39m[0m
+[  87% ] [90m[1mreimport[22m | ch01_prop_route_board_state1.png[39m[0m
+[  87% ] [90m[1mreimport[22m | ch01_prop_route_board_state2.png[39m[0m
+[  88% ] [90m[1mreimport[22m | ch01_prop_security_gate_closed.png[39m[0m
+[  88% ] [90m[1mreimport[22m | ch01_prop_alarm_plate_idle.png[39m[0m
+[  88% ] [90m[1mreimport[22m | ch01_prop_alarm_plate_ringing.png[39m[0m
+[  89% ] [90m[1mreimport[22m | ch01_prop_bell_icon_idle.png[39m[0m
+[  89% ] [90m[1mreimport[22m | ch01_prop_bell_icon_ringing.png[39m[0m
+[  90% ] [90m[1mreimport[22m | ch01_prop_breaker_c_browned_out.png[39m[0m
+[  90% ] [90m[1mreimport[22m | ch01_prop_breaker_c_engaged.png[39m[0m
+[  90% ] [90m[1mreimport[22m | ch01_prop_breaker_c_idle.png[39m[0m
+[  91% ] [90m[1mreimport[22m | ch01_prop_bridge_platform_extended.png[39m[0m
+[  91% ] [90m[1mreimport[22m | ch01_prop_bridge_platform_retracted.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ch01_prop_call_box_phone_idle.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ch01_prop_call_box_phone_ringing.png[39m[0m
+[  92% ] [90m[1mreimport[22m | ch01_prop_card_reader_accepted.png[39m[0m
+[  93% ] [90m[1mreimport[22m | ch01_prop_card_reader_denied.png[39m[0m
+[  93% ] [90m[1mreimport[22m | ch01_prop_card_reader_idle.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ch01_prop_conduit_fallen.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ch01_prop_conduit_mounted.png[39m[0m
+[  94% ] [90m[1mreimport[22m | ch01_prop_counterweight_gear_frozen.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ch01_prop_counterweight_gear_idle.png[39m[0m
+[  95% ] [90m[1mreimport[22m | ch01_prop_counterweight_gear_slipping.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ch01_prop_dead_relay_c_idle.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ch01_prop_dead_relay_c_shake.png[39m[0m
+[  96% ] [90m[1mreimport[22m | ch01_prop_departure_board_nowhere_idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | ch01_prop_digital_clock_2359_idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | ch01_prop_dispatch_terminal_active.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ch01_prop_dispatch_terminal_idle.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ch01_prop_document_clipboard_idle.png[39m[0m
+[  98% ] [90m[1mreimport[22m | ch01_prop_door_rd_access_sealed_idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | ch01_prop_echo_pedestal_idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (251 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
 Import check passed with zero errors.
 
 [2/3] Checking that every GDScript parses...
@@ -1104,6 +1121,7 @@ Test file: res://tests/chapters/ch01/test_ch01_playthrough.gd
   PASS: test_doorways_match_chapter_graph_def
   PASS: test_every_door_has_spawn_outside_presenter_shape
   PASS: test_intercom_adds_operator_warning_after_pz004
+  PASS: test_interior_apertures_walkable_with_real_player_capsule
   PASS: test_passage_blockers_toggle_with_puzzle_state
   PASS: test_puzzle_objects_configured_with_correct_exports
   PASS: test_pz004_route_is_at_least_600_px
@@ -1123,9 +1141,9 @@ Test file: res://tests/chapters/ch01/test_ch01_pz004_layout.gd
   PASS: test_shortest_walkable_path_between_breakers_exceeds_600_px
 Test file: res://tests/chapters/ch01/test_ch01_real_playthrough.gd
   FAIL: [res://tests/chapters/ch01/test_ch01_real_playthrough.gd::test_real_input_playthrough_pz001_to_pz003] ability_next selects Rewind (Expected rewind, got trace)
-  FAIL: [res://tests/chapters/ch01/test_ch01_real_playthrough.gd::test_real_input_playthrough_pz001_to_pz003] Rewind auto-targets the turnstile (Expected turnstile_gate:<Area2D#699542801127>, got n05_courier:<Area2D#700918532875>)
+  FAIL: [res://tests/chapters/ch01/test_ch01_real_playthrough.gd::test_real_input_playthrough_pz001_to_pz003] Rewind auto-targets the turnstile (Expected turnstile_gate:<Area2D#728970037976>, got n05_courier:<Area2D#730345769054>)
   FAIL: [res://tests/chapters/ch01/test_ch01_real_playthrough.gd::test_real_input_playthrough_pz001_to_pz003] turnstile opens after Rewind
-  INFO: real-input playthrough took 80 physics frames (1.3 s game time, 1.32 s wall)
+  INFO: real-input playthrough took 79 physics frames (1.3 s game time, 1.30 s wall)
 Test file: res://tests/chapters/ch01/test_ch01_real_playthrough_late.gd
   FAIL: [res://tests/chapters/ch01/test_ch01_real_playthrough_late.gd::test_pz004_cannot_be_solved_without_echo] Timed out after 3600 physics frames (async test never finished)
   NOTE: test_pz004_cannot_be_solved_without_echo left 1 node(s) under the root; freed them.
@@ -1155,7 +1173,7 @@ Test file: res://tests/echo/test_echo_service.gd
   PASS: test_triggers_occupied_at_record_start_are_seeded_at_rel_zero
   PASS: test_watch_abilities_and_non_player_actors_are_not_recorded
 Test file: res://tests/interaction/test_interactable_lifecycle.gd
-ERROR: IdRegistry: Duplicate ID 'ch01.test_lever' already registered to OriginalLever:<Area2D#986953288431>.
+ERROR: IdRegistry: Duplicate ID 'ch01.test_lever' already registered to OriginalLever:<Area2D#1016296638840>.
    at: push_error (core/variant/variant_utility.cpp:1023)
    GDScript backtrace (most recent call first):
        [0] register (res://scripts/session/id_registry.gd:40)
@@ -1450,7 +1468,7 @@ ERROR: Parse JSON failed. Error at line 0: Expected key
   PASS: test_v1_save_migrates_to_v2_with_an_empty_playtest_log
   PASS: test_v2_save_migrates_to_v3_with_all_four_abilities
 Test file: res://tests/session/test_id_registry.gd
-ERROR: IdRegistry: Duplicate ID 'ch01.test_node' already registered to <Node#1395931482921>.
+ERROR: IdRegistry: Duplicate ID 'ch01.test_node' already registered to <Node#1425274833452>.
    at: push_error (core/variant/variant_utility.cpp:1023)
    GDScript backtrace (most recent call first):
        [0] register (res://scripts/session/id_registry.gd:40)
@@ -1622,7 +1640,7 @@ Test file: res://tests/telemetry/test_playtest_log.gd
   PASS: test_hints_resets_and_failures_are_counted_per_puzzle
   PASS: test_pauses_are_counted_separately_not_as_puzzle_time
   FAIL: [res://tests/telemetry/test_playtest_log.gd::test_real_input_rooms_1_to_4_times_match_the_sim_clock] ability_next selects Rewind (Expected rewind, got trace)
-  FAIL: [res://tests/telemetry/test_playtest_log.gd::test_real_input_rooms_1_to_4_times_match_the_sim_clock] Rewind auto-targets the turnstile (Expected turnstile_gate:<Area2D#1589708327550>, got n05_courier:<Area2D#1591084059497>)
+  FAIL: [res://tests/telemetry/test_playtest_log.gd::test_real_input_rooms_1_to_4_times_match_the_sim_clock] Rewind auto-targets the turnstile (Expected turnstile_gate:<Area2D#1619051678235>, got n05_courier:<Area2D#1620427410281>)
   FAIL: [res://tests/telemetry/test_playtest_log.gd::test_real_input_rooms_1_to_4_times_match_the_sim_clock] turnstile opens after Rewind
   FAIL: [res://tests/telemetry/test_playtest_log.gd::test_real_input_rooms_1_to_4_times_match_the_sim_clock] CH1-PZ-001 measured and solved
   FAIL: [res://tests/telemetry/test_playtest_log.gd::test_real_input_rooms_1_to_4_times_match_the_sim_clock] CH1-PZ-002 measured and solved
@@ -1650,7 +1668,7 @@ Test file: res://tests/temporal/test_temporal_component.gd
   PASS: test_fast_forward_calls_parent_advance
   PASS: test_freeze_is_a_toggle_and_blocks_rewind
   PASS: test_initial_history_seeds_before_current_state
-ERROR: TemporalComponent on '@Node@571': capture_state() keys ["phase", "counter"] do not match state_fields ["phase"].
+ERROR: TemporalComponent on '@Node@579': capture_state() keys ["phase", "counter"] do not match state_fields ["phase"].
    at: push_error (core/variant/variant_utility.cpp:1023)
    GDScript backtrace (most recent call first):
        [0] _is_valid_snapshot (res://scripts/temporal/temporal_component.gd:234)
@@ -1711,7 +1729,7 @@ Test file: res://tests/ui/test_hud_feedback.gd
   PASS: test_feedback_text_resolves_all_standard_reasons
   PASS: test_hud_feedback_toast_display_and_dismissal
   PASS: test_prompt_glyphs_keyboard_vs_joypad
-ERROR: Interactable '@Area2D@705' (ch01.test_target) could not find GameSession with IdRegistry.
+ERROR: Interactable '@Area2D@713' (ch01.test_target) could not find GameSession with IdRegistry.
    at: push_error (core/variant/variant_utility.cpp:1023)
    GDScript backtrace (most recent call first):
        [0] _register_with_session (res://scripts/interaction/interactable.gd:73)
@@ -1756,7 +1774,7 @@ WARNING: UITheme: TLF Pixel Mono not available, using default font
        [6] run_test (res://tests/run_tests.gd:183)
   PASS: test_theme_fallback_when_font_unavailable
 ---------------------------
-TESTS: 394 passed, 6 failed
+TESTS: 395 passed, 6 failed
 
 VALIDATION FAILED: test suite exited with code 6.
 ```
