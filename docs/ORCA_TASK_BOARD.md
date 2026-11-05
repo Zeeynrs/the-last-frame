@@ -35,7 +35,7 @@
 | TLF-054 | READY | Opus impl: `docs/tasks/TLF-054.md` (Step 1 puzzle logic per §8.4 ledger + R1 deltas, spec tests, puzzle data generator patch) |
 | TLF-055 | BLOCKED (TLF-052, TLF-054) | Flash: `docs/tasks/TLF-055.md` (Step 1 rooms: new objects/colliders, TraceMemory nodes, 13 commuters, unlock triggers, Chapter 1 starts with Trace, unlock feedback) |
 | TLF-056 | BLOCKED (TLF-055) | Opus impl: `docs/tasks/TLF-056.md` (real-input playthrough with progressive unlocks + negative test per Step 1 puzzle; TLF-049 merged and green) |
-| TLF-057 | READY | **Argon** (re-assigned 2026-11-05 from Sonnet, which is excluded; ADR-017 am.), visual review **Sol**: `docs/tasks/TLF-057.md` (Step 1 art per `ART_WISHLIST_STEP1.md`: statues, shimmer, new props). Fallback owner: Sol |
+| TLF-057 | COMPLETE | Merged `efed5ab` (Argon `efa0701` + fixes `e4e111b`; Sol visual review `cdb80d6`/`d3098d3`/`cbd9780`: APPROVE for `e4e111b`): 13 assembled commuters (idle + read), Trace shimmer, Step 1 puzzle props, generator `step1_statues.py`. Lead re-check on the `efed5ab` archive: validate 314/314, leak clean; `check_assets` ALL PASS (234); `verify_regen` ALL REPRODUCIBLE. Art only (no scenes/scripts). Open for TLF-055: `dead_relay_c` sorting layer (prose says Wall_Fixtures z7, rows 225-226 say YSort_Actors z10) |
 | TLF-058 | BLOCKED (TLF-055) | Flash: `docs/tasks/TLF-058.md` (Operator sighting at the far end of the Arrival Platform, once, saved; ADR-022 D3) |
 | TLF-059 | BLOCKED (TLF-055) | Flash: `docs/tasks/TLF-059.md` (Beat 10 cinematic: frozen city, silent Mira image, "You are late." / "Again."; skippable) |
 | TLF-060 | READY | Flash: `docs/tasks/TLF-060.md` (export preset + Windows smoke test from a renamed scratch copy; Linux if templates exist) |
