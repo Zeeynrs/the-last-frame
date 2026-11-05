@@ -1,7 +1,7 @@
 """Single registry of every asset the generators produce (TLF-039 / TLF-042).
 Each entry knows its .pxo stem, runtime PNG folder, canvas, layers and frames."""
 from lib import *
-import tiles, props, t2, t3, elias_build, ui_wheel
+import tiles, props, t2, t3, elias_build, ui_wheel, step1_statues, step1_props
 
 
 class Asset:
@@ -43,4 +43,8 @@ def all_assets():
         out.append(Asset('ch01_%s_%s' % (key.split('#')[0], st), cat, w, h, names, [fn()], user_data='TLF-042'))
     for (stem, w, h, names, layers, _m) in ui_wheel.assets():
         out.append(Asset(stem, 'ui', w, h, names, [layers], user_data='TLF-053', png_dir='ui/ability_wheel'))
+    for (stem, cat, w, h, names, frames, fps, tags, _m) in step1_statues.assets():
+        out.append(Asset(stem, cat, w, h, names, frames, fps=fps, tags=tags, user_data='TLF-057'))
+    for (stem, cat, w, h, names, frames, fps, tags, _m) in step1_props.assets():
+        out.append(Asset(stem, cat, w, h, names, frames, fps=fps, tags=tags, user_data='TLF-057'))
     return out

@@ -1,0 +1,32 @@
+N-01 idle: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-01 read: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-02 idle: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-02 read: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-03 idle: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-03 read: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-04 idle: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-04 read: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-05 idle: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-05 read: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-06 idle: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-06 read: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-07 idle: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-07 read: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-08 idle: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-08 read: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-09 idle: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-09 read: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-11 idle: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-11 read: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-13 idle: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-13 read: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-20 idle: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-20 read: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-21 idle: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+N-21 read: modular-vs-assembled differing pixels=0; generator-vs-export identical=True
+ch01_step1_props_greyscale_proof.png (1320, 1580)
+ch01_step1_room_statues_greyscale_proof.png (1920, 1080)
+ch01_step1_room_statues_mockup.png (640, 360)
+ch01_step1_room_statues_x3_proof.png (1920, 1080)
+ch01_step1_statues_all13_greyscale_proof.png (1320, 1664)
+RESULT: ALL 26 ASSEMBLIES IDENTICAL
