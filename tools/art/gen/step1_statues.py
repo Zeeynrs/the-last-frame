@@ -638,12 +638,56 @@ OVERLAY_SPECS = {
 }
 
 
-def build_overlay(ov_key):
-    """Return [Overlay_Prop, Overlay_Outline] Layers (16 x 40 px, pivot (8, 36))."""
+OVERLAY_TARGET_POSE = {
+    'whistle':        ('body_a_pose2',       []),
+    'phone':          ('body_a_pose1',       []),
+    'paper_bag':      ('n03_old_man_seated', []),
+    'trolley':        ('n04_cleaner',        []),
+    'courier_bag':    ('n05_courier_vault',  []),
+    'red_coat':       ('body_a_pose1',       []),
+    'briefcase':      ('body_b_pose1',       []),
+    'sleeping_child': ('body_b_pose1',       []),
+    'headphones':     ('body_c_pose2',       []),
+    'hatch_crank':    ('n11_tech_crank',     []),
+    'gate_lever':     ('body_b_pose2',       []),
+    'breaker_handle': ('body_b_pose2',       []),
+    'map':            ('body_c_pose1',       []),
+    'suitcase':       ('body_c_pose1',       ['map']),
+}
+
+
+def _raw_overlay_prop(ov_key):
     x0, y0, rows = OVERLAY_SPECS[ov_key]
     P = Layer(W, H, 'Overlay_Prop')
     _art(P, x0, y0, rows, CMAP_STATUE)
-    OL = _outline_layer(P.mask(), mode='idle')
+    return P
+
+
+def build_overlay(ov_key, mode='idle'):
+    """Return [Overlay_Outline, Overlay_Prop] Layers (16 x 40 px, pivot (8, 36)) in `idle` or `read` mode.
+    The outline layer is computed against the target pose so that alpha-compositing
+    `ch01_char_statue_<pose>_<mode>.png` + `ch01_prop_statue_ov_<ov>_<mode>.png` reproduces
+    `assemble_commuter(pose, ovs, mode)` with 0 differing pixels."""
+    P = _raw_overlay_prop(ov_key)
+    pose_key, prev_ovs = OVERLAY_TARGET_POSE[ov_key]
+    _, body, body_ol = build_statue_pose(pose_key, mode=mode)
+    base_mask = set(body.mask())
+    base_comp = Layer(W, H, 'Base_Comp')
+    base_comp.blit(body_ol)
+    base_comp.blit(body)
+    for pov in prev_ovs:
+        pp = _raw_overlay_prop(pov)
+        base_mask |= pp.mask()
+
+    comb_mask = base_mask | P.mask()
+    comb_ol = _outline_layer(comb_mask, mode=mode)
+
+    OL = Layer(W, H, 'Overlay_Outline')
+    for (x, y) in comb_ol.mask():
+        if (x, y) not in P.mask():
+            c_target = comb_ol.get(x, y)
+            if base_comp.get(x, y) != c_target:
+                OL.put(x, y, c_target)
     return [OL, P]
 
 
@@ -738,21 +782,21 @@ COMMUTER_ASSEMBLIES = [
 ]
 
 
+def build_commuter_layers(pose_key, overlays, mode='idle'):
+    """Return 4 Layers [Cast_Shadow, Silhouette_Outline, Statue_Body, Prop_Overlay] for an assembled commuter."""
+    sh, body, _ = build_statue_pose(pose_key, mode='idle')
+    prop = Layer(W, H, 'Prop_Overlay')
+    for ov in overlays:
+        prop.blit(_raw_overlay_prop(ov))
+    comb_mask = body.mask() | prop.mask()
+    ol = _outline_layer(comb_mask, mode=mode)
+    return [sh, ol, body, prop]
+
+
 def assemble_commuter(pose_key, overlays, mode='idle'):
     """Composite a statue pose + its overlays into a 16 x 40 Layer.
     In `read` mode, the outer 1px silhouette outline around the combined (body + overlay) is violet 30 + sparse gold 26."""
-    sh, body, _ = build_statue_pose(pose_key, mode='idle')
-    combined = Layer(W, H, 'Combined_Body')
-    combined.blit(body)
-    for ov in overlays:
-        _, ov_prop = build_overlay(ov)
-        combined.blit(ov_prop)
-    ol = _outline_layer(combined.mask(), mode=mode)
-    out = Layer(W, H, 'Final')
-    out.blit(sh)
-    out.blit(ol)
-    out.blit(combined)
-    return out
+    return composite(build_commuter_layers(pose_key, overlays, mode=mode))
 
 
 # ==============================================================================
@@ -760,7 +804,8 @@ def assemble_commuter(pose_key, overlays, mode='idle'):
 # ==============================================================================
 
 def assets():
-    """Return list of (stem, cat, w, h, layer_names, frames, fps, tags, meta) for all 36 Section A assets."""
+    """Return list of (stem, cat, w, h, layer_names, frames, fps, tags, meta) for all 76 Section A assets
+    (12 base body files + 8 specific pose files + 28 overlay files + 26 assembled commuter files + 2 Trace effect files)."""
     out = []
     pose_order = [
         ('body_a_pose1',       'Base body A (slim), pose 1 standing'),
@@ -807,12 +852,36 @@ def assets():
         ('courier_bag',    'Swinging cross-body courier bag overlay (N-05)'),
     ]
     for key, desc in ov_order:
-        layers_ov = build_overlay(key)
+        layers_ov_idle = build_overlay(key, mode='idle')
         out.append((
             f'ch01_prop_statue_ov_{key}_idle', 'props', W, H,
             ['Overlay_Outline', 'Overlay_Prop'],
-            [layers_ov], 1.0, None,
-            dict(pivot=PIVOT, z='child of statue (z_index = 10)', desc=desc)
+            [layers_ov_idle], 1.0, None,
+            dict(pivot=PIVOT, z='child of statue in YSort_Actors (z_index = 10)', desc=desc)
+        ))
+        layers_ov_read = build_overlay(key, mode='read')
+        out.append((
+            f'ch01_prop_statue_ov_{key}_read', 'props', W, H,
+            ['Overlay_Outline', 'Overlay_Prop'],
+            [layers_ov_read], 1.0, None,
+            dict(pivot=PIVOT, z='child of statue in YSort_Actors (z_index = 10)', desc=desc + ' (static 1px read outline)')
+        ))
+
+    for (cid, slug, rm, tile, px_pos, pk, ovs, tstr, role) in COMMUTER_ASSEMBLIES:
+        c_desc = f'Assembled commuter {cid} ({slug}, {rm} {tile}): {pk} + {"+".join(ovs)}'
+        layers_c_idle = build_commuter_layers(pk, ovs, mode='idle')
+        out.append((
+            f'ch01_char_statue_commuter_{slug}_idle', 'characters', W, H,
+            ['Cast_Shadow', 'Silhouette_Outline', 'Statue_Body', 'Prop_Overlay'],
+            [layers_c_idle], 1.0, None,
+            dict(pivot=PIVOT, z='YSort_Actors (z_index = 10)', desc=c_desc)
+        ))
+        layers_c_read = build_commuter_layers(pk, ovs, mode='read')
+        out.append((
+            f'ch01_char_statue_commuter_{slug}_read', 'characters', W, H,
+            ['Cast_Shadow', 'Silhouette_Outline', 'Statue_Body', 'Prop_Overlay'],
+            [layers_c_read], 1.0, None,
+            dict(pivot=PIVOT, z='YSort_Actors (z_index = 10)', desc=c_desc + ' (static 1px read outline)')
         ))
 
     shimmer_frames = build_shimmer_ring_frames()
@@ -821,7 +890,7 @@ def assets():
         'ch01_prop_trace_shimmer_ring_loop', 'props', 24, 12,
         ['Ring_Base', 'Stepped_Highlight'],
         shimmer_frames, 8.0, shimmer_tags,
-        dict(pivot=(12, 6), z='YSort_Props (z_index = 9, under statue feet)', desc='4-frame 24x12 Trace shimmer foot ellipse')
+        dict(pivot=(12, 6), z='YSort_Props (z_index = 8, under statue feet)', desc='4-frame 24x12 Trace shimmer foot ellipse')
     ))
 
     glyph_layers = build_timestamp_glyph()
@@ -829,7 +898,7 @@ def assets():
         'ch01_prop_trace_timestamp_glyph_idle', 'props', 6, 6,
         ['Glyph_Backing', 'Clock_Hands'],
         [glyph_layers], 1.0, None,
-        dict(pivot=(3, 3), z='YSort_Actors +1 (overhead badge)', desc='6x6 clock-hand time-stamp glyph above statue head')
+        dict(pivot=(3, 3), z='child of statue in YSort_Actors (z_index = 10)', desc='6x6 clock-hand time-stamp glyph above statue head')
     ))
     return out
 
