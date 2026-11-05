@@ -240,3 +240,75 @@ The `(W/2, H - 8)` rule of §1.3 only fits footprints up to about two tiles: a f
 
 ### A.5 Reproducibility
 Every generated asset can be rebuilt byte for byte: `python tools/art/gen/verify_regen.py` (see `tools/art/gen/README.md`). Files authored before TLF-039 (batch 1) have no generator and are reported as *not covered*.
+
+---
+
+## Appendix B — TLF-057 Step 1 visual direction (Sol, 2026-11-05)
+
+Scope: wishlist sections A and B in `design/ch01/expansion/ART_WISHLIST_STEP1.md`. This applies the approved grey-statue direction; it changes neither the chapter palette nor puzzle data. Argon remains the sole asset author. Sol reviews the exact pushed delivery before Lead integration; this brief is **direction, not delivery approval**. Technical dimensions, camera, collision, import and IDs remain Opus's authority.
+
+### B.1 Frozen commuters: people interrupted
+
+Preserve recognisable clothes, everyday gestures and weight. These are people arrested in time: no sculpted plinths, stone cracks, ice crust or luminous ghost interiors. Use broad, quiet planes with top-left highlights and compact down-right shadows. Avoid bright eye pixels and warm skin planes that make the figures read as living NPCs.
+
+| Function | Existing palette indices / colours |
+|---|---|
+| Five-step grey body ramp, dark to light | `11 #1B1E24`, `12 #2E333D`, `13 #464E5C`, `14 #677385`, `15 #94A2B8` |
+| Interior silhouette outline | `00 #0A0D14`, 1 px, separate from the five body values |
+| Ground contact/shadow | `01 #141A26` / `00 #0A0D14` |
+| Optional single subdued accent per assembled commuter | Existing dark colours only: e.g. `23 #8C2D19` for N-06's red coat, `18 #594438` for a courier bag. Keep the accent local; overlays must not add competing accent colours. |
+
+Reserve the brightest grey for small upper-left folds and edges. Do not fill the whole coat with it. Elias retains the warmer face and coat hierarchy. The statue must remain identifiable beside him at native scale and nearest-neighbour ×3, in greyscale, with Trace effects hidden. Use posture, compact tonal masses and stillness as well as desaturation.
+
+Keep the three builds (slim, broad, child/small), each standing and mid-action, plus the four specific poses. The small build has shorter limbs and a distinct head/body ratio; do not shrink an adult sprite uniformly. Keep the approximate 16×40 visual envelope, the specified `(8,36)` foot pivot and 12×8 collision contract. A lifted foot does not move the ground anchor. If an extended pose or overlay needs padding, agree canvas/offset metadata with Opus; never crop a hand, bag, trolley or crank to force a fit.
+
+| Commuter | Required silhouette read |
+|---|---|
+| N-05 courier (Rewind unlock) | Forward weight, one foot visibly clear of the floor, separated legs and a swinging bag: a run-up/mid-vault gesture rather than a generic standing lean. |
+| N-11 hatch technician (Freeze unlock) | Planted feet, torso leaning away from the crank, both hands engaged; retain negative space between arms and torso so the effort reads at ×3. |
+| N-04 cleaner | Trolley half-turned, wheels/handle readable separately from the body. |
+| N-03 old man | Seated weight on the existing bench, bent knees and paper bag on knee. Export the person/overlay without duplicating the bench. |
+
+The approximately fourteen overlays remain modular: suitcase, paper bag, whistle, trolley, phone, red coat, briefcase, sleeping child, headphones, hatch crank, gate lever, breaker handle, map and courier bag. Keep phone/map/paper silhouettes distinct; the sleeping child needs a head/shoulder contour. Supply an assembly mapping for all thirteen commuters in `design/ch01/COMMUTERS_STEP1.md`; do not alter their narrative timestamps or encode which memories are correct using extra brightness.
+
+### B.2 Trace shimmer and read state
+
+The body never animates. Use the specified 24×12 foot ellipse with four frames of restrained stepped highlights, plus a 6×6 clock-hand timestamp glyph above the head. Trace violet (`30`) with sparse gold (`26`) belongs on the effect, not as a full-body fill. Keep the ring low so it cannot hide feet or floor clues. This commuter cue supplements §7's Trace language; it does not borrow Echo's cyan hollow body or Freeze's crystal corners.
+
+The read variant is a static 1 px silhouette outline with the same pose, dimensions and anchor. Show it on both lit floor and dark wall backgrounds without thickening it. Visibility follows the wishlist: Trace selected, within 96 px; read state follows the first Trace flag. In `reduced_effects`, use the static outline and no shimmer animation. These are visual states for Flash to wire, not new scene/script work in this art delivery.
+
+### B.3 Station hardware and state language
+
+Reuse the worn steel family (ramp 11–15), restrained ceramic backing and existing shutter/console/lever forms. Flat upper-left bevels, darker right planes, readable working parts and one focal glyph take priority over texture. Amber is a small hardware/status accent. Keep temporal colours for temporal meaning. State must survive greyscale and a still frame; a lamp colour or a shake alone is insufficient.
+
+| Family / wishlist row | Direction and non-colour state cue |
+|---|---|
+| SO-01 selector panel | Three visibly separate controls. LINE uses circle/diamond/triangle; PLATFORM uses 1/2/3 pips; CAR uses front/middle/rear window-position silhouettes. Preserve space between glyphs; do not bake the solution into a special highlight. |
+| Release lever + lamp | Idle handle at rest; buzzing has X; accepted has `>>>` and changed handle detent. The six-second timing belongs to implementation. |
+| Platform gate, staff door, inner shutter, staff barrier | Shared shutter housing, distinct plate marks. Closed has a continuous blocking slab; open visibly retracts it and leaves a clear portal. Recolouring the slab is insufficient. |
+| Fallen / mounted conduit | Fallen has a sag/break and grounded end; mounted is straight and visibly seated in brackets. Keep the same material/segment identity. |
+| Split-flap dials ×3 | Shared frame with LINE/PLATFORM/TIME identity marks; retain the font-rendered six label states as text. Jammed frame has a visibly misaligned flap/seam, not only shake. Do not invent label content. |
+| Ticket validator / card reader | Idle slot and quiet display; rejection X; acceptance `>>>`. Reader and validator differ in casing size/slot silhouette, not contradictory status symbols. |
+| Ticket-terms notice | Paper/plaque silhouette with restrained line blocks. Actual clue/terms text comes from the content spec; no invented readable clue text. |
+| Service hatch | Four separate states: closed, open, frozen open, frozen closed. The frozen pair retain the correct aperture geometry and add the specified brass `[o]` lock ring; a lock badge must never cover whether the hatch is open. |
+| Bulkhead wall | Same planar hierarchy as existing N/W walls, stronger structural seam; shared edges tile cleanly without a heavy outline cage. Confirm the requested axis run with Opus rather than changing projection. |
+| Plates A / B | A and B letters persist in both states. Pressed lowers the centre/rim profile. Brass/green remain material cues within the existing palette, never the only distinction. |
+| Bell icon | Idle bell contour; ringing adds visible strike marks within its 8×8 frame. |
+| Echo pedestal | Idle quiet face; used adds a persistent paired-hand/second-hand mark. Do not fill the whole console with cyan. |
+| Alarm plate | Idle unstruck bell; ringing bell + strike marks and small red lamp. Retain a floor-level profile. |
+| Breaker C | Persistent C and lamp-ring identity. Engaged changes lever detent; browned-out shows broken ring/dark segments as well as reduced lamp value. |
+| Standby plate | Empty hollow centre; held has a paired footprint/echo mark and depressed centre. |
+| Dead relay lever C | Visible disconnected lug/lead in idle and never-wired shake frame. Keep it distinct from an ordinary powered lever; no accepted status. |
+
+Follow the wishlist's suggested canvases and existing family pivots; document any agreed exception in asset metadata. Keep overlays and glyphs within their export bounds, use binary alpha, no antialiasing, no fractional scaling and no new palette colours. Detailed grime must not compete with a glyph, working slot or lever arm.
+
+### B.4 Required visual-review handoff
+
+Argon supplies the exact pushed branch/SHA, proof paths, inventory and a state matrix covering every A/B row, plus:
+
+- Room composition with statues and Elias at native 640×360 and nearest ×3; matching greyscale, plus an assembly sheet covering all thirteen commuters and four specific poses.
+- Prop-family contact sheets showing every state side by side in colour and greyscale, with a legend outside runtime sprite bounds. Judge silhouettes and symbols at native size as well as ×3.
+- All four shimmer frames, clock glyph, static read outline and reduced-effects view. Include an effects-hidden statue/Elias comparison.
+- Raw `check_assets.py` and `verify_regen.py` output; Pixelorama source-to-PNG pixel-equality evidence for **every** new `.pxo`, with the exact source count; complete asset metadata and open issues.
+
+Sol records **APPROVE** or **CHANGES REQUIRED**, tied to the reviewed SHA and concrete filenames/states, in the TLF-057 handoff after inspecting those proofs. Missing proofs or an unfinished delivery leave review **PENDING**. Lead retains technical acceptance and merge authority, including the repository's fresh-archive validation rule. No approval transfers to a later unreviewed SHA.
