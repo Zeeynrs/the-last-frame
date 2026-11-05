@@ -1,0 +1,12 @@
+F1: Scarf visible=False; retained pixels=12; backing holes=0; toggle-on differences=12; visible-source==shipping PNG; no scarf red in export
+F2: Scarf visible=False; retained pixels=12; backing holes=0; toggle-on differences=12; visible-source==shipping PNG; no scarf red in export
+F3: Scarf visible=False; retained pixels=12; backing holes=0; toggle-on differences=12; visible-source==shipping PNG; no scarf red in export
+F4: Scarf visible=False; retained pixels=12; backing holes=0; toggle-on differences=12; visible-source==shipping PNG; no scarf red in export
+Cadence seconds: [0.25, 0.25, 1.0, 0.25] ; four 32x48 frames; F3 is static check pose; tag= check_watch_ne
+City layers: serialized source == plate; backdrop + independent Mira(440,136)/(844,104) + rain == plate; 0 differing pixels
+Mira portrait: one static 32x48 frame; independent broadcast source layer; no talk cycle
+start crop: 640x360, exact native plate crop
+end crop: 640x360, exact native plate crop
+Plaza mortar axis +1: 8 actual source pixels black at dx=2,dy=1; endpoints (1136, 332)->(1150, 339)
+Plaza mortar axis -1: 8 actual source pixels black at dx=2,dy=-1; endpoints (1136, 332)->(1150, 325)
+RESULT: FOCUSED SCARF/CADENCE/CITY/PROJECTION CHECKS PASS
