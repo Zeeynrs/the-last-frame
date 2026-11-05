@@ -104,6 +104,20 @@ def main():
                 tag = 'DIFFER'
             ok_all &= same
             print('%s mockup %-44s %s' % ('ok  ' if same else 'FAIL', os.path.basename(c), tag))
+    import tlf063_story_props
+    with tempfile.TemporaryDirectory() as td:
+        tlf063_story_props.write_mockups(td)
+        for fname in tlf063_story_props.MOCKUP_FILES:
+            c, t = tlf063_story_props.mockup_path(fname), tlf063_story_props.mockup_path(fname, td)
+            same = os.path.exists(c) and read(c) == read(t)
+            tag = 'BYTE-IDENTICAL'
+            if not same and os.path.exists(c):
+                same = Image.open(c).convert('RGBA').tobytes() == Image.open(t).convert('RGBA').tobytes()
+                tag = 'pixels IDENTICAL (bytes differ)' if same else 'DIFFER'
+            elif not same:
+                tag = 'DIFFER'
+            ok_all &= same
+            print('%s mockup %-44s %s' % ('ok  ' if same else 'FAIL', os.path.basename(c), tag))
     import tlf062_operator_city
     with tempfile.TemporaryDirectory() as td:
         tlf062_operator_city.write_mockups(td)
