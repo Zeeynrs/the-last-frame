@@ -65,7 +65,7 @@ radius = 14.0
 radius = 16.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_so_blocker24x12"]
-size = Vector2(24, 12)
+size = Vector2(48, 64)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_so_doc12"]
 radius = 12.0
@@ -357,6 +357,7 @@ collision_layer = 1
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="platform_gate/Blocker"]
+position = Vector2(0, -4)
 shape = SubResource("RectangleShape2D_so_blocker24x12")
 
 [node name="Presenter" type="Sprite2D" parent="platform_gate"]

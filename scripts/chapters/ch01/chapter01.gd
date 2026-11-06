@@ -29,10 +29,6 @@ func _ready() -> void:
 	UIFeedback.init_translations()
 	if session == null:
 		session = get_node_or_null("GameSession") as GameSession
-	if session != null and session.starting_abilities.is_empty():
-		session.starting_abilities = [&"trace"]
-		if session.ability_unlocks != null:
-			session.ability_unlocks.set_unlocked([&"trace"])
 	if room_router == null:
 		room_router = get_node_or_null("RoomRouter") as RoomRouter
 
@@ -84,6 +80,7 @@ func _ready() -> void:
 			session.interaction_service.interaction_failed.connect(_on_interaction_failed)
 		if session.narrative_state != null:
 			session.narrative_state.document_read.connect(_on_document_read)
+			session.narrative_state.flag_changed.connect(_on_flag_changed)
 		if session.echo_service != null:
 			session.echo_service.state_changed.connect(_on_echo_state_changed)
 		if session.ability_unlocks != null:
@@ -151,10 +148,34 @@ func _on_interaction_failed(_tick: int, actor_id: StringName, target_id: StringN
 		if target_node is PuzzleObject:
 			custom_key = target_node.feedback_key(reason)
 	if not custom_key.is_empty():
-		hud.show_message(tr(custom_key), 2.0)
+		hud.show_message.call_deferred(tr(custom_key), 2.0)
 	else:
 		var context := &"use" if interaction_id == &"use" else &"watch"
 		hud.show_feedback(reason, context)
+
+
+func _on_flag_changed(flag: StringName, value: Variant) -> void:
+	if not bool(value):
+		return
+	if flag == &"ch01.flag.pocket_watch_acquired" or flag == &"ch01.flag.watch_picked_up":
+		if session != null and session.narrative_state != null:
+			if not session.narrative_state.get_flag(&"ch01.flag.watch_picked_up", false):
+				session.narrative_state.set_flag(&"ch01.flag.watch_picked_up", true)
+			if not session.narrative_state.get_flag(&"ch01.flag.pocket_watch_acquired", false):
+				session.narrative_state.set_flag(&"ch01.flag.pocket_watch_acquired", true)
+			if session.narrative_state.get_flag(&"ch01.flag.watch_unlock_shown", false):
+				return
+			session.narrative_state.set_flag(&"ch01.flag.watch_unlock_shown", true)
+
+		var hud := _find_hud()
+		if hud != null:
+			hud.show_message.call_deferred(tr("UNLOCK_TRACE"), 2.0)
+
+		var diag := get_dialogue_box()
+		if diag != null and not diag.is_active:
+			var elias_key := "EL_UNLOCK_TRACE"
+			if TranslationServer.translate(elias_key) != elias_key:
+				diag.play_sequence(&"unlock.trace", [["SPK_ELIAS", elias_key]], false, 4.0)
 
 
 func _on_puzzle_feedback_requested(text_key: String) -> void:
@@ -171,6 +192,7 @@ func _on_ability_unlocked(ability: StringName) -> void:
 
 	var elias_key := ""
 	match ability:
+		&"trace": elias_key = "EL_UNLOCK_TRACE"
 		&"rewind": elias_key = "EL_UNLOCK_REWIND"
 		&"freeze": elias_key = "EL_UNLOCK_FREEZE"
 		&"echo": elias_key = "EL_UNLOCK_ECHO"

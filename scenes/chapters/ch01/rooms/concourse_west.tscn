@@ -108,7 +108,7 @@ size = Vector2(16, 8)
 radius = 16.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cw_blocker24x12"]
-size = Vector2(24, 12)
+size = Vector2(48, 64)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cw_doc12"]
 radius = 12.0
@@ -470,7 +470,7 @@ z_as_relative = false
 script = ExtResource("art_turnstile_pres")
 
 [node name="conduit_01" type="Area2D" parent="."]
-position = Vector2(224, 144)
+position = Vector2(208, 152)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("cw_conduit")
@@ -646,6 +646,7 @@ collision_layer = 1
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="staff_door/Blocker"]
+position = Vector2(0, -4)
 shape = SubResource("RectangleShape2D_cw_blocker24x12")
 
 [node name="Presenter" type="Sprite2D" parent="staff_door"]
@@ -699,13 +700,6 @@ object_id = &"ch01.concourse_west.n05_courier"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="n05_courier"]
 shape = SubResource("CircleShape2D_cw_interact14")
-
-[node name="Footprint" type="StaticBody2D" parent="n05_courier"]
-collision_layer = 1
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="n05_courier/Footprint"]
-shape = SubResource("RectangleShape2D_cw_footprint12x8")
 
 [node name="Presenter" type="Sprite2D" parent="n05_courier"]
 z_index = 10

@@ -504,8 +504,6 @@ collision_layer = 4
 collision_mask = 0
 script = ExtResource("7_pickup")
 flag_id = &"ch01.flag.echo_pedestal_used"
-lines = [["SPK_MEMORY", "MEM_PEDESTAL_1"], ["SPK_MEMORY", "MEM_PEDESTAL_2"]]
-auto_advance = 4.0
 object_id = &"ch01.security_crossing.echo_recorder_pedestal"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="echo_recorder_pedestal"]
