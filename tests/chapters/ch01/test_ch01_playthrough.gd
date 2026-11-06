@@ -446,6 +446,69 @@ func test_interior_apertures_walkable_with_real_player_capsule() -> void:
 	free_session(s)
 
 
+func test_gate_blockers_cover_door_triggers_from_all_approach_vectors() -> void:
+	var s := make_session()
+	var player_scene := load("res://scenes/player/Player.tscn") as PackedScene
+	var player := player_scene.instantiate() as CharacterBody2D
+	s.add_child(player)
+
+	# 1. Arrival Platform: platform_gate blocker must stop player from reaching door_exit_east
+	var arrival := (load(ROOM_PATHS[&"ch01.arrival_platform"]) as PackedScene).instantiate()
+	s.add_child(arrival)
+	var arr_door := arrival.get_node("door_exit_east") as Area2D
+	var arr_door_entered := false
+	arr_door.body_entered.connect(func(b): if b == player: arr_door_entered = true)
+
+	var arr_probes := [
+		["spawn", Vector2(352, 160)],
+		["north", Vector2(448, 150)],
+		["west", Vector2(380, 208)],
+		["south-west", Vector2(400, 240)]
+	]
+
+	for probe in arr_probes:
+		arr_door_entered = false
+		player.global_position = probe[1]
+		await physics_frames(2)
+		var reached := await walk_to(player, "arrival_gate_closed_" + probe[0], Vector2(448, 208), Callable(), 60, true)
+		_assert_false(reached, "arrival gate closed: probe %s blocked before door target" % probe[0])
+		_assert_false(arr_door_entered, "arrival gate closed: probe %s never entered door_exit_east trigger" % probe[0])
+		_assert_true(player.global_position.distance_to(Vector2(448, 208)) > 16.0, "arrival gate closed: probe %s stayed outside door trigger radius" % probe[0])
+
+	s.remove_child(arrival)
+	arrival.free()
+
+	# 2. Concourse West: staff_door blocker must stop player from reaching door_exit_east
+	var concourse := (load(ROOM_PATHS[&"ch01.concourse_west"]) as PackedScene).instantiate()
+	s.add_child(concourse)
+	var cw_door := concourse.get_node("door_exit_east") as Area2D
+	var cw_door_entered := false
+	cw_door.body_entered.connect(func(b): if b == player: cw_door_entered = true)
+
+	var cw_probes := [
+		["spawn", Vector2(256, 112)],
+		["north", Vector2(480, 180)],
+		["west", Vector2(440, 224)],
+		["south-west", Vector2(440, 250)]
+	]
+
+	for probe in cw_probes:
+		cw_door_entered = false
+		player.global_position = probe[1]
+		await physics_frames(2)
+		var reached := await walk_to(player, "concourse_door_closed_" + probe[0], Vector2(480, 224), Callable(), 60, true)
+		_assert_false(reached, "concourse staff door closed: probe %s blocked before door target" % probe[0])
+		_assert_false(cw_door_entered, "concourse staff door closed: probe %s never entered door_exit_east trigger" % probe[0])
+		_assert_true(player.global_position.distance_to(Vector2(480, 224)) > 16.0, "concourse staff door closed: probe %s stayed outside door trigger radius" % probe[0])
+
+	s.remove_child(concourse)
+	concourse.free()
+
+	s.remove_child(player)
+	player.free()
+	free_session(s)
+
+
 func test_pz004_route_is_at_least_600_px() -> void:
 	var sig := (load(ROOM_PATHS[&"ch01.signal_control"]) as PackedScene).instantiate() as Node2D
 	var perim_node := sig.get_node("PerimeterWalls/CollisionPolygon2D") as CollisionPolygon2D
@@ -697,6 +760,69 @@ func test_chapter01_scene_initialization_and_graph_validation() -> void:
 	_assert_real_save_unchanged(real_save_before, "test_chapter01_scene_initialization_and_graph_validation")
 
 
+func test_object_specific_feedback_deferred_flow() -> void:
+	var real_save_before := _record_real_save_state()
+	var ch01 := _make_ch01()
+	var player: Player = ch01.get_node_or_null("Player")
+	var session: GameSession = ch01.get_node_or_null("GameSession")
+	var hud := player.hud
+
+	# Dismiss initial monologue if present
+	var diag = ch01.get_dialogue_box()
+	while diag != null and diag.is_active:
+		diag.advance()
+		await physics_frames(1)
+
+	# Interacting with locked platform_gate must show SO001_FB_GATE_SEALED, not UI_FB_LOCKED
+	var gate := session.id_registry.resolve(&"ch01.arrival_platform.platform_gate") as PoweredDoor
+	_assert_true(gate != null and gate.passage_blocked, "gate is closed")
+
+	var res = session.interaction_service.request(&"player", gate.object_id, &"use")
+	_assert_false(res.ok, "request use on locked gate fails")
+	_assert_eq(res.reason, &"locked", "reason is locked")
+
+	# Simulate player.gd:245 which immediately calls hud.show_feedback on failure
+	hud.show_feedback(res.reason, &"use")
+	_assert_eq(hud.feedback_label.text, tr("UI_FB_LOCKED"), "generic feedback set immediately by player.gd")
+
+	# Wait for call_deferred to update HUD feedback
+	await physics_frames(2)
+	_assert_true(hud.feedback_panel.visible, "feedback panel is visible")
+	_assert_eq(hud.feedback_label.text, tr("SO001_FB_GATE_SEALED"), "object-specific feedback shown deferred")
+
+	_cleanup_ch01(ch01)
+	_assert_real_save_unchanged(real_save_before, "test_object_specific_feedback_deferred_flow")
+
+
+func test_watch_pickup_shows_unlock_trace_toast_without_regrant() -> void:
+	var real_save_before := _record_real_save_state()
+	var ch01 := _make_ch01()
+	var player: Player = ch01.get_node_or_null("Player")
+	var session: GameSession = ch01.get_node_or_null("GameSession")
+	var hud := player.hud
+
+	var diag = ch01.get_dialogue_box()
+	while diag != null and diag.is_active:
+		diag.advance()
+		await physics_frames(1)
+
+	_assert_eq(session.ability_unlocks.unlocked(), [&"trace"], "starts with trace unlocked")
+	_assert_false(session.narrative_state.get_flag(&"ch01.flag.watch_picked_up", false), "watch not yet picked up")
+
+	# Set watch_picked_up flag
+	session.narrative_state.set_flag(&"ch01.flag.watch_picked_up", true)
+	await physics_frames(2)
+
+	_assert_true(session.narrative_state.get_flag(&"ch01.flag.watch_picked_up", false), "watch_picked_up is true")
+	_assert_true(session.narrative_state.get_flag(&"ch01.flag.pocket_watch_acquired", false), "pocket_watch_acquired is true")
+	_assert_eq(session.ability_unlocks.unlocked(), [&"trace"], "ability unlocks remains [trace] (idempotent)")
+	_assert_true(hud.feedback_panel.visible, "feedback panel visible")
+	_assert_eq(hud.feedback_label.text, tr("UNLOCK_TRACE"), "UNLOCK_TRACE toast displayed")
+
+	_cleanup_ch01(ch01)
+	_assert_real_save_unchanged(real_save_before, "test_watch_pickup_shows_unlock_trace_toast_without_regrant")
+
+
 func test_scripted_playthrough_rooms_1_to_4() -> void:
 	var real_save_before := _record_real_save_state()
 	var ch01 := _make_ch01()
@@ -814,6 +940,10 @@ func test_scripted_playthrough_rooms_1_to_4() -> void:
 	# Advance clock 300 ticks to verify freeze halts the timer
 	session.sim_clock.step(300)
 	_assert_false(shutter.passage_blocked, "shutter remained raised after 300 ticks")
+
+	# Entering the old pocket exit_trigger_east must NOT solve PZ-002 (Decision 2)
+	session.interaction_service.trigger_enter(&"player", &"ch01.maintenance_bay.exit_trigger_east")
+	_assert_false(session.puzzle_service.is_solved(&"CH1-PZ-002"), "entering old exit_trigger_east does not solve PZ-002")
 
 	# Walk through into exit trigger east 02
 	session.interaction_service.trigger_enter(&"player", &"ch01.maintenance_bay.exit_trigger_east_02")
