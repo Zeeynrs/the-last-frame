@@ -157,25 +157,10 @@ func _on_interaction_failed(_tick: int, actor_id: StringName, target_id: StringN
 func _on_flag_changed(flag: StringName, value: Variant) -> void:
 	if not bool(value):
 		return
-	if flag == &"ch01.flag.pocket_watch_acquired" or flag == &"ch01.flag.watch_picked_up":
-		if session != null and session.narrative_state != null:
-			if not session.narrative_state.get_flag(&"ch01.flag.watch_picked_up", false):
-				session.narrative_state.set_flag(&"ch01.flag.watch_picked_up", true)
-			if not session.narrative_state.get_flag(&"ch01.flag.pocket_watch_acquired", false):
-				session.narrative_state.set_flag(&"ch01.flag.pocket_watch_acquired", true)
-			if session.narrative_state.get_flag(&"ch01.flag.watch_unlock_shown", false):
-				return
-			session.narrative_state.set_flag(&"ch01.flag.watch_unlock_shown", true)
-
+	if flag == &"ch01.flag.pocket_watch_acquired":
 		var hud := _find_hud()
 		if hud != null:
 			hud.show_message.call_deferred(tr("UNLOCK_TRACE"), 2.0)
-
-		var diag := get_dialogue_box()
-		if diag != null and not diag.is_active:
-			var elias_key := "EL_UNLOCK_TRACE"
-			if TranslationServer.translate(elias_key) != elias_key:
-				diag.play_sequence(&"unlock.trace", [["SPK_ELIAS", elias_key]], false, 4.0)
 
 
 func _on_puzzle_feedback_requested(text_key: String) -> void:
@@ -192,7 +177,6 @@ func _on_ability_unlocked(ability: StringName) -> void:
 
 	var elias_key := ""
 	match ability:
-		&"trace": elias_key = "EL_UNLOCK_TRACE"
 		&"rewind": elias_key = "EL_UNLOCK_REWIND"
 		&"freeze": elias_key = "EL_UNLOCK_FREEZE"
 		&"echo": elias_key = "EL_UNLOCK_ECHO"
