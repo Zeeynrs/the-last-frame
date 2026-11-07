@@ -107,6 +107,7 @@ func test_beat01_platform_awakening_and_watch_pickup() -> void:
 	_assert_true(diag.is_active, "Beat 01 watch dialogue is active")
 	_assert_eq(diag.current_sequence_id, &"ch01_b01_watch", "sequence is ch01_b01_watch")
 	_assert_eq(diag.current_lines.size(), 3, "watch line has 3 lines (MEM_WATCH_1, MEM_WATCH_2, EL_B01_04)")
+	_assert_eq(diag.auto_advance_delay, 4.0, "watch pickup lines auto-advance at 4.0s")
 	_assert_true(ch01.session.narrative_state.get_flag(&"ch01.flag.pocket_watch_acquired"), "pocket_watch_acquired flag set")
 	_assert_true(ch01.session.narrative_state.get_flag(&"heard.ch01_b01_watch"), "heard.ch01_b01_watch flag set")
 
@@ -154,6 +155,76 @@ func test_beat01_player_moves_immediately_and_dialogue_auto_advances() -> void:
 
 	_cleanup_ch01(ch01)
 	_assert_real_save_unchanged(real_save_before, "test_beat01_player_moves_immediately_and_dialogue_auto_advances")
+
+
+func test_beat01_watch_pickup_real_input_interact_advance_and_unblock_wheel() -> void:
+	var real_save_before := _record_real_save_state()
+	var ch01 := _make_ch01()
+	await physics_frames(5)
+
+	var player := ch01.player
+	var diag := ch01.get_dialogue_box()
+	var wheel := ch01.find_child("AbilityWheel", true, false) as AbilityWheel
+	_assert_true(player != null, "Player exists")
+	_assert_true(diag != null, "DialogueBox exists")
+
+	# Dismiss opening Beat 01 monologue if active
+	if diag.is_active and diag.current_sequence_id == &"ch01_b01_start":
+		_advance_all_dialogue(diag)
+		await physics_frames(2)
+
+	# Walk player to pocket watch pickup at (368, 168)
+	var pickup_pos := Vector2(368, 168)
+	var arrived := await walk_to(player, "pocket_watch_pickup", pickup_pos, func() -> bool:
+		return player.current_target != null and player.current_target.object_id == &"global.pocket_watch"
+	, 180)
+	_assert_true(arrived, "Player walked to pocket watch pickup")
+
+	# 1. Tap interact with real input to take watch
+	await tap(&"interact", 2)
+	await physics_frames(5)
+
+	var acquired: bool = ch01.session.narrative_state.get_flag(&"ch01.flag.pocket_watch_acquired", false)
+	_assert_true(acquired, "ch01.flag.pocket_watch_acquired set after interact tap")
+	_assert_true(diag.is_active, "Watch pickup dialogue is active")
+	_assert_eq(diag.current_sequence_id, &"ch01_b01_watch", "Sequence is ch01_b01_watch")
+	_assert_eq(diag.auto_advance_delay, 4.0, "Watch pickup lines configured with auto_advance_delay = 4.0")
+	_assert_eq(diag.current_line_index, 0, "Line 0 (MEM_WATCH_1) displayed")
+
+	# 2. While watch dialogue is active, ability wheel cannot open
+	if wheel != null:
+		_assert_true(wheel._is_modal_open(), "Ability wheel detects active dialogue modal")
+		press(&"ability_wheel")
+		await physics_frames(2)
+		_assert_false(wheel.is_open, "Ability wheel cannot open via real input while watch dialogue is displayed")
+		release(&"ability_wheel")
+
+	# 3. Real input: Tap interact advances line 0 -> line 1 (MEM_WATCH_2)
+	await tap(&"interact", 2)
+	await physics_frames(3)
+	_assert_true(diag.is_active, "Dialogue remains active on line 1")
+	_assert_eq(diag.current_line_index, 1, "Interact tap advanced to line 1 (MEM_WATCH_2)")
+
+	# 4. Real input: Tap interact advances line 1 -> line 2 (EL_B01_04)
+	await tap(&"interact", 2)
+	await physics_frames(3)
+	_assert_true(diag.is_active, "Dialogue remains active on line 2")
+	_assert_eq(diag.current_line_index, 2, "Interact tap advanced to line 2 (EL_B01_04)")
+
+	# 5. Real input: Tap interact on last line finishes dialogue sequence
+	await tap(&"interact", 2)
+	await physics_frames(3)
+	_assert_false(diag.is_active, "Interact tap dismissed final watch line")
+
+	# 6. Once dialogue cleared, ability wheel opens freely
+	if wheel != null:
+		_assert_false(wheel._is_modal_open(), "Modal priority cleared once dialogue closed")
+		press(&"ability_wheel")
+		_assert_true(await until(func(): return wheel.is_open, 30), "Ability wheel opens via real input after watch dialogue cleared")
+		release(&"ability_wheel")
+
+	_cleanup_ch01(ch01)
+	_assert_real_save_unchanged(real_save_before, "test_beat01_watch_pickup_real_input_interact_advance_and_unblock_wheel")
 
 
 func test_movement_hint_lifecycle() -> void:

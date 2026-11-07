@@ -130,6 +130,7 @@ collision_mask = 2
 script = ExtResource("6_trigger")
 sequence_id = &"ch01_b01_watch"
 lines = [["SPK_MEMORY", "MEM_WATCH_1"], ["SPK_MEMORY", "MEM_WATCH_2"], ["SPK_ELIAS", "EL_B01_04"]]
+auto_advance_delay = 4.0
 flag_id = &"ch01.flag.pocket_watch_acquired"
 object_id = &"global.pocket_watch"
 
