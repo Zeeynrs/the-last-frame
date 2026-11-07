@@ -45,6 +45,10 @@
 [ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n03_old_man_read.png" id="so_n03_read"]
 [ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n04_cleaner_idle.png" id="so_n04_idle"]
 [ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n04_cleaner_read.png" id="so_n04_read"]
+[ext_resource type="Script" path="res://scripts/interaction/trigger_zone.gd" id="tz_trigger"]
+[ext_resource type="Script" path="res://scripts/chapters/ch01/operator_sighting.gd" id="op_sighting"]
+[ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_operator_sighting_ne_sheet.png" id="op_figure_tex"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_fx_operator_sighting_trace_ring_idle.png" id="op_ring_tex"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_door"]
 radius = 10.0
@@ -72,6 +76,9 @@ radius = 12.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_so_footprint12x8"]
 size = Vector2(12, 8)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_op_approach"]
+radius = 32.0
 
 [node name="ArrivalPlatform" type="Node2D"]
 y_sort_enabled = true
@@ -496,3 +503,36 @@ z_as_relative = false
 script = ExtResource("so_commuter_pres")
 tex_idle = ExtResource("so_n04_idle")
 tex_read = ExtResource("so_n04_read")
+
+[node name="operator_sighting" type="Node2D" parent="."]
+position = Vector2(432, 152)
+script = ExtResource("op_sighting")
+
+[node name="GroundRing" type="Sprite2D" parent="operator_sighting"]
+z_index = 8
+z_as_relative = false
+texture = ExtResource("op_ring_tex")
+centered = false
+offset = Vector2(-16, -44)
+
+[node name="FigureSprite" type="Sprite2D" parent="operator_sighting"]
+z_index = 10
+z_as_relative = false
+texture = ExtResource("op_figure_tex")
+centered = false
+offset = Vector2(-16, -44)
+hframes = 4
+
+[node name="ApproachTrigger" type="Area2D" parent="operator_sighting"]
+position = Vector2(-12, 8)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("tz_trigger")
+accepts_echoes = false
+object_id = &"ch01.arrival_platform.operator_approach_trigger"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="operator_sighting/ApproachTrigger"]
+shape = SubResource("CircleShape2D_op_approach")
+
+[node name="AudioSting" type="AudioStreamPlayer2D" parent="operator_sighting"]
+
