@@ -1,0 +1,18 @@
+shape: [['0', '0'], ['6', '0'], ['6', '6'], ['0', '6']]
+  floor: 36 tiles (36 kept with their tile, 0 new, 0 removed)
+  collision: 4 corners, outset 0 tile
+  walls: 3 N and 3 W modules
+  NOT DRAWN: low_E partition (6, 0) -> (6, 6) (open today; TLF-068 low piece if needed)
+  NOT DRAWN: low_S partition (0, 6) -> (6, 6) (open today; TLF-068 low piece if needed)
+  NOT DRAWN: outer_corner N at (0, 0) (faces W/N, TLF-068 kit)
+  NOT DRAWN: outer_corner N at (6, 0) (faces N/low_E, TLF-068 kit)
+  NOT DRAWN: outer_corner low_S at (6, 6) (faces low_E/low_S, TLF-068 kit)
+  NOT DRAWN: outer_corner W at (0, 6) (faces low_S/W, TLF-068 kit)
+diff: 2 changed line(s) (dry run)
+--- ../wt-rt/scenes/chapters/ch01/rooms/vestibule_niche.tscn
++++ ../wt-rt/scenes/chapters/ch01/rooms/vestibule_niche.tscn (built)
+@@ -33,3 +33,3 @@
+ build_mode = 1
+-polygon = PackedVector2Array(320, 60, 420, 110, 320, 164, 220, 110)
++polygon = PackedVector2Array(320, 64, 416, 112, 320, 160, 224, 112)
+ 

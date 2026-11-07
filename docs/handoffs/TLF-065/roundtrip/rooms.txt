@@ -1,0 +1,10 @@
+arrival_platform 14 10
+concourse_west 16 12
+maintenance_bay 14 10
+security_crossing 16 12
+waiting_lounge 12 10
+signal_control 16 12
+upper_vestibule 14 14
+vestibule_niche 6 6
+station_atrium 16 14
+street_exit 12 10

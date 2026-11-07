@@ -1,0 +1,18 @@
+shape: [['0', '0'], ['12', '0'], ['12', '10'], ['0', '10']]
+  floor: 120 tiles (120 kept with their tile, 0 new, 0 removed)
+  collision: 4 corners, outset 0 tile
+  walls: 6 N and 5 W modules
+  NOT DRAWN: low_E partition (12, 0) -> (12, 10) (open today; TLF-068 low piece if needed)
+  NOT DRAWN: low_S partition (0, 10) -> (12, 10) (open today; TLF-068 low piece if needed)
+  NOT DRAWN: outer_corner N at (0, 0) (faces W/N, TLF-068 kit)
+  NOT DRAWN: outer_corner N at (12, 0) (faces N/low_E, TLF-068 kit)
+  NOT DRAWN: outer_corner low_S at (12, 10) (faces low_E/low_S, TLF-068 kit)
+  NOT DRAWN: outer_corner W at (0, 10) (faces low_S/W, TLF-068 kit)
+diff: 2 changed line(s) (dry run)
+--- ../wt-rt/scenes/chapters/ch01/rooms/street_exit.tscn
++++ ../wt-rt/scenes/chapters/ch01/rooms/street_exit.tscn (built)
+@@ -35,3 +35,3 @@
+ build_mode = 1
+-polygon = PackedVector2Array(320, 60, 516, 158, 352, 244, 156, 142)
++polygon = PackedVector2Array(320, 64, 512, 160, 352, 240, 160, 144)
+ 

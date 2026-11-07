@@ -1,0 +1,18 @@
+shape: [['0', '0'], ['16', '0'], ['16', '12'], ['0', '12']]
+  floor: 192 tiles (192 kept with their tile, 0 new, 0 removed)
+  collision: 4 corners, outset 0 tile
+  walls: 8 N and 6 W modules
+  NOT DRAWN: low_E partition (16, 0) -> (16, 12) (open today; TLF-068 low piece if needed)
+  NOT DRAWN: low_S partition (0, 12) -> (16, 12) (open today; TLF-068 low piece if needed)
+  NOT DRAWN: outer_corner N at (0, 0) (faces W/N, TLF-068 kit)
+  NOT DRAWN: outer_corner N at (16, 0) (faces N/low_E, TLF-068 kit)
+  NOT DRAWN: outer_corner low_S at (16, 12) (faces low_E/low_S, TLF-068 kit)
+  NOT DRAWN: outer_corner W at (0, 12) (faces low_S/W, TLF-068 kit)
+diff: 2 changed line(s) (dry run)
+--- ../wt-rt/scenes/chapters/ch01/rooms/concourse_west.tscn
++++ ../wt-rt/scenes/chapters/ch01/rooms/concourse_west.tscn (built)
+@@ -127,3 +127,3 @@
+ build_mode = 1
+-polygon = PackedVector2Array(320, 60, 580, 190, 496, 232, 480, 240, 384, 292, 124, 158, 224, 108, 240, 100)
++polygon = PackedVector2Array(320, 64, 576, 192, 384, 288, 128, 160)
+ 
