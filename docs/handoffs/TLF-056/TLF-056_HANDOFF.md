@@ -6,27 +6,21 @@
 * **Commits:**
   * `550d846`: TLF-049, `a28fe63` replayed unchanged.
   * `65c0ea3`: the TLF-049 setup change, `_start()` only (Lead decision, TLF-055 §F a).
-  * `5bca6a6`: the TLF-056 tests. This is the validated tree.
+  * `5bca6a6`: the TLF-056 tests.
+  * `3e51375`: the unlock-order fix, a separate commit, the two Lead-authorized files only. **This is the validated tree.**
   * The commit with this file adds documentation only.
 
-## Status: one defect blocks "0 failed" (decision needed)
+## Status: validate on `3e51375` is `TESTS: 424 passed, 0 failed`, with 0 `SCRIPT ERROR` lines in the log
 
-The validate on `5bca6a6` is `TESTS: 422 passed, 2 failed`. Both failures are the same product defect, found by the new playthrough.
-
-**The defect: unlock auto-select is refused, and the HUD shows "The watch can't do that yet." instead of the unlock toast.**
-* `AbilityUnlocks.unlock()` (`scripts/narrative/ability_unlocks.gd:48-49`) emits `ability_unlocked` **before** `unlocks_changed`.
-* `chapter01.gd` `_on_ability_unlocked` calls `watch.set_selected_ability(ability)`. The PocketWatch has not resynced yet (it does so on `unlocks_changed`), so the call is refused with `ability_locked`.
-* The HUD then replaces "Rewind unlocked." with `UI_FB_ABILITY_LOCKED`, and the new ability is not selected.
-* This happens at all three unlocks (courier, N-11, pedestal). Real players see it.
-
-**Failing tests:**
-* `test_ch01_real_playthrough.gd::test_real_input_new_game_to_chapter_complete`: the toast and auto-select assertions, 6 lines.
-* `test_playtest_log.gd::test_real_input_rooms_1_to_4_times_match_the_sim_clock`: the same assertions, through `_play()`.
-
-**Proposed fix** (outside my allowed files, so not applied):
-* In `ability_unlocks.gd`, swap the two emits: `unlocks_changed` first, then `ability_unlocked`.
-* In `tests/player/test_ability_unlocks.gd:142`, replace the single `ability_next` tap with "select Rewind in at most 4 taps". The current test passes only because auto-select is broken: one tap from an auto-selected Rewind wraps back to Trace.
-* **Proof:** I validated a scratch copy of `5bca6a6` with exactly these two changes (`config/name="TLF Verify 5bca6a6 fix"`). Result: `TESTS: 424 passed, 0 failed`, `=== All validation checks passed successfully! ===`.
+**The defect the playthrough found, now fixed** (Lead decision: Opus applies it in a separate commit, two files only):
+* `AbilityUnlocks.unlock()` (`scripts/narrative/ability_unlocks.gd`) emitted `ability_unlocked` **before** `unlocks_changed`.
+* `chapter01.gd` `_on_ability_unlocked` calls `watch.set_selected_ability(ability)`. The PocketWatch had not resynced yet (it does so on `unlocks_changed`), so the call was refused with `ability_locked`.
+* The HUD then replaced "Rewind unlocked." with "The watch can't do that yet." (`UI_FB_ABILITY_LOCKED`), at all three unlocks.
+* Before the fix, `5bca6a6` validated at `TESTS: 422 passed, 2 failed`: the playthrough's toast and auto-select assertions, and `test_playtest_log`, which reuses the route.
+* **Fix (`3e51375`):**
+  * `ability_unlocks.gd`: `unlocks_changed` is emitted first, then `ability_unlocked`.
+  * `tests/player/test_ability_unlocks.gd:142`: selects Rewind in at most 4 taps. The single tap only passed while auto-select was broken: one tap from the auto-selected Rewind wraps back to Trace.
+* Nothing else changed.
 
 ## TLF-049 (Lead condition §F a)
 
@@ -39,7 +33,7 @@ The validate on `5bca6a6` is `TESTS: 422 passed, 2 failed`. Both failures are th
   * So the rule cannot be proven by TLF-049 without changing its body.
   * The rule is covered by the new `test_pz002_inner_shutter_needs_the_gear_frozen` (R03 + R04). That test goes **RED** with the rule disabled (output below).
   * TLF-049 itself goes **RED** with the inner shutter's Blocker removed: SOLVED 43 ticks after the Rewind, and the player leaves east (output below).
-  * If the Lead wants TLF-049 itself to prove the rule, it needs one extra step in `_run_without_freeze()` (a Rewind attempt on the inner shutter from the pocket). That breaks byte-identity, so it needs a Lead decision.
+* **Lead decision:** byte-identity accepted as is, with this alternative proof. TLF-049 gets no extra step. Both RED outputs are under *Raw evidence*: `test_pz002_inner_shutter_needs_the_gear_frozen` in set A, and TLF-049 in set C.
 
 ## What the tests cover
 
@@ -123,57 +117,35 @@ In each set, every test without its own break stayed GREEN, with these exception
 
 **The first bulkhead test was too weak.** It skipped spots it could not reach, and stayed GREEN with the segment deleted. I rewrote it: the spots are reached through the corridor above N-11, and a spot that can't be reached fails the test. It is now RED on that break and GREEN on the clean tree.
 
-## Other findings (none fixed; for the Lead)
-
-1. **The turnstile anchor's stand spot (264,116)** (`CH1-PZ-001.md` §1.4, TLF-055 D1) overlaps the closed turnstile's Blocker (260..284 × 114..126).
-   * The pocket north of the Blocker joins the entry strip only past the edge of `door_entry_west` (a squeeze of about 0.4 px).
-   * So the anchor hint is practically traceable only after the gate is open. The playthrough traces it then.
-2. **N-20's stand spot (288,176)** (`step1_placement_check.txt`) lies on the south trench railing (192,128)-(384,224). The playthrough traces N-20 from (304,200) in the south lane instead.
-3. **The R2 west door is close to the arrival spot.**
-   * The arrival spawn and the Continue anchor (256,112) put the player's body under 2 px from `door_entry_west`'s trigger.
-   * Holding up or left for 3 frames right after arriving in R2 goes back to R1 (engine probe).
-   * After a Continue, a 1 px drift toward the door did the same.
-   * The tests step away first. A short press back toward the door you came through may be acceptable by design.
-4. **The ability wheel does not open while any dialogue line is up.** This includes non-blocking lines (`ability_wheel.gd` `_is_modal_open`).
-   * Beat 01 is non-blocking and auto-advances on wall-clock time: 3 × 4 s (about 700 frames headless).
-   * So for the first 12 s of a new game, and during every unlock or memory line, the wheel is unavailable.
-   * This may be intended by ADR-021; I'm noting it.
-5. **`echo_forbidden` on the pass cannot be reached with real input.**
-   * `InteractionService` asks `can_interact` before the progression check (ADR-006 order).
-   * A recorded echo replays its `use` on the pass after the player has already taken it, so the answer is `already_open`.
-   * The rule is covered at unit level (TEST-PZ003-04 / R03 fixture).
-6. **Determinism.** Two consecutive runs give the same route, outcomes and order. SOLVED and unlock ticks differ by up to 1 tick between runs.
-   * The likely cause is the TLF-029 `tap()`, which waits for the idle-frame input flush. That makes the frame count per tap depend on wall-clock timing.
-   * Runs: SO-01 569/569, PZ-001 755/754, PZ-006 1090/1089, SO-02 1212/1211, PZ-002 1336/1335, PZ-003 1646/1645, PZ-004 2457/2456, PZ-005 2824/2823.
-7. **A test that hits a `SCRIPT ERROR` mid-run can still be reported as PASS** by the runner. This happened during development (a freed node). I check every run log for `SCRIPT ERROR`; there are 0 in both validate logs.
-
-## Telemetry: PlaytestLog of the full playthrough (on `5bca6a6`; the game-time floor for the scripted run)
+## Telemetry: PlaytestLog of the full playthrough (on `3e51375`; the game-time floor for the scripted run)
 
 ```
-  INFO: playthrough | 1 arrival (SO-01)                     590 frames (9.83 s)
-  INFO: playthrough | 2a concourse PZ-001                   165 frames (2.75 s)
-  INFO: playthrough | 2b concourse PZ-006                   368 frames (6.13 s)
-  INFO: playthrough | 3a bay SO-02                           97 frames (1.62 s)
+  INFO: playthrough | 1 arrival (SO-01)                     591 frames (9.85 s)
+  INFO: playthrough | 2a concourse PZ-001                   160 frames (2.67 s)
+  INFO: playthrough | 2b concourse PZ-006                   367 frames (6.12 s)
+  INFO: playthrough | 3a bay SO-02                           87 frames (1.45 s)
   INFO: playthrough | 3b bay PZ-002                         138 frames (2.30 s)
-  INFO: playthrough | 4 crossing PZ-003                     313 frames (5.22 s)
+  INFO: playthrough | 4 crossing PZ-003                     304 frames (5.07 s)
   INFO: playthrough | 5 lounge (audio log, exit)             93 frames (1.55 s)
   INFO: playthrough | 6a PZ-004 step 1 (Rewind+Freeze)      214 frames (3.57 s)
   INFO: playthrough | 6b PZ-004 step 2 (Echo + Z-route)     440 frames (7.33 s)
   INFO: playthrough | 6c PZ-004 exit                         62 frames (1.03 s)
   INFO: playthrough | 7 vestibule PZ-005 (levers)           358 frames (5.97 s)
-  INFO: playthrough | 9 atrium terminal (Beat 09)           135 frames (2.25 s)
+  INFO: playthrough | 9 atrium terminal (Beat 09)           136 frames (2.27 s)
   INFO: playthrough | 10 street exit outro (Beat 10)         55 frames (0.92 s)
-  INFO: real-input playthrough took 3028 physics frames (50.5 s game time, 50.56 s wall)
-  INFO: SOLVED ticks [[&"CH1-SO-01", 570], [&"CH1-PZ-001", 755], [&"CH1-PZ-006", 1090], [&"CH1-SO-02", 1212], [&"CH1-PZ-002", 1336], [&"CH1-PZ-003", 1646], [&"CH1-PZ-004", 2457], [&"CH1-PZ-005", 2824]]
-  INFO: unlock ticks [[&"rewind", 593], [&"freeze", 1138], [&"echo", 1356]]
-  INFO: PlaytestLog | Playtest: 0:50 played, 0:01 paused
+  INFO: real-input playthrough took 3005 physics frames (50.1 s game time, 50.18 s wall)
+  INFO: SOLVED ticks [[&"CH1-SO-01", 571], [&"CH1-PZ-001", 751], [&"CH1-PZ-006", 1086], [&"CH1-SO-02", 1198], [&"CH1-PZ-002", 1322], [&"CH1-PZ-003", 1623], [&"CH1-PZ-004", 2434], [&"CH1-PZ-005", 2801]]
+  INFO: unlock ticks [[&"rewind", 594], [&"freeze", 1134], [&"echo", 1342]]
+  INFO: PlaytestLog | Playtest: 0:49 played, 0:01 paused
   INFO: PlaytestLog | PZ-001 0:03   PZ-002 0:04   PZ-003 0:05
   INFO: PlaytestLog | PZ-004 0:12   PZ-005 0:06   PZ-006 0:08
-  INFO: PlaytestLog | SO-01 0:10   SO-02 0:02
-  INFO: playtest log of the TLF-030 route: total 15.73 s active, 0 dialogue ticks; CH1-PZ-001 1.55 s (93 ticks); CH1-PZ-002 3.72 s (223 ticks); CH1-PZ-003 4.95 s (297 ticks); ch01.arrival_platform 2.05 s; ch01.concourse_west 4.53 s; ch01.maintenance_bay 3.92 s; ch01.security_crossing 5.20 s; ch01.waiting_lounge 0.03 s
+  INFO: PlaytestLog | SO-01 0:10   SO-02 0:01
+  INFO: playtest log of the TLF-030 route: total 15.37 s active, 0 dialogue ticks; CH1-PZ-001 1.45 s (87 ticks); CH1-PZ-002 3.57 s (214 ticks); CH1-PZ-003 4.82 s (289 ticks); ch01.arrival_platform 2.07 s; ch01.concourse_west 4.43 s; ch01.maintenance_bay 3.77 s; ch01.security_crossing 5.07 s; ch01.waiting_lounge 0.03 s
 ```
 
 The full playthrough includes every wrong move and the 12 Traces. The `test_playtest_log` line is the clean R1-R4 route.
+
+**The RED proofs** were run on the `5bca6a6` tests, before the fix. The fix changes no test the breaks target.
 
 ## Raw evidence
 
@@ -226,6 +198,8 @@ TESTS: 2 passed, 0 failed
 ```
 
 ### RED set A (test_ch01_step1_negatives.gd; run before the bulkhead test was strengthened, set A has no bulkhead break)
+
+Includes the Lead-requested proof: `test_pz002_inner_shutter_needs_the_gear_frozen` (R03/R04) RED with the `unanchored` rule disabled.
 
 ```
   FAIL: [res://tests/chapters/ch01/test_ch01_step1_negatives.gd::test_pz001_gate_pinned_and_turnstile_holds] Rewind on the pinned gate refused: pinned ([])
@@ -300,6 +274,8 @@ TESTS: 9 passed, 3 failed
 
 ### RED set C (test_ch01_pz002_negative.gd)
 
+Lead-requested proof: TLF-049 RED with the inner shutter's Blocker removed.
+
 ```
   INFO: PZ-002 no-Freeze run (assist off, window 180 ticks): Rewind from (384.7212, 145.9502); gap passed after 14 ticks at (384.7212, 167.9502); exit trigger (SOLVED) after 43 ticks; shutter closed after never; left east after 58 ticks; player now (241.7888, 120.8944) in ch01.security_crossing
   INFO: PZ-002 no-Freeze run (assist off): SOLVED with 137 of 180 ticks to spare
@@ -340,25 +316,14 @@ TESTS: 1 passed, 3 failed
 TESTS: 2 passed, 2 failed
 ```
 
-### Scratch validate of 5bca6a6 + the proposed fix (ability_unlocks.gd emit order + test_ability_unlocks.gd:142)
+## Complete raw validate output (`3e51375`, `git archive` copy, `config/name="TLF Verify 3e51375"`, no BOM; exit 0)
 
-Summary lines; the complete log is available on request.
-
-```
-Leak check: clean (script check)
-TESTS: 424 passed, 0 failed
-Leak check: clean (test suite)
-=== All validation checks passed successfully! ===
-```
-
-## Complete raw validate output (`5bca6a6`, `git archive` copy, `config/name="TLF Verify 5bca6a6"`, no BOM; exit 2)
-
-ANSI colour codes, the UTF-8 BOM and CR line endings are stripped; nothing else is changed.
+ANSI colour codes, the UTF-8 BOM and CR line endings are stripped; nothing else is changed. The log has no `SCRIPT ERROR` lines.
 
 ```
 === Validating The Last Frame Project ===
 Using Godot executable: D:\Godot\Godot_v4.7.2-stable_win64_console.exe
-Project root: C:\Users\adity\AppData\Local\Temp\claude\D--TheLastFrame-wt-opus-core\582a2292-05b9-4d18-8e5b-fea1d2cfbcc9\scratchpad\verify_5bca6a6
+Project root: C:\Users\adity\AppData\Local\Temp\claude\D--TheLastFrame-wt-opus-core\582a2292-05b9-4d18-8e5b-fea1d2cfbcc9\scratchpad\verify_3e51375
 
 [1/3] Running headless import check...
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
@@ -1334,15 +1299,15 @@ Import check passed with zero errors.
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Script check: 150 scripts, 0 failed.
-Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/Godot/app_userdata/TLF Verify 5bca6a6/headless/settings.cfg)
-SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/Godot/app_userdata/TLF Verify 5bca6a6/headless/saves)
+Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/Godot/app_userdata/TLF Verify 3e51375/headless/settings.cfg)
+SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/Godot/app_userdata/TLF Verify 3e51375/headless/saves)
 Leak check: clean (script check)
 
 [3/3] Running headless automated test suite...
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
-Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/Godot/app_userdata/TLF Verify 5bca6a6/headless/settings.cfg)
-SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/Godot/app_userdata/TLF Verify 5bca6a6/headless/saves)
+Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/Godot/app_userdata/TLF Verify 3e51375/headless/settings.cfg)
+SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/Godot/app_userdata/TLF Verify 3e51375/headless/saves)
 --- Running Test Suite ---
 Test file: res://tests/chapters/ch01/test_ch01_art_integration.gd
   PASS: test_collision_freeze_all_10_rooms
@@ -1401,33 +1366,28 @@ Test file: res://tests/chapters/ch01/test_ch01_pz004_saveload.gd
   PASS: test_f3_save_after_a_brownout
   PASS: test_f4_save_after_solved
 Test file: res://tests/chapters/ch01/test_ch01_real_playthrough.gd
-  FAIL: [res://tests/chapters/ch01/test_ch01_real_playthrough.gd::test_real_input_new_game_to_chapter_complete] rewind unlock toast (Expected Rewind unlocked., got The watch can't do that yet.)
-  FAIL: [res://tests/chapters/ch01/test_ch01_real_playthrough.gd::test_real_input_new_game_to_chapter_complete] rewind auto-selected (Expected rewind, got trace)
-  FAIL: [res://tests/chapters/ch01/test_ch01_real_playthrough.gd::test_real_input_new_game_to_chapter_complete] freeze unlock toast (Expected Freeze unlocked., got The watch can't do that yet.)
-  FAIL: [res://tests/chapters/ch01/test_ch01_real_playthrough.gd::test_real_input_new_game_to_chapter_complete] freeze auto-selected (Expected freeze, got trace)
-  FAIL: [res://tests/chapters/ch01/test_ch01_real_playthrough.gd::test_real_input_new_game_to_chapter_complete] echo unlock toast (Expected Echo unlocked., got The watch can't do that yet.)
-  FAIL: [res://tests/chapters/ch01/test_ch01_real_playthrough.gd::test_real_input_new_game_to_chapter_complete] echo auto-selected (Expected echo, got rewind)
-  INFO: playthrough | 1 arrival (SO-01)                     590 frames (9.83 s)
-  INFO: playthrough | 2a concourse PZ-001                   165 frames (2.75 s)
-  INFO: playthrough | 2b concourse PZ-006                   368 frames (6.13 s)
-  INFO: playthrough | 3a bay SO-02                           97 frames (1.62 s)
+  INFO: playthrough | 1 arrival (SO-01)                     591 frames (9.85 s)
+  INFO: playthrough | 2a concourse PZ-001                   160 frames (2.67 s)
+  INFO: playthrough | 2b concourse PZ-006                   367 frames (6.12 s)
+  INFO: playthrough | 3a bay SO-02                           87 frames (1.45 s)
   INFO: playthrough | 3b bay PZ-002                         138 frames (2.30 s)
-  INFO: playthrough | 4 crossing PZ-003                     313 frames (5.22 s)
+  INFO: playthrough | 4 crossing PZ-003                     304 frames (5.07 s)
   INFO: playthrough | 5 lounge (audio log, exit)             93 frames (1.55 s)
   INFO: playthrough | 6a PZ-004 step 1 (Rewind+Freeze)      214 frames (3.57 s)
   INFO: playthrough | 6b PZ-004 step 2 (Echo + Z-route)     440 frames (7.33 s)
   INFO: playthrough | 6c PZ-004 exit                         62 frames (1.03 s)
   INFO: playthrough | 7 vestibule PZ-005 (levers)           358 frames (5.97 s)
-  INFO: playthrough | 9 atrium terminal (Beat 09)           135 frames (2.25 s)
+  INFO: playthrough | 9 atrium terminal (Beat 09)           136 frames (2.27 s)
   INFO: playthrough | 10 street exit outro (Beat 10)         55 frames (0.92 s)
-  INFO: real-input playthrough took 3028 physics frames (50.5 s game time, 50.56 s wall)
-  INFO: SOLVED ticks [[&"CH1-SO-01", 570], [&"CH1-PZ-001", 755], [&"CH1-PZ-006", 1090], [&"CH1-SO-02", 1212], [&"CH1-PZ-002", 1336], [&"CH1-PZ-003", 1646], [&"CH1-PZ-004", 2457], [&"CH1-PZ-005", 2824]]
-  INFO: unlock ticks [[&"rewind", 593], [&"freeze", 1138], [&"echo", 1356]]
-  INFO: PlaytestLog | Playtest: 0:50 played, 0:01 paused
+  INFO: real-input playthrough took 3005 physics frames (50.1 s game time, 50.18 s wall)
+  INFO: SOLVED ticks [[&"CH1-SO-01", 571], [&"CH1-PZ-001", 751], [&"CH1-PZ-006", 1086], [&"CH1-SO-02", 1198], [&"CH1-PZ-002", 1322], [&"CH1-PZ-003", 1623], [&"CH1-PZ-004", 2434], [&"CH1-PZ-005", 2801]]
+  INFO: unlock ticks [[&"rewind", 594], [&"freeze", 1134], [&"echo", 1342]]
+  INFO: PlaytestLog | Playtest: 0:49 played, 0:01 paused
   INFO: PlaytestLog | PZ-001 0:03   PZ-002 0:04   PZ-003 0:05
   INFO: PlaytestLog | PZ-004 0:12   PZ-005 0:06   PZ-006 0:08
-  INFO: PlaytestLog | SO-01 0:10   SO-02 0:02
-  INFO: PlaytestLog | Log: user://headless/playtest/ch01_20261107_091856.json
+  INFO: PlaytestLog | SO-01 0:10   SO-02 0:01
+  INFO: PlaytestLog | Log: user://headless/playtest/ch01_20261107_094519.json
+  PASS: test_real_input_new_game_to_chapter_complete
 Test file: res://tests/chapters/ch01/test_ch01_step1_negatives.gd
   PASS: test_pz001_gate_pinned_and_turnstile_holds
   PASS: test_pz002_inner_shutter_needs_the_gear_frozen
@@ -1470,7 +1430,7 @@ Test file: res://tests/echo/test_echo_service.gd
   PASS: test_triggers_occupied_at_record_start_are_seeded_at_rel_zero
   PASS: test_watch_abilities_and_non_player_actors_are_not_recorded
 Test file: res://tests/interaction/test_interactable_lifecycle.gd
-ERROR: IdRegistry: Duplicate ID 'ch01.test_lever' already registered to OriginalLever:<Area2D#2137115331385>.
+ERROR: IdRegistry: Duplicate ID 'ch01.test_lever' already registered to OriginalLever:<Area2D#2134464531291>.
    at: push_error (core/variant/variant_utility.cpp:1023)
    GDScript backtrace (most recent call first):
        [0] register (res://scripts/session/id_registry.gd:40)
@@ -1528,9 +1488,8 @@ WARNING: AbilityUnlocks: unknown ability 'teleport'.
    at: push_warning (core/variant/variant_utility.cpp:1033)
    GDScript backtrace (most recent call first):
        [0] unlock (res://scripts/narrative/ability_unlocks.gd:43)
-       [1] test_unlock_triggers_flag_pickup_and_puzzle_solved (res://tests/player/test_ability_unlocks.gd:160)
-       [2] tap (res://tests/support/base_test.gd:80)
-       [3] physics_frames (res://tests/support/base_test.gd:38)
+       [1] test_unlock_triggers_flag_pickup_and_puzzle_solved (res://tests/player/test_ability_unlocks.gd:163)
+       [2] physics_frames (res://tests/support/base_test.gd:38)
   PASS: test_unlock_triggers_flag_pickup_and_puzzle_solved
 Test file: res://tests/player/test_player_movement.gd
   PASS: test_cardinal_movement_vectors
@@ -1763,7 +1722,7 @@ ERROR: Parse JSON failed. Error at line 0: Expected key
   PASS: test_v1_save_migrates_to_v2_with_an_empty_playtest_log
   PASS: test_v2_save_migrates_to_v3_with_all_four_abilities
 Test file: res://tests/session/test_id_registry.gd
-ERROR: IdRegistry: Duplicate ID 'ch01.test_node' already registered to <Node#2546194189032>.
+ERROR: IdRegistry: Duplicate ID 'ch01.test_node' already registered to <Node#2543123958360>.
    at: push_error (core/variant/variant_utility.cpp:1023)
    GDScript backtrace (most recent call first):
        [0] register (res://scripts/session/id_registry.gd:40)
@@ -1934,13 +1893,8 @@ Test file: res://tests/telemetry/test_playtest_log.gd
   PASS: test_flag_off_means_no_log_no_file_no_summary
   PASS: test_hints_resets_and_failures_are_counted_per_puzzle
   PASS: test_pauses_are_counted_separately_not_as_puzzle_time
-  FAIL: [res://tests/telemetry/test_playtest_log.gd::test_real_input_rooms_1_to_4_times_match_the_sim_clock] rewind unlock toast (Expected Rewind unlocked., got The watch can't do that yet.)
-  FAIL: [res://tests/telemetry/test_playtest_log.gd::test_real_input_rooms_1_to_4_times_match_the_sim_clock] rewind auto-selected (Expected rewind, got trace)
-  FAIL: [res://tests/telemetry/test_playtest_log.gd::test_real_input_rooms_1_to_4_times_match_the_sim_clock] freeze unlock toast (Expected Freeze unlocked., got The watch can't do that yet.)
-  FAIL: [res://tests/telemetry/test_playtest_log.gd::test_real_input_rooms_1_to_4_times_match_the_sim_clock] freeze auto-selected (Expected freeze, got trace)
-  FAIL: [res://tests/telemetry/test_playtest_log.gd::test_real_input_rooms_1_to_4_times_match_the_sim_clock] echo unlock toast (Expected Echo unlocked., got The watch can't do that yet.)
-  FAIL: [res://tests/telemetry/test_playtest_log.gd::test_real_input_rooms_1_to_4_times_match_the_sim_clock] echo auto-selected (Expected echo, got rewind)
-  INFO: playtest log of the TLF-030 route: total 15.73 s active, 0 dialogue ticks; CH1-PZ-001 1.55 s (93 ticks); CH1-PZ-002 3.72 s (223 ticks); CH1-PZ-003 4.95 s (297 ticks); ch01.arrival_platform 2.05 s; ch01.concourse_west 4.53 s; ch01.maintenance_bay 3.92 s; ch01.security_crossing 5.20 s; ch01.waiting_lounge 0.03 s
+  INFO: playtest log of the TLF-030 route: total 15.37 s active, 0 dialogue ticks; CH1-PZ-001 1.45 s (87 ticks); CH1-PZ-002 3.57 s (214 ticks); CH1-PZ-003 4.82 s (289 ticks); ch01.arrival_platform 2.07 s; ch01.concourse_west 4.43 s; ch01.maintenance_bay 3.77 s; ch01.security_crossing 5.07 s; ch01.waiting_lounge 0.03 s
+  PASS: test_real_input_rooms_1_to_4_times_match_the_sim_clock
   PASS: test_save_and_continue_keep_the_log
 Test file: res://tests/temporal/test_temporal_abilities.gd
   PASS: test_determinism_step_chunking_is_irrelevant
@@ -2069,7 +2023,29 @@ WARNING: UITheme: TLF Pixel Mono not available, using default font
        [6] run_test (res://tests/run_tests.gd:183)
   PASS: test_theme_fallback_when_font_unavailable
 ---------------------------
-TESTS: 422 passed, 2 failed
+TESTS: 424 passed, 0 failed
+Leak check: clean (test suite)
 
-VALIDATION FAILED: test suite exited with code 2.
+=== All validation checks passed successfully! ===
 ```
+
+## Follow-up issues (not fixed in TLF-056; Lead decides later)
+
+1. **The turnstile anchor's stand spot (264,116) is inside the closed turnstile's Blocker** (260..284 × 114..126; `CH1-PZ-001.md` §1.4, TLF-055 D1).
+   * The pocket north of the Blocker joins the entry strip only past the edge of `door_entry_west` (a squeeze of about 0.4 px).
+   * So the anchor's hint is practically traceable only after the gate is open. The playthrough traces it then.
+2. **N-20's stand spot (288,176) lies on the south trench railing** (192,128)-(384,224) (`step1_placement_check.txt`). The playthrough traces N-20 from (304,200) in the south lane instead.
+3. **The R2 west-door arrival spot is under 2 px from the door.**
+   * The door spawn and the Continue anchor (256,112) put the player's body under 2 px from `door_entry_west`'s trigger.
+   * Holding up or left for 3 frames right after arriving goes back to R1 (engine probe). After a Continue, a 1 px drift toward the door did the same.
+4. **The wheel is blocked during the Beat 01 narration.**
+   * The ability wheel does not open while any dialogue line is up, non-blocking lines included (`ability_wheel.gd` `_is_modal_open`).
+   * Beat 01 is non-blocking and auto-advances on wall-clock time, 3 × 4 s. So the wheel is unavailable for the first 12 s of a new game, and during every unlock or memory line.
+5. **Tick jitter of 1.**
+   * Two runs give the same route, outcomes and order. SOLVED and unlock ticks differ by up to 1 tick between runs.
+   * The likely cause is the TLF-029 `tap()`, which waits for the idle-frame input flush.
+   * Runs: SO-01 569/569, PZ-001 755/754, PZ-006 1090/1089, SO-02 1212/1211, PZ-002 1336/1335, PZ-003 1646/1645, PZ-004 2457/2456, PZ-005 2824/2823.
+
+Also noted, for information only:
+* `echo_forbidden` on the transit pass cannot be reached with real input. `can_interact` answers `already_open` before the progression check (ADR-006 order). It is covered at unit level.
+* The test runner can report PASS for a test that hit a `SCRIPT ERROR` mid-run. Every run log here was checked for script errors.
