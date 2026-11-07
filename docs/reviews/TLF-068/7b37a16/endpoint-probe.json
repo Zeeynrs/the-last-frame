@@ -1,0 +1,835 @@
+{
+  "inner_turns": {
+    "N": {
+      "first_module_tile": [
+        2,
+        0
+      ],
+      "refilled_step_pixels": 0,
+      "join_x": [
+        127,
+        128
+      ],
+      "profiles": [
+        [
+          55,
+          103
+        ],
+        [
+          56,
+          104
+        ]
+      ]
+    },
+    "W": {
+      "first_module_tile": [
+        0,
+        2
+      ],
+      "refilled_step_pixels": 0,
+      "join_x": [
+        95,
+        96
+      ],
+      "profiles": [
+        [
+          56,
+          104
+        ],
+        [
+          55,
+          103
+        ]
+      ]
+    }
+  },
+  "runs": [
+    {
+      "face": "N",
+      "length": 3,
+      "start": "corner",
+      "end": "corner",
+      "placements": [
+        [
+          "ch01_env_wall_subterranean_n_idle",
+          [
+            128,
+            104
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ]
+      ],
+      "residual_seam_profiles": [
+        [
+          63,
+          111
+        ],
+        [
+          64,
+          112
+        ]
+      ],
+      "empty_footprint_columns": 0
+    },
+    {
+      "face": "N",
+      "length": 4,
+      "start": "inner_turn",
+      "end": "corner",
+      "placements": [
+        [
+          "ch01_env_wall_subterranean_n_idle",
+          [
+            144,
+            112
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ]
+      ],
+      "residual_seam_profiles": [
+        [
+          71,
+          119
+        ],
+        [
+          72,
+          120
+        ]
+      ],
+      "empty_footprint_columns": 0
+    },
+    {
+      "face": "N",
+      "length": 4,
+      "start": "corner",
+      "end": "endcap_low",
+      "placements": [
+        [
+          "ch01_env_wall_subterranean_n_idle",
+          [
+            128,
+            104
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ],
+        [
+          "ch01_env_wall_subterranean_n_endcap_low_idle",
+          [
+            160,
+            120
+          ],
+          [
+            16,
+            56
+          ],
+          2
+        ]
+      ],
+      "residual_seam_profiles": [
+        [
+          63,
+          111
+        ],
+        [
+          64,
+          112
+        ]
+      ],
+      "empty_footprint_columns": 0
+    },
+    {
+      "face": "W",
+      "length": 3,
+      "start": "corner",
+      "end": "corner",
+      "placements": [
+        [
+          "ch01_env_wall_subterranean_w_idle",
+          [
+            96,
+            104
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ]
+      ],
+      "residual_seam_profiles": [
+        [
+          64,
+          112
+        ],
+        [
+          63,
+          111
+        ]
+      ],
+      "empty_footprint_columns": 0
+    },
+    {
+      "face": "W",
+      "length": 4,
+      "start": "inner_turn",
+      "end": "corner",
+      "placements": [
+        [
+          "ch01_env_wall_subterranean_w_idle",
+          [
+            80,
+            112
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ]
+      ],
+      "residual_seam_profiles": [
+        [
+          72,
+          120
+        ],
+        [
+          71,
+          119
+        ]
+      ],
+      "empty_footprint_columns": 0
+    },
+    {
+      "face": "W",
+      "length": 4,
+      "start": "corner",
+      "end": "endcap_low",
+      "placements": [
+        [
+          "ch01_env_wall_subterranean_w_idle",
+          [
+            96,
+            104
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ],
+        [
+          "ch01_env_wall_subterranean_w_endcap_low_idle",
+          [
+            64,
+            120
+          ],
+          [
+            16,
+            56
+          ],
+          2
+        ]
+      ],
+      "residual_seam_profiles": [
+        [
+          64,
+          112
+        ],
+        [
+          63,
+          111
+        ]
+      ],
+      "empty_footprint_columns": 0
+    }
+  ],
+  "open_odd": {
+    "N": {
+      "length": 3,
+      "placements": [
+        [
+          "ch01_env_wall_subterranean_n_idle",
+          [
+            128,
+            104
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ]
+      ],
+      "missing_residual_interval": [
+        2,
+        3
+      ],
+      "empty_residual_screen_columns": 16
+    },
+    "W": {
+      "length": 3,
+      "placements": [
+        [
+          "ch01_env_wall_subterranean_w_idle",
+          [
+            96,
+            104
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ]
+      ],
+      "missing_residual_interval": [
+        2,
+        3
+      ],
+      "empty_residual_screen_columns": 16
+    }
+  },
+  "mockup_helper_calls": [
+    {
+      "args": [
+        "low_E",
+        [
+          7,
+          -2
+        ],
+        [
+          7,
+          0
+        ],
+        "corner",
+        "corner",
+        [
+          316,
+          88
+        ]
+      ],
+      "kwargs": {},
+      "placements": [
+        [
+          "ch01_env_wall_partition_low_e_idle",
+          [
+            444,
+            136
+          ],
+          [
+            16,
+            24
+          ],
+          -2
+        ]
+      ]
+    },
+    {
+      "args": [
+        "N",
+        [
+          2,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        "corner",
+        "endcap_low",
+        [
+          316,
+          88
+        ]
+      ],
+      "kwargs": {},
+      "placements": [
+        [
+          "ch01_env_wall_subterranean_n_idle",
+          [
+            364,
+            112
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ],
+        [
+          "ch01_env_wall_subterranean_n_endcap_low_idle",
+          [
+            396,
+            128
+          ],
+          [
+            16,
+            56
+          ],
+          2
+        ]
+      ]
+    },
+    {
+      "args": [
+        "N",
+        [
+          7,
+          0
+        ],
+        [
+          12,
+          0
+        ],
+        "inner_turn",
+        "corner",
+        [
+          316,
+          88
+        ]
+      ],
+      "kwargs": {},
+      "placements": [
+        [
+          "ch01_env_wall_subterranean_n_idle",
+          [
+            460,
+            160
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ],
+        [
+          "ch01_env_wall_subterranean_n_idle",
+          [
+            492,
+            176
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ]
+      ]
+    },
+    {
+      "args": [
+        "W",
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          2
+        ],
+        "corner",
+        "corner",
+        [
+          316,
+          88
+        ]
+      ],
+      "kwargs": {},
+      "placements": [
+        [
+          "ch01_env_wall_subterranean_w_idle",
+          [
+            332,
+            112
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ]
+      ]
+    },
+    {
+      "args": [
+        "N",
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        "corner",
+        "corner",
+        [
+          316,
+          88
+        ]
+      ],
+      "kwargs": {},
+      "placements": [
+        [
+          "ch01_env_wall_subterranean_n_idle",
+          [
+            300,
+            112
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ]
+      ]
+    },
+    {
+      "args": [
+        "low_S",
+        [
+          -2,
+          7
+        ],
+        [
+          0,
+          7
+        ],
+        "corner",
+        "corner",
+        [
+          316,
+          88
+        ]
+      ],
+      "kwargs": {},
+      "placements": [
+        [
+          "ch01_env_wall_partition_low_s_idle",
+          [
+            188,
+            136
+          ],
+          [
+            16,
+            24
+          ],
+          -2
+        ]
+      ]
+    },
+    {
+      "args": [
+        "W",
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          6
+        ],
+        "corner",
+        "endcap_low",
+        [
+          316,
+          88
+        ]
+      ],
+      "kwargs": {},
+      "placements": [
+        [
+          "ch01_env_wall_subterranean_w_idle",
+          [
+            268,
+            112
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ],
+        [
+          "ch01_env_wall_subterranean_w_endcap_low_idle",
+          [
+            236,
+            128
+          ],
+          [
+            16,
+            56
+          ],
+          2
+        ]
+      ]
+    },
+    {
+      "args": [
+        "W",
+        [
+          0,
+          7
+        ],
+        [
+          0,
+          10
+        ],
+        "inner_turn",
+        "corner",
+        [
+          316,
+          88
+        ]
+      ],
+      "kwargs": {},
+      "placements": [
+        [
+          "ch01_env_wall_subterranean_w_idle",
+          [
+            172,
+            160
+          ],
+          [
+            16,
+            56
+          ],
+          -2
+        ]
+      ]
+    },
+    {
+      "args": [
+        "low_E",
+        [
+          12,
+          0
+        ],
+        [
+          12,
+          6
+        ],
+        "corner",
+        "corner",
+        [
+          316,
+          88
+        ]
+      ],
+      "kwargs": {},
+      "placements": [
+        [
+          "ch01_env_wall_partition_low_e_idle",
+          [
+            492,
+            192
+          ],
+          [
+            16,
+            24
+          ],
+          -2
+        ],
+        [
+          "ch01_env_wall_partition_low_e_idle",
+          [
+            460,
+            208
+          ],
+          [
+            16,
+            24
+          ],
+          -2
+        ],
+        [
+          "ch01_env_wall_partition_low_e_idle",
+          [
+            428,
+            224
+          ],
+          [
+            16,
+            24
+          ],
+          -2
+        ]
+      ]
+    },
+    {
+      "args": [
+        "low_S",
+        [
+          8,
+          6
+        ],
+        [
+          12,
+          6
+        ],
+        "corner",
+        "corner",
+        [
+          316,
+          88
+        ]
+      ],
+      "kwargs": {},
+      "placements": [
+        [
+          "ch01_env_wall_partition_low_s_idle",
+          [
+            364,
+            208
+          ],
+          [
+            16,
+            24
+          ],
+          -2
+        ],
+        [
+          "ch01_env_wall_partition_low_s_idle",
+          [
+            396,
+            224
+          ],
+          [
+            16,
+            24
+          ],
+          -2
+        ]
+      ]
+    },
+    {
+      "args": [
+        "low_E",
+        [
+          8,
+          6
+        ],
+        [
+          8,
+          10
+        ],
+        "corner",
+        "corner",
+        [
+          316,
+          88
+        ]
+      ],
+      "kwargs": {},
+      "placements": [
+        [
+          "ch01_env_wall_partition_low_e_idle",
+          [
+            332,
+            208
+          ],
+          [
+            16,
+            24
+          ],
+          -2
+        ],
+        [
+          "ch01_env_wall_partition_low_e_idle",
+          [
+            300,
+            224
+          ],
+          [
+            16,
+            24
+          ],
+          -2
+        ]
+      ]
+    },
+    {
+      "args": [
+        "low_S",
+        [
+          0,
+          10
+        ],
+        [
+          8,
+          10
+        ],
+        "corner",
+        "corner",
+        [
+          316,
+          88
+        ]
+      ],
+      "kwargs": {},
+      "placements": [
+        [
+          "ch01_env_wall_partition_low_s_idle",
+          [
+            172,
+            176
+          ],
+          [
+            16,
+            24
+          ],
+          -2
+        ],
+        [
+          "ch01_env_wall_partition_low_s_idle",
+          [
+            204,
+            192
+          ],
+          [
+            16,
+            24
+          ],
+          -2
+        ],
+        [
+          "ch01_env_wall_partition_low_s_idle",
+          [
+            236,
+            208
+          ],
+          [
+            16,
+            24
+          ],
+          -2
+        ],
+        [
+          "ch01_env_wall_partition_low_s_idle",
+          [
+            268,
+            224
+          ],
+          [
+            16,
+            24
+          ],
+          -2
+        ]
+      ]
+    }
+  ],
+  "mockup_pixels_match_committed": true
+}
