@@ -984,15 +984,18 @@ def assemble_wall_run(face, from_pt, to_pt, start_kind='corner', end_kind='corne
           * 'corner' for all full-height / same-height start corners (`nw_outer`, `n_turn_outer`,
             `w_turn_outer`, `low_corner_inner`), where s_start = from (first module at from + 1).
       - end_kind:
-          * 'endcap_low' when the tall N/W run ends at an opening with `n_endcap_low` / `w_endcap_low`
-            anchored at `to - 1` (spanning [to-2, to-1] full height + [to-1, to] stepped low bollard),
-            so full-height straight modules stop at s_end = to - 1.
+          * 'endcap_low' when the tall N/W run terminates without a corner (at a Rule R2b doorway/corridor
+            opening OR an uncornered odd/even open end) with `n_endcap_low` / `w_endcap_low` anchored at
+            `to - 1` (spanning [to-2, to-1] full height + [to-1, to] stepped low bollard), so full-height
+            straight modules stop at s_end = to - 1. ('open_odd' is also accepted as a compatibility alias
+            for 'endcap_low'.)
           * 'corner' when `to_pt` has a corner (`n_turn_outer`, `w_turn_outer`, `nw_inner`,
             `low_corner_outer`, `n_turn_inner` on low_E, `w_turn_inner` on low_S), which supplies
             [to-1, to] at full run height, so s_end = to.
 
     Returns:
-      List of (stem, anchor_px, pivot, z_bias) for the straight 2-tile modules (and endcap if end_kind=='endcap_low').
+      List of (stem, anchor_px, pivot, z_bias) for the straight 2-tile modules (and endcap when
+      end_kind in ('endcap_low', 'open_odd')).
       When `rem = s_end - s_start` is odd (`rem = 2*m + 1`), the `m` straight modules cover `[s_start, s_end - 1]`
       and the remaining 1-tile interval `[s_end - 1, s_end]` is already supplied by the end corner's `[to - 1, to]`
       wing (or the endcap's `[to - 2, to - 1]` full-height half) with 0 gap and 0 overlap.
@@ -1003,8 +1006,9 @@ def assemble_wall_run(face, from_pt, to_pt, start_kind='corner', end_kind='corne
     f = fx if along_x else fy
     t = tx if along_x else ty
 
+    use_endcap = (face in ('N', 'W') and end_kind in ('endcap_low', 'open_odd'))
     s_start = (f + 1) if (face in ('N', 'W') and start_kind == 'inner_turn') else f
-    s_end = (t - 1) if (face in ('N', 'W') and end_kind == 'endcap_low') else t
+    s_end = (t - 1) if use_endcap else t
     rem = max(0, s_end - s_start)
     m = rem // 2
 
@@ -1021,7 +1025,7 @@ def assemble_wall_run(face, from_pt, to_pt, start_kind='corner', end_kind='corne
         pt = (u, fy) if along_x else (fx, u)
         placements.append((stem, _tile_to_px(pt[0], pt[1], origin), piv, -2))
 
-    if face in ('N', 'W') and end_kind == 'endcap_low':
+    if use_endcap:
         end_stem = (
             'ch01_env_wall_subterranean_n_endcap_low_idle'
             if face == 'N' else
@@ -1225,6 +1229,34 @@ def build_endpoint_join_proof():
                     refilled += 1
         assert refilled == 0, f"{axis} inner turn has {refilled} refilled pixels!"
 
+    # Programmatic verification of uncornered odd/open N and W runs (L=3 and L=4) with end_kind='endcap_low'
+    # (and alias 'open_odd'): 0 empty screen columns across all 16*L footprint columns and 0 refilled step pixels.
+    n_endcap_im = _render_kit_img('ch01_env_wall_subterranean_n_endcap_low_idle')
+    w_endcap_im = _render_kit_img('ch01_env_wall_subterranean_w_endcap_low_idle')
+    for face, endcap_im, step_rng in (('N', n_endcap_im, range(16, 32)), ('W', w_endcap_im, range(0, 16))):
+        for length in (3, 4):
+            for mode in ('endcap_low', 'open_odd'):
+                to_pt = (length, 0) if face == 'N' else (0, length)
+                run = assemble_wall_run(face, (0, 0), to_pt, 'corner', mode, origin=(112, 96))
+                assert len(run) == 2 and 'endcap_low' in run[-1][0], (face, length, mode, run)
+                # Check 0 refilled pixels above the endcap's stepped half from preceding straight module:
+                w_stem, w_apx, _wpiv, _wzb = run[0]
+                e_stem, e_apx, _epiv, _ezb = run[-1]
+                w_img = _load_or_render_env(w_stem)
+                dx, dy = w_apx[0] - e_apx[0], w_apx[1] - e_apx[1]
+                for x in step_rng:
+                    for y in range(64):
+                        wx, wy = x - dx, y - dy
+                        if 0 <= wx < 32 and 0 <= wy < 64 and endcap_im.getpixel((x, y))[3] == 0:
+                            assert w_img.getpixel((wx, wy))[3] == 0, f"{face} L={length} refilled endcap step at {(x, y)}"
+                # Check 0 empty footprint columns across all 16*L active-axis columns:
+                chk = Image.new('RGBA', (256, 160), (0, 0, 0, 0))
+                items = list(run) + [('ch01_env_wall_subterranean_corner_nw_outer_idle', (112, 96), (16, 56), 10)]
+                for st, apx, pv, zb in sorted(items, key=lambda v: (v[1][1] + v[3], v[1][0])):
+                    chk.alpha_composite(_load_or_render_env(st), (apx[0] - pv[0], apx[1] - pv[1]))
+                xs = range(112, 112 + 16 * length) if face == 'N' else range(112 - 16 * length, 112)
+                assert all(any(chk.getpixel((x, y))[3] != 0 for y in range(160)) for x in xs), (face, length, mode)
+
     _draw_text_img(canvas, 8, 5, "TLF-068 DETERMINISTIC ENDPOINT JOIN PROOF (NATIVE 1X + X2 ZOOM, S10.2 RECIPE)", PAL[15], scale=1)
     _draw_text_img(canvas, 8, 15, "VERIFIED: 0 REFILLED PX ABOVE STEPPED TURNS/ENDCAPS, 0 SEAM GAPS, ODD ENDS SUPPLIED BY CORNERS", PAL[26], scale=1)
 
@@ -1332,19 +1364,35 @@ def build_endpoint_join_proof():
     _draw_text_img(b3, 164, 144, "TILE 3-4 BY (4,0)", PAL[26], scale=1)
     canvas.alpha_composite(b3, (8, 194))
 
-    # Panel 4 (Bottom-Right, 308x158 at (324, 194)): R2b Low Endcap Termination (L=4, s_end=to-1=3, rem=3)
-    b4 = make_box(308, 158, "4. R2B LOW ENDCAP RUN (0,0)->(4,0) AT OPENING", "S_END=TO-1=3 (REM=3): WALL_N(1,0) + ENDCAP(3,0)")
-    crop4 = render_assembly(
-        origin=(36, 72),
+    # Panel 4 (Bottom-Right, 308x158 at (324, 194)): Uncornered/Open N & W Terminations (end_kind='endcap_low', L=3 & L=4)
+    b4 = make_box(308, 158, "4. UNCORNERED/OPEN N + W RUNS (ENDCAP_LOW)", "S_END=TO-1: N(0,0)->(3,0), W(0,0)->(0,3), N L=4")
+    crop4n3 = render_assembly(
+        origin=(24, 72),
+        runs=[('N', (0, 0), (3, 0), 'corner', 'endcap_low', 0)],
+        corners=[(c_nw_out, (0, 0), (16, 56), 10)],
+        crop_rect=(6, 12, 82, 112),
+    )
+    crop4w3 = render_assembly(
+        origin=(72, 72),
+        runs=[('W', (0, 0), (0, 3), 'corner', 'endcap_low', 0)],
+        corners=[(c_nw_out, (0, 0), (16, 56), 10)],
+        crop_rect=(18, 12, 94, 112),
+    )
+    crop4n4 = render_assembly(
+        origin=(24, 72),
         runs=[('N', (0, 0), (4, 0), 'corner', 'endcap_low', 0)],
         corners=[(c_nw_out, (0, 0), (16, 56), 10)],
-        crop_rect=(16, 12, 124, 116),
+        crop_rect=(6, 12, 98, 112),
     )
-    b4.alpha_composite(crop4, (14, 32))
-    _draw_text_img(b4, 14, 144, "1X NATIVE (L=4)", PAL[14], scale=1)
-    z4 = crop4.crop((32, 18, 92, 70)).resize((120, 104), Image.NEAREST)
-    b4.alpha_composite(z4, (176, 30))
-    _draw_text_img(b4, 178, 144, "X2 ENDCAP STEP", PAL[26], scale=1)
+    b4.alpha_composite(crop4n3, (8, 30))
+    _draw_text_img(b4, 8, 134, "N L=3: WALL(1,0)", PAL[15], scale=1)
+    _draw_text_img(b4, 8, 144, "+N_ENDCAP(2,0)", PAL[26], scale=1)
+    b4.alpha_composite(crop4w3, (108, 30))
+    _draw_text_img(b4, 108, 134, "W L=3: WALL(0,1)", PAL[15], scale=1)
+    _draw_text_img(b4, 108, 144, "+W_ENDCAP(0,2)", PAL[26], scale=1)
+    b4.alpha_composite(crop4n4, (206, 30))
+    _draw_text_img(b4, 206, 134, "N L=4: WALL(1,0)", PAL[15], scale=1)
+    _draw_text_img(b4, 206, 144, "+N_ENDCAP(3,0)", PAL[26], scale=1)
     canvas.alpha_composite(b4, (324, 194))
 
     return canvas
