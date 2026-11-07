@@ -1,0 +1,17 @@
+{
+  "rows": 335,
+  "visual_objects": 261,
+  "screenshots": 1044,
+  "extra_centerline_shots": 26,
+  "severity": {
+    "none": 216,
+    "medium": 36,
+    "high": 9,
+    "not_visual": 74
+  },
+  "defect_owners": {
+    "placement": 6,
+    "data": 39
+  },
+  "room_count": 10
+}

@@ -1,0 +1,336 @@
+room,object_id,sprite,expected_facing,actual_facing,overlaps_elias_from,fix_owner,severity
+ch01.arrival_platform,ch01.arrival_platform.doc_last_service,ch01_prop_document_clipboard_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.arrival_platform,ch01.arrival_platform.n01_conductor,ch01_char_statue_commuter_n01_conductor_idle.png,free pose; COMMUTERS/Operator direction (not boundary-dependent),authored character pose,none observed,data,none
+ch01.arrival_platform,ch01.arrival_platform.n02_student,ch01_char_statue_commuter_n02_student_idle.png,free pose; COMMUTERS/Operator direction (not boundary-dependent),authored character pose,none observed,data,none
+ch01.arrival_platform,ch01.arrival_platform.n03_old_man,ch01_char_statue_commuter_n03_old_man_idle.png,seated on existing bench; authored pose,authored character pose,none observed,placement,medium
+ch01.arrival_platform,ch01.arrival_platform.n04_cleaner,ch01_char_statue_commuter_n04_cleaner_idle.png,free pose; COMMUTERS/Operator direction (not boundary-dependent),authored character pose,none observed,data,none
+ch01.arrival_platform,ch01.arrival_platform.operator_sighting,ch01_char_operator_sighting_ne_sheet.png,free pose; COMMUTERS/Operator direction (not boundary-dependent),authored character pose,none observed,data,none
+ch01.arrival_platform,ch01.arrival_platform.platform_gate,ch01_prop_platform_gate_closed.png,+y / down-left,+y / down-left,N;W,data,high
+ch01.arrival_platform,ch01.arrival_platform.release_lever,ch01_prop_release_lever_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,medium
+ch01.arrival_platform,ch01.arrival_platform.selector_car,ch01_prop_selector_car_pos0.png,wall-mounted; interior-readable frontal panel,frontal fixture / compact prop,none observed,data,high
+ch01.arrival_platform,ch01.arrival_platform.selector_line,ch01_prop_selector_line_pos0.png,wall-mounted; interior-readable frontal panel,frontal fixture / compact prop,none observed,data,high
+ch01.arrival_platform,ch01.arrival_platform.selector_platform,ch01_prop_selector_platform_pos0.png,wall-mounted; interior-readable frontal panel,frontal fixture / compact prop,none observed,data,high
+ch01.arrival_platform,global.pocket_watch,ch01_prop_pocket_watch_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.arrival_platform,visual:Wall_Fixtures/Clock_2,ch01_prop_digital_clock_2359_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.arrival_platform,visual:Wall_Fixtures/Clock_5,ch01_prop_digital_clock_2359_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.arrival_platform,visual:YSort_Actors/PlatformBench,ch01_prop_station_bench_idle.png,+x / down-right (N-side seating),+x / down-right,none observed,data,none
+ch01.arrival_platform,visual:YSort_Actors/StalledTransitCar,ch01_prop_transit_car_stalled_idle.png,+x / down-right (S-side platform track),+x / down-right,none observed,data,none
+ch01.arrival_platform,visual:YSort_Walls/Archway_door_exit_east,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.arrival_platform,visual:YSort_Walls/WallN_0,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.arrival_platform,visual:YSort_Walls/WallN_1,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.arrival_platform,visual:YSort_Walls/WallN_2,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.arrival_platform,visual:YSort_Walls/WallN_3,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.arrival_platform,visual:YSort_Walls/WallN_4,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.arrival_platform,visual:YSort_Walls/WallN_5,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.arrival_platform,visual:YSort_Walls/WallN_6,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.arrival_platform,visual:YSort_Walls/WallW_0,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.arrival_platform,visual:YSort_Walls/WallW_1,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.arrival_platform,visual:YSort_Walls/WallW_2,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.arrival_platform,visual:YSort_Walls/WallW_3,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.arrival_platform,visual:YSort_Walls/WallW_4,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.arrival_platform,ch01.arrival_platform.door_exit_east,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.arrival_platform,ch01.arrival_platform.safe_anchor_spawn,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.arrival_platform,ch01.arrival_platform.checkpoint,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.arrival_platform,ch01.arrival_platform.digital_clock_2359,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.arrival_platform,ch01.arrival_platform.release_lock,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.arrival_platform,ch01.arrival_platform.operator_approach_trigger,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.concourse_west,ch01.concourse_west.conduit_01,ch01_prop_conduit_fallen.png,floor-plane / 2:1,floor-plane / 2:1,none observed,data,none
+ch01.concourse_west,ch01.concourse_west.dial_line,ch01_prop_flap_dial_line_idle.png,wall-mounted; interior-readable frontal panel,frontal fixture / compact prop,none observed,placement,medium
+ch01.concourse_west,ch01.concourse_west.dial_platform,ch01_prop_flap_dial_platform_idle.png,wall-mounted; interior-readable frontal panel,frontal fixture / compact prop,none observed,placement,medium
+ch01.concourse_west,ch01.concourse_west.dial_time,ch01_prop_flap_dial_time_idle.png,wall-mounted; interior-readable frontal panel,frontal fixture / compact prop,none observed,placement,medium
+ch01.concourse_west,ch01.concourse_west.doc_evac_notice,ch01_prop_document_clipboard_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.concourse_west,ch01.concourse_west.doc_ticket_terms,ch01_prop_ticket_terms_notice_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,medium
+ch01.concourse_west,ch01.concourse_west.n05_courier,ch01_char_statue_commuter_n05_courier_idle.png,free pose; COMMUTERS/Operator direction (not boundary-dependent),authored character pose,none observed,data,none
+ch01.concourse_west,ch01.concourse_west.n06_red_coat,ch01_char_statue_commuter_n06_red_coat_idle.png,free pose; COMMUTERS/Operator direction (not boundary-dependent),authored character pose,none observed,data,none
+ch01.concourse_west,ch01.concourse_west.n07_briefcase,ch01_char_statue_commuter_n07_briefcase_idle.png,free pose; COMMUTERS/Operator direction (not boundary-dependent),authored character pose,none observed,data,none
+ch01.concourse_west,ch01.concourse_west.n08_father,ch01_char_statue_commuter_n08_father_idle.png,free pose; COMMUTERS/Operator direction (not boundary-dependent),authored character pose,none observed,data,none
+ch01.concourse_west,ch01.concourse_west.n09_teen,ch01_char_statue_commuter_n09_teen_idle.png,free pose; COMMUTERS/Operator direction (not boundary-dependent),authored character pose,none observed,data,none
+ch01.concourse_west,ch01.concourse_west.reset_anchor_01,ch01_prop_reset_console_idle.png,free-standing access face; no unique boundary-facing prescribed,frontal fixture / compact prop,none observed,data,none
+ch01.concourse_west,ch01.concourse_west.staff_door,ch01_prop_staff_door_closed.png,+y / down-left,+y / down-left,N;W,data,high
+ch01.concourse_west,ch01.concourse_west.ticket_validator,ch01_prop_ticket_validator_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,N;W,data,medium
+ch01.concourse_west,ch01.concourse_west.turnstile_gate,ch01_prop_turnstile_gate_collapsed.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.concourse_west,visual:ArchwayEast,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.concourse_west,visual:ArchwayWest,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.concourse_west,visual:Wall_Fixtures/CallBoxSprite,ch01_prop_call_box_phone_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.concourse_west,visual:Wall_Fixtures/Clock_3,ch01_prop_digital_clock_2359_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.concourse_west,visual:YSort_Actors/ConcourseBench,ch01_prop_station_bench_idle.png,+x / down-right (nearest N-side seating),+x / down-right,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/Archway_door_entry_west,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/Archway_door_exit_east,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/PillarSprite,ch01_env_wall_corner_pillar_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,N;W,data,high
+ch01.concourse_west,visual:YSort_Walls/WallN_0,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/WallN_1,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/WallN_2,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/WallN_3,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/WallN_4,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/WallN_5,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/WallN_6,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/WallN_7,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/WallW_0,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/WallW_1,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/WallW_2,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/WallW_3,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/WallW_4,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.concourse_west,visual:YSort_Walls/WallW_5,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.concourse_west,ch01.concourse_west.door_entry_west,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.concourse_west,ch01.concourse_west.door_exit_east,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.concourse_west,ch01.concourse_west.safe_anchor_east,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.concourse_west,ch01.concourse_west.safe_anchor_west,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.concourse_west,ch01.concourse_west.checkpoint,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.concourse_west,ch01.concourse_west.turnstile_footprint,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.concourse_west,ch01.concourse_west.turnstile_trace_anchor,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.concourse_west,ch01.concourse_west.support_pillar_01,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.concourse_west,ch01.concourse_west.exit_trigger_concourse,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.concourse_west,ch01.concourse_west.call_box_09,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.concourse_west,ch01.concourse_west.digital_clock_2359,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.concourse_west,ch01.concourse_west.reset_anchor_02,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.maintenance_bay,ch01.maintenance_bay.bell_plate_01,ch01_prop_bell_icon_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,medium
+ch01.maintenance_bay,ch01.maintenance_bay.counterweight_gear,ch01_prop_counterweight_gear_idle.png,free-standing access face; no unique boundary-facing prescribed,frontal fixture / compact prop,none observed,data,none
+ch01.maintenance_bay,ch01.maintenance_bay.doc_hatch_chart,ch01_prop_document_clipboard_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.maintenance_bay,ch01.maintenance_bay.doc_inner_shutter_plate,ch01_prop_document_clipboard_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.maintenance_bay,ch01.maintenance_bay.doc_tech_log,ch01_prop_document_clipboard_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.maintenance_bay,ch01.maintenance_bay.fire_shutter,ch01_prop_fire_shutter_closed.png,+x / down-right (existing shutter barrier family/run),+x / down-right,none observed,data,none
+ch01.maintenance_bay,ch01.maintenance_bay.hatch_01,ch01_prop_service_hatch_closed.png,+y / down-left,+y / down-left,N;W,data,high
+ch01.maintenance_bay,ch01.maintenance_bay.hatch_plate_01,ch01_prop_floor_plate_a_empty.png,floor-plane / 2:1,floor-plane / 2:1,none observed,data,medium
+ch01.maintenance_bay,ch01.maintenance_bay.inner_shutter,ch01_prop_fire_shutter_closed.png,+x / down-right (existing shutter barrier family/run),+x / down-right,N;W,data,high
+ch01.maintenance_bay,ch01.maintenance_bay.n11_hatch_tech,ch01_char_statue_commuter_n11_hatch_tech_idle.png,free pose; COMMUTERS/Operator direction (not boundary-dependent),authored character pose,none observed,data,none
+ch01.maintenance_bay,ch01.maintenance_bay.reset_anchor_01,ch01_prop_reset_console_idle.png,free-standing access face; no unique boundary-facing prescribed,frontal fixture / compact prop,none observed,data,none
+ch01.maintenance_bay,visual:ArchwayEast,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.maintenance_bay,visual:ArchwayWest,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.maintenance_bay,visual:YSort_Walls/Archway_door_entry_west,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.maintenance_bay,visual:YSort_Walls/Archway_door_exit_east,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.maintenance_bay,visual:YSort_Walls/WallN_0,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.maintenance_bay,visual:YSort_Walls/WallN_1,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.maintenance_bay,visual:YSort_Walls/WallN_2,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.maintenance_bay,visual:YSort_Walls/WallN_3,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.maintenance_bay,visual:YSort_Walls/WallN_4,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.maintenance_bay,visual:YSort_Walls/WallN_5,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.maintenance_bay,visual:YSort_Walls/WallN_6,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.maintenance_bay,visual:YSort_Walls/WallW_0,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.maintenance_bay,visual:YSort_Walls/WallW_1,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.maintenance_bay,visual:YSort_Walls/WallW_2,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.maintenance_bay,visual:YSort_Walls/WallW_3,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.maintenance_bay,visual:YSort_Walls/WallW_4,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.maintenance_bay,ch01.maintenance_bay.door_entry_west,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.maintenance_bay,ch01.maintenance_bay.door_exit_east,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.maintenance_bay,ch01.maintenance_bay.safe_anchor_west,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.maintenance_bay,ch01.maintenance_bay.safe_anchor_east,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.maintenance_bay,ch01.maintenance_bay.checkpoint,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.maintenance_bay,ch01.maintenance_bay.shutter_threshold_trigger,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.maintenance_bay,ch01.maintenance_bay.exit_trigger_east,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.maintenance_bay,ch01.maintenance_bay.safe_anchor_entry,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.maintenance_bay,ch01.maintenance_bay.hatch_threshold,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.maintenance_bay,ch01.maintenance_bay.exit_trigger_hatch,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.maintenance_bay,ch01.maintenance_bay.hatch_residue,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.maintenance_bay,ch01.maintenance_bay.inner_shutter_threshold,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.maintenance_bay,ch01.maintenance_bay.exit_trigger_east_02,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.maintenance_bay,ch01.maintenance_bay.gear_residue,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.security_crossing,ch01.security_crossing.alarm_plate_01,ch01_prop_alarm_plate_idle.png,floor-plane / 2:1,floor-plane / 2:1,none observed,data,none
+ch01.security_crossing,ch01.security_crossing.bridge_platform_01,ch01_prop_bridge_platform_retracted.png,+x / down-right,+x / down-right,none observed,data,none
+ch01.security_crossing,ch01.security_crossing.card_reader_01,ch01_prop_card_reader_idle.png,mounted on barrier/pillar; frontal read face,frontal fixture / compact prop,none observed,placement,medium
+ch01.security_crossing,ch01.security_crossing.doc_guard_log,ch01_prop_document_clipboard_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.security_crossing,ch01.security_crossing.echo_recorder_pedestal,ch01_prop_echo_pedestal_idle.png,free-standing access face; no unique boundary-facing prescribed,frontal fixture / compact prop,none observed,data,none
+ch01.security_crossing,ch01.security_crossing.n13_guard,ch01_char_statue_commuter_n13_guard_idle.png,free pose; COMMUTERS/Operator direction (not boundary-dependent),authored character pose,none observed,data,none
+ch01.security_crossing,ch01.security_crossing.pressure_switch_01,ch01_prop_pressure_switch_released.png,floor-plane / 2:1,floor-plane / 2:1,none observed,data,none
+ch01.security_crossing,ch01.security_crossing.reset_anchor_01,ch01_prop_reset_console_idle.png,free-standing access face; no unique boundary-facing prescribed,frontal fixture / compact prop,none observed,data,none
+ch01.security_crossing,ch01.security_crossing.security_gate_01,ch01_prop_security_gate_closed.png,+y / down-left,+y / down-left,none observed,data,none
+ch01.security_crossing,ch01.security_crossing.staff_barrier_01,ch01_prop_staff_barrier_closed.png,+y / down-left,+y / down-left,N;W,data,high
+ch01.security_crossing,ch01.security_crossing.transit_pass_pickup,ch01_prop_document_clipboard_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.security_crossing,visual:ArchwayEast,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.security_crossing,visual:ArchwayWest,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.security_crossing,visual:TrenchVisual,procedural:Polygon2D,floor/trench wedge: 2:1 axes; below actor,procedural floor-plane / 2:1,none observed,data,none
+ch01.security_crossing,visual:Wall_Fixtures/PASpeakerSprite,ch01_prop_pa_speaker_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.security_crossing,visual:YSort_Props/Railing_0,ch01_env_wall_railing_iron_idle.png,+y / down-left (trench run),+y / down-left (flip_h),N;W,data,medium
+ch01.security_crossing,visual:YSort_Props/Railing_1,ch01_env_wall_railing_iron_idle.png,+y / down-left (trench run),+y / down-left (flip_h),N;W,data,medium
+ch01.security_crossing,visual:YSort_Props/Railing_2,ch01_env_wall_railing_iron_idle.png,+y / down-left (trench run),+y / down-left (flip_h),N;W,data,medium
+ch01.security_crossing,visual:YSort_Props/Railing_3,ch01_env_wall_railing_iron_idle.png,+y / down-left (trench run),+y / down-left (flip_h),N;W,data,medium
+ch01.security_crossing,visual:YSort_Props/Railing_4,ch01_env_wall_railing_iron_idle.png,+y / down-left (trench run),+y / down-left (flip_h),N;W,data,medium
+ch01.security_crossing,visual:YSort_Props/Railing_5,ch01_env_wall_railing_iron_idle.png,+y / down-left (trench run),+y / down-left (flip_h),N;W,data,medium
+ch01.security_crossing,visual:YSort_Props/Railing_6,ch01_env_wall_railing_iron_idle.png,+y / down-left (trench run),+y / down-left (flip_h),N;W,data,medium
+ch01.security_crossing,visual:YSort_Props/Railing_7,ch01_env_wall_railing_iron_idle.png,+y / down-left (trench run),+y / down-left (flip_h),N;W,data,medium
+ch01.security_crossing,visual:YSort_Props/Railing_8,ch01_env_wall_railing_iron_idle.png,+y / down-left (trench run),+y / down-left (flip_h),N;W,data,medium
+ch01.security_crossing,visual:YSort_Props/Railing_9,ch01_env_wall_railing_iron_idle.png,+y / down-left (trench run),+y / down-left (flip_h),N;W,data,medium
+ch01.security_crossing,visual:YSort_Walls/Archway_door_entry_west,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/Archway_door_exit_east,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/WallN_0,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/WallN_1,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/WallN_2,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/WallN_3,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/WallN_4,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/WallN_5,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/WallN_6,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/WallN_7,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/WallW_0,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/WallW_1,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/WallW_2,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/WallW_3,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/WallW_4,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.security_crossing,visual:YSort_Walls/WallW_5,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.security_crossing,ch01.security_crossing.door_entry_west,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.security_crossing,ch01.security_crossing.door_exit_east,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.security_crossing,ch01.security_crossing.safe_anchor_west,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.security_crossing,ch01.security_crossing.safe_anchor_east,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.security_crossing,ch01.security_crossing.checkpoint,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.security_crossing,ch01.security_crossing.bridge_walk_zone,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.security_crossing,ch01.security_crossing.exit_trigger_lounge,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.security_crossing,ch01.security_crossing.pa_speaker,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.waiting_lounge,ch01.waiting_lounge.audio_mira_01,ch01_prop_document_clipboard_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.waiting_lounge,ch01.waiting_lounge.trace_bench,ch01_prop_station_bench_idle.png,free axial seating; no unique boundary-facing prescribed,+x / down-right,none observed,data,none
+ch01.waiting_lounge,visual:Wall_Fixtures/Clock_2,ch01_prop_digital_clock_2359_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.waiting_lounge,visual:YSort_Walls/Archway_door_entry_west,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.waiting_lounge,visual:YSort_Walls/Archway_door_exit_north,ch01_env_archway_frame_n_idle.png,+x / down-right (N/S opening),+x / down-right,none observed,data,none
+ch01.waiting_lounge,visual:YSort_Walls/WallN_0,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.waiting_lounge,visual:YSort_Walls/WallN_1,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.waiting_lounge,visual:YSort_Walls/WallN_2,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.waiting_lounge,visual:YSort_Walls/WallN_3,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.waiting_lounge,visual:YSort_Walls/WallN_4,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.waiting_lounge,visual:YSort_Walls/WallN_5,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.waiting_lounge,visual:YSort_Walls/WallW_0,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.waiting_lounge,visual:YSort_Walls/WallW_1,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.waiting_lounge,visual:YSort_Walls/WallW_2,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.waiting_lounge,visual:YSort_Walls/WallW_3,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.waiting_lounge,visual:YSort_Walls/WallW_4,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.waiting_lounge,ch01.waiting_lounge.door_entry_west,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.waiting_lounge,ch01.waiting_lounge.door_exit_north,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.waiting_lounge,ch01.waiting_lounge.safe_anchor_center,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.waiting_lounge,ch01.waiting_lounge.checkpoint,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.waiting_lounge,ch01.waiting_lounge.digital_clock_2359,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.signal_control,ch01.signal_control.breaker_a,ch01_prop_lever_switch_off.png;ch01_prop_lever_badge_a_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.signal_control,ch01.signal_control.breaker_b,ch01_prop_lever_switch_off.png;ch01_prop_lever_badge_b_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.signal_control,ch01.signal_control.breaker_c,ch01_prop_breaker_c_browned_out.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.signal_control,ch01.signal_control.doc_bus_chart,ch01_prop_document_clipboard_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.signal_control,ch01.signal_control.intercom,ch01_prop_call_box_phone_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.signal_control,ch01.signal_control.n20_engineer,ch01_char_statue_commuter_n20_engineer_idle.png,free pose; COMMUTERS/Operator direction (not boundary-dependent),authored character pose,none observed,data,none
+ch01.signal_control,ch01.signal_control.reset_anchor_01,ch01_prop_reset_console_idle.png,free-standing access face; no unique boundary-facing prescribed,frontal fixture / compact prop,none observed,data,none
+ch01.signal_control,ch01.signal_control.surge_capacitor,ch01_prop_surge_capacitor_discharged.png,free-standing access face; no unique boundary-facing prescribed,frontal fixture / compact prop,none observed,data,none
+ch01.signal_control,visual:NorthBarrierVisual,procedural:Polygon2D,floor/trench wedge: 2:1 axes; below actor,procedural floor-plane / 2:1,none observed,data,none
+ch01.signal_control,visual:NorthBarrierVisual/TopFace,procedural:Polygon2D,floor/trench wedge: 2:1 axes; below actor,procedural floor-plane / 2:1,none observed,data,none
+ch01.signal_control,visual:Wall_Fixtures/Clock_1,ch01_prop_digital_clock_2359_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.signal_control,visual:YSort_Props/Railing_0,ch01_env_wall_railing_iron_idle.png,+x / down-right (lane run),+x / down-right,N;W,data,medium
+ch01.signal_control,visual:YSort_Props/Railing_1,ch01_env_wall_railing_iron_idle.png,+x / down-right (lane run),+x / down-right,N;W,data,medium
+ch01.signal_control,visual:YSort_Props/Railing_10,ch01_env_wall_railing_iron_idle.png,+x / down-right (lane run),+x / down-right,N;W,data,medium
+ch01.signal_control,visual:YSort_Props/Railing_11,ch01_env_wall_railing_iron_idle.png,+x / down-right (lane run),+x / down-right,N;W,data,medium
+ch01.signal_control,visual:YSort_Props/Railing_12,ch01_env_wall_railing_iron_idle.png,+x / down-right (lane run),+x / down-right,N;W,data,medium
+ch01.signal_control,visual:YSort_Props/Railing_2,ch01_env_wall_railing_iron_idle.png,+x / down-right (lane run),+x / down-right,N;W,data,medium
+ch01.signal_control,visual:YSort_Props/Railing_3,ch01_env_wall_railing_iron_idle.png,+x / down-right (lane run),+x / down-right,N;W,data,medium
+ch01.signal_control,visual:YSort_Props/Railing_4,ch01_env_wall_railing_iron_idle.png,+x / down-right (lane run),+x / down-right,W,data,medium
+ch01.signal_control,visual:YSort_Props/Railing_5,ch01_env_wall_railing_iron_idle.png,+x / down-right (lane run),+x / down-right,N;W,data,medium
+ch01.signal_control,visual:YSort_Props/Railing_6,ch01_env_wall_railing_iron_idle.png,+x / down-right (lane run),+x / down-right,N;W,data,medium
+ch01.signal_control,visual:YSort_Props/Railing_7,ch01_env_wall_railing_iron_idle.png,+x / down-right (lane run),+x / down-right,N;W,data,medium
+ch01.signal_control,visual:YSort_Props/Railing_8,ch01_env_wall_railing_iron_idle.png,+x / down-right (lane run),+x / down-right,N;W,data,medium
+ch01.signal_control,visual:YSort_Props/Railing_9,ch01_env_wall_railing_iron_idle.png,+x / down-right (lane run),+x / down-right,N;W,data,medium
+ch01.signal_control,visual:YSort_Walls/Archway_door_entry_south,ch01_env_archway_frame_n_idle.png,+x / down-right (N/S opening),+x / down-right,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/Archway_door_exit_north,ch01_env_archway_frame_n_idle.png,+x / down-right (N/S opening),+x / down-right,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/WallN_0,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/WallN_1,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/WallN_2,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/WallN_3,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/WallN_4,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/WallN_5,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/WallN_6,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/WallN_7,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/WallW_0,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/WallW_1,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/WallW_2,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/WallW_3,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/WallW_4,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.signal_control,visual:YSort_Walls/WallW_5,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.signal_control,ch01.signal_control.door_entry_south,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.signal_control,ch01.signal_control.door_exit_north,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.signal_control,ch01.signal_control.safe_anchor_center,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.signal_control,ch01.signal_control.checkpoint,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.signal_control,ch01.signal_control.substation_grid,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.signal_control,ch01.signal_control.vestibule_door,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.signal_control,ch01.signal_control.exit_trigger_vestibule,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.signal_control,ch01.signal_control.digital_clock_2359,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.upper_vestibule,ch01.upper_vestibule.doc_relay_memo,ch01_prop_document_clipboard_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.upper_vestibule,ch01.upper_vestibule.junction_lever_a,ch01_prop_lever_switch_on.png;ch01_prop_lever_badge_a_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.upper_vestibule,ch01.upper_vestibule.junction_lever_b,ch01_prop_lever_switch_on.png;ch01_prop_lever_badge_b_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.upper_vestibule,ch01.upper_vestibule.junction_lever_c,ch01_prop_dead_relay_c_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.upper_vestibule,ch01.upper_vestibule.n21_tourist,ch01_char_statue_commuter_n21_tourist_idle.png,free pose; COMMUTERS/Operator direction (not boundary-dependent),authored character pose,none observed,data,none
+ch01.upper_vestibule,ch01.upper_vestibule.reset_anchor_01,ch01_prop_reset_console_idle.png,free-standing access face; no unique boundary-facing prescribed,frontal fixture / compact prop,none observed,data,none
+ch01.upper_vestibule,ch01.upper_vestibule.route_board,ch01_prop_route_board_state0.png,free-standing access face; no unique boundary-facing prescribed,frontal fixture / compact prop,none observed,data,none
+ch01.upper_vestibule,ch01.upper_vestibule.standby_plate_01,ch01_prop_standby_plate_empty.png,floor-plane / 2:1,floor-plane / 2:1,none observed,data,none
+ch01.upper_vestibule,visual:Wall_Fixtures/Clock_3,ch01_prop_digital_clock_2359_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/Archway_door_east,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/Archway_door_north,ch01_env_archway_frame_n_idle.png,+x / down-right (N/S opening),+x / down-right,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/Archway_door_south,ch01_env_archway_frame_n_idle.png,+x / down-right (N/S opening),+x / down-right,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/Archway_door_west,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/WallN_0,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/WallN_1,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/WallN_2,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/WallN_3,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/WallN_4,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/WallN_5,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/WallN_6,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/WallW_0,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/WallW_1,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/WallW_2,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/WallW_3,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/WallW_4,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/WallW_5,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.upper_vestibule,visual:YSort_Walls/WallW_6,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.upper_vestibule,ch01.upper_vestibule.door_south,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.upper_vestibule,ch01.upper_vestibule.door_west,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.upper_vestibule,ch01.upper_vestibule.door_east,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.upper_vestibule,ch01.upper_vestibule.door_north,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.upper_vestibule,ch01.upper_vestibule.safe_anchor_center,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.upper_vestibule,ch01.upper_vestibule.checkpoint,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.upper_vestibule,ch01.upper_vestibule.spatial_resetter,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.upper_vestibule,ch01.upper_vestibule.digital_clock_2359,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.vestibule_niche,ch01.vestibule_niche.doc_index_plaque,ch01_prop_document_clipboard_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.vestibule_niche,visual:YSort_Props/GrilleSprite,ch01_env_wall_railing_iron_idle.png,+x / down-right,+x / down-right,none observed,data,none
+ch01.vestibule_niche,visual:YSort_Walls/Archway_door_in,ch01_env_archway_frame_e_idle.png,+y / down-left (E/W opening),+y / down-left,none observed,data,none
+ch01.vestibule_niche,visual:YSort_Walls/Archway_door_out,ch01_env_archway_frame_n_idle.png,+x / down-right (N/S opening),+x / down-right,none observed,data,none
+ch01.vestibule_niche,visual:YSort_Walls/WallN_0,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.vestibule_niche,visual:YSort_Walls/WallN_1,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.vestibule_niche,visual:YSort_Walls/WallN_2,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.vestibule_niche,visual:YSort_Walls/WallW_0,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.vestibule_niche,visual:YSort_Walls/WallW_1,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.vestibule_niche,visual:YSort_Walls/WallW_2,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.vestibule_niche,ch01.vestibule_niche.door_in,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.vestibule_niche,ch01.vestibule_niche.door_out,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.vestibule_niche,ch01.vestibule_niche.safe_anchor_niche,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.station_atrium,ch01.station_atrium.dispatch_terminal,ch01_prop_dispatch_terminal_idle.png,free-standing access face; no unique boundary-facing prescribed,frontal fixture / compact prop,none observed,data,none
+ch01.station_atrium,visual:Wall_Fixtures/MasterClock,ch01_prop_digital_clock_2359_idle.png,frontal allowed by Bible A.3; mounting role governs,frontal fixture / compact prop,none observed,data,none
+ch01.station_atrium,visual:YSort_Actors/AtriumBenchE,ch01_prop_station_bench_idle.png,+y / down-left (flank wall alignment),+x / down-right,none observed,data,medium
+ch01.station_atrium,visual:YSort_Actors/AtriumBenchW,ch01_prop_station_bench_idle.png,+y / down-left (flank wall alignment),+x / down-right,none observed,data,medium
+ch01.station_atrium,visual:YSort_Walls/Archway_door_entry_south,ch01_env_archway_frame_n_idle.png,+x / down-right (N/S opening),+x / down-right,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/Archway_door_exit_north,ch01_env_archway_frame_n_idle.png,+x / down-right (N/S opening),+x / down-right,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallN_0,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallN_1,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallN_2,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallN_3,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallN_4,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallN_5,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallN_6,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallN_7,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallW_0,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallW_1,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallW_2,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallW_3,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallW_4,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallW_5,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.station_atrium,visual:YSort_Walls/WallW_6,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.station_atrium,ch01.station_atrium.door_entry_south,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.station_atrium,ch01.station_atrium.door_exit_north,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.station_atrium,ch01.station_atrium.safe_anchor_south,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.station_atrium,ch01.station_atrium.checkpoint,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.station_atrium,ch01.station_atrium.entry_trigger_atrium,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.station_atrium,ch01.station_atrium.digital_clock_2359,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.street_exit,ch01.street_exit.plaza_payphone,ch01_prop_call_box_phone_idle.png,wall-mounted; interior-readable frontal phone,frontal fixture / compact prop,none observed,placement,medium
+ch01.street_exit,visual:YSort_Walls/Archway_door_entry_south,ch01_env_archway_frame_n_idle.png,+x / down-right (N/S opening),+x / down-right,none observed,data,none
+ch01.street_exit,visual:YSort_Walls/WallN_0,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.street_exit,visual:YSort_Walls/WallN_1,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.street_exit,visual:YSort_Walls/WallN_2,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.street_exit,visual:YSort_Walls/WallN_3,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.street_exit,visual:YSort_Walls/WallN_4,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.street_exit,visual:YSort_Walls/WallN_5,ch01_env_wall_subterranean_n_idle.png,N boundary plane / +x down-right,+x / down-right,none observed,data,none
+ch01.street_exit,visual:YSort_Walls/WallW_0,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.street_exit,visual:YSort_Walls/WallW_1,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.street_exit,visual:YSort_Walls/WallW_2,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.street_exit,visual:YSort_Walls/WallW_3,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.street_exit,visual:YSort_Walls/WallW_4,ch01_env_wall_subterranean_w_idle.png,W boundary plane / +y down-left,+y / down-left,none observed,data,none
+ch01.street_exit,ch01.street_exit.door_entry_south,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.street_exit,ch01.street_exit.safe_anchor_stairs,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.street_exit,ch01.street_exit.checkpoint,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual
+ch01.street_exit,ch01.street_exit.trigger_outro,none (logic/trigger/anchor),N/A - no drawable,N/A - no drawable,N/A,data,not_visual

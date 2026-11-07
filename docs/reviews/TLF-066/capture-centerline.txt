@@ -1,0 +1,18 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+AUDIT_WINDOWED display=Windows user_dir=C:/Users/adity/AppData/Roaming/TLF Audit 066 9ca9759 viewport=640x360
+CAPTURE arrival_platform 2/29 ch01.arrival_platform.n01_conductor
+CAPTURE arrival_platform 3/29 ch01.arrival_platform.n02_student
+CAPTURE arrival_platform 4/29 ch01.arrival_platform.n03_old_man
+CAPTURE arrival_platform 5/29 ch01.arrival_platform.n04_cleaner
+CAPTURE concourse_west 7/37 ch01.concourse_west.n05_courier
+CAPTURE concourse_west 8/37 ch01.concourse_west.n06_red_coat
+CAPTURE concourse_west 9/37 ch01.concourse_west.n07_briefcase
+CAPTURE concourse_west 10/37 ch01.concourse_west.n08_father
+CAPTURE concourse_west 11/37 ch01.concourse_west.n09_teen
+CAPTURE maintenance_bay 10/27 ch01.maintenance_bay.n11_hatch_tech
+CAPTURE security_crossing 6/41 ch01.security_crossing.n13_guard
+CAPTURE signal_control 6/40 ch01.signal_control.n20_engineer
+CAPTURE upper_vestibule 5/27 ch01.upper_vestibule.n21_tourist
+AUDIT_CAPTURE_COMPLETE rooms=10
