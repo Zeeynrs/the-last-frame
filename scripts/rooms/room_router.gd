@@ -14,6 +14,10 @@ extends Node
 ##   never bounced straight back through the doorway they arrived at.
 ## - Traversals and relocations are queued and executed by process_pending() (each physics frame),
 ##   never inside the presenter callback: freeing a room while one of its nodes is mid-call is unsafe.
+## - Camera (ADR-023): after every placement the RoomCamera gets the room's bounds and snaps onto
+##   the player on the same frame (no pan from the previous room). A room declares its floor with
+##   `metadata/room_shape` (a RoomShape) on its root node; without one the bounds are the 640x360
+##   screen, so the camera stays where today's fixed view is.
 
 signal room_entered(room_id: StringName)
 signal checkpoint_reached(checkpoint_id: StringName, error: Error)
@@ -28,6 +32,8 @@ const PLAYER_ACTOR: StringName = &"player"
 @export var autosave_slot: int = 0
 ## Data-driven room table (ADR-013): room_id (StringName) -> PackedScene.
 @export var room_scenes: Dictionary = {}
+## Follow camera; created as a child on the first placement when not set.
+@export var camera: RoomCamera
 
 var save_service: SaveStore = null
 var current_room_id: StringName = &""
@@ -101,6 +107,7 @@ func enter_room(room_id: StringName, door_id: StringName = &"", anchor_id: Strin
 	if session.spatial_service != null:
 		session.spatial_service.set_actor_room(PLAYER_ACTOR, room_id)
 	_place_player(door_id, anchor_id)
+	_sync_camera()
 	return true
 
 
@@ -144,7 +151,23 @@ func restore_from_save(data: Dictionary) -> Dictionary:
 			_move_player_to(zone.global_position)
 		else:
 			_place_player(&"", zone.spawn_anchor_id)
+		_sync_camera()
 	return {"ok": true, "reason": &""}
+
+
+## The current room's RoomShape (`metadata/room_shape` on the room root), or null.
+func current_room_shape() -> RoomShape:
+	if current_room == null or not current_room.has_meta(&"room_shape"):
+		return null
+	return current_room.get_meta(&"room_shape") as RoomShape
+
+
+## Camera bounds of the current room: its shape's bounds_px(), else the 640x360 screen.
+func current_room_bounds() -> Rect2:
+	var shape := current_room_shape()
+	if shape != null and shape.is_valid():
+		return shape.bounds_px()
+	return Rect2(Vector2.ZERO, RoomCamera.view_size())
 
 
 func get_cached_ids() -> Array:
@@ -220,6 +243,19 @@ func _move_player_to(position: Vector2) -> void:
 	if player is CharacterBody2D:
 		player.velocity = Vector2.ZERO
 	_grace_until_tick = _now() + ARRIVAL_GRACE_TICKS
+
+
+func _sync_camera() -> void:
+	if player == null:
+		return
+	if camera == null:
+		camera = RoomCamera.new()
+		add_child(camera)
+	camera.target = player
+	camera.set_bounds(current_room_bounds())
+	if camera.is_inside_tree() and not camera.is_current():
+		camera.make_current()
+	camera.snap_now()
 
 
 func _find_checkpoint(room: Node, checkpoint_id: StringName) -> CheckpointZone:
