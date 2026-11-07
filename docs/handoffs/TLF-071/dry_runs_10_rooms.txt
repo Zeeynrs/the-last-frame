@@ -1,0 +1,372 @@
+# Dry runs on today's 10 rooms. shape_<room>.json = {"outline": [[0,0],[W,0],[W,H],[0,H]]} with W x H from
+# ROOM_GRAPH §2; every door from ROOM_GRAPH §2. NOT DRAWN lines (S/E partitions, corners: TLF-068)
+# omitted; diff lines over 240 chars cut. Dry runs: no scene was changed.
+
+$ python tools/content/build_room_from_shape.py shape_arrival_platform.json scenes/chapters/ch01/rooms/arrival_platform.tscn --edge-strip 2 --door E,13,5
+shape: [['0', '0'], ['14', '0'], ['14', '10'], ['0', '10']]
+  floor: 140 tiles (140 kept with their tile, 0 new with source 0, 0 removed, 0 holes)
+  edge strip: source 2 on 22 S/E boundary cells (0 repainted), 0 old strip cells back to source 0
+  collision: 4 corners, outset 0.25 tile
+  walls: 7 N and 5 W modules
+  metadata/room_shape: outline [[0, 0], [14, 0], [14, 10], [0, 10]]
+diff: 8 changed line(s) (dry run)
+--- scenes/chapters/ch01/rooms/arrival_platform.tscn
++++ scenes/chapters/ch01/rooms/arrival_platform.tscn (built)
+@@ -51,2 +51,3 @@
+ [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_fx_operator_sighting_trace_ring_idle.png" id="op_ring_tex"]
++[ext_resource type="Script" uid="uid://bnbdd6ttv3g0h" path="res://scripts/rooms/room_shape.gd" id="room_shape_script"]
+ 
+@@ -82,4 +83,9 @@
+ 
++[sub_resource type="Resource" id="room_shape"]
++script = ExtResource("room_shape_script")
++outline = PackedVector2Array(0, 0, 14, 0, 14, 10, 0, 10)
++
+ [node name="ArrivalPlatform" type="Node2D"]
+ y_sort_enabled = true
++metadata/room_shape = SubResource("room_shape")
+ 
+@@ -91,3 +97,3 @@
+ build_mode = 1
+-polygon = PackedVector2Array(320, 60, 548, 174, 464, 216, 448, 224, 384, 260, 156, 142)
++polygon = PackedVector2Array(320, 60, 552, 176, 384, 260, 152, 144)
+ 
+exit=0
+
+$ python tools/content/build_room_from_shape.py shape_concourse_west.json scenes/chapters/ch01/rooms/concourse_west.tscn --door W,0,5 --door E,15,5
+shape: [['0', '0'], ['16', '0'], ['16', '12'], ['0', '12']]
+  floor: 192 tiles (192 kept with their tile, 0 new with source 0, 0 removed, 0 holes)
+  collision: 4 corners, outset 0.25 tile
+  walls: 8 N and 5 W modules (1 left to archways)
+  door W (0, 5): module at (240, 104) left to the archway Archway_door_entry_west
+  metadata/room_shape: outline [[0, 0], [16, 0], [16, 12], [0, 12]]
+diff: 13 changed line(s) (dry run)
+--- scenes/chapters/ch01/rooms/concourse_west.tscn
++++ scenes/chapters/ch01/rooms/concourse_west.tscn (built)
+@@ -58,2 +58,3 @@
+ [ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n09_teen_read.png" id="cw_n09_read"]
++[ext_resource type="Script" uid="uid://bnbdd6ttv3g0h" path="res://scripts/rooms/room_shape.gd" id="room_shape_script"]
+ 
+@@ -118,4 +119,9 @@
+ 
++[sub_resource type="Resource" id="room_shape"]
++script = ExtResource("room_shape_script")
++outline = PackedVector2Array(0, 0, 16, 0, 16, 12, 0, 12)
++
+ [node name="ConcourseWest" type="Node2D"]
+ y_sort_enabled = true
++metadata/room_shape = SubResource("room_shape")
+ 
+@@ -127,3 +133,3 @@
+ build_mode = 1
+-polygon = PackedVector2Array(320, 60, 580, 190, 496, 232, 480, 240, 384, 292, 124, 158, 224, 108, 240, 100)
++polygon = PackedVector2Array(320, 60, 584, 192, 384, 292, 120, 160)
+ 
+@@ -394,7 +400,2 @@
+ texture = ExtResource("art_wall_w")
+-[node name="WallW_2" type="Sprite2D" parent="YSort_Walls"]
+-position = Vector2(240, 104)
+-offset = Vector2(-16, -56)
+-centered = false
+-texture = ExtResource("art_wall_w")
+ [node name="WallW_3" type="Sprite2D" parent="YSort_Walls"]
+exit=0
+
+$ python tools/content/build_room_from_shape.py shape_maintenance_bay.json scenes/chapters/ch01/rooms/maintenance_bay.tscn --door W,0,5 --door E,13,4
+shape: [['0', '0'], ['14', '0'], ['14', '10'], ['0', '10']]
+  floor: 140 tiles (140 kept with their tile, 0 new with source 4, 0 removed, 0 holes)
+  collision: 4 corners, outset 0.25 tile
+  walls: 7 N and 4 W modules (1 left to archways)
+  door W (0, 5): module at (240, 104) left to the archway Archway_door_entry_west
+  metadata/room_shape: outline [[0, 0], [14, 0], [14, 10], [0, 10]]
+diff: 13 changed line(s) (dry run)
+--- scenes/chapters/ch01/rooms/maintenance_bay.tscn
++++ scenes/chapters/ch01/rooms/maintenance_bay.tscn (built)
+@@ -41,2 +41,3 @@
+ [ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n11_hatch_tech_read.png" id="mb_n11_read"]
++[ext_resource type="Script" uid="uid://bnbdd6ttv3g0h" path="res://scripts/rooms/room_shape.gd" id="room_shape_script"]
+ 
+@@ -108,4 +109,9 @@
+ 
++[sub_resource type="Resource" id="room_shape"]
++script = ExtResource("room_shape_script")
++outline = PackedVector2Array(0, 0, 14, 0, 14, 10, 0, 10)
++
+ [node name="MaintenanceBay" type="Node2D"]
+ y_sort_enabled = true
++metadata/room_shape = SubResource("room_shape")
+ 
+@@ -117,3 +123,3 @@
+ build_mode = 1
+-polygon = PackedVector2Array(320, 60, 548, 174, 480, 208, 464, 216, 384, 260, 156, 142, 224, 108, 240, 100)
++polygon = PackedVector2Array(320, 60, 552, 176, 384, 260, 152, 144)
+ 
+@@ -336,7 +342,2 @@
+ texture = ExtResource("art_wall_w")
+-[node name="WallW_2" type="Sprite2D" parent="YSort_Walls"]
+-position = Vector2(240, 104)
+-offset = Vector2(-16, -56)
+-centered = false
+-texture = ExtResource("art_wall_w")
+ [node name="WallW_3" type="Sprite2D" parent="YSort_Walls"]
+exit=0
+
+$ python tools/content/build_room_from_shape.py shape_security_crossing.json scenes/chapters/ch01/rooms/security_crossing.tscn --holes 9,0..11 --door W,0,6 --door E,15,6
+shape: [['0', '0'], ['16', '0'], ['16', '12'], ['0', '12']]
+  floor: 180 tiles (180 kept with their tile, 0 new with source 4, 0 removed, 12 holes)
+  collision: 4 corners, outset 0.25 tile
+  walls: 8 N and 6 W modules
+  door W (0, 6): NOT CUT, its archway at (224, 112) spans the joint of 2 modules ((240, 104), (208, 120)); cutting needs 1-tile wall ends (TLF-068)
+  metadata/room_shape: outline [[0, 0], [16, 0], [16, 12], [0, 12]]
+diff: 8 changed line(s) (dry run)
+--- scenes/chapters/ch01/rooms/security_crossing.tscn
++++ scenes/chapters/ch01/rooms/security_crossing.tscn (built)
+@@ -41,2 +41,3 @@
+ [ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n13_guard_read.png" id="sc_n13_read"]
++[ext_resource type="Script" uid="uid://bnbdd6ttv3g0h" path="res://scripts/rooms/room_shape.gd" id="room_shape_script"]
+ 
+@@ -103,4 +104,9 @@
+ 
++[sub_resource type="Resource" id="room_shape"]
++script = ExtResource("room_shape_script")
++outline = PackedVector2Array(0, 0, 16, 0, 16, 12, 0, 12)
++
+ [node name="SecurityCrossing" type="Node2D"]
+ y_sort_enabled = true
++metadata/room_shape = SubResource("room_shape")
+ 
+@@ -117,3 +123,3 @@
+ build_mode = 1
+-polygon = PackedVector2Array(320, 60, 580, 190, 480, 240, 464, 248, 384, 292, 124, 158, 208, 116, 224, 108)
++polygon = PackedVector2Array(320, 60, 584, 192, 384, 292, 120, 160)
+ 
+exit=0
+
+$ python tools/content/build_room_from_shape.py shape_waiting_lounge.json scenes/chapters/ch01/rooms/waiting_lounge.tscn --door W,0,5 --door N,6,0
+shape: [['0', '0'], ['12', '0'], ['12', '10'], ['0', '10']]
+  floor: 120 tiles (120 kept with their tile, 0 new with source 0, 0 removed, 0 holes)
+  collision: 4 corners, outset 0.25 tile
+  walls: 6 N and 4 W modules (1 left to archways)
+  door W (0, 5): module at (240, 104) left to the archway Archway_door_entry_west
+  door N (6, 0): NOT CUT, its archway at (416, 112) spans the joint of 2 modules ((400, 104), (432, 120)); cutting needs 1-tile wall ends (TLF-068)
+  metadata/room_shape: outline [[0, 0], [12, 0], [12, 10], [0, 10]]
+diff: 13 changed line(s) (dry run)
+--- scenes/chapters/ch01/rooms/waiting_lounge.tscn
++++ scenes/chapters/ch01/rooms/waiting_lounge.tscn (built)
+@@ -17,2 +17,3 @@
+ [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png" id="art_wall_w"]
++[ext_resource type="Script" uid="uid://bnbdd6ttv3g0h" path="res://scripts/rooms/room_shape.gd" id="room_shape_script"]
+ 
+@@ -30,4 +31,9 @@
+ 
++[sub_resource type="Resource" id="room_shape"]
++script = ExtResource("room_shape_script")
++outline = PackedVector2Array(0, 0, 12, 0, 12, 10, 0, 10)
++
+ [node name="WaitingLounge" type="Node2D"]
+ y_sort_enabled = true
++metadata/room_shape = SubResource("room_shape")
+ 
+@@ -39,3 +45,3 @@
+ build_mode = 1
+-polygon = PackedVector2Array(320, 60, 516, 158, 352, 244, 156, 142)
++polygon = PackedVector2Array(320, 60, 520, 160, 352, 244, 152, 144)
+ 
+@@ -177,7 +183,2 @@
+ texture = ExtResource("art_wall_w")
+-[node name="WallW_2" type="Sprite2D" parent="YSort_Walls"]
+-position = Vector2(240, 104)
+-offset = Vector2(-16, -56)
+-centered = false
+-texture = ExtResource("art_wall_w")
+ [node name="WallW_3" type="Sprite2D" parent="YSort_Walls"]
+exit=0
+
+$ python tools/content/build_room_from_shape.py shape_signal_control.json scenes/chapters/ch01/rooms/signal_control.tscn --door S,8,11 --door N,8,0
+shape: [['0', '0'], ['16', '0'], ['16', '12'], ['0', '12']]
+  floor: 192 tiles (192 kept with their tile, 0 new with source 4, 0 removed, 0 holes)
+  collision: 4 corners, outset 0.25 tile
+  walls: 8 N and 6 W modules
+  door N (8, 0): NOT CUT, its archway at (448, 128) spans the joint of 2 modules ((432, 120), (464, 136)); cutting needs 1-tile wall ends (TLF-068)
+  metadata/room_shape: outline [[0, 0], [16, 0], [16, 12], [0, 12]]
+diff: 8 changed line(s) (dry run)
+--- scenes/chapters/ch01/rooms/signal_control.tscn
++++ scenes/chapters/ch01/rooms/signal_control.tscn (built)
+@@ -36,2 +36,3 @@
+ [ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n20_engineer_read.png" id="sig_n20_read"]
++[ext_resource type="Script" uid="uid://bnbdd6ttv3g0h" path="res://scripts/rooms/room_shape.gd" id="room_shape_script"]
+ 
+@@ -78,4 +79,9 @@
+ 
++[sub_resource type="Resource" id="room_shape"]
++script = ExtResource("room_shape_script")
++outline = PackedVector2Array(0, 0, 16, 0, 16, 12, 0, 12)
++
+ [node name="SignalControl" type="Node2D"]
+ y_sort_enabled = true
++metadata/room_shape = SubResource("room_shape")
+ 
+@@ -87,3 +93,3 @@
+ build_mode = 1
+-polygon = PackedVector2Array(320, 60, 580, 190, 384, 292, 124, 158)
++polygon = PackedVector2Array(320, 60, 584, 192, 384, 292, 120, 160)
+ 
+exit=0
+
+$ python tools/content/build_room_from_shape.py shape_upper_vestibule.json scenes/chapters/ch01/rooms/upper_vestibule.tscn --door S,7,13 --door W,0,7 --door E,13,7 --door N,7,0
+shape: [['0', '0'], ['14', '0'], ['14', '14'], ['0', '14']]
+  floor: 196 tiles (196 kept with their tile, 0 new with source 0, 0 removed, 0 holes)
+  collision: 4 corners, outset 0.25 tile
+  walls: 6 N and 6 W modules (2 left to archways)
+  door W (0, 7): module at (208, 120) left to the archway Archway_door_west
+  door N (7, 0): module at (432, 120) left to the archway Archway_door_north
+  metadata/room_shape: outline [[0, 0], [14, 0], [14, 14], [0, 14]]
+diff: 18 changed line(s) (dry run)
+--- scenes/chapters/ch01/rooms/upper_vestibule.tscn
++++ scenes/chapters/ch01/rooms/upper_vestibule.tscn (built)
+@@ -35,2 +35,3 @@
+ [ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n21_tourist_read.png" id="uv_n21_read"]
++[ext_resource type="Script" uid="uid://bnbdd6ttv3g0h" path="res://scripts/rooms/room_shape.gd" id="room_shape_script"]
+ 
+@@ -63,4 +64,9 @@
+ 
++[sub_resource type="Resource" id="room_shape"]
++script = ExtResource("room_shape_script")
++outline = PackedVector2Array(0, 0, 14, 0, 14, 14, 0, 14)
++
+ [node name="UpperVestibule" type="Node2D"]
+ y_sort_enabled = true
++metadata/room_shape = SubResource("room_shape")
+ 
+@@ -72,3 +78,3 @@
+ build_mode = 1
+-polygon = PackedVector2Array(320, 60, 548, 174, 320, 292, 92, 174)
++polygon = PackedVector2Array(320, 60, 552, 176, 320, 292, 88, 176)
+ 
+@@ -254,7 +260,2 @@
+ texture = ExtResource("art_wall_n")
+-[node name="WallN_3" type="Sprite2D" parent="YSort_Walls"]
+-position = Vector2(432, 120)
+-offset = Vector2(-16, -56)
+-centered = false
+-texture = ExtResource("art_wall_n")
+ [node name="WallN_4" type="Sprite2D" parent="YSort_Walls"]
+@@ -286,7 +287,2 @@
+ position = Vector2(240, 104)
+-offset = Vector2(-16, -56)
+-centered = false
+-texture = ExtResource("art_wall_w")
+-[node name="WallW_3" type="Sprite2D" parent="YSort_Walls"]
+-position = Vector2(208, 120)
+ offset = Vector2(-16, -56)
+exit=0
+
+$ python tools/content/build_room_from_shape.py shape_vestibule_niche.json scenes/chapters/ch01/rooms/vestibule_niche.tscn --door W,0,3 --door N,3,0
+shape: [['0', '0'], ['6', '0'], ['6', '6'], ['0', '6']]
+  floor: 36 tiles (36 kept with their tile, 0 new with source 0, 0 removed, 0 holes)
+  collision: 4 corners, outset 0.25 tile
+  walls: 2 N and 2 W modules (2 left to archways)
+  door W (0, 3): module at (272, 88) left to the archway Archway_door_in
+  door N (3, 0): module at (368, 88) left to the archway Archway_door_out
+  metadata/room_shape: outline [[0, 0], [6, 0], [6, 6], [0, 6]]
+diff: 18 changed line(s) (dry run)
+--- scenes/chapters/ch01/rooms/vestibule_niche.tscn
++++ scenes/chapters/ch01/rooms/vestibule_niche.tscn (built)
+@@ -14,2 +14,3 @@
+ [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png" id="art_wall_w"]
++[ext_resource type="Script" uid="uid://bnbdd6ttv3g0h" path="res://scripts/rooms/room_shape.gd" id="room_shape_script"]
+ 
+@@ -24,4 +25,9 @@
+ 
++[sub_resource type="Resource" id="room_shape"]
++script = ExtResource("room_shape_script")
++outline = PackedVector2Array(0, 0, 6, 0, 6, 6, 0, 6)
++
+ [node name="VestibuleNiche" type="Node2D"]
+ y_sort_enabled = true
++metadata/room_shape = SubResource("room_shape")
+ 
+@@ -33,3 +39,3 @@
+ build_mode = 1
+-polygon = PackedVector2Array(320, 60, 420, 110, 320, 164, 220, 110)
++polygon = PackedVector2Array(320, 60, 424, 112, 320, 164, 216, 112)
+ 
+@@ -102,7 +108,2 @@
+ texture = ExtResource("art_wall_n")
+-[node name="WallN_1" type="Sprite2D" parent="YSort_Walls"]
+-position = Vector2(368, 88)
+-offset = Vector2(-16, -56)
+-centered = false
+-texture = ExtResource("art_wall_n")
+ [node name="WallN_2" type="Sprite2D" parent="YSort_Walls"]
+@@ -114,7 +115,2 @@
+ position = Vector2(304, 72)
+-offset = Vector2(-16, -56)
+-centered = false
+-texture = ExtResource("art_wall_w")
+-[node name="WallW_1" type="Sprite2D" parent="YSort_Walls"]
+-position = Vector2(272, 88)
+ offset = Vector2(-16, -56)
+exit=0
+
+$ python tools/content/build_room_from_shape.py shape_station_atrium.json scenes/chapters/ch01/rooms/station_atrium.tscn --door S,8,13 --door N,8,0
+shape: [['0', '0'], ['16', '0'], ['16', '14'], ['0', '14']]
+  floor: 224 tiles (224 kept with their tile, 0 new with source 0, 0 removed, 0 holes)
+  collision: 4 corners, outset 0.25 tile
+  walls: 8 N and 7 W modules
+  door N (8, 0): NOT CUT, its archway at (448, 128) spans the joint of 2 modules ((432, 120), (464, 136)); cutting needs 1-tile wall ends (TLF-068)
+  metadata/room_shape: outline [[0, 0], [16, 0], [16, 14], [0, 14]]
+diff: 8 changed line(s) (dry run)
+--- scenes/chapters/ch01/rooms/station_atrium.tscn
++++ scenes/chapters/ch01/rooms/station_atrium.tscn (built)
+@@ -17,2 +17,3 @@
+ [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png" id="art_wall_w"]
++[ext_resource type="Script" uid="uid://bnbdd6ttv3g0h" path="res://scripts/rooms/room_shape.gd" id="room_shape_script"]
+ 
+@@ -30,4 +31,9 @@
+ 
++[sub_resource type="Resource" id="room_shape"]
++script = ExtResource("room_shape_script")
++outline = PackedVector2Array(0, 0, 16, 0, 16, 14, 0, 14)
++
+ [node name="StationAtrium" type="Node2D"]
+ y_sort_enabled = true
++metadata/room_shape = SubResource("room_shape")
+ 
+@@ -39,3 +45,3 @@
+ build_mode = 1
+-polygon = PackedVector2Array(320, 60, 580, 190, 352, 308, 92, 174)
++polygon = PackedVector2Array(320, 60, 584, 192, 352, 308, 88, 176)
+ 
+exit=0
+
+$ python tools/content/build_room_from_shape.py shape_street_exit.json scenes/chapters/ch01/rooms/street_exit.tscn --door S,6,9
+shape: [['0', '0'], ['12', '0'], ['12', '10'], ['0', '10']]
+  floor: 120 tiles (120 kept with their tile, 0 new with source 0, 0 removed, 0 holes)
+  collision: 4 corners, outset 0.25 tile
+  walls: 6 N and 5 W modules
+  metadata/room_shape: outline [[0, 0], [12, 0], [12, 10], [0, 10]]
+diff: 8 changed line(s) (dry run)
+--- scenes/chapters/ch01/rooms/street_exit.tscn
++++ scenes/chapters/ch01/rooms/street_exit.tscn (built)
+@@ -13,2 +13,3 @@
+ [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png" id="art_wall_w"]
++[ext_resource type="Script" uid="uid://bnbdd6ttv3g0h" path="res://scripts/rooms/room_shape.gd" id="room_shape_script"]
+ 
+@@ -26,4 +27,9 @@
+ 
++[sub_resource type="Resource" id="room_shape"]
++script = ExtResource("room_shape_script")
++outline = PackedVector2Array(0, 0, 12, 0, 12, 10, 0, 10)
++
+ [node name="StreetExit" type="Node2D"]
+ y_sort_enabled = true
++metadata/room_shape = SubResource("room_shape")
+ 
+@@ -35,3 +41,3 @@
+ build_mode = 1
+-polygon = PackedVector2Array(320, 60, 516, 158, 352, 244, 156, 142)
++polygon = PackedVector2Array(320, 60, 520, 160, 352, 244, 152, 144)
+ 
+exit=0
+
