@@ -1,0 +1,303 @@
+{
+  "inventory": [
+    {
+      "sprite": "ch01_env_wall_subterranean_corner_nw_outer_idle",
+      "canvas": [
+        32,
+        64
+      ],
+      "pivot": [
+        16,
+        56
+      ],
+      "layers": [
+        "Wall_Cornice_Backing",
+        "Ceramic_Tile_Course",
+        "Dado_Corner_And_Skirting"
+      ],
+      "max_opaque_column_vertical_delta": 49
+    },
+    {
+      "sprite": "ch01_env_wall_subterranean_corner_nw_inner_idle",
+      "canvas": [
+        32,
+        64
+      ],
+      "pivot": [
+        16,
+        56
+      ],
+      "layers": [
+        "Wall_Cornice_Backing",
+        "Ceramic_Tile_Course",
+        "Dado_Corner_And_Skirting"
+      ],
+      "max_opaque_column_vertical_delta": 49
+    },
+    {
+      "sprite": "ch01_env_wall_subterranean_corner_n_turn_outer_idle",
+      "canvas": [
+        32,
+        64
+      ],
+      "pivot": [
+        16,
+        56
+      ],
+      "layers": [
+        "Wall_Cornice_Backing",
+        "Ceramic_Tile_Course",
+        "Dado_Corner_And_Skirting"
+      ],
+      "max_opaque_column_vertical_delta": 63
+    },
+    {
+      "sprite": "ch01_env_wall_subterranean_corner_n_turn_inner_idle",
+      "canvas": [
+        32,
+        64
+      ],
+      "pivot": [
+        16,
+        56
+      ],
+      "layers": [
+        "Wall_Cornice_Backing",
+        "Ceramic_Tile_Course",
+        "Dado_Corner_And_Skirting"
+      ],
+      "max_opaque_column_vertical_delta": 48
+    },
+    {
+      "sprite": "ch01_env_wall_subterranean_corner_w_turn_outer_idle",
+      "canvas": [
+        32,
+        64
+      ],
+      "pivot": [
+        16,
+        56
+      ],
+      "layers": [
+        "Wall_Cornice_Backing",
+        "Ceramic_Tile_Course",
+        "Dado_Corner_And_Skirting"
+      ],
+      "max_opaque_column_vertical_delta": 63
+    },
+    {
+      "sprite": "ch01_env_wall_subterranean_corner_w_turn_inner_idle",
+      "canvas": [
+        32,
+        64
+      ],
+      "pivot": [
+        16,
+        56
+      ],
+      "layers": [
+        "Wall_Cornice_Backing",
+        "Ceramic_Tile_Course",
+        "Dado_Corner_And_Skirting"
+      ],
+      "max_opaque_column_vertical_delta": 48
+    },
+    {
+      "sprite": "ch01_env_wall_partition_low_s_idle",
+      "canvas": [
+        32,
+        32
+      ],
+      "pivot": [
+        16,
+        24
+      ],
+      "layers": [
+        "Partition_Coping_Backing",
+        "Ceramic_Parapet_Course",
+        "Safety_Dado_And_Skirting"
+      ],
+      "max_opaque_column_vertical_delta": 16
+    },
+    {
+      "sprite": "ch01_env_wall_partition_low_e_idle",
+      "canvas": [
+        32,
+        32
+      ],
+      "pivot": [
+        16,
+        24
+      ],
+      "layers": [
+        "Partition_Coping_Backing",
+        "Ceramic_Parapet_Course",
+        "Safety_Dado_And_Skirting"
+      ],
+      "max_opaque_column_vertical_delta": 16
+    },
+    {
+      "sprite": "ch01_env_wall_partition_low_corner_inner_idle",
+      "canvas": [
+        32,
+        32
+      ],
+      "pivot": [
+        16,
+        24
+      ],
+      "layers": [
+        "Partition_Coping_Backing",
+        "Ceramic_Parapet_Course",
+        "Safety_Dado_And_Skirting"
+      ],
+      "max_opaque_column_vertical_delta": 17
+    },
+    {
+      "sprite": "ch01_env_wall_partition_low_corner_outer_idle",
+      "canvas": [
+        32,
+        32
+      ],
+      "pivot": [
+        16,
+        24
+      ],
+      "layers": [
+        "Partition_Coping_Backing",
+        "Ceramic_Parapet_Course",
+        "Safety_Dado_And_Skirting"
+      ],
+      "max_opaque_column_vertical_delta": 17
+    },
+    {
+      "sprite": "ch01_env_wall_subterranean_n_endcap_low_idle",
+      "canvas": [
+        32,
+        64
+      ],
+      "pivot": [
+        16,
+        56
+      ],
+      "layers": [
+        "Wall_Cornice_Backing",
+        "Ceramic_Tile_Course",
+        "Dado_Corner_And_Skirting"
+      ],
+      "max_opaque_column_vertical_delta": 48,
+      "opening_tip_vertical_delta": 16
+    },
+    {
+      "sprite": "ch01_env_wall_subterranean_w_endcap_low_idle",
+      "canvas": [
+        32,
+        64
+      ],
+      "pivot": [
+        16,
+        56
+      ],
+      "layers": [
+        "Wall_Cornice_Backing",
+        "Ceramic_Tile_Course",
+        "Dado_Corner_And_Skirting"
+      ],
+      "max_opaque_column_vertical_delta": 48,
+      "opening_tip_vertical_delta": 16
+    }
+  ],
+  "covered_corner_kind_faces": [
+    [
+      "inner_corner",
+      [
+        "N",
+        "W"
+      ]
+    ],
+    [
+      "inner_corner",
+      [
+        "W",
+        "low_S"
+      ]
+    ],
+    [
+      "inner_corner",
+      [
+        "low_E",
+        "N"
+      ]
+    ],
+    [
+      "inner_corner",
+      [
+        "low_S",
+        "low_E"
+      ]
+    ],
+    [
+      "outer_corner",
+      [
+        "N",
+        "low_E"
+      ]
+    ],
+    [
+      "outer_corner",
+      [
+        "W",
+        "N"
+      ]
+    ],
+    [
+      "outer_corner",
+      [
+        "low_E",
+        "low_S"
+      ]
+    ],
+    [
+      "outer_corner",
+      [
+        "low_S",
+        "W"
+      ]
+    ]
+  ],
+  "elias_reference": {
+    "frame_size": [
+      32,
+      48
+    ],
+    "mockup_frame_regions": [
+      [
+        0,
+        0,
+        32,
+        48
+      ],
+      [
+        64,
+        0,
+        96,
+        48
+      ]
+    ],
+    "alpha_bounds": [
+      [
+        7,
+        3,
+        25,
+        47
+      ],
+      [
+        7,
+        4,
+        25,
+        47
+      ]
+    ],
+    "resize_applied": false
+  }
+}

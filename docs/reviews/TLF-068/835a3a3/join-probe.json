@@ -1,0 +1,24 @@
+{
+  "n_turn_inner": {
+    "opaque_wall_pixels_above_stepped_half": 227,
+    "metadata_first_module_delta": [
+      16,
+      8
+    ],
+    "mockup_first_module_delta": [
+      32,
+      16
+    ]
+  },
+  "w_turn_inner": {
+    "opaque_wall_pixels_above_stepped_half": 227,
+    "metadata_first_module_delta": [
+      -16,
+      8
+    ],
+    "mockup_first_module_delta": [
+      -32,
+      16
+    ]
+  }
+}

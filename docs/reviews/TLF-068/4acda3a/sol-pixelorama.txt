@@ -1,0 +1,602 @@
+Pixelorama verification log (raw tool output, nothing paraphrased)
+git HEAD at run time:
+Pixelorama: D:\Pixelorama\Pixelorama-Windows-64bit\Pixelorama.exe
+
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_bulkhead_module_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_bulkhead_module_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 64)
+Time Pixelorama took to open: 13110ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_bulkhead_module_idle.png ch01_env_wall_bulkhead_module_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 3319ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 12961458f6acecdf086b9a6475eebff8b1c1d82fbf4b8f9925377b4154df49e1
+sha256 committed  : 12961458f6acecdf086b9a6475eebff8b1c1d82fbf4b8f9925377b4154df49e1
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_corner_pillar_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_corner_pillar_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 64)
+Time Pixelorama took to open: 3082ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_corner_pillar_idle.png ch01_env_wall_corner_pillar_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 3029ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : ae880c81aa406986e46a57c4a70af32865d5ddfccba3147db91930ab2fd53a4d
+sha256 committed  : ae880c81aa406986e46a57c4a70af32865d5ddfccba3147db91930ab2fd53a4d
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_partition_low_corner_inner_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_partition_low_corner_inner_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 32)
+Time Pixelorama took to open: 3189ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_partition_low_corner_inner_idle.png ch01_env_wall_partition_low_corner_inner_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 3215ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : e40e76729b4f8267344351d6edd3546cb99c3b224d1950800a424a66ca5d9d1f
+sha256 committed  : e40e76729b4f8267344351d6edd3546cb99c3b224d1950800a424a66ca5d9d1f
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_partition_low_corner_outer_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_partition_low_corner_outer_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 32)
+Time Pixelorama took to open: 3149ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_partition_low_corner_outer_idle.png ch01_env_wall_partition_low_corner_outer_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 3212ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 38536ff3c4a536e3ac374917a115f4485c8f405f7e2dc52a0f4cf35d9c2300bd
+sha256 committed  : 38536ff3c4a536e3ac374917a115f4485c8f405f7e2dc52a0f4cf35d9c2300bd
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_partition_low_e_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_partition_low_e_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 32)
+Time Pixelorama took to open: 3147ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_partition_low_e_idle.png ch01_env_wall_partition_low_e_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 3074ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : b0aabcf00905d84dd584a2cd20834f20108e6f475790a0c2931152da74de03f9
+sha256 committed  : b0aabcf00905d84dd584a2cd20834f20108e6f475790a0c2931152da74de03f9
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_partition_low_s_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_partition_low_s_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 32)
+Time Pixelorama took to open: 3061ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_partition_low_s_idle.png ch01_env_wall_partition_low_s_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 3354ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 292a7c4a1f92d47380e0f2787bd3e96b82c01aa3f8896d150057f7de88538af0
+sha256 committed  : 292a7c4a1f92d47380e0f2787bd3e96b82c01aa3f8896d150057f7de88538af0
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_railing_iron_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_railing_iron_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 48)
+Time Pixelorama took to open: 3081ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_railing_iron_idle.png ch01_env_wall_railing_iron_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 3115ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : f5c720492b7a507c5b357a4802d50f9cb48d8257dea81eefa409a2be262b86ee
+sha256 committed  : f5c720492b7a507c5b357a4802d50f9cb48d8257dea81eefa409a2be262b86ee
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_subterranean_corner_n_turn_inner_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_subterranean_corner_n_turn_inner_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 64)
+Time Pixelorama took to open: 3154ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_subterranean_corner_n_turn_inner_idle.png ch01_env_wall_subterranean_corner_n_turn_inner_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 3112ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 2f0e04767fbe5c25283360ba466e421df281dc903b230059016807046c14fa13
+sha256 committed  : 2f0e04767fbe5c25283360ba466e421df281dc903b230059016807046c14fa13
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_subterranean_corner_n_turn_outer_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_subterranean_corner_n_turn_outer_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 64)
+Time Pixelorama took to open: 3125ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_subterranean_corner_n_turn_outer_idle.png ch01_env_wall_subterranean_corner_n_turn_outer_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 3329ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 8c6b3b8775bd90a63422cfbc767c562e4fd562b57fceea73d3ae2df6b4781a3b
+sha256 committed  : 8c6b3b8775bd90a63422cfbc767c562e4fd562b57fceea73d3ae2df6b4781a3b
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_subterranean_corner_nw_inner_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_subterranean_corner_nw_inner_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 64)
+Time Pixelorama took to open: 3209ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_subterranean_corner_nw_inner_idle.png ch01_env_wall_subterranean_corner_nw_inner_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 3121ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 21a203ca369da395d8a7eff19347db72e368fd53c6e505a04f36699e5f2e496b
+sha256 committed  : 21a203ca369da395d8a7eff19347db72e368fd53c6e505a04f36699e5f2e496b
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_subterranean_corner_nw_outer_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_subterranean_corner_nw_outer_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 64)
+Time Pixelorama took to open: 3178ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_subterranean_corner_nw_outer_idle.png ch01_env_wall_subterranean_corner_nw_outer_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 3703ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 9e85973d0b964b96144f21543b23735ab0bbe8972a6835295389d65fb4aef124
+sha256 committed  : 9e85973d0b964b96144f21543b23735ab0bbe8972a6835295389d65fb4aef124
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_subterranean_corner_w_turn_inner_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_subterranean_corner_w_turn_inner_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 64)
+Time Pixelorama took to open: 3058ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_subterranean_corner_w_turn_inner_idle.png ch01_env_wall_subterranean_corner_w_turn_inner_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 3053ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 6f07fe6cd9165545e414e1ec54e1179a99a170e1cd0c03ace8c6e32cc8ccd918
+sha256 committed  : 6f07fe6cd9165545e414e1ec54e1179a99a170e1cd0c03ace8c6e32cc8ccd918
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_subterranean_corner_w_turn_outer_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_subterranean_corner_w_turn_outer_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 64)
+Time Pixelorama took to open: 3562ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_subterranean_corner_w_turn_outer_idle.png ch01_env_wall_subterranean_corner_w_turn_outer_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 4602ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 1020a42ebf2e544ae9f01b432d750a0de4cf65986c2e32e735429deed200d8f0
+sha256 committed  : 1020a42ebf2e544ae9f01b432d750a0de4cf65986c2e32e735429deed200d8f0
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_subterranean_n_endcap_low_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_subterranean_n_endcap_low_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 64)
+Time Pixelorama took to open: 4673ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_subterranean_n_endcap_low_idle.png ch01_env_wall_subterranean_n_endcap_low_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 4683ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : c69a0202ced02b7f977331823d81999f9200f5832f5cc2e1ebe30e6174f2b235
+sha256 committed  : c69a0202ced02b7f977331823d81999f9200f5832f5cc2e1ebe30e6174f2b235
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_subterranean_n_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_subterranean_n_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 64)
+Time Pixelorama took to open: 4169ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_subterranean_n_idle.png ch01_env_wall_subterranean_n_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 4131ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 38f8000cd8b27aec233cd8c0797db353ae46ac1914f9fc040a55d346ebc8db6a
+sha256 committed  : 38f8000cd8b27aec233cd8c0797db353ae46ac1914f9fc040a55d346ebc8db6a
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_subterranean_w_endcap_low_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_subterranean_w_endcap_low_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 64)
+Time Pixelorama took to open: 3983ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_subterranean_w_endcap_low_idle.png ch01_env_wall_subterranean_w_endcap_low_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 3943ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : ee9182f8643cb5327c07610a9ca62e6c88a00ca73ea0570cad28e683b7de97a9
+sha256 committed  : ee9182f8643cb5327c07610a9ca62e6c88a00ca73ea0570cad28e683b7de97a9
+BYTE-IDENTICAL: YES
+====================================================================================================
+FILE: assets/source/ch01/ch01_env_wall_subterranean_w_idle.pxo   (run on a temp copy)
+$ Pixelorama.exe --headless --quit -- --size ch01_env_wall_subterranean_w_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+(32, 64)
+Time Pixelorama took to open: 3974ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+$ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_env_wall_subterranean_w_idle.png ch01_env_wall_subterranean_w_idle.pxo
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
+Time Pixelorama took to open: 4418ms
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+   at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
+exit=0
+sha256 re-export : 8c681ea0debb3f5ca5e4c62f7d036162d2786352e55b052096d7e190139bc818
+sha256 committed  : 8c681ea0debb3f5ca5e4c62f7d036162d2786352e55b052096d7e190139bc818
+BYTE-IDENTICAL: YES
+====================================================================================================
+SUMMARY (size-exit, export-exit, byte-identical)
+ch01_env_wall_bulkhead_module_idle                   0 0 YES
+ch01_env_wall_corner_pillar_idle                     0 0 YES
+ch01_env_wall_partition_low_corner_inner_idle        0 0 YES
+ch01_env_wall_partition_low_corner_outer_idle        0 0 YES
+ch01_env_wall_partition_low_e_idle                   0 0 YES
+ch01_env_wall_partition_low_s_idle                   0 0 YES
+ch01_env_wall_railing_iron_idle                      0 0 YES
+ch01_env_wall_subterranean_corner_n_turn_inner_idle  0 0 YES
+ch01_env_wall_subterranean_corner_n_turn_outer_idle  0 0 YES
+ch01_env_wall_subterranean_corner_nw_inner_idle      0 0 YES
+ch01_env_wall_subterranean_corner_nw_outer_idle      0 0 YES
+ch01_env_wall_subterranean_corner_w_turn_inner_idle  0 0 YES
+ch01_env_wall_subterranean_corner_w_turn_outer_idle  0 0 YES
+ch01_env_wall_subterranean_n_endcap_low_idle         0 0 YES
+ch01_env_wall_subterranean_n_idle                    0 0 YES
+ch01_env_wall_subterranean_w_endcap_low_idle         0 0 YES
+ch01_env_wall_subterranean_w_idle                    0 0 YES
+TOTAL pxo: 17, all identical: True
