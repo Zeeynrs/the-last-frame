@@ -68,6 +68,10 @@ func _input(event: InputEvent) -> void:
 			advance_line()
 			if get_viewport() != null:
 				get_viewport().set_input_as_handled()
+		elif event.is_action_pressed(&"interact") and not _player_has_usable_target():
+			advance_line()
+			if get_viewport() != null:
+				get_viewport().set_input_as_handled()
 
 
 func _process(delta: float) -> void:
@@ -196,6 +200,19 @@ func _display_current_line() -> void:
 
 func _set_player_movement_blocked(blocked: bool) -> void:
 	_player_ref = Player.set_player_blocked(self, blocked, _player_ref)
+
+
+func _player_has_usable_target() -> bool:
+	if not is_inside_tree() or get_tree() == null:
+		return false
+	var player = get_tree().get_first_node_in_group(&"player")
+	if player != null and "current_target" in player and player.current_target != null:
+		var target = player.current_target
+		if target is Interactable:
+			var actor: StringName = player.actor_id if "actor_id" in player else &"player"
+			if target.can_interact(actor, &"use") == &"":
+				return true
+	return false
 
 
 func _find_session() -> GameSession:

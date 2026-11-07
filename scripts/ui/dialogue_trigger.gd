@@ -20,7 +20,21 @@ signal triggered(sequence_id: StringName)
 func _can_use(_actor_id: StringName, interaction_id: StringName, _payload: Dictionary) -> StringName:
 	if interaction_id != &"use":
 		return &"unsupported"
+	if one_shot and _is_already_triggered():
+		return &"unsupported"
 	return &""
+
+
+func _is_already_triggered() -> bool:
+	var sess := get_session()
+	if sess == null:
+		sess = _find_session_in_tree()
+	if sess != null and sess.narrative_state != null:
+		if sequence_id != &"" and sess.narrative_state.get_flag(StringName("heard." + String(sequence_id)), false):
+			return true
+		if flag_id != &"" and sess.narrative_state.get_flag(flag_id, false):
+			return true
+	return false
 
 
 func _on_use(_actor_id: StringName, _interaction_id: StringName, _payload: Dictionary) -> void:
