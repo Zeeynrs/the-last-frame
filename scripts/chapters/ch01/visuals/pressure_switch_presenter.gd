@@ -6,13 +6,14 @@ extends Sprite2D
 
 @export var tex_released: Texture2D = preload("res://assets/props/ch01/ch01_prop_pressure_switch_released.png")
 @export var tex_pressed: Texture2D = preload("res://assets/props/ch01/ch01_prop_pressure_switch_pressed.png")
+@export var sprite_offset: Vector2 = Vector2(-16, -12)
 
 var _target: TriggerZone
 
 
 func _ready() -> void:
 	centered = false
-	offset = Vector2(-16, -12)
+	offset = sprite_offset
 	_target = get_parent() as TriggerZone
 	if _target != null:
 		_target.occupancy_changed.connect(func(_occ: bool): _refresh())

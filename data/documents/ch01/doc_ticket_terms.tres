@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DocumentDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/narrative/document_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+document_id = &"ch01.concourse_west.doc_ticket_terms"
+kind = 0
+title_key = "DOC_TICKET_TERMS_TITLE"
+body_key = "DOC_TICKET_TERMS_BODY_1"
+flag_id = &"ch01.flag.ticket_terms_read"
+fragment_id = &""
+journal_entry_key = "JRN_DOC_TICKET_TERMS"
+journal_category = "fact"
