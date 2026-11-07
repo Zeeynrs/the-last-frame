@@ -1,0 +1,8 @@
+M1 default outset 0 -> FAILED (failures=12) | test_collision_is_the_outline_outset_a_quarter_tile, test_committed_fixture_is_the_current_builder_output, test_polygon
+M2 no room_shape metadata -> FAILED (failures=11) | test_committed_fixture_is_the_current_builder_output, test_room_shape_metadata_on_the_root
+M3 holes ignored -> FAILED (failures=3) | test_committed_fixture_is_the_current_builder_output, test_floor_and_walls_equal_the_hand_built_rooms, test_floor_cells_sources_and_holes
+M4 new tiles always source 0 -> FAILED (failures=3) | test_new_tiles_use_the_room_default_source, test_security_crossing_needs_the_trench_hole, test_strip_does_not_clear_trench_side_tactile_tiles
+M5 old strip not cleared -> FAILED (failures=2) | test_committed_fixture_is_the_current_builder_output, test_strip_on_the_new_edge_and_cleared_from_the_old
+M6 strip paints door tiles -> FAILED (failures=5) | test_arrival_strip_is_reproduced_without_its_door_row, test_committed_fixture_is_the_current_builder_output, test_floor_and_walls_equal_the_hand_built_rooms, test_one_face_only, test_strip_on_the_new_edge_and_cleared_from_the_old
+M7 module under archway kept -> FAILED (failures=5) | test_committed_fixture_is_the_current_builder_output, test_module_under_an_aligned_archway_is_left_to_it, test_north_doors_in_today_s_rooms, test_walls_and_archways
+M8 trench neighbours count as edge -> FAILED (failures=1) | test_strip_does_not_clear_trench_side_tactile_tiles
