@@ -388,3 +388,17 @@ Decisions accepted by Agent 1 (Lead) under human delegation on 2026-10-31. Any c
 - **Consequences:**
   - Old task files (TLF-001 audit, TLF-003) keep their historical text; `STORY_BIBLE.md` §5 lists what is superseded.
   - New tasks TLF-058 (sighting), TLF-059 (Beat 10 cinematic), TLF-060 (export + smoke test), TLF-061 (Sol, character direction), TLF-062 (Argon, Operator silhouette + city plate), TLF-063 (environmental props), TLF-064 (audio). TLF-056 gains save/load tests around The Forgotten Sequence.
+
+## ADR-023 — Chapter 1 large rooms, free-form room shapes, follow camera (amends ADR-003)
+
+- **Date / status:** 2026-11-07, accepted by the owner. Spec: `docs/superpowers/specs/2026-11-07-ch1-large-rooms-design.md`. Plan: `docs/superpowers/plans/2026-11-07-ch1-large-rooms.md`.
+- **Context:** Every Chapter 1 room is a W×H rectangle between 6×6 and 16×14 tiles inside one fixed 640×360 screen (ADR-003). Rooms read as boxes and Elias (32×48) is large against them. Owner playtest feedback also reports object sprites facing the wrong way and drawing through Elias.
+- **Decision (approach A, phased, Chapter 1 first):**
+  - The internal canvas stays 640×360, integer-scaled. A `Camera2D` follows Elias with whole-pixel positions, clamped to the room's bounds. A room that fits one screen keeps a fixed camera.
+  - Room shapes are data (`RoomShape`, a floor outline in tile coordinates) and may be L, T, dog-leg, cross or notched. Floor tiles, perimeter collision, wall segments and camera bounds are generated from it.
+  - Rule R2: no tall wall stands in front of walkable floor on the south/east side; those faces are low elements (about 20 px at most), so Elias is never hidden. No cut-away system.
+  - The ADR-003 "continuous opposite-side transition" convention is dropped. Doors may be on any straight edge and are paired explicitly (ADR-009). Room ids, door ids, checkpoint ids and safe-anchor ids do not change.
+  - Main rooms grow roughly 1.6–2× per side (floor about 640–830 px wide); the final numbers are tuned on the pilot room (Arrival Platform). The vestibule niche stays small.
+  - Puzzle specs stay authoritative: apertures at least 1.5 tiles (TLF-055 §G), reachable stand spots, no skippable puzzle. A re-laid-out room lands only with its real-input segment and negative tests green.
+  - Dev saves made before the pilot may become invalid (ids stay, pixel positions change). The game is unreleased, accepted.
+- **Consequences:** tasks TLF-065 (camera + RoomShape), TLF-066 (Sol audit of facing and overlap), TLF-067 (sort/pivot/facing fixes), TLF-068 (corner and low-partition art kit), TLF-069 (pilot room), then one task per remaining room. TLF-059, TLF-060 and TLF-064 are unaffected. The Step 1 playtest gate moves to after the pilot or after all rooms, decided after the pilot.
