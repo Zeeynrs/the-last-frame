@@ -1,0 +1,12 @@
+PASS: audit branch HEAD before review commit is exact baseline 9ca9759cd5b877e6c82a772210d10476ac1874a0
+PASS: CSV exact eight-column schema; 335 unique room/object rows; severity 9 high / 36 medium / 216 none / 74 not_visual
+PASS: 10 rooms; 261 visual groups; 1044 N/S/E/W + 26 centerline PNGs all native 640x360; 24 contact sheets
+PASS: Markdown full table matches all 335 CSV rows; 1115 relative evidence/source links resolve
+PASS: three Windows windowed capture logs complete ten rooms, no engine/script/assertion errors
+PASS: real game saves/settings inventory, bytes/hash, size and mtime unchanged before/after/current
+PASS: 1070 published 640x360 captures equal scratch frames; all overlap pixel counts reproduced
+  Command: python docs/reviews/TLF-066/verify_overlap_pixels.py <renamed-scratch>/audit_output
+  Renderer: Godot 4.7.2 stable, Windows display, D3D12 Forward+, windowed 640x360
+  Capture process results: primary exit 0; procedural exit 0; centerline exit 0
+  Scope: documentation/evidence only; no main merge and no runtime fixes
+PASS: all 1106 staged files are TLF-066 review documentation/evidence; game tree unchanged

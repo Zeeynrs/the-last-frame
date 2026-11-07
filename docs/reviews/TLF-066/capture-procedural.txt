@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+AUDIT_WINDOWED display=Windows user_dir=C:/Users/adity/AppData/Roaming/TLF Audit 066 9ca9759 viewport=640x360
+CAPTURE security_crossing 14/41 visual:TrenchVisual
+CAPTURE signal_control 9/40 visual:NorthBarrierVisual
+CAPTURE signal_control 10/40 visual:NorthBarrierVisual/TopFace
+AUDIT_CAPTURE_COMPLETE rooms=10

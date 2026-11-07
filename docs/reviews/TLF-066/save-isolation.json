@@ -1,0 +1,20 @@
+{
+  "project_name": "TLF Audit 066 9ca9759",
+  "custom_user_dir_name": "TLF Audit 066 9ca9759",
+  "save_root": "user://tlf066_saves",
+  "before": {
+    "saves\\slot_0.json": {
+      "size": 23849,
+      "mtime_ns": 1794024597888258800,
+      "sha256": "dd10ddb17cf4feefdb3a2ae33c0f14a0065d5317d28dbb5a78752f8ea37453ec"
+    }
+  },
+  "after": {
+    "saves\\slot_0.json": {
+      "size": 23849,
+      "mtime_ns": 1794024597888258800,
+      "sha256": "dd10ddb17cf4feefdb3a2ae33c0f14a0065d5317d28dbb5a78752f8ea37453ec"
+    }
+  },
+  "equal": true
+}
