@@ -41,7 +41,7 @@
      - `selector_line`, `selector_platform`, `selector_car` at (176, 120), (208, 136), (240, 152).
      - `release_lock` (Area2D CodeLock) at (256, 160) requiring code 1-2-1.
      - `release_lever` at (288, 176) with presenter.
-     - `platform_gate` at (448, 208) with 48x64 Blocker body (layer 1) covering door trigger from all approaches.
+     - `platform_gate` at (448, 208) with 24x24 Blocker body (layer 1) at offset (0, 0) covering door trigger from all approaches.
      - `doc_last_service` readable document at (288, 96).
      - 4 commuter statues (`n01_conductor` to `n04_cleaner`) with 12x8 footprint colliders and presenter bindings.
    - **`concourse_west.tscn`**:
@@ -50,7 +50,7 @@
      - `conduit_01` at (208, 152) with conduit presenter.
      - 3 flap dials (`dial_line`, `dial_platform`, `dial_time`) at (384, 96), (416, 112), (448, 128).
      - `ticket_validator` at (464, 136) with console footprint collider (layer 1).
-     - `staff_door` at (480, 224) with 48x64 Blocker body (layer 1) covering door trigger from all approaches.
+     - `staff_door` at (480, 224) with 24x24 Blocker body (layer 1) at offset (0, 0) covering door trigger from all approaches.
      - `reset_anchor_02` at (448, 256).
      - `doc_ticket_terms` at (416, 80).
      - 4 commuter statues with footprint colliders (`n06_red_coat` to `n09_teen`); `n05_courier` footprint removed to clear rewind path.
@@ -113,7 +113,7 @@
 
 ## 2. Lead Decisions & Technical Review Reconciliations
 
-All 7 Lead Decisions from Opus's technical review have been verified, implemented, and pinned with automated tests:
+All Lead Decisions from Opus's technical reviews have been verified, implemented, and pinned with automated tests:
 
 1. **`concourse_west.tscn`: Courier N-05 Footprint & Conduit Relocation**
    - Removed courier N-05's 12x8 static footprint `Footprint` node to clear the rewind interaction path.
@@ -124,10 +124,10 @@ All 7 Lead Decisions from Opus's technical review have been verified, implemente
    - Cleared `puzzle_id = &""` on `exit_trigger_east` (~line 266).
    - Entering this pocket trigger no longer registers or solves `CH1-PZ-002`, verified in `test_scripted_playthrough_rooms_1_to_4`.
 
-3. **`arrival_platform.tscn` & `concourse_west.tscn`: Door Trigger Coverage & Unsolved Skip Prevention**
-   - Resized gate `Blocker` shapes from 24x12 to 48x64 with offset `(0, -4)` so closed gates physically cover the door triggers from every walkable direction (preventing sliding along the north wall to skip SO-01 / PZ-006).
-   - Added automated test `test_gate_blockers_cover_door_triggers_from_all_approach_vectors()` in `tests/chapters/ch01/test_ch01_playthrough.gd`:
-     - Proves with real player CharacterBody2D capsule probes across all 4 approach vectors (`spawn`, `north`, `west`, `south-west`) that with the puzzle unsolved, the player is blocked and never enters `door_exit_east`.
+3. **`arrival_platform.tscn` & `concourse_west.tscn`: Blocker Sizing (24x24 at offset 0,0)**
+   - Resized gate `Blocker` shapes from 48x64 to 24x24 at offset `(0, 0)` (`platform_gate` in arrival_platform, `staff_door` in concourse_west).
+   - Fully contains the 10 px radius door triggers while clearing access to the release lever spot `(480, 192)` and ticket validator spot `(496, 200)` (previously blocked at 468.4, 169.9).
+   - In `tests/chapters/ch01/test_ch01_playthrough.gd`: `test_gate_blockers_cover_door_triggers_from_all_approach_vectors()` proves CharacterBody2D capsule probes from spawn, north, west, and south-west never enter door triggers. Dropped extra `distance > 16 px` assertion on north probe per Lead decision.
 
 4. **`chapter01.gd`: Starting Abilities Fallback Removed**
    - Removed the runtime fallback in `_ready()` that coerced empty `session.starting_abilities` to `[&"trace"]`.
@@ -137,25 +137,30 @@ All 7 Lead Decisions from Opus's technical review have been verified, implemente
 5. **`chapter01.gd`: Deferred Object-Specific Feedback vs Player Overwrite**
    - Replaced synchronous `hud.show_message` with `hud.show_message.call_deferred(tr(custom_key), 2.0)` (~line 151).
    - Prevents `player.gd:244-245` from overwriting custom failure text (`SO001_FB_GATE_SEALED`, etc.) with generic `UI_FB_LOCKED`.
-   - Verified by `test_object_specific_feedback_deferred_flow()` in `tests/chapters/ch01/test_ch01_playthrough.gd`, which explicitly exercises the failure and immediate generic feedback flow.
+   - Verified by `test_object_specific_feedback_deferred_flow()` in `tests/chapters/ch01/test_ch01_playthrough.gd`.
 
 6. **`security_crossing.tscn`: Dead Pedestal Dialogue Data Removed**
    - Removed dead `lines = [["SPK_MEMORY", "MEM_PEDESTAL_1"], ["SPK_MEMORY", "MEM_PEDESTAL_2"]]` and `auto_advance = 4.0` from `echo_recorder_pedestal` (~line 507).
 
-7. **`chapter01.gd` & `Chapter01.tscn`: UNLOCK_TRACE Flow (TEST-AU-01)**
-   - Maintained `starting_abilities = [&"trace"]`.
-   - Connected `NarrativeState.flag_changed` in `_ready()`: when `ch01.flag.watch_picked_up` is set, `_on_flag_changed` displays the `UNLOCK_TRACE` toast and non-blocking `EL_UNLOCK_TRACE` sequence once per save without modifying unlocks.
-   - Verified by `test_watch_pickup_shows_unlock_trace_toast_without_regrant()` in `tests/chapters/ch01/test_ch01_playthrough.gd`.
+7. **Toast Driver & Flag Reconciliation (TEST-AU-01)**
+   - Driven `UNLOCK_TRACE` toast directly from real flag `ch01.flag.pocket_watch_acquired`.
+   - Removed alias flag `ch01.flag.watch_picked_up` and redundant `watch_unlock_shown` guard.
+   - Deleted dead `&"trace"` match branch in `chapter01.gd::_on_ability_unlocked`.
+   - Deleted placeholder line `EL_UNLOCK_TRACE` from `localization/ch01_text.csv` (never plays due to active pickup dialogue; MEM_WATCH flash lines carry the narrative beat).
+
+8. **Documentation Updates**
+   - Updated stale conduit position `(224,144) -> (208,152)` and gate Rewind spot `(256,112) -> about (250,126)` in `design/ch01/puzzles/CH1-PZ-001.md`.
+   - Updated conduit tile and coordinate `(2, 9) px (208, 152)` in `design/ch01/expansion/step1_placement_check.txt`.
+   - Updated blocker dimensions to 24x24 in `design/ch01/ROOM_GRAPH.md`.
 
 ---
 
-## 3. Lead Must Review Text (ADR-022 D5)
+## 3. Narrative Text Status (ADR-022 D5)
 
 Per ADR-022 D5, narrative text is strictly owned by the Lead:
-- **`localization/ch01_text.csv`**:
-  - `EL_UNLOCK_TRACE,"A pocket watch. Cracked glass. Still warm, like someone just put it down."`
-  - **Status:** Clearly marked PLACEHOLDER pending Lead narrative review.
-  - No other narrative text has been added.
+- Per Lead Decision (4), `EL_UNLOCK_TRACE` has been completely deleted from `localization/ch01_text.csv`.
+- No new narrative text lines have been added.
+- The `MEM_WATCH_1` and `MEM_WATCH_2` flash lines + the `UNLOCK_TRACE` toast carry the beat.
 
 ---
 
