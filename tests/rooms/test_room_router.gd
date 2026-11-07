@@ -385,3 +385,26 @@ func test_save_load_restores_camera_with_player() -> void:
 	await physics_frames(2)
 	_assert_eq(camera.get_screen_center_position(), camera.centre_for(anchor_px), "camera still with the player")
 	_done(rig2)
+
+
+## TLF-071: a room scene written by build_room_from_shape.py (metadata/room_shape on its root) gives
+## the router its real bounds, so the camera scrolls; before the builder wrote it, the router fell
+## back to the fixed 640 x 360 screen.
+func test_builder_written_room_gives_the_camera_its_bounds() -> void:
+	var rig := _rig()
+	var router: RoomRouter = rig["router"]
+	var player: Node2D = rig["player"]
+	var scene := load("res://tests/rooms/fixtures/builder_l_room.tscn") as PackedScene
+	router.register_room(A, scene)
+	player.global_position = RoomShape.tile_to_px(Vector2(24.5, 4.5))   # far east, by the E door
+	_assert_true(router.enter_room(A), "entered the builder-written room")
+	var shape := router.current_room_shape()
+	_assert_true(shape != null, "the router reads the room's RoomShape")
+	_assert_eq(router.current_room_bounds(), Rect2(48, 0, 704, 368), "its bounds, not the 640 x 360 screen")
+	var camera := router.camera
+	_assert_eq(camera.bounds, shape.bounds_px(), "handed to the camera")
+	var centre := camera.get_screen_center_position()
+	_assert_eq(centre, camera.centre_for(player.global_position), "camera on the player")
+	_assert_true(centre.x > 320.0 and centre.y > 180.0, "scrolled east and south of the fixed view (%s)" % centre)
+	_assert_true(camera.bounds.encloses(camera.view_rect()), "the view stays inside the bounds")
+	_done(rig)
