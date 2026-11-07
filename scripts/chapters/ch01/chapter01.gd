@@ -17,6 +17,7 @@ const PUZZLE_DIR := "res://data/puzzles/ch01"
 
 var chapter_complete: bool = false
 var _complete_overlay: CanvasLayer = null
+var _outro_cinematic: Ch01Outro = null
 var _movement_hint_timer: float = 0.0
 var _movement_hint_active: bool = false
 
@@ -327,25 +328,19 @@ func _trigger_beat10_outro() -> void:
 			complete_chapter()
 			return
 
-	var diag = get_dialogue_box()
-	if diag != null:
-		diag.sequence_finished.connect(func(seq_id):
-			if seq_id == &"ch01_b10_outro":
-				complete_chapter()
-		, CONNECT_ONE_SHOT)
-		var played = diag.play_sequence(
-			&"ch01_b10_outro",
-			[
-				["SPK_ELIAS", "EL_B10_01"],
-				["SPK_OPERATOR", "OP_B10_01"],
-				["SPK_OPERATOR", "OP_B10_02"],
-			],
-			true
-		)
-		if not played:
-			complete_chapter()
-	else:
+	if _outro_cinematic != null and is_instance_valid(_outro_cinematic):
+		return
+
+	var diag := get_dialogue_box()
+	var outro_scene := preload("res://scenes/ui/cinematics/ch01_outro.tscn")
+	var outro := outro_scene.instantiate() as Ch01Outro
+	_outro_cinematic = outro
+	add_child(outro)
+	outro.cinematic_completed.connect(func() -> void:
+		_outro_cinematic = null
 		complete_chapter()
+	, CONNECT_ONE_SHOT)
+	outro.start(session, player, diag)
 
 
 func complete_chapter() -> void:
