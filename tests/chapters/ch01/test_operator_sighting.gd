@@ -84,7 +84,7 @@ func test_operator_sighting_node_and_visual_properties() -> void:
 
 	var op := inst.get_node_or_null("operator_sighting") as OperatorSighting
 	_assert_true(op != null, "operator_sighting node exists on arrival_platform")
-	_assert_eq(op.position, Vector2(432, 152), "Operator placed at proposed tile (9, 2) -> (432, 152)")
+	_assert_eq(op.position, Vector2(304, 216), "Operator placed at tile (9, 10) -> (304, 216)")
 
 	# Check child nodes
 	var figure := op.get_node_or_null("FigureSprite") as Sprite2D

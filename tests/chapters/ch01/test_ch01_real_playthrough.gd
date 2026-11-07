@@ -247,7 +247,7 @@ func _play() -> bool:
 		await tap(&"ability_next")
 		_assert_eq(watch.selected_ability, &"trace", "with only Trace, ability_next changes nothing")
 	# The watch: MEM_WATCH lines, then the UNLOCK_TRACE toast (no new unlock).
-	if not await _use_at(Vector2(352, 176), _resolve(&"global.pocket_watch"), "arrival -> pocket watch"):
+	if not await _use_at(Vector2(224, 240), _resolve(&"global.pocket_watch"), "arrival -> pocket watch"):
 		return false
 	if not _assert_true(await until(_flag(&"ch01.flag.pocket_watch_acquired"), 10), "pocket watch taken"):
 		return false
@@ -261,29 +261,29 @@ func _play() -> bool:
 	_assert_true(gate.passage_blocked, "platform gate starts closed")
 	if wrong_moves:
 		# The four commuters hold the code (CH1-SO-01 R1).
-		for row in [[&"n03_old_man", Vector2(336, 120)], [&"n02_student", Vector2(288, 160)],
-				[&"n01_conductor", Vector2(368, 200)], [&"n04_cleaner", Vector2(416, 208)]]:
+		for row in [[&"n03_old_man", Vector2(432, 168)], [&"n02_student", Vector2(224, 160)],
+				[&"n01_conductor", Vector2(480, 208)], [&"n04_cleaner", Vector2(624, 312)]]:
 			var id := StringName("ch01.arrival_platform." + String(row[0]))
 			if not await _trace_at(row[1], id, StringName("ch01.npc.%s.traced" % String(row[0]).left(3))):
 				return false
 		# One wrong code (selectors untouched), then the silent lock-out. From N-04 around the north
-		# side of the closed gate's blocker (24x24 at (448,208)).
-		if not await walk_to(_player, "arrival -> north of the gate", Vector2(440, 180)):
+		# side of the closed gate's blocker (24x24 at (720,328)).
+		if not await walk_to(_player, "arrival -> north of the gate", Vector2(712, 300)):
 			return false
-		if not await _use_at(Vector2(480, 192), lever, "arrival -> release_lever (wrong code)"):
+		if not await _use_at(Vector2(736, 304), lever, "arrival -> release_lever (wrong code)"):
 			return false
 		await _expect_refusal(lever, &"wrong_code", "SO001_FB_WRONG_CODE", "SO-01 wrong code")
 		await tap(&"interact")
 		await _expect_refusal(lever, &"locked_out", "SO001_FB_LOCKED_OUT", "SO-01 during the lock-out")
 	# Stand spots one tile south of each wall panel (CH1-SO-01 object table, 17.9 px).
-	for row in [[&"selector_line", Vector2(400, 136), 1], [&"selector_platform", Vector2(432, 152), 2],
-			[&"selector_car", Vector2(464, 168), 1]]:
+	for row in [[&"selector_line", Vector2(624, 248), 1], [&"selector_platform", Vector2(656, 264), 2],
+			[&"selector_car", Vector2(688, 280), 1]]:
 		var selector := _resolve(StringName("ch01.arrival_platform." + String(row[0]))) as SelectorSwitch
 		for i in row[2]:
 			if not await _use_at(row[1], selector, "arrival -> %s" % row[0]):
 				return false
 		_assert_eq(selector.selector_position, row[2], "%s set to %d" % [row[0], row[2]])
-	if not await walk_to(_player, "arrival -> release_lever", Vector2(480, 192), _targets(lever)):
+	if not await walk_to(_player, "arrival -> release_lever", Vector2(736, 304), _targets(lever)):
 		return false
 	if wrong_moves:
 		var clock := _session.sim_clock
@@ -292,7 +292,7 @@ func _play() -> bool:
 	if not _assert_true(await until(_solved(&"CH1-SO-01"), 10), "SO-01 SOLVED by the release lever"):
 		return false
 	_assert_false(gate.passage_blocked, "platform gate open")
-	if not await walk_to(_player, "arrival -> door_exit_east", Vector2(448, 208), _in_room(&"ch01.concourse_west")):
+	if not await walk_to(_player, "arrival -> door_exit_east", Vector2(720, 328), _in_room(&"ch01.concourse_west")):
 		return false
 	await physics_frames(2)
 	_segment("1 arrival (SO-01)")

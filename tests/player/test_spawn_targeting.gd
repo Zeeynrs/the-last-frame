@@ -74,7 +74,7 @@ func test_spawn_targeting_ignores_checkpoint_and_picks_up_watch() -> void:
 	var pocket_watch: PocketWatch = player.pocket_watch if player != null else null
 	_assert_true(pocket_watch != null, "PocketWatch exists on Player")
 
-	# (1) At spawn (352, 160) without moving:
+	# (1) At spawn (160, 224) without moving:
 	# Neither player.current_target nor PocketWatch.current_target should be the checkpoint
 	var player_target = player.current_target
 	var watch_target = pocket_watch.current_target
@@ -91,8 +91,8 @@ func test_spawn_targeting_ignores_checkpoint_and_picks_up_watch() -> void:
 		"PocketWatch.current_target at spawn must NOT be checkpoint (got '%s')" % str(watch_target_id)
 	)
 
-	# (2) Real-input walking to the watch pickup at (368, 168)
-	var pickup_pos := Vector2(368, 168)
+	# (2) Real-input walking to the watch pickup at (240, 232)
+	var pickup_pos := Vector2(240, 232)
 	var arrived := await walk_to(player, "pocket_watch_pickup", pickup_pos, func():
 		return player.current_target != null and player.current_target.object_id == &"global.pocket_watch"
 	, 180)

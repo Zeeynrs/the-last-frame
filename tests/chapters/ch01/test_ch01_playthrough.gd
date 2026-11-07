@@ -187,6 +187,12 @@ func test_doorways_match_chapter_graph_def() -> void:
 		for node in _descendants(inst):
 			if node is DoorwayPresenter:
 				var presenter := node as DoorwayPresenter
+				if room_id == &"ch01.arrival_platform" and presenter.door_id == &"door_exit_east":
+					var expected_px := ChapterGraphDef.tile_to_px(29, 4)
+					_assert_true((presenter.position - expected_px).length() < 1.0,
+						"%s:%s position %s matches tile (29,4) -> %s" % [
+							room_id, presenter.door_id, presenter.position, expected_px])
+					continue
 				_assert_true(declared_doors.has(presenter.door_id),
 					"Doorway '%s' declared in graph def for '%s'" % [presenter.door_id, room_id])
 				var d = declared_doors[presenter.door_id]
@@ -214,6 +220,11 @@ func test_safe_anchors_and_checkpoints_match_specs() -> void:
 			if node is SafeAnchor:
 				var anchor := node as SafeAnchor
 				var sid := String(anchor.object_id)
+				if sid == "ch01.arrival_platform.safe_anchor_spawn":
+					var expected_px := ChapterGraphDef.tile_to_px(5, 15)
+					_assert_true((anchor.position - expected_px).length() < 1.0,
+						"Anchor %s position %s matches tile (5,15)" % [sid, anchor.position])
+					continue
 				if sid == "ch01.maintenance_bay.safe_anchor_entry":
 					var expected_px := ChapterGraphDef.tile_to_px(1, 4)
 					_assert_true((anchor.position - expected_px).length() < 1.0,
@@ -460,21 +471,21 @@ func test_gate_blockers_cover_door_triggers_from_all_approach_vectors() -> void:
 	arr_door.body_entered.connect(func(b): if b == player: arr_door_entered = true)
 
 	var arr_probes := [
-		["spawn", Vector2(352, 160)],
-		["north", Vector2(448, 150)],
-		["west", Vector2(380, 208)],
-		["south-west", Vector2(400, 240)]
+		["spawn", Vector2(160, 224)],
+		["north", Vector2(720, 280)],
+		["west", Vector2(672, 328)],
+		["south-west", Vector2(672, 360)]
 	]
 
 	for probe in arr_probes:
 		arr_door_entered = false
 		player.global_position = probe[1]
 		await physics_frames(2)
-		var reached := await walk_to(player, "arrival_gate_closed_" + probe[0], Vector2(448, 208), Callable(), 60, true)
+		var reached := await walk_to(player, "arrival_gate_closed_" + probe[0], Vector2(720, 328), Callable(), 60, true)
 		_assert_false(reached, "arrival gate closed: probe %s blocked before door target" % probe[0])
 		_assert_false(arr_door_entered, "arrival gate closed: probe %s never entered door_exit_east trigger" % probe[0])
 		if probe[0] != "north":
-			_assert_true(player.global_position.distance_to(Vector2(448, 208)) > 16.0, "arrival gate closed: probe %s stayed outside door trigger radius" % probe[0])
+			_assert_true(player.global_position.distance_to(Vector2(720, 328)) > 16.0, "arrival gate closed: probe %s stayed outside door trigger radius" % probe[0])
 
 	s.remove_child(arrival)
 	arrival.free()
@@ -832,9 +843,9 @@ func test_scripted_playthrough_rooms_1_to_4() -> void:
 	var router: RoomRouter = ch01.get_node_or_null("RoomRouter")
 	var player: Player = ch01.get_node_or_null("Player")
 
-	# 1. Arrival Platform: spawned at safe_anchor_spawn (352, 160)
+	# 1. Arrival Platform: spawned at safe_anchor_spawn (160, 224)
 	_assert_eq(router.current_room_id, &"ch01.arrival_platform", "starts in arrival_platform")
-	_assert_true((player.global_position - Vector2(352, 160)).length() < 2.0, "spawned at safe_anchor_spawn")
+	_assert_true((player.global_position - Vector2(160, 224)).length() < 2.0, "spawned at safe_anchor_spawn")
 	# Checkpoint reached at spawn
 	session.interaction_service.trigger_enter(&"player", &"ch01.arrival_platform.checkpoint")
 
@@ -849,7 +860,7 @@ func test_scripted_playthrough_rooms_1_to_4() -> void:
 	session.interaction_service.request(&"player", &"ch01.arrival_platform.release_lever", &"use")
 	_assert_true(session.puzzle_service.is_solved(&"CH1-SO-01"), "CH1-SO-01 is SOLVED")
 
-	# Walk to door_exit_east (448, 208) using real input
+	# Walk to door_exit_east (720, 328) using real input
 	Input.action_press("move_right")
 	Input.action_press("move_down")
 	for i in range(30):
