@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/chapter/ChapterRoot.tscn" id="1_root"]
 [ext_resource type="Script" path="res://scripts/chapters/ch01/chapter01.gd" id="2_ch01"]
 [ext_resource type="Script" path="res://scripts/puzzle/ability_unlock_trigger.gd" id="3_trigger"]
+[ext_resource type="Script" path="res://scripts/audio/audio_feedback.gd" id="4_audio"]
 
 [node name="Chapter01" instance=ExtResource("1_root")]
 script = ExtResource("2_ch01")
@@ -29,3 +30,6 @@ on_flag = &"ch01.npc.n11.traced"
 script = ExtResource("3_trigger")
 ability = &"echo"
 on_flag = &"ch01.flag.echo_pedestal_used"
+
+[node name="AudioFeedback" type="Node" parent="." index="8"]
+script = ExtResource("4_audio")

@@ -17,7 +17,10 @@ Track all production assets here. Concept art is not automatically production-re
 | ENV-T01 | Arrival platform target sheet | Chapter 1 | Target composition | exported | Argon | 640×360 art-direction target, not a runtime asset |
 | PROP-002 | Digital clock 23:59 | Chapter 1 | Prop | exported | Argon | 32×24, pivot (16,20) |
 | UI-003 | TLF Pixel Mono font | Global | UI font | exported | Argon (CC0, `assets/ui/fonts/LICENSE.txt`) | 5×7 in 6×8 cell; import: no AA/hinting/subpixel |
-| AUD-001 | Clock motif and station ambience | Chapter 1 | Audio | NOT STARTED | TBD | Puzzle-critical cues need visual alternatives |
+| AUD-001 | Clock motif and 23:59 tick | Chapter 1 | Audio | exported | Flash (`tools/audio/gen/gen_sfx.py`, CC0 synthesized) | 22050 Hz mono 16-bit WAV, `sfx_clock_tick.wav` |
+| AUD-002 | Temporal Ability SFX Suite | Global | Audio | exported | Flash (`tools/audio/gen/gen_sfx.py`, CC0 synthesized) | Trace, Rewind, Freeze, Echo record start/stop, Echo play, Ability locked |
+| AUD-003 | Operator Motif & Sighting Sting | Chapter 1 | Audio | exported | Flash (`tools/audio/gen/gen_sfx.py`, CC0 synthesized) | Faint second watch tick for VOICE (`sfx_operator_motif.wav`), sighting vanish sting (`sfx_operator_sighting.wav`) |
+| AUD-004 | Street Device Latch Click | Chapter 1 | Audio | exported | Flash (`tools/audio/gen/gen_sfx.py`, CC0 synthesized) | Beat 10 street device click (`sfx_device_click.wav`) |
 
 ## Asset acceptance checklist
 
