@@ -326,6 +326,8 @@ func _setup_ghost() -> void:
 		_ghost_node = Node2D.new()
 		_ghost_node.name = "GhostPlaceholder"
 		_ghost_node.visible = false
+		# The echo is an actor: same layer as Elias, Y-sorted by its feet (DepthSort, TLF-067).
+		_ghost_node.z_index = DepthSort.ACTOR_Z
 
 		# Ghost visual placeholder: translucent purple body
 		var rect = ColorRect.new()

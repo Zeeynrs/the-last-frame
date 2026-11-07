@@ -455,7 +455,7 @@ z_as_relative = false
 script = ExtResource("mb_plate_pres")
 tex_released = ExtResource("mb_plate_a_empty")
 tex_pressed = ExtResource("mb_plate_a_pressed")
-sprite_offset = Vector2(-16, -12)
+sprite_offset = Vector2(-16, -8)
 
 [node name="bell_plate_01" type="Area2D" parent="."]
 position = Vector2(208, 136)
@@ -475,7 +475,7 @@ z_as_relative = false
 script = ExtResource("mb_plate_pres")
 tex_released = ExtResource("mb_bell_idle")
 tex_pressed = ExtResource("mb_bell_ring")
-sprite_offset = Vector2(-16, -12)
+sprite_offset = Vector2(-4, -4)
 
 [node name="hatch_threshold" type="Area2D" parent="."]
 position = Vector2(320, 112)
