@@ -260,3 +260,128 @@ func test_restore_with_unknown_room_is_refused() -> void:
 	data["spatial"] = {"pairs": [], "actor_rooms": {"player": "ch01.nowhere"}}
 	_assert_eq(rig["router"].restore_from_save(data)["reason"], &"unknown_room", "refused")
 	_done(rig)
+
+
+# --- camera (ADR-023, TLF-065; Review Focus 2 and 3) ---------------------------------------------
+
+const BIG := &"ch01.room_big"
+const SMALL := &"ch01.room_small"
+const BIG_GATE := &"ch01.room_big.gate"
+
+
+## A 40 x 12 room (scrolls both ways) with a door far east, a checkpoint and its anchor far west,
+## and a rewindable gate; a 14 x 10 room (fits the screen) with a door west.
+func _shaped_room(room: StringName, shape: RoomShape, door: StringName, door_tile: Vector2, extra: bool) -> PackedScene:
+	var root := Node2D.new()
+	root.name = String(room).get_slice(".", 1).to_pascal_case()
+	root.set_meta(&"room_shape", shape)
+	var doorway := _doorway(room, door, Vector2.ZERO)
+	doorway.position = RoomShape.tile_to_px(door_tile)
+	root.add_child(doorway)
+	if extra:
+		var anchor := SafeAnchor.new()
+		anchor.name = "Anchor"
+		anchor.object_id = StringName("%s.anchor" % room)
+		anchor.position = RoomShape.tile_to_px(Vector2(2.5, 9.5))
+		root.add_child(anchor)
+		var cp := CheckpointZone.new()
+		cp.name = "Checkpoint"
+		cp.object_id = StringName("%s.checkpoint" % room)
+		cp.checkpoint_id = &"ch01.cp.room_big"
+		cp.spawn_anchor_id = anchor.object_id
+		cp.position = anchor.position
+		root.add_child(cp)
+		var gate := TemporalTestGate.new()
+		gate.name = "Gate"
+		gate.object_id = BIG_GATE
+		gate.position = RoomShape.tile_to_px(Vector2(20.5, 6.5))
+		gate.add_child(make_temporal(TemporalComponent.CAP_REWIND, ["arm_state", "passage_blocked"],
+			[{"arm_state": &"open", "passage_blocked": false}]))
+		root.add_child(gate)
+	for child in root.get_children():
+		_own(child, root)
+	var scene := PackedScene.new()
+	scene.pack(root)
+	root.free()
+	return scene
+
+
+func _camera_rig() -> Dictionary:
+	var rig := _rig()
+	var s: GameSession = rig["s"]
+	var router: RoomRouter = rig["router"]
+	var g := SpatialGraph.new()
+	g.add_room(BIG, [&"door_e"])
+	g.add_room(SMALL, [&"door_w"])
+	g.set_initial_pairs([[BIG, &"door_e", SMALL, &"door_w"]])
+	s.spatial_service.set_graph(g, BIG)
+	router.register_room(BIG, _shaped_room(BIG, RoomShape.rectangle(40, 12), &"door_e", Vector2(39.5, 6.5), true))
+	router.register_room(SMALL, _shaped_room(SMALL, RoomShape.rectangle(14, 10), &"door_w", Vector2(0.5, 5.5), false))
+	return rig
+
+
+## Review Focus 2: going through a door between rooms of different sizes, the camera is on the
+## new room's correct spot on the first frame, inside the new bounds, with no pan from the old room.
+func test_transition_camera_correct_on_first_frame() -> void:
+	var rig := _camera_rig()
+	var router: RoomRouter = rig["router"]
+	var player: Node2D = rig["player"]
+	router.enter_room(BIG, &"door_e")
+	var camera := router.camera
+	_assert_true(camera != null and camera.is_current(), "the router made its camera current")
+	var big_centre := camera.get_screen_center_position()
+	_assert_eq(big_centre, camera.centre_for(player.global_position), "big room: on the player at the east door")
+	_assert_true(big_centre.x > 320.0, "big room: scrolled east (%s)" % big_centre)
+	rig["s"].sim_clock.step(20)
+	_walk(rig, &"ch01.room_big.door_e")               # same call stack: no frame in between
+	_assert_eq(router.current_room_id, SMALL, "now in the small room")
+	_assert_eq(camera.bounds, RoomShape.rectangle(14, 10).bounds_px(), "small room bounds handed over")
+	_assert_eq(camera.get_screen_center_position(), Vector2(320, 180), "small room: today's fixed view at once")
+	_assert_eq(camera.get_viewport().get_canvas_transform(), Transform2D.IDENTITY, "first frame draws the small room unscrolled")
+	rig["s"].sim_clock.step(20)
+	_walk(rig, &"ch01.room_small.door_w")
+	_assert_eq(router.current_room_id, BIG, "back in the big room")
+	_assert_eq(camera.get_screen_center_position(), big_centre, "big room: back on the east door spot at once")
+	_assert_true(camera.bounds.encloses(Rect2(camera.get_screen_center_position() - RoomCamera.view_size() * 0.5, RoomCamera.view_size())),
+		"big room: the first frame is inside its bounds")
+	await physics_frames(2)
+	_assert_eq(camera.get_screen_center_position(), big_centre, "and stays there (no pan afterwards)")
+	_done(rig)
+
+
+## Review Focus 3: a save at a checkpoint in a large room and a load into a fresh session put the
+## player and the camera back together on the first frame; the echo is gone and every restored
+## object, the player and the anchor are inside the room's collision shape.
+func test_save_load_restores_camera_with_player() -> void:
+	var rig := _camera_rig()
+	var router: RoomRouter = rig["router"]
+	var s: GameSession = rig["s"]
+	router.enter_room(BIG, &"door_e")
+	_assert_true(s.interaction_service.request(&"player", BIG_GATE, &"rewind").ok, "gate rewound before the save")
+	s.echo_service.start_recording()
+	s.interaction_service.trigger_enter(&"player", &"ch01.room_big.checkpoint")
+	_assert_eq(router.last_checkpoint_id, &"ch01.cp.room_big", "checkpoint reached in the big room")
+	var data: Dictionary = router.save_service.read_slot(0)["data"]
+	free_session(s)
+
+	var rig2 := _camera_rig()
+	var r2: RoomRouter = rig2["router"]
+	var player: Node2D = rig2["player"]
+	player.global_position = Vector2(9999, 9999)
+	_assert_true(r2.restore_from_save(data)["ok"], "restore ok")
+	var shape := RoomShape.rectangle(40, 12)
+	var anchor_px := RoomShape.tile_to_px(Vector2(2.5, 9.5))
+	_assert_eq(player.global_position, anchor_px, "player at the checkpoint anchor")
+	var camera := r2.camera
+	_assert_eq(camera.get_screen_center_position(), camera.centre_for(anchor_px), "camera on the player on the first frame")
+	_assert_eq(camera.get_screen_center_position().x, shape.bounds_px().position.x + 320.0, "camera at the west clamp, with the player")
+	_assert_eq(camera.bounds, shape.bounds_px(), "the big room's bounds")
+	var poly := shape.perimeter_polygon_px()
+	_assert_true(Geometry2D.is_point_in_polygon(player.global_position, poly), "player inside the collision shape")
+	for node in r2.current_room.find_children("*", "Node2D", true, false):
+		_assert_true(Geometry2D.is_point_in_polygon(node.global_position, poly), "%s inside the collision shape" % node.name)
+	_assert_eq(rig2["s"].echo_service.state, EchoService.State.IDLE, "no echo after the load")
+	_assert_eq(rig2["s"].interaction_service.request(&"player", BIG_GATE, &"rewind").reason, &"no_history", "the used Rewind stays used")
+	await physics_frames(2)
+	_assert_eq(camera.get_screen_center_position(), camera.centre_for(anchor_px), "camera still with the player")
+	_done(rig2)
