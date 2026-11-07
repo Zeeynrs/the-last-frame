@@ -12,7 +12,7 @@ var _target: ReleaseLever
 
 func _ready() -> void:
 	centered = false
-	offset = Vector2(-12, -28)
+	offset = Vector2(-12, -32)   # canonical pivot (12, 32) (ASSET_METADATA)
 	_target = get_parent() as ReleaseLever
 	_refresh()
 

@@ -654,6 +654,7 @@ z_as_relative = false
 script = ExtResource("cw_gate_pres")
 tex_closed = ExtResource("cw_door_closed")
 tex_open = ExtResource("cw_door_open")
+sprite_offset = Vector2(-16, -56)
 
 [node name="reset_anchor_02" type="Area2D" parent="."]
 position = Vector2(432, 136)
@@ -682,7 +683,7 @@ shape = SubResource("CircleShape2D_cw_doc12")
 [node name="DocSprite" type="Sprite2D" parent="doc_ticket_terms"]
 z_index = 8
 z_as_relative = false
-offset = Vector2(-8, -12)
+offset = Vector2(-8, -16)
 centered = false
 texture = ExtResource("cw_terms_tex")
 

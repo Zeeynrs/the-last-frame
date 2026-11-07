@@ -11,7 +11,7 @@ var _target: SelectorSwitch
 
 func _ready() -> void:
 	centered = false
-	offset = Vector2(-8, -20)
+	offset = Vector2(-16, -40)   # canonical pivot (16, 40) (ASSET_METADATA)
 	_target = get_parent() as SelectorSwitch
 	if _target != null:
 		_target.changed.connect(func(_pos): _refresh())

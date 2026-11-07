@@ -372,6 +372,7 @@ z_as_relative = false
 script = ExtResource("so_gate_pres")
 tex_closed = ExtResource("so_gate_closed")
 tex_open = ExtResource("so_gate_open")
+sprite_offset = Vector2(-16, -56)
 
 [node name="doc_last_service" type="Area2D" parent="."]
 position = Vector2(288, 96)
