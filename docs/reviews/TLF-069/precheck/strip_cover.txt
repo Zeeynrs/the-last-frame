@@ -1,0 +1,4 @@
+pit edge row y=7, x 13..28        4096 px,  4096 under a partition = 100% hidden
+arm edge column x=11, y 9..16     2048 px,  2048 under a partition = 100% hidden
+row behind it, y=6, x 13..28      4096 px,   136 under a partition = 3% hidden
+partition piece opaque rows: low_s y 0..31 of 32 (pivot y 24)

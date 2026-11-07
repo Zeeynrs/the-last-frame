@@ -1,0 +1,471 @@
+extends "res://tests/support/ch01_real_input.gd"
+
+## TLF-069 review probe (Opus; scratch tooling, not a project test). Boots Chapter01 on whatever
+## arrival_platform.tscn is in the tree (the layout reference or Flash's build) and measures, with
+## the real Player capsule, the real colliders, the real router bounds and the real RoomCamera:
+##   A. room facts: outline, bounds, hidden floor, objects off the floor
+##   B. capsule flood fill from the spawn (2 px grid, gate closed)
+##   C. per object: the 4 stand spots at 17.9 px (one tile step), floor / capsule-free / nearest
+##      reachable point, a real-input walk (closest approach, rule <= 2.6 px) and the target the game
+##      picks there (use: Player.choose_best_interactable; trace: PocketWatch.choose_watch_target)
+##   D. walk-in triggers: reachable by the capsule? (door_exit_east must NOT be with the gate closed)
+##   E. door sweep with the gate closed from a grid of reachable start points
+##   F. statues vs the line spawn -> (8,8) -> gate: tile-space distance and a real walk of the line
+##   G. camera: RoomCamera view inside the room bounds at spawn / watch / gate and for every
+##      reachable point; what the views show
+## Every line starts with "PROBE"; "PROBE FAIL" marks a rule broken.
+
+const R1 := &"ch01.arrival_platform"
+const STEP := 2.0
+const TILE := 17.8885          # one tile step in px (16, 8)
+const REACH := 2.6             # TLF-055 rule
+const WAYPOINT := Vector2(8, 8)
+const USE_TARGETS := ["selector_line", "selector_platform", "selector_car", "release_lever", "doc_last_service"]
+const TRACE_TARGETS := ["n01_conductor", "n02_student", "n03_old_man", "n04_cleaner"]
+const WALK_IN := ["pocket_watch_pickup", "checkpoint", "digital_clock_2359", "operator_sighting/ApproachTrigger"]
+
+var room: Node2D
+var shape: RoomShape
+var cs: CollisionShape2D
+var reach: Dictionary = {}     # Vector2i grid key -> true
+var reach_pts: Array[Vector2] = []
+var fails: int = 0
+
+
+func _init() -> void:
+	timeout_frames = 40000
+
+
+func _p(msg: String) -> void:
+	print("PROBE " + msg)
+
+
+func _fail(msg: String) -> void:
+	fails += 1
+	print("PROBE FAIL " + msg)
+
+
+func _tile(p: Vector2) -> Vector2:
+	return RoomShape.px_to_tile(p)
+
+
+func _ts(t: Vector2) -> String:
+	return "(%s,%s)" % [String.num(t.x, 2).trim_suffix(".00"), String.num(t.y, 2).trim_suffix(".00")]
+
+
+func _node(path: String) -> Node2D:
+	return room.get_node_or_null(path) as Node2D
+
+
+# --- capsule geometry (Player.tscn: capsule r 6, h 16, rotated 90 deg, at (0,-4)) ------------
+
+func _free_at(p: Vector2) -> bool:
+	var q := PhysicsShapeQueryParameters2D.new()
+	q.shape = cs.shape
+	q.transform = Transform2D(cs.rotation, p + cs.position)
+	q.collision_mask = player.collision_mask
+	q.exclude = [player.get_rid()]
+	return player.get_world_2d().direct_space_state.intersect_shape(q, 1).is_empty()
+
+
+func _seg_half() -> float:
+	var c := cs.shape as CapsuleShape2D
+	return c.height * 0.5 - c.radius
+
+
+func _radius() -> float:
+	return (cs.shape as CapsuleShape2D).radius
+
+
+## Gap between the capsule at player position p and a world-space shape (negative = overlap).
+func _gap_to(p: Vector2, node: CollisionShape2D) -> float:
+	var c := p + cs.position
+	var h := _seg_half()
+	var g := node.global_transform
+	if node.shape is CircleShape2D:
+		var o := g.origin
+		var dx := maxf(0.0, absf(o.x - c.x) - h)
+		return Vector2(dx, o.y - c.y).length() - (node.shape as CircleShape2D).radius - _radius()
+	if node.shape is RectangleShape2D:
+		var ext := (node.shape as RectangleShape2D).size * 0.5
+		var r := Rect2(g.origin - ext, ext * 2.0)
+		var dx := maxf(0.0, maxf(r.position.x - (c.x + h), (c.x - h) - r.end.x))
+		var dy := maxf(0.0, maxf(r.position.y - c.y, c.y - r.end.y))
+		return Vector2(dx, dy).length() - _radius()
+	return INF
+
+
+func _key(p: Vector2) -> Vector2i:
+	return Vector2i(roundi(p.x / STEP), roundi(p.y / STEP))
+
+
+func _flood(start: Vector2) -> void:
+	var b := router.current_room_bounds()
+	var s := _key(start)
+	var queue: Array[Vector2i] = [s]
+	var seen := {s: true}
+	while not queue.is_empty():
+		var k: Vector2i = queue.pop_back()
+		var p := Vector2(k) * STEP
+		if not _free_at(p):
+			continue
+		reach[k] = true
+		reach_pts.append(p)
+		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var n: Vector2i = k + d
+			if seen.has(n) or not b.has_point(Vector2(n) * STEP):
+				continue
+			seen[n] = true
+			queue.append(n)
+
+
+func _nearest_reach(p: Vector2) -> Vector2:
+	var best := Vector2.INF
+	var bd := INF
+	for q in reach_pts:
+		var d := q.distance_squared_to(p)
+		if d < bd:
+			bd = d
+			best = q
+	return best
+
+
+func _route() -> Array[Vector2]:
+	var spawn := _tile(_node("safe_anchor_spawn").global_position)
+	var gate := _tile(_node("platform_gate").global_position)
+	return [spawn, WAYPOINT, gate]
+
+
+static func _seg_dist(p: Vector2, a: Vector2, b: Vector2) -> float:
+	return p.distance_to(Geometry2D.get_closest_point_to_segment(p, a, b))
+
+
+func _route_dist(t: Vector2) -> float:
+	var r := _route()
+	return minf(_seg_dist(t, r[0], r[1]), _seg_dist(t, r[1], r[2]))
+
+
+func _route_dist_px(p: Vector2) -> float:
+	var r := _route()
+	var a := RoomShape.tile_to_px(r[0])
+	var m := RoomShape.tile_to_px(r[1])
+	var b := RoomShape.tile_to_px(r[2])
+	return minf(_seg_dist(p, a, m), _seg_dist(p, m, b))
+
+
+func _interactables() -> Array:
+	return _tree().get_nodes_in_group(&"interactable")
+
+
+## Real-input walk toward `spot`; returns the closest approach (px).
+func _walk_min(spot: Vector2, frames: int = 150) -> float:
+	var best := player.global_position.distance_to(spot)
+	var still := 0
+	var last := player.global_position
+	for i in frames:
+		if best <= 1.0:
+			break
+		steer(player, spot)
+		await physics_frames(1)
+		best = minf(best, player.global_position.distance_to(spot))
+		still = still + 1 if player.global_position.distance_to(last) < 0.5 else 0
+		last = player.global_position
+		if still >= 20:
+			break
+	hold_moves([])
+	await physics_frames(2)
+	return best
+
+
+func _teleport(p: Vector2) -> void:
+	player.global_position = p
+	player.velocity = Vector2.ZERO
+	await physics_frames(2)
+
+
+# --- the probe -------------------------------------------------------------------------------
+
+func test_probe_arrival_v2() -> void:
+	if not await start_at(R1, &""):
+		stop()
+		return
+	room = router.current_room as Node2D
+	cs = player.get_node("CollisionShape2D") as CollisionShape2D
+	await _section_a()
+	_flood(player.global_position)
+	_p("B flood: %d reachable capsule positions (2 px grid) from the spawn %s" % [reach_pts.size(), player.global_position])
+	_section_b_edges()
+	await _section_c()
+	_section_d()
+	await _section_e()
+	await _section_f()
+	await _section_g()
+	_p("SUMMARY %d rule failures" % fails)
+	stop()
+
+
+func _section_a() -> void:
+	shape = router.current_room_shape()
+	if shape == null:
+		_fail("A no metadata/room_shape on the room root: camera bounds fall back to %s" % router.current_room_bounds())
+		shape = RoomShape.new()
+		shape.outline = PackedVector2Array([Vector2(0, 0), Vector2(30, 0), Vector2(30, 8), Vector2(12, 8), Vector2(12, 18), Vector2(0, 18)])
+	_p("A outline %s floor cells %d bounds %s (router %s)" % [shape.outline, shape.floor_cells().size(), shape.bounds_px(), router.current_room_bounds()])
+	var hidden := shape.hidden_floor_cells()
+	if hidden.is_empty():
+		_p("A hidden_floor_cells(): [] OK")
+	else:
+		_fail("A hidden_floor_cells(): %s" % [hidden])
+	var floor_px := shape.perimeter_polygon_px(0.0)
+	for n in room.get_children():
+		var n2 := n as Node2D
+		if n2 == null or n2.name in ["PerimeterWalls", "TileMapLayer_Floor", "RoomVisuals", "YSort_Walls", "Wall_Fixtures", "YSort_Actors", "release_lock"]:
+			continue
+		var p := n2.global_position
+		var inside := Geometry2D.is_point_in_polygon(p, floor_px) or _on_outline(p, floor_px)
+		_p("A object %-26s px %-12s tile %-12s %s" % [n2.name, p, _ts(_tile(p)), "on floor" if inside else "OFF FLOOR"])
+		if not inside and n2.name != "digital_clock_2359":
+			_fail("A %s is off the floor (tile %s)" % [n2.name, _ts(_tile(p))])
+	for path in ["YSort_Actors/StalledTransitCar", "YSort_Actors/PlatformBench", "Wall_Fixtures/Clock_2", "Wall_Fixtures/Clock_5"]:
+		var d := _node(path)
+		if d != null:
+			_p("A decor %-28s px %-12s tile %s" % [path, d.global_position, _ts(_tile(d.global_position))])
+
+
+func _on_outline(p: Vector2, poly: PackedVector2Array) -> bool:
+	for i in poly.size():
+		if _seg_dist(p, poly[i], poly[(i + 1) % poly.size()]) < 0.5:
+			return true
+	return false
+
+
+## How far past each low S/E edge line the capsule's position reaches (partition overlap).
+func _section_b_edges() -> void:
+	for seg in shape.wall_segments():
+		if seg["kind"] != &"straight" or not (seg["face"] == &"low_S" or seg["face"] == &"low_E"):
+			continue
+		var a := RoomShape.tile_to_px(Vector2(seg["from"]))
+		var b := RoomShape.tile_to_px(Vector2(seg["to"]))
+		var nrm := Vector2(b - a).orthogonal().normalized()  # pick the outward side below
+		var mid := (a + b) * 0.5
+		if Geometry2D.is_point_in_polygon(mid + nrm * 4.0, shape.perimeter_polygon_px(0.0)):
+			nrm = -nrm
+		var best := -INF
+		for q in reach_pts:
+			var t := (q - a).dot((b - a).normalized())
+			if t < TILE or t > a.distance_to(b) - TILE:
+				continue
+			best = maxf(best, (q - a).dot(nrm))
+		_p("B edge %-5s %s->%s: the player's position reaches %.1f px past the edge line (perpendicular, corners excluded)" % [seg["face"], seg["from"], seg["to"], best])
+
+
+func _candidates(obj_tile: Vector2) -> Array:
+	var out: Array = []
+	for d in [Vector2(0, 1), Vector2(-1, 0), Vector2(0, -1), Vector2(1, 0)]:
+		out.append(obj_tile + d)
+	return out
+
+
+func _section_c() -> void:
+	var targets := USE_TARGETS + TRACE_TARGETS
+	for name in targets:
+		var obj := _node(name)
+		if obj == null:
+			_fail("C %s missing" % name)
+			continue
+		var ability := &"trace" if TRACE_TARGETS.has(name) else &"use"
+		var ot := _tile(obj.global_position)
+		var rows: Array = []
+		for st in _candidates(ot):
+			var spot := RoomShape.tile_to_px(st)
+			var on_floor := Geometry2D.is_point_in_polygon(spot, shape.perimeter_polygon_px(0.0)) or _on_outline(spot, shape.perimeter_polygon_px(0.0))
+			var free := _free_at(spot)
+			var nr := _nearest_reach(spot)
+			var row := {"tile": st, "spot": spot, "floor": on_floor, "free": free, "near": nr.distance_to(spot), "route": _route_dist(st)}
+			rows.append(row)
+		rows.sort_custom(func(a, b): return a["route"] < b["route"])
+		var declared := _declared_stand(name)
+		if declared != Vector2.INF:
+			rows.sort_custom(func(a, b): return a["tile"] == declared and b["tile"] != declared)
+			if rows[0]["tile"] != declared:
+				_fail("C %s declared stand %s is not one tile step from the object %s" % [name, _ts(declared), _ts(ot)])
+		var approach_done := false
+		for row in rows:
+			var spot: Vector2 = row["spot"]
+			var line := "C %-18s %-5s %s stand %-8s px %-11s route %.2f t | floor %s free %s nearest reachable %.1f px" % [
+				name, ability, _ts(ot), _ts(row["tile"]), spot, row["route"], row["floor"], row["free"], row["near"]]
+			if not row["floor"] or row["near"] > 12.0:
+				_p(line + " | not walked")
+				continue
+			# Start one more tile out on the same side, at the nearest reachable point.
+			var start := _nearest_reach(spot + (spot - obj.global_position).normalized() * TILE)
+			await _teleport(start)
+			var best := await _walk_min(spot)
+			var chosen := _choose(ability)
+			var ok_reach := best <= REACH
+			var ok_target := chosen == obj
+			line += " | walk from %s closest %.2f px %s | %s picks %s" % [start, best, "OK" if ok_reach else "MISS",
+				ability, chosen.name if chosen != null else "nothing"]
+			if not approach_done:
+				line += "   <- %s" % ("declared stand" if _declared_stand(name) != Vector2.INF else "approach side")
+				if not ok_reach or not ok_target:
+					_fail("C %s approach-side stand %s: reach %.2f px (<= %.1f), target %s" % [name, _ts(row["tile"]), best, REACH, chosen.name if chosen != null else "none"])
+				approach_done = true
+			_p(line)
+
+
+## TLF_PROBE_STANDS="release_lever=28,2;n04_cleaner=25,6" declares stand spots (tiles).
+func _declared_stand(name: String) -> Vector2:
+	for item in OS.get_environment("TLF_PROBE_STANDS").split(";", false):
+		var kv := item.split("=")
+		if kv.size() == 2 and kv[0].strip_edges() == name:
+			var c := kv[1].split(",")
+			return Vector2(float(c[0]), float(c[1]))
+	return Vector2.INF
+
+
+func _choose(ability: StringName) -> Node:
+	if ability == &"use":
+		return Player.choose_best_interactable(player.global_position, player._candidates, &"player")
+	return PocketWatch.choose_watch_target(player.global_position, _interactables(), ability)
+
+
+func _section_d() -> void:
+	for path in WALK_IN + ["door_exit_east"]:
+		var area := _node(path)
+		if area == null:
+			_p("D %s missing" % path)
+			continue
+		var shapes := area.find_children("*", "CollisionShape2D", false)
+		if shapes.is_empty():
+			continue
+		var c := shapes[0] as CollisionShape2D
+		var hits := 0
+		var best := INF
+		for q in reach_pts:
+			var g := _gap_to(q, c)
+			best = minf(best, g)
+			if g < 0.0:
+				hits += 1
+		var reachable := hits > 0
+		_p("D trigger %-34s at %-11s reachable %s (%d positions overlap, smallest gap %.1f px)" % [path, area.global_position, reachable, hits, best])
+		if path == "door_exit_east" and reachable:
+			_fail("D door_exit_east overlaps the capsule from %d reachable positions with the gate closed" % hits)
+		elif path != "door_exit_east" and not reachable:
+			_fail("D %s cannot be reached by the capsule" % path)
+
+
+func _section_e() -> void:
+	var door := _node("door_exit_east") as Area2D
+	var gate := _node("platform_gate")
+	var entered := [0]
+	var cb := func(b): if b == player: entered[0] += 1
+	door.body_entered.connect(cb)
+	var starts: Array[Vector2] = []
+	for q in reach_pts:
+		var d := q.distance_to(door.global_position)
+		if d <= 96.0 and int(q.x) % 8 == 0 and int(q.y) % 8 == 0:
+			starts.append(q)
+	var nearest := INF
+	var hit_from: Array = []
+	for s in starts:
+		entered[0] = 0
+		await _teleport(s)
+		for goal in [door.global_position, door.global_position + Vector2(6, 3), door.global_position + Vector2(-6, 6)]:
+			await walk_to(player, "sweep", goal, Callable(), 40, true)
+			nearest = minf(nearest, player.global_position.distance_to(door.global_position))
+		if entered[0] > 0 or router.current_room_id != R1:
+			hit_from.append(s)
+			if router.current_room_id != R1:
+				router.enter_room(R1, &"")
+				await physics_frames(3)
+				room = router.current_room as Node2D
+				break
+	door.body_entered.disconnect(cb)
+	_p("E door sweep (gate closed, passage_blocked %s): %d start points within 96 px, 3 goals x 40 frames each; door entered from %d %s; closest end %.1f px from the door centre" % [
+		gate.get("passage_blocked"), starts.size(), hit_from.size(), hit_from, nearest])
+	if not hit_from.is_empty():
+		_fail("E door entered with the gate closed")
+
+
+func _section_f() -> void:
+	var route := _route()
+	_p("F route (tiles) %s" % [route])
+	var feet := {}
+	for name in TRACE_TARGETS:
+		var st := _node(name)
+		var t := _tile(st.global_position)
+		var dt := _route_dist(t)
+		var dp := _route_dist_px(st.global_position)
+		_p("F %-14s tile %-8s distance to the line %.2f tiles (%.1f px) %s" % [name, _ts(t), dt, dp, "OK" if dt >= 2.0 else "< 2 TILES"])
+		if dt < 2.0:
+			_fail("F %s is %.2f tiles from the line spawn -> (8,8) -> gate (rule >= 2)" % [name, dt])
+		feet[name] = st.get_node("Footprint/CollisionShape2D")
+	# Real walk of the line; the gate end stops 1.5 tiles west of the gate.
+	var gate_px := _node("platform_gate").global_position
+	var end_px := RoomShape.tile_to_px(route[2] - Vector2(1.5, 0))
+	await _teleport(_node("safe_anchor_spawn").global_position)
+	var gaps := {}
+	for name in feet:
+		gaps[name] = INF
+	var blocked := false
+	for goal in [RoomShape.tile_to_px(WAYPOINT), end_px]:
+		var still := 0
+		for i in 900:
+			if player.global_position.distance_to(goal) <= 3.0:
+				break
+			steer(player, goal)
+			var before := player.global_position
+			await physics_frames(1)
+			for name in feet:
+				gaps[name] = minf(gaps[name], _gap_to(player.global_position, feet[name]))
+			still = still + 1 if player.global_position.distance_to(before) < 0.5 else 0
+			if still >= 30:
+				blocked = true
+				_fail("F the line walk is blocked at %s on the way to %s" % [player.global_position, goal])
+				break
+	hold_moves([])
+	await dismiss_blocking_ui()
+	_p("F line walk spawn -> %s -> %s (1.5 t west of the gate %s): %s; closest capsule-to-footprint gaps %s" % [
+		RoomShape.tile_to_px(WAYPOINT), end_px, gate_px, "blocked" if blocked else "clear", gaps])
+
+
+func _section_g() -> void:
+	var cam := router.camera
+	var bounds := router.current_room_bounds()
+	var pick := _node("pocket_watch_pickup").global_position
+	var pick_stand := RoomShape.tile_to_px(_tile(pick) + Vector2(-1, 0))
+	var gate := _node("platform_gate").global_position
+	var spots := {"spawn": _node("safe_anchor_spawn").global_position,
+		"watch (pickup stand -x)": _nearest_reach(pick_stand),
+		"gate (1 t west)": _nearest_reach(gate - Vector2(16, 8)),
+		"lever": _nearest_reach(_node("release_lever").global_position + Vector2(-16, 8))}
+	for label in spots:
+		await _teleport(spots[label])
+		await physics_frames(2)
+		var view := cam.view_rect()
+		var inside := bounds.encloses(view)
+		_p("G camera at %-24s player %-11s centre %-11s view %s bounds %s %s" % [label, player.global_position, cam.position, view, bounds, "inside" if inside else "OUTSIDE"])
+		if not inside:
+			_fail("G camera view outside the room bounds at %s" % label)
+		var shown: Array = []
+		for name in ["safe_anchor_spawn", "pocket_watch_pickup", "operator_sighting", "n01_conductor", "n02_student", "n03_old_man", "n04_cleaner", "selector_line", "selector_car", "release_lever", "platform_gate"]:
+			if view.has_point(_node(name).global_position):
+				shown.append(name)
+		_p("G   in view: %s" % [shown])
+	var figure := _node("operator_sighting/FigureSprite") as Sprite2D
+	if figure != null:
+		await _teleport(spots["watch (pickup stand -x)"])
+		var fr := figure.get_global_transform() * figure.get_rect()
+		_p("G operator figure rect %s fully in the view from the watch: %s" % [fr, cam.view_rect().encloses(fr)])
+	var outside := 0
+	for q in reach_pts:
+		var v := Rect2(cam.centre_for(q) - RoomCamera.view_size() * 0.5, RoomCamera.view_size())
+		if not bounds.encloses(v):
+			outside += 1
+	_p("G centre_for() over all %d reachable positions: %d views outside the bounds" % [reach_pts.size(), outside])
+	if outside > 0:
+		_fail("G %d reachable positions give a view outside the bounds" % outside)
+	var xs := reach_pts.map(func(q): return cam.centre_for(q).x)
+	var ys := reach_pts.map(func(q): return cam.centre_for(q).y)
+	_p("G camera centre range x %s..%s y %s..%s" % [xs.min(), xs.max(), ys.min(), ys.max()])

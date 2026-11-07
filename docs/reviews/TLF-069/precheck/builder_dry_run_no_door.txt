@@ -1,0 +1,110 @@
+shape: [['0', '0'], ['30', '0'], ['30', '8'], ['12', '8'], ['12', '18'], ['0', '18']]
+  floor: 360 tiles (136 kept with their tile, 224 new with source 0, 4 removed, 0 holes)
+  edge strip: source 2 on 46 S/E boundary cells (44 repainted), 17 old strip cells back to source 0
+    strip cleared from [(0, 9), (1, 9), (2, 9), (3, 9), (4, 9), (5, 9), (6, 9), (7, 9), (8, 9), (9, 9), (10, 9), (13, 0), (13, 1), (13, 2), (13, 3), (13, 4), (13, 6)]
+  collision: 6 corners, outset 0.25 tile
+  walls: 15 N and 9 W modules
+  NOT DRAWN: low_E partition (30, 0) -> (30, 8) (open today; TLF-068 low piece if needed)
+  NOT DRAWN: low_S partition (12, 8) -> (30, 8) (open today; TLF-068 low piece if needed)
+  NOT DRAWN: low_E partition (12, 8) -> (12, 18) (open today; TLF-068 low piece if needed)
+  NOT DRAWN: low_S partition (0, 18) -> (12, 18) (open today; TLF-068 low piece if needed)
+  NOT DRAWN: outer_corner N at (0, 0) (faces W/N, TLF-068 kit)
+  NOT DRAWN: outer_corner N at (30, 0) (faces N/low_E, TLF-068 kit)
+  NOT DRAWN: outer_corner low_S at (30, 8) (faces low_E/low_S, TLF-068 kit)
+  NOT DRAWN: inner_corner low_S at (12, 8) (faces low_S/low_E, TLF-068 kit)
+  NOT DRAWN: outer_corner low_S at (12, 18) (faces low_E/low_S, TLF-068 kit)
+  NOT DRAWN: outer_corner W at (0, 18) (faces low_S/W, TLF-068 kit)
+  metadata/room_shape: outline [[0, 0], [30, 0], [30, 8], [12, 8], [12, 18], [0, 18]]
+diff: 70 changed line(s) (dry run)
+--- scenes/chapters/ch01/rooms/arrival_platform.tscn
++++ scenes/chapters/ch01/rooms/arrival_platform.tscn (built)
+@@ -51,2 +51,3 @@
+ [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_fx_operator_sighting_trace_ring_idle.png" id="op_ring_tex"]
++[ext_resource type="Script" uid="uid://bnbdd6ttv3g0h" path="res://scripts/rooms/room_shape.gd" id="room_shape_script"]
+ 
+@@ -82,4 +83,9 @@
+ 
++[sub_resource type="Resource" id="room_shape"]
++script = ExtResource("room_shape_script")
++outline = PackedVector2Array(0, 0, 30, 0, 30, 8, 12, 8, 12, 18, 0, 18)
++
+ [node name="ArrivalPlatform" type="Node2D"]
+ y_sort_enabled = true
++metadata/room_shape = SubResource("room_shape")
+ 
+@@ -91,3 +97,3 @@
+ build_mode = 1
+-polygon = PackedVector2Array(320, 60, 548, 174, 464, 216, 448, 224, 384, 260, 156, 142)
++polygon = PackedVector2Array(320, 60, 808, 304, 672, 372, 384, 228, 224, 308, 24, 208)
+ 
+@@ -154,3 +160,3 @@
+ position = Vector2(304, 64)
+-tile_map_data = PackedByteArray(0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5 ...
++tile_map_data = PackedByteArray(0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5 ...
+ tile_set = ExtResource("art_tileset")
+@@ -196,2 +202,42 @@
+ texture = ExtResource("art_wall_n")
++[node name="WallN_7" type="Sprite2D" parent="YSort_Walls"]
++position = Vector2(560, 184)
++offset = Vector2(-16, -56)
++centered = false
++texture = ExtResource("art_wall_n")
++[node name="WallN_8" type="Sprite2D" parent="YSort_Walls"]
++position = Vector2(592, 200)
++offset = Vector2(-16, -56)
++centered = false
++texture = ExtResource("art_wall_n")
++[node name="WallN_9" type="Sprite2D" parent="YSort_Walls"]
++position = Vector2(624, 216)
++offset = Vector2(-16, -56)
++centered = false
++texture = ExtResource("art_wall_n")
++[node name="WallN_10" type="Sprite2D" parent="YSort_Walls"]
++position = Vector2(656, 232)
++offset = Vector2(-16, -56)
++centered = false
++texture = ExtResource("art_wall_n")
++[node name="WallN_11" type="Sprite2D" parent="YSort_Walls"]
++position = Vector2(688, 248)
++offset = Vector2(-16, -56)
++centered = false
++texture = ExtResource("art_wall_n")
++[node name="WallN_12" type="Sprite2D" parent="YSort_Walls"]
++position = Vector2(720, 264)
++offset = Vector2(-16, -56)
++centered = false
++texture = ExtResource("art_wall_n")
++[node name="WallN_13" type="Sprite2D" parent="YSort_Walls"]
++position = Vector2(752, 280)
++offset = Vector2(-16, -56)
++centered = false
++texture = ExtResource("art_wall_n")
++[node name="WallN_14" type="Sprite2D" parent="YSort_Walls"]
++position = Vector2(784, 296)
++offset = Vector2(-16, -56)
++centered = false
++texture = ExtResource("art_wall_n")
+ [node name="WallW_0" type="Sprite2D" parent="YSort_Walls"]
+@@ -218,2 +264,22 @@
+ position = Vector2(176, 136)
++offset = Vector2(-16, -56)
++centered = false
++texture = ExtResource("art_wall_w")
++[node name="WallW_5" type="Sprite2D" parent="YSort_Walls"]
++position = Vector2(144, 152)
++offset = Vector2(-16, -56)
++centered = false
++texture = ExtResource("art_wall_w")
++[node name="WallW_6" type="Sprite2D" parent="YSort_Walls"]
++position = Vector2(112, 168)
++offset = Vector2(-16, -56)
++centered = false
++texture = ExtResource("art_wall_w")
++[node name="WallW_7" type="Sprite2D" parent="YSort_Walls"]
++position = Vector2(80, 184)
++offset = Vector2(-16, -56)
++centered = false
++texture = ExtResource("art_wall_w")
++[node name="WallW_8" type="Sprite2D" parent="YSort_Walls"]
++position = Vector2(48, 200)
+ offset = Vector2(-16, -56)
