@@ -1,0 +1,43 @@
+Reviewed exact SHA: 835a3a39d3a1aab6be57bdf87c284b2f83a7c0f0
+PASS: all 1419 archive tracked-file blobs still match exact SHA after gates/probes
+Command: python docs\reviews\TLF-068\835a3a3\join_probe.py <exact-SHA-archive>
+exit=0
+{
+  "n_turn_inner": {
+    "opaque_wall_pixels_above_stepped_half": 227,
+    "metadata_first_module_delta": [
+      16,
+      8
+    ],
+    "mockup_first_module_delta": [
+      32,
+      16
+    ]
+  },
+  "w_turn_inner": {
+    "opaque_wall_pixels_above_stepped_half": 227,
+    "metadata_first_module_delta": [
+      -16,
+      8
+    ],
+    "mockup_first_module_delta": [
+      -32,
+      16
+    ]
+  }
+}
+Command: python docs\reviews\TLF-068\835a3a3\geometry_probe.py <exact-SHA-archive>
+exit=0
+PASS: 12 asset canvases/pivots inspected; binary alpha and TLF-CH01-32; low straight delta16, corner delta17 <=20
+PASS: all eight corner kind/faces combinations from canonical RoomShape-builder fixtures match the table assets
+PASS: native 32x48 Elias v2 frame crops, no resize in mockup generator
+PASS: low S/E straight profiles step 2:1; both endcap opening tips have vertical delta16
+sol-check-assets.txt exit=0 / RESULT: ALL PASS (262 file(s))
+sol-verify-regen.txt exit=0 / RESULT: ALL REPRODUCIBLE
+NOTE: Pixelorama emits 136 repeated nonfatal custom_samplers shader-compiler diagnostics, retained in raw log; 34 invocations exit0
+sol-pixelorama.txt exit=0 / TOTAL pxo: 17, all identical: True
+PASS: all local review links resolve (verification output is this file)
+PASS: two copied Argon reference PNGs byte-identical to reviewed archive
+No game project launched; no runtime integration or real-save access by review tools
+PASS: review branch stages exactly 12 documentation/evidence files; asset/tool/runtime/design trees unchanged
+PASS: git diff --cached --check
