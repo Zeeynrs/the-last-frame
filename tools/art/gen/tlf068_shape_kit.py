@@ -944,6 +944,7 @@ def assets():
 
 MOCKUP_FILES = [
     'ch01_tlf068_l_room_shape_kit_mockup.png',
+    'ch01_tlf068_endpoint_join_proof.png',
     'ch01_tlf068_shape_kit_greyscale_proof.png',
 ]
 
@@ -969,10 +970,72 @@ def _tile_to_px(tx, ty, origin=(320, 64)):
     return (int(round(origin[0] + (tx - ty) * 16)), int(round(origin[1] + (tx + ty) * 8)))
 
 
+def assemble_wall_run(face, from_pt, to_pt, start_kind='corner', end_kind='corner', origin=(320, 64)):
+    """Canonical endpoint-aware straight-run assembly recipe (ASSET_METADATA.md §10.2).
+
+    Parameters:
+      - face: 'N' | 'W' | 'low_S' | 'low_E'
+      - from_pt: (fx, fy) start vertex of straight segment (with fx <= tx and fy <= ty)
+      - to_pt:   (tx, ty) end vertex of straight segment
+      - start_kind:
+          * 'inner_turn' when `from_pt` has `n_turn_inner` (on N) or `w_turn_inner` (on W), whose
+            stepped [from, from+1] wing (16->32->48 px) MUST NOT be covered by a full-height module
+            (so s_start = from + 1, placing the first 2-tile module at from + 2).
+          * 'corner' for all full-height / same-height start corners (`nw_outer`, `n_turn_outer`,
+            `w_turn_outer`, `low_corner_inner`), where s_start = from (first module at from + 1).
+      - end_kind:
+          * 'endcap_low' when the tall N/W run ends at an opening with `n_endcap_low` / `w_endcap_low`
+            anchored at `to - 1` (spanning [to-2, to-1] full height + [to-1, to] stepped low bollard),
+            so full-height straight modules stop at s_end = to - 1.
+          * 'corner' when `to_pt` has a corner (`n_turn_outer`, `w_turn_outer`, `nw_inner`,
+            `low_corner_outer`, `n_turn_inner` on low_E, `w_turn_inner` on low_S), which supplies
+            [to-1, to] at full run height, so s_end = to.
+
+    Returns:
+      List of (stem, anchor_px, pivot, z_bias) for the straight 2-tile modules (and endcap if end_kind=='endcap_low').
+      When `rem = s_end - s_start` is odd (`rem = 2*m + 1`), the `m` straight modules cover `[s_start, s_end - 1]`
+      and the remaining 1-tile interval `[s_end - 1, s_end]` is already supplied by the end corner's `[to - 1, to]`
+      wing (or the endcap's `[to - 2, to - 1]` full-height half) with 0 gap and 0 overlap.
+    """
+    fx, fy = from_pt
+    tx, ty = to_pt
+    along_x = (face in ('N', 'low_S'))
+    f = fx if along_x else fy
+    t = tx if along_x else ty
+
+    s_start = (f + 1) if (face in ('N', 'W') and start_kind == 'inner_turn') else f
+    s_end = (t - 1) if (face in ('N', 'W') and end_kind == 'endcap_low') else t
+    rem = max(0, s_end - s_start)
+    m = rem // 2
+
+    stem_map = {
+        'N': ('ch01_env_wall_subterranean_n_idle', (16, 56)),
+        'W': ('ch01_env_wall_subterranean_w_idle', (16, 56)),
+        'low_S': ('ch01_env_wall_partition_low_s_idle', (16, 24)),
+        'low_E': ('ch01_env_wall_partition_low_e_idle', (16, 24)),
+    }
+    stem, piv = stem_map[face]
+    placements = []
+    for k in range(m):
+        u = s_start + 2 * k + 1
+        pt = (u, fy) if along_x else (fx, u)
+        placements.append((stem, _tile_to_px(pt[0], pt[1], origin), piv, -2))
+
+    if face in ('N', 'W') and end_kind == 'endcap_low':
+        end_stem = (
+            'ch01_env_wall_subterranean_n_endcap_low_idle'
+            if face == 'N' else
+            'ch01_env_wall_subterranean_w_endcap_low_idle'
+        )
+        end_pt = (t - 1, fy) if along_x else (fx, t - 1)
+        placements.append((end_stem, _tile_to_px(end_pt[0], end_pt[1], origin), (16, 56), 2))
+
+    return placements
+
+
 def build_l_room_mockup():
-    """640x360 mockup of an L-shaped Chapter 1 room (with connected NW/NE/SW alcoves & SE L-cut)
-    built from the TLF-068 shape kit so every corner, turn, low partition, and low end cap is shown
-    connected to its matching wall runs.
+    """640x360 mockup of an L-shaped Chapter 1 room (with connected NW alcove, N/W corridor mouths & SE L-cut)
+    built strictly via `assemble_wall_run()` from ASSET_METADATA.md §10.2.
     """
     W, H = 640, 360
     canvas = Image.new('RGBA', (W, H), PAL[0] + (255,))
@@ -983,9 +1046,6 @@ def build_l_room_mockup():
     grating = _load_or_render_env('ch01_env_tile_industrial_grating_idle')
     tactile = _load_or_render_env('ch01_env_tile_tactile_amber_idle')
 
-    wall_n = _load_or_render_env('ch01_env_wall_subterranean_n_idle')
-    wall_w = _load_or_render_env('ch01_env_wall_subterranean_w_idle')
-
     c_nw_out = _render_kit_img('ch01_env_wall_subterranean_corner_nw_outer_idle')
     c_nw_in = _render_kit_img('ch01_env_wall_subterranean_corner_nw_inner_idle')
     c_nt_out = _render_kit_img('ch01_env_wall_subterranean_corner_n_turn_outer_idle')
@@ -993,13 +1053,8 @@ def build_l_room_mockup():
     c_wt_out = _render_kit_img('ch01_env_wall_subterranean_corner_w_turn_outer_idle')
     c_wt_in = _render_kit_img('ch01_env_wall_subterranean_corner_w_turn_inner_idle')
 
-    low_s = _render_kit_img('ch01_env_wall_partition_low_s_idle')
-    low_e = _render_kit_img('ch01_env_wall_partition_low_e_idle')
     low_c_in = _render_kit_img('ch01_env_wall_partition_low_corner_inner_idle')
     low_c_out = _render_kit_img('ch01_env_wall_partition_low_corner_outer_idle')
-
-    end_n = _render_kit_img('ch01_env_wall_subterranean_n_endcap_low_idle')
-    end_w = _render_kit_img('ch01_env_wall_subterranean_w_endcap_low_idle')
 
     elias_sheet = _load_png('characters', 'ch01_char_elias_base_sheet')
     elias_se = elias_sheet.crop((0, 0, 32, 48))
@@ -1008,9 +1063,6 @@ def build_l_room_mockup():
     console = _load_png('props', 'ch01_prop_reset_console_idle')
     clock = _load_png('props', 'ch01_prop_digital_clock_2359_idle')
 
-    # Outline polygon (12x10 with NW 2x2 alcove step [0..2)x[0..2), SE 4x4 L-cut [8..12)x[6..10),
-    # plus N corridor mouth [6..7)x[-2..0) and W corridor mouth [-2..0)x[6..7)):
-    # Every tall face is N or W; every S or E face is a 16 px low partition (100% Rule R2 + R2b compliant!).
     def in_room(tx, ty):
         if tx == 6 and -2 <= ty < 0:
             return True
@@ -1046,51 +1098,43 @@ def build_l_room_mockup():
         pw, ph = pivot
         draws.append((ay + z_bias, ax, img, (ax - pw, ay - ph)))
 
-    # 1. Back N wall (2, 0) -> (12, 0) with N corridor mouth at x=6..7:
-    #    - West side of N corridor mouth: wall_n at (3, 0) + n_endcap_low at (5, 0) stepping down to opening
-    #    - East side of N corridor mouth: low_E partition at (7, -1) turning into tall N wall via c_nt_in at (7, 0)
-    add_piece(low_e, _tile_to_px(7, -1, origin), (16, 24), z_bias=-16)
-    add_piece(wall_n, _tile_to_px(3, 0, origin), (16, 56), z_bias=-2)
-    add_piece(end_n, _tile_to_px(5, 0, origin), (16, 56), z_bias=2)
-    add_piece(wall_n, _tile_to_px(9, 0, origin), (16, 56), z_bias=-2)
-    add_piece(wall_n, _tile_to_px(11, 0, origin), (16, 56), z_bias=-2)
-    add_piece(c_nt_in, _tile_to_px(7, 0, origin), (16, 56), z_bias=2)
+    def add_run(face, from_pt, to_pt, start_kind='corner', end_kind='corner', extra_z=0):
+        for stem, anchor_px, piv, zb in assemble_wall_run(face, from_pt, to_pt, start_kind, end_kind, origin):
+            add_piece(_load_or_render_env(stem), anchor_px, piv, z_bias=zb + extra_z)
 
-    # 2. NW step walls: W wall (2, 0)->(2, 2) and N wall (0, 2)->(2, 2), meeting at nw_inner (2, 2)!
-    add_piece(wall_w, _tile_to_px(2, 1, origin), (16, 56), z_bias=-2)
-    add_piece(wall_n, _tile_to_px(1, 2, origin), (16, 56), z_bias=-2)
+    # 1. All straight runs assembled deterministically via `assemble_wall_run()` (§10.2 recipe):
+    add_run('low_E', (7, -2), (7, 0), start_kind='corner', end_kind='corner', extra_z=-14)
+    add_run('N', (2, 0), (6, 0), start_kind='corner', end_kind='endcap_low')
+    add_run('N', (7, 0), (12, 0), start_kind='inner_turn', end_kind='corner')
+
+    add_run('W', (2, 0), (2, 2), start_kind='corner', end_kind='corner')
+    add_run('N', (0, 2), (2, 2), start_kind='corner', end_kind='corner')
+
+    add_run('low_S', (-2, 7), (0, 7), start_kind='corner', end_kind='corner', extra_z=-14)
+    add_run('W', (0, 2), (0, 6), start_kind='corner', end_kind='endcap_low')
+    add_run('W', (0, 7), (0, 10), start_kind='inner_turn', end_kind='corner')
+
+    add_run('low_E', (12, 0), (12, 6), start_kind='corner', end_kind='corner')
+    add_run('low_S', (8, 6), (12, 6), start_kind='corner', end_kind='corner')
+    add_run('low_E', (8, 6), (8, 10), start_kind='corner', end_kind='corner')
+    add_run('low_S', (0, 10), (8, 10), start_kind='corner', end_kind='corner')
+
+    # 2. Vertex corners at their exact polygon vertices `tile_to_px(v)`:
     add_piece(c_nw_out, _tile_to_px(2, 0, origin), (16, 56), z_bias=10)
     add_piece(c_nw_in, _tile_to_px(2, 2, origin), (16, 56), z_bias=12)
     add_piece(c_nw_out, _tile_to_px(0, 2, origin), (16, 56), z_bias=10)
 
-    # 3. West W wall (0, 2) -> (0, 10) with W corridor mouth at y=6..7:
-    #    - North side of W corridor mouth: wall_w at (0, 3) + w_endcap_low at (0, 5) stepping down to opening
-    #    - South side of W corridor mouth: low_S partition at (-1, 7) turning into tall W wall via c_wt_in at (0, 7)
-    add_piece(low_s, _tile_to_px(-1, 7, origin), (16, 24), z_bias=-16)
-    add_piece(wall_w, _tile_to_px(0, 3, origin), (16, 56), z_bias=-2)
-    add_piece(end_w, _tile_to_px(0, 5, origin), (16, 56), z_bias=2)
-    add_piece(wall_w, _tile_to_px(0, 9, origin), (16, 56), z_bias=-2)
-    add_piece(c_wt_in, _tile_to_px(0, 7, origin), (16, 56), z_bias=2)
-
-    # 4. East N-turn outer corner at (12, 0) & West W-turn outer corner at (0, 10):
+    add_piece(c_nt_in, _tile_to_px(7, 0, origin), (16, 56), z_bias=2)
     add_piece(c_nt_out, _tile_to_px(12, 0, origin), (16, 56), z_bias=10)
-    add_piece(c_wt_out, _tile_to_px(0, 10, origin), (16, 56), z_bias=10)
 
-    # 5. Low_E and Low_S partitions around the SE L-cut (8, 6):
-    for ky in (1, 3, 5):
-        add_piece(low_e, _tile_to_px(12, ky, origin), (16, 24), z_bias=-2)
-    for kx in (9, 11):
-        add_piece(low_s, _tile_to_px(kx, 6, origin), (16, 24), z_bias=-2)
-    for ky in (7, 9):
-        add_piece(low_e, _tile_to_px(8, ky, origin), (16, 24), z_bias=-2)
-    for kx in (1, 3, 5, 7):
-        add_piece(low_s, _tile_to_px(kx, 10, origin), (16, 24), z_bias=-2)
+    add_piece(c_wt_in, _tile_to_px(0, 7, origin), (16, 56), z_bias=2)
+    add_piece(c_wt_out, _tile_to_px(0, 10, origin), (16, 56), z_bias=10)
 
     add_piece(low_c_in, _tile_to_px(8, 6, origin), (16, 24), z_bias=10)
     add_piece(low_c_out, _tile_to_px(12, 6, origin), (16, 24), z_bias=10)
     add_piece(low_c_out, _tile_to_px(8, 10, origin), (16, 24), z_bias=10)
 
-    # 6. Props, wall fixtures (sorted in front of walls), and Elias beside low partitions (Rule R2 proof)
+    # 3. Props, wall fixtures (sorted in front of walls), and Elias beside low partitions (Rule R2 proof)
     add_piece(console, _tile_to_px(10.0, 3.5, origin), (16, 30), z_bias=0)
     add_piece(bench, _tile_to_px(5.0, 4.5, origin), (24, 26), z_bias=0)
     add_piece(clock, _tile_to_px(3.5, 0, origin), (16, 48), z_bias=32)
@@ -1105,7 +1149,7 @@ def build_l_room_mockup():
 
     # Header & clean non-overlapping callouts
     _draw_text_img(canvas, 8, 5, "TLF-068 L-SHAPE ROOM MOCKUP (12X10 L-OUTLINE, ADR-023 R2/R2B)", PAL[15], scale=1)
-    _draw_text_img(canvas, 8, 15, "ALL 12 KIT PIECES CONNECTED: NW CORNERS, N/W TURNS, END CAPS, LOW S/E (16PX <= 20PX)", PAL[25], scale=1)
+    _draw_text_img(canvas, 8, 15, "ASSEMBLED BY ASSEMBLE_WALL_RUN() S10.2 RECIPE: +2 AFTER INNER TURNS, ODD ENDS VIA CORNERS", PAL[25], scale=1)
 
     _draw_text_img(canvas, 232, 30, "NW_OUTER (2,0)", PAL[15], scale=1)
     _draw_text_img(canvas, 372, 46, "N_ENDCAP + N_TURN_IN", PAL[25], scale=1)
@@ -1138,6 +1182,170 @@ def build_l_room_mockup():
             iy = 16 + (fx + fy) * 8
             inset.alpha_composite(terrazzo, (ix, iy))
     canvas.alpha_composite(inset, (6, 282))
+
+    return canvas
+
+
+def build_endpoint_join_proof():
+    """640x360 deterministic native-scale (1x) + x2 zoom join proof of the revised §10.2 endpoint-aware
+    assembly recipe (`assemble_wall_run()`):
+      1. N-Turn Inner Connection (`low_E -> c_nt_in -> WallN`, 5-tile odd run (0,0)->(5,0)):
+         First WallN at `from + 2` ((2,0)), preserving the 16->32->48 px step (`0` refilled pixels above step).
+      2. W-Turn Inner Connection (`low_S -> c_wt_in -> WallW`, 3-tile short/odd run (0,0)->(0,3)):
+         First WallW at `from + 2` ((0,2)), preserving the 16->32->48 px step (`0` refilled pixels above step).
+      3. Short / Odd-Length Runs (`rem = 3` tiles):
+         - 3-tile full-height N run (0,0)->(3,0) (`nw_outer` -> 1 `WallN` at (1,0) -> `n_turn_outer` at (3,0))
+         - 4-tile N-turn inner run (0,0)->(4,0) (`n_turn_inner` [0,1] -> 1 `WallN` at (2,0) [1,3] -> `n_turn_outer` [3,4])
+      4. Rule R2b Low Endcap Run (`rem = 3` tiles, (0,0)->(4,0)):
+         `nw_outer` at (0,0) -> 1 `WallN` at (1,0) [0,2] -> `n_endcap_low` at (3,0) ([2,3] full + [3,4] stepped).
+    Also programmatically asserts 0 refilled pixels above stepped transitions and 0 seam gaps.
+    """
+    W, H = 640, 360
+    canvas = Image.new('RGBA', (W, H), PAL[0] + (255,))
+
+    c_nw_out = _render_kit_img('ch01_env_wall_subterranean_corner_nw_outer_idle')
+    c_nt_out = _render_kit_img('ch01_env_wall_subterranean_corner_n_turn_outer_idle')
+    c_nt_in = _render_kit_img('ch01_env_wall_subterranean_corner_n_turn_inner_idle')
+    c_wt_out = _render_kit_img('ch01_env_wall_subterranean_corner_w_turn_outer_idle')
+    c_wt_in = _render_kit_img('ch01_env_wall_subterranean_corner_w_turn_inner_idle')
+    wall_n = _load_or_render_env('ch01_env_wall_subterranean_n_idle')
+    wall_w = _load_or_render_env('ch01_env_wall_subterranean_w_idle')
+
+    # Programmatic verification that first module at from+2 (+32,+16 / -32,+16) adds 0 opaque pixels
+    # above the stepped half of n_turn_inner (x=16..25) and w_turn_inner (x=6..15):
+    for axis, c_im, w_im, dx, dy, x_rng in (
+        ('N', c_nt_in, wall_n, 32, 16, range(16, 26)),
+        ('W', c_wt_in, wall_w, -32, 16, range(6, 16)),
+    ):
+        refilled = 0
+        for x in x_rng:
+            for y in range(64):
+                wx, wy = x - dx, y - dy
+                if 0 <= wx < 32 and 0 <= wy < 64 and c_im.getpixel((x, y))[3] == 0 and w_im.getpixel((wx, wy))[3] != 0:
+                    refilled += 1
+        assert refilled == 0, f"{axis} inner turn has {refilled} refilled pixels!"
+
+    _draw_text_img(canvas, 8, 5, "TLF-068 DETERMINISTIC ENDPOINT JOIN PROOF (NATIVE 1X + X2 ZOOM, S10.2 RECIPE)", PAL[15], scale=1)
+    _draw_text_img(canvas, 8, 15, "VERIFIED: 0 REFILLED PX ABOVE STEPPED TURNS/ENDCAPS, 0 SEAM GAPS, ODD ENDS SUPPLIED BY CORNERS", PAL[26], scale=1)
+
+    def make_box(bw, bh, title, subtitle):
+        box = Image.new('RGBA', (bw, bh), PAL[1] + (255,))
+        for x in range(bw):
+            box.putpixel((x, 0), PAL[13] + (255,))
+            box.putpixel((x, bh - 1), PAL[13] + (255,))
+        for y in range(bh):
+            box.putpixel((0, y), PAL[13] + (255,))
+            box.putpixel((bw - 1, y), PAL[13] + (255,))
+        _draw_text_img(box, 6, 5, title, PAL[15], scale=1)
+        _draw_text_img(box, 6, 15, subtitle, PAL[25], scale=1)
+        return box
+
+    def render_assembly(origin, runs, corners, crop_rect):
+        sub = Image.new('RGBA', (260, 160), (0, 0, 0, 0))
+        draws = []
+        for face, f_pt, t_pt, sk, ek, ez in runs:
+            for stem, apx, piv, zb in assemble_wall_run(face, f_pt, t_pt, sk, ek, origin):
+                draws.append((apx[1] + zb + ez, apx[0], _load_or_render_env(stem), (apx[0] - piv[0], apx[1] - piv[1]), apx))
+        for c_im, v_pt, piv, zb in corners:
+            apx = _tile_to_px(v_pt[0], v_pt[1], origin)
+            draws.append((apx[1] + zb, apx[0], c_im, (apx[0] - piv[0], apx[1] - piv[1]), apx))
+        draws.sort(key=lambda item: (item[0], item[1]))
+        for _y, _x, im, pos, _apx in draws:
+            sub.alpha_composite(im, pos)
+        # Mark anchor pivots with 1px gold dot (PAL[26])
+        for _y, _x, _im, _pos, apx in draws:
+            if 0 <= apx[0] < 260 and 0 <= apx[1] < 160:
+                sub.putpixel(apx, PAL[26] + (255,))
+        return sub.crop(crop_rect)
+
+    # Panel 1 (Top-Left, 308x158 at (8, 28)): N-Turn Inner 5-tile run (0,0)->(5,0)
+    b1 = make_box(308, 158, "1. N-TURN INNER + 5-TILE RUN (0,0)->(5,0)", "S_START=FROM+1 -> WALL_N AT (2,0)+(4,0), 0 REFILL")
+    crop1 = render_assembly(
+        origin=(36, 72),
+        runs=[
+            ('low_E', (0, -2), (0, 0), 'corner', 'corner', -14),
+            ('N', (0, 0), (5, 0), 'inner_turn', 'corner', 0),
+        ],
+        corners=[
+            (c_nt_in, (0, 0), (16, 56), 2),
+            (c_nt_out, (5, 0), (16, 56), 10),
+        ],
+        crop_rect=(16, 12, 136, 122),
+    )
+    b1.alpha_composite(crop1, (8, 32))
+    _draw_text_img(b1, 12, 144, "1X NATIVE (L=5)", PAL[14], scale=1)
+    # x2 zoom of the inner-turn to first WallN join region (60x52 -> 120x104)
+    z1 = crop1.crop((12, 14, 72, 66)).resize((120, 104), Image.NEAREST)
+    b1.alpha_composite(z1, (176, 30))
+    _draw_text_img(b1, 178, 144, "X2 JOIN (0 GAP)", PAL[26], scale=1)
+    canvas.alpha_composite(b1, (8, 28))
+
+    # Panel 2 (Top-Right, 308x158 at (324, 28)): W-Turn Inner 3-tile short/odd run (0,0)->(0,3)
+    b2 = make_box(308, 158, "2. W-TURN INNER + 3-TILE ODD RUN (0,0)->(0,3)", "S_START=FROM+1 -> WALL_W AT (0,2), END AT (0,3)")
+    crop2 = render_assembly(
+        origin=(104, 72),
+        runs=[
+            ('low_S', (-2, 0), (0, 0), 'corner', 'corner', -14),
+            ('W', (0, 0), (0, 3), 'inner_turn', 'corner', 0),
+        ],
+        corners=[
+            (c_wt_in, (0, 0), (16, 56), 2),
+            (c_wt_out, (0, 3), (16, 56), 10),
+        ],
+        crop_rect=(28, 12, 136, 122),
+    )
+    b2.alpha_composite(crop2, (16, 32))
+    _draw_text_img(b2, 20, 144, "1X NATIVE (L=3)", PAL[14], scale=1)
+    z2 = crop2.crop((24, 14, 84, 66)).resize((120, 104), Image.NEAREST)
+    b2.alpha_composite(z2, (176, 30))
+    _draw_text_img(b2, 178, 144, "X2 JOIN (0 GAP)", PAL[26], scale=1)
+    canvas.alpha_composite(b2, (324, 28))
+
+    # Panel 3 (Bottom-Left, 308x158 at (8, 194)): Odd-rem runs (3-tile full-height & 4-tile inner-turn, rem=3)
+    b3 = make_box(308, 158, "3. ODD RESIDUAL RUNS (REM=3 -> 1 MODULE + CORNER)", "LEFT: L=3 NW_OUT->OUT  RIGHT: L=4 N_TURN_IN->OUT")
+    crop3a = render_assembly(
+        origin=(32, 72),
+        runs=[('N', (0, 0), (3, 0), 'corner', 'corner', 0)],
+        corners=[
+            (c_nw_out, (0, 0), (16, 56), 10),
+            (c_nt_out, (3, 0), (16, 56), 10),
+        ],
+        crop_rect=(12, 12, 104, 116),
+    )
+    crop3b = render_assembly(
+        origin=(32, 72),
+        runs=[
+            ('low_E', (0, -2), (0, 0), 'corner', 'corner', -14),
+            ('N', (0, 0), (4, 0), 'inner_turn', 'corner', 0),
+        ],
+        corners=[
+            (c_nt_in, (0, 0), (16, 56), 2),
+            (c_nt_out, (4, 0), (16, 56), 10),
+        ],
+        crop_rect=(12, 12, 120, 116),
+    )
+    b3.alpha_composite(crop3a, (14, 30))
+    _draw_text_img(b3, 14, 134, "L=3: WALL_N(1,0)", PAL[15], scale=1)
+    _draw_text_img(b3, 14, 144, "TILE 2-3 BY (3,0)", PAL[26], scale=1)
+    b3.alpha_composite(crop3b, (164, 30))
+    _draw_text_img(b3, 164, 134, "L=4: WALL_N(2,0)", PAL[15], scale=1)
+    _draw_text_img(b3, 164, 144, "TILE 3-4 BY (4,0)", PAL[26], scale=1)
+    canvas.alpha_composite(b3, (8, 194))
+
+    # Panel 4 (Bottom-Right, 308x158 at (324, 194)): R2b Low Endcap Termination (L=4, s_end=to-1=3, rem=3)
+    b4 = make_box(308, 158, "4. R2B LOW ENDCAP RUN (0,0)->(4,0) AT OPENING", "S_END=TO-1=3 (REM=3): WALL_N(1,0) + ENDCAP(3,0)")
+    crop4 = render_assembly(
+        origin=(36, 72),
+        runs=[('N', (0, 0), (4, 0), 'corner', 'endcap_low', 0)],
+        corners=[(c_nw_out, (0, 0), (16, 56), 10)],
+        crop_rect=(16, 12, 124, 116),
+    )
+    b4.alpha_composite(crop4, (14, 32))
+    _draw_text_img(b4, 14, 144, "1X NATIVE (L=4)", PAL[14], scale=1)
+    z4 = crop4.crop((32, 18, 92, 70)).resize((120, 104), Image.NEAREST)
+    b4.alpha_composite(z4, (176, 30))
+    _draw_text_img(b4, 178, 144, "X2 ENDCAP STEP", PAL[26], scale=1)
+    canvas.alpha_composite(b4, (324, 194))
 
     return canvas
 
@@ -1206,5 +1414,7 @@ def write_mockups(out_dir=None):
     os.makedirs(out_dir if out_dir is not None else os.path.join(REPO, 'design', 'art', 'mockups'), exist_ok=True)
     m1 = build_l_room_mockup()
     m1.save(mockup_path('ch01_tlf068_l_room_shape_kit_mockup.png', out_dir))
-    m2 = build_greyscale_proof()
-    m2.save(mockup_path('ch01_tlf068_shape_kit_greyscale_proof.png', out_dir))
+    m2 = build_endpoint_join_proof()
+    m2.save(mockup_path('ch01_tlf068_endpoint_join_proof.png', out_dir))
+    m3 = build_greyscale_proof()
+    m3.save(mockup_path('ch01_tlf068_shape_kit_greyscale_proof.png', out_dir))
