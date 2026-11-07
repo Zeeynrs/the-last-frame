@@ -149,6 +149,8 @@ func test_load_rederives_unlocks_from_the_flags() -> void:
 		await tap(&"ability_next")
 		if not seen.has(player.pocket_watch.selected_ability):
 			seen.append(player.pocket_watch.selected_ability)
-	seen.sort()
-	_assert_eq(seen, [&"echo", &"freeze", &"rewind", &"trace"], "ability_next reaches all four after the load")
+	# As Strings: Array.sort() does not order StringNames by text (the order varies between runs).
+	var names: Array = seen.map(func(a: StringName) -> String: return String(a))
+	names.sort()
+	_assert_eq(names, ["echo", "freeze", "rewind", "trace"], "ability_next reaches all four after the load")
 	stop()
