@@ -45,8 +45,8 @@ func unlock(ability: StringName) -> bool:
 	if is_unlocked(ability):
 		return false
 	_unlocked = _ordered(_unlocked + [ability])
-	ability_unlocked.emit(ability)
 	unlocks_changed.emit(unlocked())
+	ability_unlocked.emit(ability)
 	return true
 
 

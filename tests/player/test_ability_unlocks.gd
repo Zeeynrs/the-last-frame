@@ -139,7 +139,10 @@ func test_unlock_triggers_flag_pickup_and_puzzle_solved() -> void:
 
 	_session.narrative_state.set_flag(&"ch01.flag.test_unlock_rewind")
 	_assert_true(unlocks.is_unlocked(&"rewind"), "flag -> Rewind unlocked")
-	await tap(&"ability_next")
+	for i in 4:   # auto-selected on unlock (ABILITY_UNLOCKS 3); otherwise reached with ability_next
+		if watch.selected_ability == &"rewind":
+			break
+		await tap(&"ability_next")
 	_assert_eq(watch.selected_ability, &"rewind", "the new ability is selectable with real input")
 
 	_session.puzzle_service.mark_solved(&"CH1-PZ-001")
