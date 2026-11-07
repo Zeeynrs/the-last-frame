@@ -1,0 +1,19 @@
+Reviewed exact SHA: 4acda3ae00810f46b547d14dbb1eda28215eefff
+PASS: all 1420 archive tracked-file blobs still match exact SHA after gates/probes
+PASS: runtime PNG/PXO assets unchanged from first reviewed 835a3a3
+Command: python docs/reviews/TLF-068/4acda3a/endpoint_probe.py <exact-SHA archive>
+exit=0
+PASS: P1 N/W inner turns at +2, zero refilled step pixels, 2:1 cornice/base seams
+PASS: six prior N/W short/residual/explicit-endcap assemblies have no empty columns or seam gaps
+PASS: eight uncornered N/W cases (L3/L4, endcap_low/open_odd) supply residual tile; zero empty columns and zero refilled step pixels
+PASS: open_odd equals canonical endcap_low placements for all four N/W length pairs
+PASS: L-room uses 12 documented helper calls; regenerated pixels match committed 640x360 mockup
+sol-check-assets.txt exit=0 / RESULT: ALL PASS (263 file(s))
+sol-verify-regen.txt exit=0 / RESULT: ALL REPRODUCIBLE
+NOTE: 136 nonfatal Pixelorama custom_samplers diagnostics retained; all 34 invocations exit0
+sol-pixelorama.txt exit=0 / TOTAL pxo: 17, all identical: True
+PASS: copied updated endpoint proof byte-identical to exact-SHA archive
+PASS: local review/evidence links resolve; verification output is this file
+No game project launched; no runtime integration, asset edits or real-save use
+PASS: approval change contains exactly 9 documentation/evidence files; asset/tool/runtime/design trees unchanged
+PASS: combined review diff whitespace check and staged whitespace check
