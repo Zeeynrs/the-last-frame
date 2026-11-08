@@ -1,0 +1,30 @@
+# validate.ps1 on a git archive of 2b5c0b1, config/name="TLF Verify 2b5c0b1" (no BOM)
+# full log: scratchpad val_2b5c0b1.log, 1869 lines, sha256 c5afec9b3deaf63ee35316f66393c5f0b240ce82a038a0e82df91c81964b44ef
+Leak check: clean (script check)
+TESTS: 479 passed, 0 failed
+Leak check: clean (test suite)
+=== All validation checks passed successfully! ===
+SCRIPT ERROR lines: 0
+ERROR lines (negative tests): 22
+ERROR: IdRegistry: Duplicate ID 'ch01.test_lever' already registered to OriginalLever:<Area2D#2982703794122>.
+ERROR: Interactable 'EmptyIdLever' has an empty object_id.
+ERROR: Interactable 'OrphanLever' (ch01.orphan_lever) could not find GameSession with IdRegistry.
+ERROR: HintService: invalid PuzzleDef 'CH1-PZ-T01'.
+ERROR: HintService: invalid PuzzleDef '<null>'.
+ERROR: RoomRouter: unknown room 'ch01.nowhere'.
+ERROR: SaveService: refusing to write invalid save (invalid).
+ERROR: Parse JSON failed. Error at line 0: Expected key
+ERROR: IdRegistry: Duplicate ID 'ch01.test_node' already registered to <Node#3527560661852>.
+ERROR: IdRegistry: Cannot register node with empty ID.
+ERROR: IdRegistry: ID 'ch1.gate' does not match ADR-005 pattern '^(ch\d\d|global)\.[a-z0-9_]+(\.[a-z0-9_]+)*$'.
+ERROR: IdRegistry: ID 'platform.gate' does not match ADR-005 pattern '^(ch\d\d|global)\.[a-z0-9_]+(\.[a-z0-9_]+)*$'.
+ERROR: IdRegistry: ID 'ch01.' does not match ADR-005 pattern '^(ch\d\d|global)\.[a-z0-9_]+(\.[a-z0-9_]+)*$'.
+ERROR: IdRegistry: ID 'ch01..gate' does not match ADR-005 pattern '^(ch\d\d|global)\.[a-z0-9_]+(\.[a-z0-9_]+)*$'.
+ERROR: IdRegistry: ID 'CH01.gate' does not match ADR-005 pattern '^(ch\d\d|global)\.[a-z0-9_]+(\.[a-z0-9_]+)*$'.
+ERROR: IdRegistry: ID 'global.Gate' does not match ADR-005 pattern '^(ch\d\d|global)\.[a-z0-9_]+(\.[a-z0-9_]+)*$'.
+ERROR: IdRegistry: ID 'global.pocket-watch' does not match ADR-005 pattern '^(ch\d\d|global)\.[a-z0-9_]+(\.[a-z0-9_]+)*$'.
+ERROR: IdRegistry: ID 'global' does not match ADR-005 pattern '^(ch\d\d|global)\.[a-z0-9_]+(\.[a-z0-9_]+)*$'.
+ERROR: ConfigFile parse error at user://test_settings_corrupt.cfg:0: Unexpected EOF while parsing simple tag.
+ERROR: TemporalComponent on '@Node@908': capture_state() keys ["phase", "counter"] do not match state_fields ["phase"].
+ERROR: Interactable '@Area2D@1042' (ch01.test_target) could not find GameSession with IdRegistry.
+ERROR: Parse JSON failed. Error at line 0: Expected key
