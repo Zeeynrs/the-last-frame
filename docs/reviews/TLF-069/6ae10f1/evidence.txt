@@ -1,0 +1,22 @@
+Exact delivery: 6ae10f1c45a0eddac11a86a7b7c22170cb7df50e
+Fresh git archive; only scratch project config/name and custom user-dir renamed; arrival scene blob unchanged.
+Commands: Godot_v4.7.2-stable_win64_console.exe --headless --editor --path <scratch> --import --quit
+          Godot_v4.7.2-stable_win64_console.exe --path <scratch> --windowed --resolution 640x360 --position 100,100 --script res://sol_focus.gd
+Import exit=0; windowed capture exit=0.
+
+Raw windowed log:
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+SOL_FOCUSED_WINDOWED display=Windows user_dir=C:/Users/adity/AppData/Roaming/TLF Audit 069 6ae10f1
+SOL_FOCUSED_CAPTURE_COMPLETE views=3
+
+Independent committed-PNG alpha vs actual scene wall-module masks:
+DepartureBoard face W rect (64, 68, 160, 112) opaque 5112 outside_wall 0
+ClosedTrackNotice face N rect (488, 116, 80, 56) opaque 1274 outside_wall 0
+PASS exact TLF-073 plaque blobs; Clock_2 removed, Clock_8 sole remaining decorative clock
+PASS real save/settings files: same inventory, hashes, sizes and modification times (139 files)
+PASS arrival scene unchanged in renamed scratch; no game edit in review worktree
+
+Native 640x360 engine screenshots: departure_board.png; closed_track.png.
+Third spawn frame and scratch harness retained in local archive only; no broad per-side recapture requested.
