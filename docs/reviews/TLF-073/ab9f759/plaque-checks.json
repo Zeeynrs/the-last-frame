@@ -1,0 +1,66 @@
+{
+  "geometry": [
+    {
+      "face": "W",
+      "sprite": "ch01_prop_departure_board_nowhere_w_idle",
+      "canvas": [
+        160,
+        112
+      ],
+      "pivot": [
+        0,
+        80
+      ],
+      "world_canvas_xy": [
+        64,
+        68
+      ],
+      "above": 0,
+      "below": 0,
+      "outside": 0,
+      "opaque": 5112,
+      "outside_shear_domain": 0
+    },
+    {
+      "face": "N",
+      "sprite": "ch01_prop_notice_closed_track_n_idle",
+      "canvas": [
+        80,
+        56
+      ],
+      "pivot": [
+        0,
+        0
+      ],
+      "world_canvas_xy": [
+        488,
+        116
+      ],
+      "above": 0,
+      "below": 0,
+      "outside": 0,
+      "opaque": 1274,
+      "outside_shear_domain": 0
+    }
+  ],
+  "text": [
+    {
+      "message": "DESTINATION:",
+      "glyph_bits": 165,
+      "bit_mismatches": 0,
+      "runtime_overpaint": 0
+    },
+    {
+      "message": "NOWHERE - 23:59",
+      "glyph_bits": 194,
+      "bit_mismatches": 0,
+      "runtime_overpaint": 0
+    },
+    {
+      "message": "CLOSED TRACK",
+      "glyph_bits": 163,
+      "bit_mismatches": 0,
+      "runtime_overpaint": 45
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+PASS: both documented wall mounts have zero above/below/outside alpha, including cast shadows
+PASS: W y=80-floor(x/2)+z; N y=floor(x/2)+z; all opaque pixels inside shear domains
+PASS: canonical glyph bits intact under inverse shear; W text intact; N intentional closure slash retained
+PASS: declared canvases, pivots, single frame, four layers, binary alpha and palette match exports
+PASS: RESULT: ALL PASS (267 file(s)); exit0
+PASS: RESULT: ALL REPRODUCIBLE; exit0
+PASS: verify_pxo_departure.txt size/export exits0; PNG byte-identical; 8 known nonfatal shader diagnostics retained
+PASS: verify_pxo_notice.txt size/export exits0; PNG byte-identical; 8 known nonfatal shader diagnostics retained
+PASS: all 1527 archive blobs match exact SHA after independent checks
+No game project launched; no real-save use; evidence only
+PASS: 15 staged docs/evidence files only; game/art/tool/runtime trees unchanged; staged whitespace clean
+PASS: all report local evidence links resolve

@@ -1,0 +1,4 @@
+ch01_prop_departure_board_nowhere_w_idle 'DESTINATION:' glyph_bit_mismatches 0 glyph_pixels 165 overpainted_in_runtime 0 final_cursor_x 83
+ch01_prop_departure_board_nowhere_w_idle 'NOWHERE - 23:59' glyph_bit_mismatches 0 glyph_pixels 194 overpainted_in_runtime 0 final_cursor_x 101
+ch01_prop_notice_closed_track_n_idle 'CLOSED TRACK' glyph_bit_mismatches 0 glyph_pixels 163 overpainted_in_runtime 45 final_cursor_x 74
+TEXT LAYER INTEGRITY: all prescribed glyph bits intact under independent inverse-shear sampling; N notice closure slash intentionally overpaints some glyph pixels.
