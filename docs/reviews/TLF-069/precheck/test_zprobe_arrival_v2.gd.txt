@@ -11,6 +11,8 @@ extends "res://tests/support/ch01_real_input.gd"
 ##   D. walk-in triggers: reachable by the capsule? (door_exit_east must NOT be with the gate closed)
 ##   E. door sweep with the gate closed from a grid of reachable start points
 ##   F. statues vs the line spawn -> (8,8) -> gate: tile-space distance and a real walk of the line
+##   H. wall-mounted / upright art: selector and notice art inside the N wall face (alpha of the
+##      real wall sprites), the lever's layer and sort against Elias at its stand
 ##   G. camera: RoomCamera view inside the room bounds at spawn / watch / gate and for every
 ##      reachable point; what the views show
 ## Every line starts with "PROBE"; "PROBE FAIL" marks a rule broken.
@@ -194,7 +196,7 @@ func test_probe_arrival_v2() -> void:
 	# TLF_PROBE_SECTIONS="AD" runs only those sections (A and B always run).
 	var sections := OS.get_environment("TLF_PROBE_SECTIONS")
 	if sections == "":
-		sections = "ABCDEFG"
+		sections = "ABCDEFGH"
 	await _section_a()
 	_flood(player.global_position)
 	_p("B flood: %d reachable capsule positions (2 px grid) from the spawn %s" % [reach_pts.size(), player.global_position])
@@ -210,6 +212,8 @@ func test_probe_arrival_v2() -> void:
 		await _section_f()
 	if sections.contains("G"):
 		await _section_g()
+	if sections.contains("H"):
+		await _section_h()
 	_p("SUMMARY %d rule failures" % fails)
 	stop()
 
@@ -286,7 +290,14 @@ func _section_c() -> void:
 		var ability := &"trace" if TRACE_TARGETS.has(name) else &"use"
 		var ot := _tile(obj.global_position)
 		var rows: Array = []
-		for st in _candidates(ot):
+		var declared_t := _declared_stand(name)
+		var cands := _candidates(ot)
+		if declared_t != Vector2.INF and not cands.has(declared_t):
+			# Object off its tile vertex: judge the declared stand anyway (reach, target, distance).
+			_p("C %s object at tile %s is off the vertex grid; declared stand %s is %.1f px from it (one tile step = %.1f px)" % [
+				name, _ts(ot), _ts(declared_t), RoomShape.tile_to_px(declared_t).distance_to(obj.global_position), TILE])
+			cands.push_front(declared_t)
+		for st in cands:
 			var spot := RoomShape.tile_to_px(st)
 			var on_floor := Geometry2D.is_point_in_polygon(spot, shape.perimeter_polygon_px(0.0)) or _on_outline(spot, shape.perimeter_polygon_px(0.0))
 			var free := _free_at(spot)
@@ -302,8 +313,8 @@ func _section_c() -> void:
 		var approach_done := false
 		for row in rows:
 			var spot: Vector2 = row["spot"]
-			var line := "C %-18s %-5s %s stand %-8s px %-11s route %.2f t | floor %s free %s nearest reachable %.1f px" % [
-				name, ability, _ts(ot), _ts(row["tile"]), spot, row["route"], row["floor"], row["free"], row["near"]]
+			var line := "C %-18s %-5s %s stand %-8s px %-11s (%.1f px from object) route %.2f t | floor %s free %s nearest reachable %.1f px" % [
+				name, ability, _ts(ot), _ts(row["tile"]), spot, spot.distance_to(obj.global_position), row["route"], row["floor"], row["free"], row["near"]]
 			if not row["floor"] or row["near"] > 12.0:
 				_p(line + " | not walked")
 				continue
@@ -506,3 +517,102 @@ func _section_g() -> void:
 	var xs := reach_pts.map(func(q): return cam.centre_for(q).x)
 	var ys := reach_pts.map(func(q): return cam.centre_for(q).y)
 	_p("G camera centre range x %s..%s y %s..%s" % [xs.min(), xs.max(), ys.min(), ys.max()])
+
+
+## Rows of the N wall face at screen column x: [first, last] opaque pixel row of the WallN module
+## sprite covering x (the real art, alpha > 0.5). Empty when no module covers x.
+func _wall_face_span(x: float) -> Array:
+	for n in room.get_node("YSort_Walls").get_children():
+		var s := n as Sprite2D
+		if s == null or not String(s.name).begins_with("WallN_"):
+			continue
+		var r := Rect2(s.global_position + s.offset, s.texture.get_size())
+		if x < r.position.x or x >= r.end.x:
+			continue
+		var img := s.texture.get_image()
+		var col := int(x - r.position.x)
+		var first := -1
+		var last := -1
+		for row in img.get_height():
+			if img.get_pixel(col, row).a > 0.5:
+				if first < 0:
+					first = row
+				last = row
+		if first < 0:
+			return []
+		return [r.position.y + first, r.position.y + last]
+	return []
+
+
+func _sprite_rect(s: Sprite2D) -> Rect2:
+	var size := s.texture.get_size()
+	var off := s.offset if not s.centered else -size * 0.5
+	return Rect2(s.global_position + off, size)
+
+
+func _section_h() -> void:
+	# Wall-mounted art: the art's opaque columns must lie inside the wall face's opaque rows.
+	var mounted := {"selector_line": "selector_line/Presenter", "selector_platform": "selector_platform/Presenter",
+		"selector_car": "selector_car/Presenter", "ClosedTrackNotice": "Wall_Fixtures/ClosedTrackNotice"}
+	for label in mounted:
+		var s := _node(mounted[label]) as Sprite2D
+		if s == null:
+			_p("H %s: no sprite" % label)
+			continue
+		var r := _sprite_rect(s)
+		var img := s.texture.get_image()
+		var worst_above := 0.0
+		var worst_below := 0.0
+		var cols := 0
+		var over_cols: Array[float] = []
+		for c in img.get_width():
+			var first := -1
+			var last := -1
+			for row in img.get_height():
+				if img.get_pixel(c, row).a > 0.5:
+					if first < 0:
+						first = row
+					last = row
+			if first < 0:
+				continue
+			var span := _wall_face_span(r.position.x + c + 0.5)
+			if span.is_empty():
+				continue
+			cols += 1
+			if span[0] - (r.position.y + first) > 0.0:
+				over_cols.append(r.position.x + c)
+			worst_above = maxf(worst_above, span[0] - (r.position.y + first))
+			worst_below = maxf(worst_below, (r.position.y + last) - span[1])
+		var owner := s.get_parent() as Node2D
+		var line := "H %-18s art %s z %d%s | %d columns checked: art above the wall top by up to %.0f px in %d columns %s, below the wall foot by up to %.0f px" % [
+			label, r, s.z_index, "" if s.z_as_relative else " (absolute)", cols, worst_above, over_cols.size(),
+			("x %s..%s" % [over_cols.min(), over_cols.max()]) if not over_cols.is_empty() else "", worst_below]
+		if owner is Area2D:
+			var area := owner as Area2D
+			line += " | interaction circle at %s (floor tile %s), art bottom-centre %s" % [
+				area.global_position, _ts(_tile(area.global_position)), Vector2(r.get_center().x, r.end.y)]
+		_p(line)
+		# Visual containment is Sol's call: reported as a note, not a rule failure.
+		if worst_above > 0.0 or worst_below > 0.0:
+			_p("NOTE H %s art crosses the N wall face outline (above the top %.0f px, below the foot %.0f px)" % [label, worst_above, worst_below])
+	# Upright lever: actor layer, sorted with Elias by its contact (the lever node's y).
+	var lever := _node("release_lever") as Node2D
+	var lp := lever.get_node("Presenter") as Sprite2D
+	var stand := RoomShape.tile_to_px(_declared_stand("release_lever")) if _declared_stand("release_lever") != Vector2.INF else lever.global_position + Vector2(-16, -8)
+	await _teleport(_nearest_reach(stand))
+	await physics_frames(2)
+	var elias := player.get_node("Sprite") as AnimatedSprite2D
+	var etex := elias.sprite_frames.get_frame_texture(elias.animation, elias.frame)
+	var esize := etex.get_size()
+	var erect := Rect2(elias.global_position + elias.offset - (esize * 0.5 if elias.centered else Vector2.ZERO), esize)
+	var lrect := _sprite_rect(lp)
+	var ov := erect.intersection(lrect)
+	_p("H release_lever presenter z %d%s (ACTOR_Z %d), texture %s, art %s, sort key y %.0f | Elias at %s sort key y %.0f, sprite %s z %d | %s draws in front; overlap %s" % [
+		lp.z_index, "" if lp.z_as_relative else " (absolute)", DepthSort.ACTOR_Z, lp.texture.resource_path.get_file(), lrect,
+		lever.global_position.y, player.global_position, player.global_position.y, erect, player.z_index,
+		"the lever" if lever.global_position.y > player.global_position.y else "Elias", ov.size if ov.has_area() else Vector2.ZERO])
+	if lp.z_as_relative or lp.z_index != DepthSort.ACTOR_Z:
+		_fail("H release_lever presenter is not in the actor layer")
+	_p("H release_lever at the stand: use picks %s" % [_choose(&"use").name if _choose(&"use") != null else "nothing"])
+	if _choose(&"use") != lever:
+		_fail("H release_lever not picked from its stand")

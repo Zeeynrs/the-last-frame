@@ -1,0 +1,14 @@
+# validate.ps1 on a git archive of 90da970, config/name="TLF Verify 90da970" (no BOM)
+# full log: scratchpad val_90da970.log, 1869 lines, sha256 499b00a2ff51252109d3b75ed2720b597093fefec760de2595f2defcf76c99a9
+Leak check: clean (script check)
+TESTS: 479 passed, 0 failed
+Leak check: clean (test suite)
+=== All validation checks passed successfully! ===
+SCRIPT ERROR lines: 0
+ERROR lines (negative tests, same set as 2b5c0b1): 22
+
+# python -m unittest discover -s tools/content -p "test_*.py" -v (same archive)
+----------------------------------------------------------------------
+Ran 22 tests in 0.398s
+
+OK
