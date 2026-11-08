@@ -1,0 +1,19 @@
+{
+  "user_dir": "C:/Users/adity/AppData/Roaming/TLF Audit 069 90da970",
+  "save_root": "user://sol069_saves",
+  "before": {
+    "saves\\slot_0.json": {
+      "size": 11306,
+      "mtime_ns": 1794044780498279400,
+      "sha256": "b8e1a9efd0c8e342d9fd3c81c0351941eeaa3ea403e1ac50b9e5b5d7692cc067"
+    }
+  },
+  "after": {
+    "saves\\slot_0.json": {
+      "size": 11306,
+      "mtime_ns": 1794044780498279400,
+      "sha256": "b8e1a9efd0c8e342d9fd3c81c0351941eeaa3ea403e1ac50b9e5b5d7692cc067"
+    }
+  },
+  "equal": true
+}

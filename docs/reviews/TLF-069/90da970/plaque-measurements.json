@@ -1,0 +1,46 @@
+{
+  "Wall_Fixtures/ClosedTrackNotice": {
+    "world_rect": [
+      488,
+      132,
+      80,
+      16
+    ],
+    "opaque_pixels_above_tall_wall": 34,
+    "opaque_pixels_below_tall_wall_foot": 0,
+    "opaque_pixels_outside_wall_mask": 34
+  },
+  "selector_car": {
+    "world_rect": [
+      688,
+      204,
+      32,
+      48
+    ],
+    "opaque_pixels_above_tall_wall": 41,
+    "opaque_pixels_below_tall_wall_foot": 0,
+    "opaque_pixels_outside_wall_mask": 41
+  },
+  "selector_line": {
+    "world_rect": [
+      624,
+      172,
+      32,
+      48
+    ],
+    "opaque_pixels_above_tall_wall": 41,
+    "opaque_pixels_below_tall_wall_foot": 0,
+    "opaque_pixels_outside_wall_mask": 41
+  },
+  "selector_platform": {
+    "world_rect": [
+      656,
+      188,
+      32,
+      48
+    ],
+    "opaque_pixels_above_tall_wall": 41,
+    "opaque_pixels_below_tall_wall_foot": 0,
+    "opaque_pixels_outside_wall_mask": 41
+  }
+}

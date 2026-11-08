@@ -1,0 +1,9 @@
+PASS: 71 groups / 284 N-S-E-W + 10 centreline native 640x360 frames match scratch; every overlap count reproduced
+PASS: five native camera views match scratch and stay inside RoomShape bounds at whole-pixel centres
+PASS: six selected merge examples are exact native engine PNGs, including no-Elias seated diagnostic
+PASS: 23 straight low pieces + three low corners are unit scale; maximum vertical extent 17px
+PASS: 1557 exact-SHA archive blobs checked; only permitted scratch project.godot rename/user-dir differs
+PASS: windowed D3D12 capture process exit0, all 71 groups complete, no engine/script/assertion errors in log
+PASS: real saves/settings unchanged: file inventory, size, SHA256, mtime all identical before/after
+PASS: all report local links resolve within the small example merge set; bulk proof linked to review branch
+PASS: 329 staged docs/evidence files only; game/art/runtime trees unchanged; staged whitespace clean
