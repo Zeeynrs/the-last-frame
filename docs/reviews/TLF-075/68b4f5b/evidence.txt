@@ -1,0 +1,37 @@
+TLF-075 exact delivery: 68b4f5b66108471df70a996c6ed15e34d047fbe1
+Fresh git archive; all 27 delivery-file blobs verified against the exact SHA.
+Commands: python tools/art/check_assets.py; python tools/art/gen/verify_regen.py; verify_pxo.main() restricted to the 10 added PXOs by git diff-tree.
+check_assets exit=0; verify_regen exit=0; verify_pxo exit=0.
+
+RESULT: ALL PASS (274 file(s))
+RESULT: ALL REPRODUCIBLE
+
+Pixelorama raw summary:
+====================================================================================================
+SUMMARY (size-exit, export-exit, byte-identical)
+ch01_char_elias_side_sheet                           0 0 YES
+ch01_env_side_bg_far_wall_arches_idle                0 0 YES
+ch01_env_side_bg_near_wall_pillars_idle              0 0 YES
+ch01_env_side_platform_floor_strip_idle              0 0 YES
+ch01_prop_side_clock_2359_idle                       0 0 YES
+ch01_prop_side_luggage_trolley_idle                  0 0 YES
+ch01_prop_side_mira_memory_silhouette_idle           0 0 YES
+ch01_prop_side_platform_pillar_idle                  0 0 YES
+ch01_prop_side_station_bench_idle                    0 0 YES
+ch01_prop_side_voice_recorder_cup_idle               0 0 YES
+TOTAL pxo: 10, all identical: True
+
+Nonfatal custom_samplers diagnostic count: 80
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+
+Independent sprite/source checks:
+PASS exact delivery blobs: 27
+PASS 22 cells, 32x48 each; 11/11 W frames equal exact horizontal E mirrors
+PXO layers: Cast_Shadow, Boots_And_Coat, Head_Arms_And_Watch_Chain
+PXO tags (one-based): idle_e 1..2; walk_e 3..8; interact_e 9..11; idle_w 12..13; walk_w 14..19; interact_w 20..22.
+PXO global fps: 10; all durations=1. Tag user_data carries 8fps idle / 10fps walk / 12fps interact annotations.
+Kit dimensions: far/near 960x360; floor 960x72; mockup 960x540; active band y90..449; floor y394.
+Seam inspection: repeated right48+left48 strips of all three backgrounds, at nearest-neighbour x2; no empty wrap band or broken dado/rail line. Endpoint columns are not identical; no claim of literal edge-column equality.
+Finding evidence: interact_e sheet frames 8..10 zero-based; generator lines 159..186 hold a brass pocket watch outside the coat at x22..24/y18..20, then lower it. Authored description: retrieve / hold & inspect / lower watch.
+Canon: docs/ADR_LOG.md:381, ADR-022 A3: No Elias watch-check clip is made for Ch1.
+No assets/game files edited; review image is an unretouched nearest-neighbour crop of committed cells.
