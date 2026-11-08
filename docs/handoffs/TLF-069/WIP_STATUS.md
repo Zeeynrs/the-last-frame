@@ -26,17 +26,17 @@
 - `checkpoint`: `Vector2(160, 224)` (tile 5, 15) restored to spawn tile per Lead Decision 7 so new games autosave on boot.
 - `pocket_watch_pickup`: `Vector2(240, 232)` (tile 8, 13).
 - `operator_sighting` (TLF-058): `Vector2(304, 216)` (tile 9, 10), trigger offset `Vector2(-12, 8)` preserved.
-- `n02_student`: `Vector2(208, 168)` (tile 3, 10).
-- `n03_old_man`: `Vector2(448, 169)` (tile 10, 2); `PlatformBench` at `Vector2(448, 168)`. Old man visual is aligned to visible bench seat and depth-sorts in front of backrest.
-- `n01_conductor`: `Vector2(496, 200)` (tile 14, 3).
+- `n02_student`: `Vector2(208, 168)` (tile 3, 10); stand spot `Vector2(224, 160)` (tile 3, 9).
+- `n03_old_man`: `Vector2(448, 169)` (tile 10.56, 2.56; off-grid by 1 px, accepted by Lead); `PlatformBench` at `Vector2(448, 168)`. Old man visual is aligned to visible bench seat and depth-sorts in front of backrest. Stand spot `Vector2(432, 168)` (tile 10, 3) gives clearance $\sqrt{8^2 + 1^2} - 6 \approx 2.1\text{ px}$ to 12×8 footprint from horizontal capsule (r=6, length=16).
+- `n01_conductor`: `Vector2(496, 200)` (tile 14, 3); stand spot `Vector2(480, 208)` (tile 14, 4).
 - `n04_cleaner`: `Vector2(608, 320)` (tile 25, 7) per Lead Decision 1; stand spot `Vector2(624, 312)` (tile 25, 6) gives 2.20 tiles clearance from walking line.
-- `doc_last_service`: `Vector2(400, 120)` (tile 6, 1).
-- Clocks: `Clock_2` at `Vector2(400, 66)` (tile 5, 0), `Clock_8` at `Vector2(592, 162)` (tile 17, 0); `digital_clock_2359` trigger on floor under Clock_8 at `Vector2(592, 200)`.
-- `DepartureBoard`: removed from `Wall_Fixtures` pending TLF-073 sheared W-face variant (flat 160×32 cannot follow sloped wall).
-- `ClosedTrackNotice`: mounted on N wall module 6 at `Vector2(528, 146)` to lie strictly between sloped top and foot without crossing foot vertex.
-- `selector_line`: Area2D at `Vector2(640, 240)` (tile 21, 1), `Presenter` visual mounted on wall face at `Vector2(0, -28)`.
-- `selector_platform`: Area2D at `Vector2(672, 256)` (tile 23, 1), `Presenter` visual mounted on wall face at `Vector2(0, -28)`.
-- `selector_car`: Area2D at `Vector2(704, 272)` (tile 25, 1), `Presenter` visual mounted on wall face at `Vector2(0, -28)`.
+- `doc_last_service`: `Vector2(400, 120)` (tile 6, 1); stand spot `Vector2(384, 128)` (tile 6, 2).
+- Clocks: duplicate `Clock_2` at `Vector2(400, 66)` (tile 5, 0) removed near spawn (the departure board carries 23:59 there); `Clock_8` at `Vector2(592, 162)` (tile 17, 0) preserved on N wall module 8; `digital_clock_2359` Area2D trigger on floor at `Vector2(592, 200)` (tile 17, 0).
+- `DepartureBoard`: TLF-073 sheared W-face plaque `ch01_prop_departure_board_nowhere_w_idle` mounted on `Wall_Fixtures` at `Vector2(64, 148)`, `offset = Vector2(0, -80)`, `centered = false`, `z_index = 7` (0 px above wall top / 0 px below foot / 0 px outside silhouette).
+- `ClosedTrackNotice`: TLF-073 sheared N-face plaque `ch01_prop_notice_closed_track_n_idle` mounted on `Wall_Fixtures` at `Vector2(488, 116)`, `offset = Vector2(0, 0)`, `centered = false`, `z_index = 7` (0 px above wall top / 0 px below foot / 0 px outside silhouette).
+- `selector_line`: Area2D at `Vector2(640, 240)` (tile 21, 1), `Presenter` visual mounted on wall face at `Vector2(0, -22)` with whole sprite lying on wall face (0 px above top silhouette).
+- `selector_platform`: Area2D at `Vector2(672, 256)` (tile 23, 1), `Presenter` visual mounted on wall face at `Vector2(0, -22)` with whole sprite lying on wall face (0 px above top silhouette).
+- `selector_car`: Area2D at `Vector2(704, 272)` (tile 25, 1), `Presenter` visual mounted on wall face at `Vector2(0, -22)` with whole sprite lying on wall face (0 px above top silhouette).
 - `release_lever`: `Vector2(752, 312)` (tile 29, 2), `Presenter` at `z_index = 10` with TLF-067 contact-depth rule (`UPRIGHT_ASSETS`); stand spot `Vector2(736, 304)` (tile 28, 2) on West side per Lead Decision 2.
 - `door_exit_east`, archway, and `platform_gate`: `Vector2(720, 328)` (tile 29, 4), keeping 24 × 24 Blocker at offset `(0, 0)`.
 - `StalledTransitCar`: `Vector2(480, 336)` (tile 22, 12).

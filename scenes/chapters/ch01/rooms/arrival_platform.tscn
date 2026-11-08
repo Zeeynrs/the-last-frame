@@ -58,7 +58,8 @@
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_subterranean_corner_w_turn_outer_idle.png" id="art_corner_w_turn_outer"]
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png" id="art_wall_partition_low_s"]
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_partition_low_e_idle.png" id="art_wall_partition_low_e"]
-[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_notice_closed_track_idle.png" id="art_notice_closed_track"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_departure_board_nowhere_w_idle.png" id="art_departure_board"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_notice_closed_track_n_idle.png" id="art_notice_closed_track"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_door"]
 radius = 10.0
@@ -449,19 +450,22 @@ texture = ExtResource("art_wall_partition_low_e")
 [node name="Wall_Fixtures" type="Node2D" parent="."]
 y_sort_enabled = true
 z_index = 7
-[node name="Clock_2" type="Sprite2D" parent="Wall_Fixtures"]
-position = Vector2(400, 66)
-offset = Vector2(-16, -20)
+
+[node name="DepartureBoard" type="Sprite2D" parent="Wall_Fixtures"]
+position = Vector2(64, 148)
+offset = Vector2(0, -80)
 centered = false
-texture = ExtResource("5_clock")
+texture = ExtResource("art_departure_board")
+
 [node name="Clock_8" type="Sprite2D" parent="Wall_Fixtures"]
 position = Vector2(592, 162)
 offset = Vector2(-16, -20)
 centered = false
 texture = ExtResource("5_clock")
+
 [node name="ClosedTrackNotice" type="Sprite2D" parent="Wall_Fixtures"]
-position = Vector2(528, 146)
-offset = Vector2(-40, -14)
+position = Vector2(488, 116)
+offset = Vector2(0, 0)
 centered = false
 texture = ExtResource("art_notice_closed_track")
 [node name="YSort_Actors" type="Node2D" parent="."]
@@ -498,7 +502,7 @@ object_id = &"ch01.arrival_platform.selector_line"
 shape = SubResource("CircleShape2D_so_interact14")
 
 [node name="Presenter" type="Sprite2D" parent="selector_line"]
-position = Vector2(0, -28)
+position = Vector2(0, -22)
 z_index = 7
 z_as_relative = false
 script = ExtResource("so_sel_pres")
@@ -518,7 +522,7 @@ object_id = &"ch01.arrival_platform.selector_platform"
 shape = SubResource("CircleShape2D_so_interact14")
 
 [node name="Presenter" type="Sprite2D" parent="selector_platform"]
-position = Vector2(0, -28)
+position = Vector2(0, -22)
 z_index = 7
 z_as_relative = false
 script = ExtResource("so_sel_pres")
@@ -538,7 +542,7 @@ object_id = &"ch01.arrival_platform.selector_car"
 shape = SubResource("CircleShape2D_so_interact14")
 
 [node name="Presenter" type="Sprite2D" parent="selector_car"]
-position = Vector2(0, -28)
+position = Vector2(0, -22)
 z_index = 7
 z_as_relative = false
 script = ExtResource("so_sel_pres")

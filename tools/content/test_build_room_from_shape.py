@@ -41,7 +41,7 @@ WALL_RE = r'\[node name="Wall[NW]_\d+" type="Sprite2D" parent="YSort_Walls"\]\n(
 
 
 def read(path):
-    with open(path, encoding="utf-8") as fh:
+    with open(path, encoding="utf-8", newline="") as fh:
         return fh.read()
 
 
