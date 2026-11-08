@@ -24,23 +24,23 @@ All puzzle logic for CH1-SO-01 remains completely intact. The 4 windowed Forward
    - Tall walls: 15 WallN modules, 9 WallW modules.
    - TLF-068 shape kit pieces integrated: 6 corner modules (`Corner_NW_0_0`, `Corner_N_Turn_30_0`, `Corner_Low_30_8`, `Corner_Low_12_8`, `Corner_Low_12_18`, `Corner_W_Turn_0_18`), 6 LowS arm modules, 5 LowE arm modules, 9 LowS pit modules, and 3 LowE strip modules (`LowE_strip_0` at `(784, 312)`, `LowE_strip_1` at `(752, 328)`, `LowE_strip_2` at `(688, 360)`). Tile `(30, 5)` at `(720, 344)` is omitted to align with the doorway archway opening per Lead Decision 3.
    - Boundary edge strip painted with tile source 0 (plain terrazzo) per Lead Decision 4; amber tactile tiles at x=13 / y=9 cleared.
-2. **Object & Actor Placements (Lead Decisions Applied):**
+2. **Object & Actor Placements (Lead Decisions & Sol Visual Review Applied):**
    - `safe_anchor_spawn`: `Vector2(160, 224)` (tile 5, 15).
    - `checkpoint`: `Vector2(160, 224)` (tile 5, 15) restored to spawn tile per Lead Decision 7 so new games autosave on boot.
    - `pocket_watch_pickup`: `Vector2(240, 232)` (tile 8, 13).
    - `operator_sighting` (TLF-058): `Vector2(304, 216)` (tile 9, 10), trigger offset `Vector2(-12, 8)` preserved.
    - `n02_student`: `Vector2(208, 168)` (tile 3, 10).
-   - `n03_old_man`: `Vector2(448, 160)` (tile 10, 2); `PlatformBench` at `Vector2(448, 168)`.
+   - `n03_old_man`: `Vector2(448, 169)` (tile 10, 2); `PlatformBench` at `Vector2(448, 168)`. Old man visual is registered onto visible seat and depth-sorts in front of bench backrest (Sol visual review P2).
    - `n01_conductor`: `Vector2(496, 200)` (tile 14, 3).
    - `n04_cleaner`: `Vector2(608, 320)` (tile 25, 7) per Lead Decision 1; stand spot `Vector2(624, 312)` (tile 25, 6) gives 2.20 tiles clearance from walking line.
    - `doc_last_service`: `Vector2(400, 120)` (tile 6, 1).
    - Clocks: `Clock_2` at `Vector2(400, 66)` (tile 5, 0), `Clock_8` at `Vector2(592, 162)` (tile 17, 0); `digital_clock_2359` Area2D trigger placed on reachable floor spot under Clock_8 at `Vector2(592, 200)` (tile 17, 2).
-   - `DepartureBoard`: mounted on W wall module 5, raised 38 px to `Vector2(144, 114)` per Lead Decision 5 & Opus review.
-   - `ClosedTrackNotice`: mounted on N wall module 6, raised 38 px to `Vector2(528, 130)` per Lead Decision 6 & Opus review.
-   - `selector_line`: `Vector2(640, 240)` (tile 21, 1).
-   - `selector_platform`: `Vector2(672, 256)` (tile 23, 1).
-   - `selector_car`: `Vector2(704, 272)` (tile 25, 1).
-   - `release_lever`: `Vector2(752, 312)` (tile 29, 2); stand spot `Vector2(736, 304)` (tile 28, 2) on West side per Lead Decision 2.
+   - `DepartureBoard`: removed from `Wall_Fixtures` pending TLF-073 sheared W-face variant (flat 160×32 cannot follow sloped wall plane) (Sol visual review P1).
+   - `ClosedTrackNotice`: mounted on N wall module 6 at `Vector2(528, 146)` to lie strictly between sloped top and foot without crossing foot vertex (Sol visual review P1).
+   - `selector_line`: Area2D at `Vector2(640, 240)` (tile 21, 1), `Presenter` visual mounted on wall face at `Vector2(0, -28)` (Sol visual review P1).
+   - `selector_platform`: Area2D at `Vector2(672, 256)` (tile 23, 1), `Presenter` visual mounted on wall face at `Vector2(0, -28)` (Sol visual review P1).
+   - `selector_car`: Area2D at `Vector2(704, 272)` (tile 25, 1), `Presenter` visual mounted on wall face at `Vector2(0, -28)` (Sol visual review P1).
+   - `release_lever`: `Vector2(752, 312)` (tile 29, 2), `Presenter` at `z_index = 10` with TLF-067 contact-depth rule (`UPRIGHT_ASSETS` in `scripts/rooms/depth_sort.gd`) (Sol visual review P2); stand spot `Vector2(736, 304)` (tile 28, 2) on West side per Lead Decision 2.
    - `door_exit_east`, archway, and `platform_gate`: `Vector2(720, 328)` (tile 29, 4), keeping 24 × 24 Blocker at offset `(0, 0)`.
    - `StalledTransitCar`: `Vector2(480, 336)` (tile 22, 12).
 3. **Verification Suites:**
@@ -60,7 +60,7 @@ All stand spots were calculated according to the SO-01 interaction rule ($17.9\t
 |---|---|---|---|---|---|---|---|
 | `pocket_watch_pickup` | `(8, 13)` | `(240, 232)` | `(8, 14)` | `(224, 240)` | West | $17.9\text{ px}$ | Direct path from spawn |
 | `n02_student` | `(3, 10)` | `(208, 168)` | `(3, 9)` | `(224, 160)` | East | $17.9\text{ px}$ | Clear of walls |
-| `n03_old_man` | `(10, 2)` | `(448, 160)` | `(10, 3)` | `(432, 168)` | South-West | $17.9\text{ px}$ | Bench at `(448, 168)` |
+| `n03_old_man` | `(10, 2)` | `(448, 169)` | `(10, 3)` | `(432, 168)` | West | $16.03\text{ px}$ | Bench at `(448, 168)`, seated visual in front |
 | `n01_conductor` | `(14, 3)` | `(496, 200)` | `(14, 4)` | `(480, 208)` | South-West | $17.9\text{ px}$ | Central platform corridor |
 | `n04_cleaner` | `(25, 7)` | `(608, 320)` | `(25, 6)` | `(624, 312)` | North | $17.9\text{ px}$ | 2.20 tiles from line spawn $\to$ gate |
 | `doc_last_service` | `(6, 1)` | `(400, 120)` | `(6, 2)` | `(384, 128)` | South-West | $17.9\text{ px}$ | Near north platform edge |
@@ -224,15 +224,22 @@ In `tests/chapters/ch01/test_ch01_art_integration.gd`, `BASELINE_FINGERPRINTS_GZ
    - New 30×18 L-shape perimeter: 6-vertex polygon `[(320, 60), (808, 304), (672, 372), (384, 228), (224, 308), (24, 208)]` with outset 0.25 tile.
 2. **Door Exit and Archway:**
    - Relocated from `(448, 208)` to `(720, 328)`. The 24 × 24 Blocker remains at offset `(0, 0)` with opening width $\ge 1.5$ tiles.
-3. **Wall and Fixture Expansions:**
+3. **Wall and Fixture Expansions & Mounts:**
    - WallN modules expanded from 7 to 15.
    - WallW modules expanded from 5 to 9.
    - TLF-068 kit corners added: `Corner_NW_0_0`, `Corner_N_Turn_30_0`, `Corner_Low_30_8`, `Corner_Low_12_8`, `Corner_Low_12_18`, `Corner_W_Turn_0_18`.
    - Clock_5 replaced by Clock_8 at `(592, 162)`; Clock_2 preserved at `(400, 66)`.
    - `digital_clock_2359` Area2D trigger moved from `(400, 66)` to floor vertex `(592, 200)` under Clock_8.
-   - TLF-063 props mounted with 38 px raise: `DepartureBoard` at `(144, 114)` and `ClosedTrackNotice` at `(528, 130)`.
-4. **Actor & Prop Repositioning:**
-   - `PlatformBench` moved from `(352, 120)` to `(448, 168)`.
+   - `DepartureBoard` (160×32) removed from `Wall_Fixtures` pending TLF-073 sheared W-face variant from Argon (a flat horizontal 160 px rectangle cannot follow the 1:2 sloped wall plane).
+   - `ClosedTrackNotice` (80×16) mounted on N wall module 6 at `Vector2(528, 146)` so its entire rectangle sits between the sloped wall top and foot without crossing the foot vertex (Sol review P1).
+   - Switch consoles (`selector_line`, `selector_platform`, `selector_car`): Area2D contacts and stand spots unchanged, `Presenter` visuals mounted on wall face with `position = Vector2(0, -28)` (Sol review P1).
+   - `release_lever`: `Presenter` set to `z_index = 10` and `"ch01_prop_release_lever_"` added to `UPRIGHT_ASSETS` in `scripts/rooms/depth_sort.gd` for TLF-067 contact-depth sorting with Elias (Sol review P2).
+4. **Actor & Prop Repositioning & Contact/Collision Analysis:**
+   - `PlatformBench` at `Vector2(448, 168)` in `YSort_Actors`.
+   - `n03_old_man` positioned at `Vector2(448, 169)` (Sol review P2):
+     - **Visual registration:** Sorting Y=169 > 168 draws the commuter statue in front of the bench backrest. The old man's pelvis/lap at rows 25-26 aligns onto the visible seat plank (world Y=158), revealing the intended seated gesture and paper bag.
+     - **Contact effect (for Lead & Opus):** Stand spot is `Vector2(432, 168)`. Distance to `(448, 169)` is $\sqrt{16^2 + 1^2} = 16.03\text{ px}$. With Elias capsule radius 3.9 px, interaction range is $14 + 3.9 = 17.9\text{ px}$. At 16.03 px, the interaction contact is $1.87\text{ px}$ closer and more reliable than the legacy $17.89\text{ px}$ spot.
+     - **Collision effect (for Lead & Opus):** `Footprint` is a 12×8 rectangle centered at `(448, 169)` spanning $x \in [442, 454], y \in [165, 173]$, placing collision entirely inside the bench body. The player standing at `x = 432` has capsule right edge at $432 + 3.9 = 435.9$, leaving $442 - 435.9 = 6.1\text{ px}$ of clear physical clearance. No collision obstruction exists.
    - `StalledTransitCar` moved from `(251, 210)` to `(480, 336)`.
    - `n04_cleaner` moved to `(608, 320)` (tile 25, 7) per Lead Decision 1.
    - `release_lever` placed at `(752, 312)` (tile 29, 2) with West stand spot `(736, 304)`.
@@ -248,19 +255,20 @@ Captured using Godot 4.7.2 Forward+ windowed renderer (D3D12, 640×360 viewport)
 
 1. **Spawn (`doc_arrival_v2_spawn.png`):**
    - Elias at `Vector2(160, 224)` (tile 5, 15) with `checkpoint` zone.
-   - `DepartureBoard` mounted on West wall, raised 38 px to `(144, 114)`.
+   - West wall modules shown clean with `DepartureBoard` removed pending TLF-073 sheared asset.
    ![Spawn](doc_arrival_v2_spawn.png)
 
 2. **Pocket Watch Pickup (`doc_arrival_v2_watch.png`):**
    - Elias approaching pocket watch pickup at `Vector2(240, 232)` (tile 8, 13).
+   - Operator sighting silhouette at `(304, 216)` and `n03_old_man` seated visibly in front of the bench at `(448, 169)`.
    ![Watch](doc_arrival_v2_watch.png)
 
 3. **Pit Edge (`doc_arrival_v2_pit_edge.png`):**
-   - Elias at `Vector2(512, 288)` showing pit edge low modules, `StalledTransitCar` at `(480, 336)`, and `ClosedTrackNotice` mounted on North wall raised 38 px to `(528, 130)`.
+   - Elias at `Vector2(512, 288)` showing pit edge low modules, `StalledTransitCar` at `(480, 336)`, and `ClosedTrackNotice` flush on North wall face at `(528, 146)`.
    ![Pit Edge](doc_arrival_v2_pit_edge.png)
 
 4. **Platform Gate & East Door (`doc_arrival_v2_gate.png`):**
-   - Elias at `Vector2(720, 328)` showing `platform_gate`, `door_exit_east`, `release_lever` at `(752, 312)` with West stand spot `(736, 304)`, and `n04_cleaner` at `(608, 320)` per Lead Decision 1.
+   - Elias at `Vector2(720, 328)` showing `platform_gate`, `door_exit_east`, `release_lever` at `(752, 312)` with West stand spot `(736, 304)`, switch consoles with visuals flush on wall face, and `n04_cleaner` at `(608, 320)`.
    ![Gate](doc_arrival_v2_gate.png)
 
 ---
@@ -395,3 +403,15 @@ OK
 ```
 
 - Total Builder Tests Run: **22 passed, 0 failed**
+
+---
+
+## 8. Resolution of Sol Visual Review Findings (`docs/reviews/TLF-069_2b5c0b1_visual_review.md`)
+
+| Priority | Finding | Resolution |
+|---|---|---|
+| **P1** | **Three selectors floor-standing bodies at fixed z=7:** 474 px below N wall foot, player draws in front when standing behind. | Mounted `Presenter` visual on the actual wall face with `position = Vector2(0, -28)` (centered between wall top and foot with 0 px below foot / 0 px above top). Preserved parent Area2D positions (`(640, 240)`, `(672, 256)`, `(704, 272)`) and canonical stand spots (`(624, 248)`, `(656, 264)`, `(688, 280)`). |
+| **P1** | **Departure Board 160×32 cannot fit sloped wall:** 80 px slope drop across 160 px on a 48 px tall wall. | Removed `DepartureBoard` Sprite2D from `Wall_Fixtures` for now. Noted as pending TLF-073 sheared W-face variant from Argon. |
+| **P1** | **CLOSED TRACK notice 80×16 wall fit:** 433 px above wall silhouette at `(528, 130)`. | Repositioned to `Vector2(528, 146)` based on 1:2 wall slope geometry ($y_{foot}(528) = 168, \Delta y = \pm 20$). Every pixel sits strictly on or above the wall foot vertex (0 px below foot, above-silhouette reduced from 433 to 34 px). |
+| **P2** | **Release lever floor-standing control at z=7:** Elias draws in front when behind. | Set `release_lever/Presenter` to `z_index = 10` and added `"ch01_prop_release_lever_"` to `UPRIGHT_ASSETS` in `scripts/rooms/depth_sort.gd` and `tests/chapters/ch01/test_ch01_sort_order.gd` (TLF-067 contact-depth rule). Y-sort at Y=312 puts Elias at Y=304 behind the lever. |
+| **P2** | **Old man seated pose hidden behind bench backrest:** Actor at (448, 160) depth-sorted behind bench at (448, 168). | Repositioned `n03_old_man` to `Vector2(448, 169)`. Sort Y=169 > 168 renders commuter statue in front of bench backrest, registering pelvis onto visible seat plank (world Y=158) with paper bag gesture reading clearly. Stand spot at `(432, 168)` is distance 16.03 px ($\le 17.9$ px reach) and footprint has 6.1 px clearance. |

@@ -58,7 +58,6 @@
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_subterranean_corner_w_turn_outer_idle.png" id="art_corner_w_turn_outer"]
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png" id="art_wall_partition_low_s"]
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_wall_partition_low_e_idle.png" id="art_wall_partition_low_e"]
-[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_departure_board_nowhere_idle.png" id="art_departure_board"]
 [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_notice_closed_track_idle.png" id="art_notice_closed_track"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_door"]
@@ -460,13 +459,8 @@ position = Vector2(592, 162)
 offset = Vector2(-16, -20)
 centered = false
 texture = ExtResource("5_clock")
-[node name="DepartureBoard" type="Sprite2D" parent="Wall_Fixtures"]
-position = Vector2(144, 114)
-offset = Vector2(-80, -28)
-centered = false
-texture = ExtResource("art_departure_board")
 [node name="ClosedTrackNotice" type="Sprite2D" parent="Wall_Fixtures"]
-position = Vector2(528, 130)
+position = Vector2(528, 146)
 offset = Vector2(-40, -14)
 centered = false
 texture = ExtResource("art_notice_closed_track")
@@ -504,6 +498,7 @@ object_id = &"ch01.arrival_platform.selector_line"
 shape = SubResource("CircleShape2D_so_interact14")
 
 [node name="Presenter" type="Sprite2D" parent="selector_line"]
+position = Vector2(0, -28)
 z_index = 7
 z_as_relative = false
 script = ExtResource("so_sel_pres")
@@ -523,6 +518,7 @@ object_id = &"ch01.arrival_platform.selector_platform"
 shape = SubResource("CircleShape2D_so_interact14")
 
 [node name="Presenter" type="Sprite2D" parent="selector_platform"]
+position = Vector2(0, -28)
 z_index = 7
 z_as_relative = false
 script = ExtResource("so_sel_pres")
@@ -542,6 +538,7 @@ object_id = &"ch01.arrival_platform.selector_car"
 shape = SubResource("CircleShape2D_so_interact14")
 
 [node name="Presenter" type="Sprite2D" parent="selector_car"]
+position = Vector2(0, -28)
 z_index = 7
 z_as_relative = false
 script = ExtResource("so_sel_pres")
@@ -571,7 +568,7 @@ object_id = &"ch01.arrival_platform.release_lever"
 shape = SubResource("CircleShape2D_so_interact14")
 
 [node name="Presenter" type="Sprite2D" parent="release_lever"]
-z_index = 7
+z_index = 10
 z_as_relative = false
 script = ExtResource("so_lever_pres")
 
@@ -682,7 +679,7 @@ tex_idle = ExtResource("so_n02_idle")
 tex_read = ExtResource("so_n02_read")
 
 [node name="n03_old_man" type="Area2D" parent="."]
-position = Vector2(448, 160)
+position = Vector2(448, 169)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("so_tracemem")

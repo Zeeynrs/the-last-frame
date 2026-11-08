@@ -27,17 +27,17 @@
 - `pocket_watch_pickup`: `Vector2(240, 232)` (tile 8, 13).
 - `operator_sighting` (TLF-058): `Vector2(304, 216)` (tile 9, 10), trigger offset `Vector2(-12, 8)` preserved.
 - `n02_student`: `Vector2(208, 168)` (tile 3, 10).
-- `n03_old_man`: `Vector2(448, 160)` (tile 10, 2); `PlatformBench` at `Vector2(448, 168)`.
+- `n03_old_man`: `Vector2(448, 169)` (tile 10, 2); `PlatformBench` at `Vector2(448, 168)`. Old man visual is aligned to visible bench seat and depth-sorts in front of backrest.
 - `n01_conductor`: `Vector2(496, 200)` (tile 14, 3).
 - `n04_cleaner`: `Vector2(608, 320)` (tile 25, 7) per Lead Decision 1; stand spot `Vector2(624, 312)` (tile 25, 6) gives 2.20 tiles clearance from walking line.
 - `doc_last_service`: `Vector2(400, 120)` (tile 6, 1).
 - Clocks: `Clock_2` at `Vector2(400, 66)` (tile 5, 0), `Clock_8` at `Vector2(592, 162)` (tile 17, 0); `digital_clock_2359` trigger on floor under Clock_8 at `Vector2(592, 200)`.
-- `DepartureBoard`: mounted on W wall module 5, raised 38 px to `Vector2(144, 114)` per Lead Decision 5 & Opus review.
-- `ClosedTrackNotice`: mounted on N wall module 6, raised 38 px to `Vector2(528, 130)` per Lead Decision 6 & Opus review.
-- `selector_line`: `Vector2(640, 240)` (tile 21, 1).
-- `selector_platform`: `Vector2(672, 256)` (tile 23, 1).
-- `selector_car`: `Vector2(704, 272)` (tile 25, 1).
-- `release_lever`: `Vector2(752, 312)` (tile 29, 2); stand spot `Vector2(736, 304)` (tile 28, 2) on West side per Lead Decision 2.
+- `DepartureBoard`: removed from `Wall_Fixtures` pending TLF-073 sheared W-face variant (flat 160×32 cannot follow sloped wall).
+- `ClosedTrackNotice`: mounted on N wall module 6 at `Vector2(528, 146)` to lie strictly between sloped top and foot without crossing foot vertex.
+- `selector_line`: Area2D at `Vector2(640, 240)` (tile 21, 1), `Presenter` visual mounted on wall face at `Vector2(0, -28)`.
+- `selector_platform`: Area2D at `Vector2(672, 256)` (tile 23, 1), `Presenter` visual mounted on wall face at `Vector2(0, -28)`.
+- `selector_car`: Area2D at `Vector2(704, 272)` (tile 25, 1), `Presenter` visual mounted on wall face at `Vector2(0, -28)`.
+- `release_lever`: `Vector2(752, 312)` (tile 29, 2), `Presenter` at `z_index = 10` with TLF-067 contact-depth rule (`UPRIGHT_ASSETS`); stand spot `Vector2(736, 304)` (tile 28, 2) on West side per Lead Decision 2.
 - `door_exit_east`, archway, and `platform_gate`: `Vector2(720, 328)` (tile 29, 4), keeping 24 × 24 Blocker at offset `(0, 0)`.
 - `StalledTransitCar`: `Vector2(480, 336)` (tile 22, 12).
 

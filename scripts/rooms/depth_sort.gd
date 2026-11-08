@@ -23,6 +23,7 @@ const ACTOR_Z := 10
 ## interior pillar are upright bodies per ART_BIBLE A.1 (TLF-066 audit ranks 3 and 4).
 const UPRIGHT_ASSETS: Array[String] = [
 	"ch01_prop_platform_gate_",
+	"ch01_prop_release_lever_",
 	"ch01_prop_staff_door_",
 	"ch01_prop_staff_barrier_",
 	"ch01_prop_service_hatch_",
