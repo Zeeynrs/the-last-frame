@@ -154,7 +154,7 @@ object_id = &"global.pocket_watch"
 shape = SubResource("CircleShape2D_pickup")
 
 [node name="digital_clock_2359" type="Area2D" parent="."]
-position = Vector2(400, 66)
+position = Vector2(592, 200)
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("6_trigger")
@@ -461,12 +461,12 @@ offset = Vector2(-16, -20)
 centered = false
 texture = ExtResource("5_clock")
 [node name="DepartureBoard" type="Sprite2D" parent="Wall_Fixtures"]
-position = Vector2(144, 152)
+position = Vector2(144, 114)
 offset = Vector2(-80, -28)
 centered = false
 texture = ExtResource("art_departure_board")
 [node name="ClosedTrackNotice" type="Sprite2D" parent="Wall_Fixtures"]
-position = Vector2(528, 168)
+position = Vector2(528, 130)
 offset = Vector2(-40, -14)
 centered = false
 texture = ExtResource("art_notice_closed_track")

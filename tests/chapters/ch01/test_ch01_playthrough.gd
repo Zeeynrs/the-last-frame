@@ -187,12 +187,6 @@ func test_doorways_match_chapter_graph_def() -> void:
 		for node in _descendants(inst):
 			if node is DoorwayPresenter:
 				var presenter := node as DoorwayPresenter
-				if room_id == &"ch01.arrival_platform" and presenter.door_id == &"door_exit_east":
-					var expected_px := ChapterGraphDef.tile_to_px(29, 4)
-					_assert_true((presenter.position - expected_px).length() < 1.0,
-						"%s:%s position %s matches tile (29,4) -> %s" % [
-							room_id, presenter.door_id, presenter.position, expected_px])
-					continue
 				_assert_true(declared_doors.has(presenter.door_id),
 					"Doorway '%s' declared in graph def for '%s'" % [presenter.door_id, room_id])
 				var d = declared_doors[presenter.door_id]
@@ -220,11 +214,6 @@ func test_safe_anchors_and_checkpoints_match_specs() -> void:
 			if node is SafeAnchor:
 				var anchor := node as SafeAnchor
 				var sid := String(anchor.object_id)
-				if sid == "ch01.arrival_platform.safe_anchor_spawn":
-					var expected_px := ChapterGraphDef.tile_to_px(5, 15)
-					_assert_true((anchor.position - expected_px).length() < 1.0,
-						"Anchor %s position %s matches tile (5,15)" % [sid, anchor.position])
-					continue
 				if sid == "ch01.maintenance_bay.safe_anchor_entry":
 					var expected_px := ChapterGraphDef.tile_to_px(1, 4)
 					_assert_true((anchor.position - expected_px).length() < 1.0,

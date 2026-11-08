@@ -31,9 +31,9 @@
 - `n01_conductor`: `Vector2(496, 200)` (tile 14, 3).
 - `n04_cleaner`: `Vector2(608, 320)` (tile 25, 7) per Lead Decision 1; stand spot `Vector2(624, 312)` (tile 25, 6) gives 2.20 tiles clearance from walking line.
 - `doc_last_service`: `Vector2(400, 120)` (tile 6, 1).
-- Clocks: `Clock_2` at `Vector2(400, 66)` (tile 5, 0), `Clock_8` at `Vector2(592, 162)` (tile 17, 0).
-- `DepartureBoard`: mounted flush on W wall module 5 at `Vector2(144, 152)` (tile 0, 11) per Lead Decision 5.
-- `ClosedTrackNotice`: mounted flush on N wall module 6 at `Vector2(528, 168)` (tile 13, 0) per Lead Decision 6.
+- Clocks: `Clock_2` at `Vector2(400, 66)` (tile 5, 0), `Clock_8` at `Vector2(592, 162)` (tile 17, 0); `digital_clock_2359` trigger on floor under Clock_8 at `Vector2(592, 200)`.
+- `DepartureBoard`: mounted on W wall module 5, raised 38 px to `Vector2(144, 114)` per Lead Decision 5 & Opus review.
+- `ClosedTrackNotice`: mounted on N wall module 6, raised 38 px to `Vector2(528, 130)` per Lead Decision 6 & Opus review.
 - `selector_line`: `Vector2(640, 240)` (tile 21, 1).
 - `selector_platform`: `Vector2(672, 256)` (tile 23, 1).
 - `selector_car`: `Vector2(704, 272)` (tile 25, 1).
@@ -46,13 +46,13 @@
 release_lever:       tile (28, 2) -> Vector2(736, 304)  [West side, SO-01 17.9 px, clear of blocker]
 n04_cleaner:         tile (25, 6) -> Vector2(624, 312)  [North side, SO-01 17.9 px, 2.2 tiles from line]
 n01_conductor:       tile (14, 4) -> Vector2(480, 208)  [Approach side, SO-01 17.9 px]
-n02_student:         tile (4, 10) -> Vector2(224, 160)  [Approach side, SO-01 17.9 px]
+n02_student:         tile (3, 9)  -> Vector2(224, 160)  [Approach side, SO-01 17.9 px]
 n03_old_man:         tile (10, 3) -> Vector2(432, 168)  [Approach side, SO-01 17.9 px]
-doc_last_service:    tile (5, 1)  -> Vector2(384, 128)  [Approach side, SO-01 17.9 px]
+doc_last_service:    tile (6, 2)  -> Vector2(384, 128)  [Approach side, SO-01 17.9 px]
 selector_line:       tile (21, 2) -> Vector2(624, 248)  [South side, SO-01 17.9 px]
 selector_platform:   tile (23, 2) -> Vector2(656, 264)  [South side, SO-01 17.9 px]
 selector_car:        tile (25, 2) -> Vector2(688, 280)  [South side, SO-01 17.9 px]
-pocket_watch_pickup: tile (7, 13) -> Vector2(224, 240)  [Approach side, SO-01 17.9 px]
+pocket_watch_pickup: tile (8, 14) -> Vector2(224, 240)  [Approach side, SO-01 17.9 px]
 ```
 
 ---

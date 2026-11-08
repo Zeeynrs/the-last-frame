@@ -6,7 +6,7 @@
 **Visual / Facing Review:** Sol
 **Lead:** Layout, validation, merge
 **Branch:** `adityadaffa522/tlf-069-arrival-platform-v2`
-**Status:** COMPLETE / VALIDATION GREEN (478 passed, 0 failed, 0 leaks)
+**Status:** COMPLETE / VALIDATION GREEN (479 passed, 0 failed, 0 leaks)
 
 ---
 
@@ -34,9 +34,9 @@ All puzzle logic for CH1-SO-01 remains completely intact. The 4 windowed Forward
    - `n01_conductor`: `Vector2(496, 200)` (tile 14, 3).
    - `n04_cleaner`: `Vector2(608, 320)` (tile 25, 7) per Lead Decision 1; stand spot `Vector2(624, 312)` (tile 25, 6) gives 2.20 tiles clearance from walking line.
    - `doc_last_service`: `Vector2(400, 120)` (tile 6, 1).
-   - Clocks: `Clock_2` at `Vector2(400, 66)` (tile 5, 0), `Clock_8` at `Vector2(592, 162)` (tile 17, 0).
-   - `DepartureBoard`: mounted flush on W wall module 5 at `Vector2(144, 152)` (tile 0, 11) per Lead Decision 5.
-   - `ClosedTrackNotice`: mounted flush on N wall module 6 at `Vector2(528, 168)` (tile 13, 0) per Lead Decision 6.
+   - Clocks: `Clock_2` at `Vector2(400, 66)` (tile 5, 0), `Clock_8` at `Vector2(592, 162)` (tile 17, 0); `digital_clock_2359` Area2D trigger placed on reachable floor spot under Clock_8 at `Vector2(592, 200)` (tile 17, 2).
+   - `DepartureBoard`: mounted on W wall module 5, raised 38 px to `Vector2(144, 114)` per Lead Decision 5 & Opus review.
+   - `ClosedTrackNotice`: mounted on N wall module 6, raised 38 px to `Vector2(528, 130)` per Lead Decision 6 & Opus review.
    - `selector_line`: `Vector2(640, 240)` (tile 21, 1).
    - `selector_platform`: `Vector2(672, 256)` (tile 23, 1).
    - `selector_car`: `Vector2(704, 272)` (tile 25, 1).
@@ -44,10 +44,10 @@ All puzzle logic for CH1-SO-01 remains completely intact. The 4 windowed Forward
    - `door_exit_east`, archway, and `platform_gate`: `Vector2(720, 328)` (tile 29, 4), keeping 24 × 24 Blocker at offset `(0, 0)`.
    - `StalledTransitCar`: `Vector2(480, 336)` (tile 22, 12).
 3. **Verification Suites:**
-   - Added `tests/chapters/ch01/test_ch01_arrival_platform_v2.gd`: door sweep closed gate guard, stand spot reach within 2.6 px, camera view rect bounding clamp, and checkpoint save/load restoration.
+   - Added `tests/chapters/ch01/test_ch01_arrival_platform_v2.gd`: door sweep closed gate guard, stand spot reach within 2.6 px with interactable target assertion (`Player.choose_best_interactable` / `PocketWatch.choose_watch_target`), camera view rect bounding clamp, checkpoint save/load restoration, and real-input clock dialogue line test (`test_digital_clock_2359_dialogue_line_plays`).
    - Re-baselined `test_collision_freeze_all_10_rooms` and updated `test_room1_arrival_platform_kit_complete` in `tests/chapters/ch01/test_ch01_art_integration.gd`.
-   - Re-baselined scripted and real playthroughs, negatives, spawn targeting, and room shape tests.
-   - Full validation: 478 passed, 0 failed, 0 leaks.
+   - Updated `design/ch01/ROOM_GRAPH.md` and regenerated `data/chapters/ch01/ch01_graph.tres` via `tools/content/gen_ch01_graph.py` (30×18, door E (29,4), anchor (5,15)); removed arrival special cases from `tests/chapters/ch01/test_ch01_playthrough.gd`.
+   - Full validation: 479 passed, 0 failed, 0 leaks.
 
 ---
 
@@ -57,12 +57,12 @@ All stand spots were calculated according to the SO-01 interaction rule ($17.9\t
 
 | Object ID / Name | Object Tile | Object Pos (px) | Stand Spot Tile | Stand Spot Pos (px) | Approach Side | SO-01 Dist | Clearance / Notes |
 |---|---|---|---|---|---|---|---|
-| `pocket_watch_pickup` | `(8, 13)` | `(240, 232)` | `(7, 13)` | `(224, 240)` | West | $17.9\text{ px}$ | Direct path from spawn |
-| `n02_student` | `(3, 10)` | `(208, 168)` | `(4, 10)` | `(224, 160)` | East | $17.9\text{ px}$ | Clear of walls |
+| `pocket_watch_pickup` | `(8, 13)` | `(240, 232)` | `(8, 14)` | `(224, 240)` | West | $17.9\text{ px}$ | Direct path from spawn |
+| `n02_student` | `(3, 10)` | `(208, 168)` | `(3, 9)` | `(224, 160)` | East | $17.9\text{ px}$ | Clear of walls |
 | `n03_old_man` | `(10, 2)` | `(448, 160)` | `(10, 3)` | `(432, 168)` | South-West | $17.9\text{ px}$ | Bench at `(448, 168)` |
 | `n01_conductor` | `(14, 3)` | `(496, 200)` | `(14, 4)` | `(480, 208)` | South-West | $17.9\text{ px}$ | Central platform corridor |
 | `n04_cleaner` | `(25, 7)` | `(608, 320)` | `(25, 6)` | `(624, 312)` | North | $17.9\text{ px}$ | 2.20 tiles from line spawn $\to$ gate |
-| `doc_last_service` | `(6, 1)` | `(400, 120)` | `(5, 1)` | `(384, 128)` | South-West | $17.9\text{ px}$ | Near north platform edge |
+| `doc_last_service` | `(6, 1)` | `(400, 120)` | `(6, 2)` | `(384, 128)` | South-West | $17.9\text{ px}$ | Near north platform edge |
 | `selector_line` | `(21, 1)` | `(640, 240)` | `(21, 2)` | `(624, 248)` | South-West | $17.9\text{ px}$ | Switch console 1 |
 | `selector_platform` | `(23, 1)` | `(672, 256)` | `(23, 2)` | `(656, 264)` | South-West | $17.9\text{ px}$ | Switch console 2 |
 | `selector_car` | `(25, 1)` | `(704, 272)` | `(25, 2)` | `(688, 280)` | South-West | $17.9\text{ px}$ | Switch console 3 |
@@ -228,7 +228,8 @@ In `tests/chapters/ch01/test_ch01_art_integration.gd`, `BASELINE_FINGERPRINTS_GZ
    - WallW modules expanded from 5 to 9.
    - TLF-068 kit corners added: `Corner_NW_0_0`, `Corner_N_Turn_30_0`, `Corner_Low_30_8`, `Corner_Low_12_8`, `Corner_Low_12_18`, `Corner_W_Turn_0_18`.
    - Clock_5 replaced by Clock_8 at `(592, 162)`; Clock_2 preserved at `(400, 66)`.
-   - TLF-063 props mounted: `DepartureBoard` at `(144, 152)` and `ClosedTrackNotice` at `(528, 168)`.
+   - `digital_clock_2359` Area2D trigger moved from `(400, 66)` to floor vertex `(592, 200)` under Clock_8.
+   - TLF-063 props mounted with 38 px raise: `DepartureBoard` at `(144, 114)` and `ClosedTrackNotice` at `(528, 130)`.
 4. **Actor & Prop Repositioning:**
    - `PlatformBench` moved from `(352, 120)` to `(448, 168)`.
    - `StalledTransitCar` moved from `(251, 210)` to `(480, 336)`.
@@ -246,7 +247,7 @@ Captured using Godot 4.7.2 Forward+ windowed renderer (D3D12, 640×360 viewport)
 
 1. **Spawn (`doc_arrival_v2_spawn.png`):**
    - Elias at `Vector2(160, 224)` (tile 5, 15) with `checkpoint` zone.
-   - `DepartureBoard` mounted flush on West wall at `(144, 152)` per Lead Decision 5.
+   - `DepartureBoard` mounted on West wall, raised 38 px to `(144, 114)`.
    ![Spawn](doc_arrival_v2_spawn.png)
 
 2. **Pocket Watch Pickup (`doc_arrival_v2_watch.png`):**
@@ -254,7 +255,7 @@ Captured using Godot 4.7.2 Forward+ windowed renderer (D3D12, 640×360 viewport)
    ![Watch](doc_arrival_v2_watch.png)
 
 3. **Pit Edge (`doc_arrival_v2_pit_edge.png`):**
-   - Elias at `Vector2(512, 288)` showing pit edge low modules, `StalledTransitCar` at `(480, 336)`, and `ClosedTrackNotice` mounted on North wall at `(528, 168)` per Lead Decision 6.
+   - Elias at `Vector2(512, 288)` showing pit edge low modules, `StalledTransitCar` at `(480, 336)`, and `ClosedTrackNotice` mounted on North wall raised 38 px to `(528, 130)`.
    ![Pit Edge](doc_arrival_v2_pit_edge.png)
 
 4. **Platform Gate & East Door (`doc_arrival_v2_gate.png`):**
@@ -283,21 +284,36 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 [  66% ] first_scan_filesystem | Initializing plugins...
 [  83% ] first_scan_filesystem | Starting file scan...
 [ DONE ] first_scan_filesystem
+
+[   0% ] loading_editor_layout | Started Loading editor (5 steps)
+[   0% ] loading_editor_layout | Loading editor layout...
+[  16% ] loading_editor_layout | Loading docks...
+[ DONE ] loading_editor_layout
+
 Import check passed with zero errors.
 
 [2/3] Checking that every GDScript parses...
-Script check: 167 scripts, 0 failed.
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Script check: 168 scripts, 0 failed.
+Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/Godot/app_userdata/The Last Frame Val069/headless/settings.cfg)
+SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/Godot/app_userdata/The Last Frame Val069/headless/saves)
 Leak check: clean (script check)
 
 [3/3] Running headless automated test suite...
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/Godot/app_userdata/The Last Frame Val069/headless/settings.cfg)
+SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/Godot/app_userdata/The Last Frame Val069/headless/saves)
+--- Running Test Suite ---
 ...
 Test file: res://tests/chapters/ch01/test_ch01_arrival_platform_v2.gd
   PASS: test_camera_never_outside_room_bounds
+  PASS: test_digital_clock_2359_dialogue_line_plays
   PASS: test_door_sweep_gate_closed_never_enters_door
   PASS: test_every_stand_spot_reachable_within_2_6_px
   PASS: test_save_load_at_checkpoint_restores_elias_and_camera_together
 Test file: res://tests/chapters/ch01/test_ch01_art_integration.gd
-  PASS: test_arrival_platform_departure_board_and_closed_track_notice_mounted
   PASS: test_collision_freeze_all_10_rooms
   PASS: test_intercom_reach_walkable
   PASS: test_no_greybox_nodes_remain_across_all_rooms
@@ -332,12 +348,12 @@ Test file: res://tests/chapters/ch01/test_ch01_step1_negatives.gd
   PASS: test_so01_lockout_holds_until_puzzle_complete
   ...
 ---------------------------
-TESTS: 478 passed, 0 failed
+TESTS: 479 passed, 0 failed
 Leak check: clean (test suite)
 
 === All validation checks passed successfully! ===
 ```
 
-- Total Tests Run: **478 passed, 0 failed**
+- Total Tests Run: **479 passed, 0 failed**
 - SCRIPT ERROR: **0**
 - Leaks: **0**

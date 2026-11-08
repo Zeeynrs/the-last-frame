@@ -8,18 +8,18 @@ chapter_id = "ch01"
 anchor_room = &"ch01.arrival_platform"
 rooms = [{
 "room_id": "ch01.arrival_platform",
-"width": 14,
-"height": 10,
+"width": 30,
+"height": 18,
 "doors": [{
 "door_id": "door_exit_east",
 "side": "E",
-"x": 13,
-"y": 5
+"x": 29,
+"y": 4
 }],
 "safe_anchors": [{
 "id": "ch01.arrival_platform.safe_anchor_spawn",
-"x": 7,
-"y": 5
+"x": 5,
+"y": 15
 }]
 }, {
 "room_id": "ch01.concourse_west",

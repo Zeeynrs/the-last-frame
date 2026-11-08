@@ -6,6 +6,7 @@ extends "res://tests/support/ch01_real_input.gd"
 ## 2. Every interactable stand spot is reachable within 2.6 px with the real player capsule.
 ## 3. Camera view rect never extends outside room bounds (bounds_px) at spawn, watch, pit edge, gate.
 ## 4. Save/load at checkpoint restores Elias and camera together.
+## 5. Walking to digital_clock_2359 trigger at (592, 200) and interacting plays EL_CLOCK_2359.
 
 const R1 := &"ch01.arrival_platform"
 
@@ -47,29 +48,36 @@ func test_door_sweep_gate_closed_never_enters_door() -> void:
 	stop()
 
 
-## 2. Stand spot reach: Every interactable stand spot is reachable within 2.6 px by real player capsule.
+## 2. Stand spot reach: Every interactable stand spot is reachable within 2.6 px by real player capsule,
+## and the game picks the expected target (choose_best_interactable for use, choose_watch_target for trace).
 func test_every_stand_spot_reachable_within_2_6_px() -> void:
 	if not await start_at(R1, &""):
 		stop()
 		return
 
-	# Table of all objects and their canonical stand spots (from layout & SO-01 rule)
+	player.pocket_watch.unlocked_abilities = [&"trace"]
+	player.pocket_watch.selected_ability = &"trace"
+
+	# Table of all objects, stand spots, target IDs, and primary interaction kind
 	var spots := [
-		["pocket_watch_pickup", Vector2(224, 240)],
-		["n02_student", Vector2(224, 160)],
-		["n03_old_man", Vector2(432, 168)],
-		["n01_conductor", Vector2(480, 208)],
-		["n04_cleaner", Vector2(624, 312)],
-		["doc_last_service", Vector2(384, 128)],
-		["selector_line", Vector2(624, 248)],
-		["selector_platform", Vector2(656, 264)],
-		["selector_car", Vector2(688, 280)],
-		["release_lever", Vector2(736, 304)]
+		["pocket_watch_pickup", Vector2(224, 240), &"global.pocket_watch", &"use"],
+		["n02_student", Vector2(224, 160), &"ch01.arrival_platform.n02_student", &"trace"],
+		["n03_old_man", Vector2(432, 168), &"ch01.arrival_platform.n03_old_man", &"trace"],
+		["n01_conductor", Vector2(480, 208), &"ch01.arrival_platform.n01_conductor", &"trace"],
+		["n04_cleaner", Vector2(624, 312), &"ch01.arrival_platform.n04_cleaner", &"trace"],
+		["doc_last_service", Vector2(384, 128), &"ch01.arrival_platform.doc_last_service", &"use"],
+		["selector_line", Vector2(624, 248), &"ch01.arrival_platform.selector_line", &"use"],
+		["selector_platform", Vector2(656, 264), &"ch01.arrival_platform.selector_platform", &"use"],
+		["selector_car", Vector2(688, 280), &"ch01.arrival_platform.selector_car", &"use"],
+		["release_lever", Vector2(736, 304), &"ch01.arrival_platform.release_lever", &"use"]
 	]
 
 	for entry in spots:
 		var name: String = entry[0]
 		var target_spot: Vector2 = entry[1]
+		var target_id: StringName = entry[2]
+		var kind: StringName = entry[3]
+
 		# First walk toward the spot using standard walk_to
 		await walk_to(player, "reach_" + name, target_spot, Callable(), 300, true)
 		# If within standard WALK_TOLERANCE (3.0 px) but not yet <= 2.6 px, step precisely
@@ -81,6 +89,16 @@ func test_every_stand_spot_reachable_within_2_6_px() -> void:
 		hold_moves([])
 		var dist := player.global_position.distance_to(target_spot)
 		_assert_true(dist <= 2.6, "%s stand spot reached within 2.6 px (got %.2f px)" % [name, dist])
+
+		var target_node := resolve(target_id)
+		_assert_true(target_node != null, "%s: target node resolved" % name)
+		if kind == &"use":
+			var best = Player.choose_best_interactable(player.global_position, player._candidates, &"player")
+			_assert_eq(best, target_node, "%s: choose_best_interactable picked target" % name)
+		elif kind == &"trace":
+			var candidates: Array = _tree().get_nodes_in_group(&"interactable")
+			var best = PocketWatch.choose_watch_target(player.global_position, candidates, &"trace", player.pocket_watch.watch_radius, &"player")
+			_assert_eq(best, target_node, "%s: choose_watch_target picked target" % name)
 
 	stop()
 
@@ -162,4 +180,34 @@ func test_save_load_at_checkpoint_restores_elias_and_camera_together() -> void:
 	var cam_dist := router.camera.position.distance_to(expected_cam_pos)
 	_assert_true(cam_dist <= 1.0, "camera restored with player (dist %.2f <= 1.0 px)" % cam_dist)
 
+	stop()
+
+
+## 5. Clock dialogue: Walking to digital_clock_2359 trigger at (592, 200) and interacting plays EL_CLOCK_2359.
+func test_digital_clock_2359_dialogue_line_plays() -> void:
+	if not await start_at(R1, &""):
+		stop()
+		return
+
+	var clock_spot := Vector2(592, 204)
+	var clock_node := resolve(&"ch01.arrival_platform.digital_clock_2359")
+	_assert_true(clock_node != null, "digital_clock_2359 trigger exists")
+
+	# Walk toward the clock until targeted
+	var reached := await walk_to(player, "walk_to_clock", clock_spot, targets(clock_node), 300, true)
+	_assert_true(reached, "player walked within interaction range of digital_clock_2359")
+	_assert_true(targets(clock_node).call(), "digital_clock_2359 is player's current_target")
+
+	# Tap interact to read clock
+	await tap(&"interact")
+	await physics_frames(3)
+
+	var diag: DialogueBox = ch01.find_child("DialogueBox", true, false) as DialogueBox
+	_assert_true(diag != null and diag.is_active, "clock dialogue box active")
+	_assert_false(diag.current_lines.is_empty(), "dialogue lines populated")
+	if not diag.current_lines.is_empty():
+		_assert_eq(diag.current_lines[0][0], "SPK_ELIAS", "speaker is SPK_ELIAS")
+		_assert_eq(diag.current_lines[0][1], "EL_CLOCK_2359", "line is EL_CLOCK_2359")
+
+	await dismiss_blocking_ui()
 	stop()
