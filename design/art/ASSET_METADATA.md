@@ -1045,3 +1045,90 @@ Wide rectangular frontal plaques (`160 × 32 px` and `80 × 16 px`) cannot sit f
 | M17 | Sheared N-wall closed track notice (`ch01_prop_notice_closed_track_n_idle`) mounted on `WallN_6` (`WallN_5..WallN_7`) in Arrival Platform v2 + `×2` module assembly + `1×` native inset | `design/art/mockups/ch01_tlf073_notice_closed_track_n_wall_mockup.png` | `640 × 360 px` | **`concept`** |
 
 The colour + luminance-greyscale proof sheet (`design/art/mockups/ch01_tlf073_sheared_plaques_greyscale_proof.png` at `1320 × 1040 px` — containing both `640 × 360` wall-module mockups and standalone `1×` / `×2` comparisons in colour on the upper half and `.convert("L")` luminance greyscale on the lower half) is generated deterministically from delivered runtime PNGs by `tools/art/gen/tlf073_wall_plaques.py` and verified by `verify_regen.py`.
+
+---
+
+## 12. Sheared `2:1` Wall-Mount Selector Panels & `23:59` Digital Clocks (`TLF-077`)
+
+**Task:** TLF-077 · **Author:** Agent 2 (`Gemini 4 Argon`, Creative Asset Specialist, ADR-017) · **Art Director / Reviewer:** `GPT-6.1 Sol` (`ART_BIBLE.md` §A.3/§A.4, `TLF-078`) · **Palette:** `TLF-CH01-32` (`0` new colours, `0` off-palette, `0` semi-transparent pixels) · **Generator:** `tools/art/gen/tlf077_wall_fixtures.py` (20 assets + 4 mockup/proof sheets), registered in `tools/art/gen/registry.py`, `gen_all.py`, and `verify_regen.py`.
+
+### 11.1 `2:1` Wall-Slope Shearing, Pivots & Wall-Module Anchor Contract (`ART_BIBLE.md` §A.3/§A.4, §10.2 / `TLF-057`)
+
+Per `TLF-077` / `TLF-078`, the frontal-fixture allowance in `ART_BIBLE.md` §A.3 is withdrawn: the three SO-01 selector panels (`selector_line`, `selector_platform`, `selector_car`, 3 positions each) and the `23:59` digital clocks must follow the `2:1` isometric wall slope (`1 px` vertical shift per `2 px` horizontal) and sit flush on the `32 × 64 px` wall module face (`WallN_k` anchored at `RoomShape.tile_to_px(2*k + 1, 0) = Vector2(336 + 32*k, 72 + 16*k)`; `WallW_k` anchored at `RoomShape.tile_to_px(0, 2*k + 1) = Vector2(304 - 32*k, 72 + 16*k)`, both with `pivot = (16, 56)` and `offset = Vector2(-16, -56)`).
+
+On every `32 × 64 px` wall module (`x in 0..31`), the vertical wall height is `49 px` (`z_wall in 0..48`): top steel cornice cap at `z_wall = 0..2`, main ceramic tile course at `z_wall = 3..34` (`32 px` tall), amber safety dado stripe at `z_wall = 35..37`, lower wainscot at `z_wall = 38..45`, and floor skirting at `z_wall = 46..48`.
+
+1. **Sheared SO-01 Selector Panels — N-Wall & W-Wall Variants (`18` assets: `ch01_prop_selector_{line,platform,car}_{n,w}_pos{0,1,2}`, `32 × 48 px`):**
+   - **Slope formulas (`x in 0..31`, `z in 0..30`):**
+     - **N-wall variants (`_n_pos{0,1,2}`, slope down-right):**
+       $$y_N(x, z) = \lfloor x / 2 \rfloor + z$$
+       Top-left wall-face pivot is **`(0, 0)`** (`offset = Vector2(0, 0)` with `centered = false`).
+     - **W-wall variants (`_w_pos{0,1,2}`, slope down-left, matching `WallW` slope `(31 - x) // 2 = 15 - (x // 2)`):**
+       $$y_W(x, z) = 15 - \lfloor x / 2 \rfloor + z$$
+       Top-left wall-face pivot is **`(0, 15)`** (`offset = Vector2(0, -15)` with `centered = false`).
+   - **Preserved Glyphs, Labels & States (Zero New Text, Identical `G4/G3` Value Hierarchy Across All 3 Positions):**
+     - Header control-index pips (`z = 3..4`): `1` pip = `LINE`, `2` pips = `PLATFORM`, `3` pips = `CAR`.
+     - Display window (`x = 7..24, z = 6..18`, sheared `2:1`): `LINE` shows Circle (`pos0`), Diamond (`pos1`), Triangle (`pos2`); `PLATFORM` shows `1` (`pos0`), `2` (`pos1`), `3` (`pos2`) vertical bars; `CAR` shows 3-car train silhouette with middle (`pos0`), rear (`pos1`), or front (`pos2`) car raised `2 px` higher (`z = 8..14`) with `25` brass overhead pointer.
+     - Lower 3-position mechanical switch bezel (`x = 7..24, z = 20..26`, sheared `2:1`): 3 detent ticks (`26` gold on active `pos`, `11` on inactive) and mechanical handle shifted left (`kx = 10`, `pos0`), center (`kx = 15`, `pos1`), or right (`kx = 21`, `pos2`).
+   - **Wall-Module Anchor & `SelectorSwitchPresenter` Mounting (`Arrival Platform v2`):**
+     - **Option A — Direct `SelectorSwitchPresenter` child of `Area2D` (`selector_line` at `tile (21, 1) = (640, 240)`, `selector_platform` at `tile (23, 1) = (672, 256)`, `selector_car` at `tile (25, 1) = (704, 272)`):**
+       Because the canvas remains `32 × 48 px`, `SelectorSwitchPresenter`'s existing `offset = Vector2(-16, -40)` (`centered = false`, presenter pivot `(16, 40)`) works directly! Setting `Presenter.position = Vector2(0, -28)` places the sprite top-left at `(624, 172)`, `(656, 188)`, `(688, 204)` (`z_wall = 4..34`, centered on the upper ceramic course above the `z_wall = 35..37` amber dado stripe with `0 / 0 / 0 px` overflow); setting `Presenter.position = Vector2(0, -22)` places the sprite top-left at `(624, 178)`, `(656, 194)`, `(688, 210)` (`z_wall = 10..40`, also `0 / 0 / 0 px` overflow inside the `z_wall = 0..48` wall silhouette).
+     - **Option B — Direct `WallN_k` / `WallW_k` module anchor (`z_mount = 4`):**
+       - On `WallN_k` (`pivot (0, 0)`, `offset = Vector2(0, 0)`): `position = WallN_k.position + Vector2(-16, -52)` (or centered across the `WallN_{k-1}/WallN_k` boundary at `WallN_k.position + Vector2(-32, -60)`).
+       - On `WallW_k` (`pivot (0, 15)`, `offset = Vector2(0, -15)`): `position = WallW_k.position + Vector2(-16, -37)` (world canvas top-left at `WallW_k.position + Vector2(-16, -52)`).
+
+2. **Sheared `23:59` Digital Clocks — N-Wall & W-Wall Variants (`2` assets: `ch01_prop_digital_clock_2359_{n,w}_idle`, `32 × 40 px`):**
+   - Shears every pixel of the `32 × 22` `ch01_prop_digital_clock_2359_idle` (`z = 0..3` twin suspension rods at `x = 7..8, 23..24`, `z = 4..21` `30 × 18` beveled steel housing and recessed `23:59` 7-segment LED cavity, plus `z = 6..22` `01` wall shadow) along `y_N(x, z) = (x // 2) + z` (N-wall) and `y_W(x, z) = 15 - (x // 2) + z` (W-wall).
+   - **N-wall Clock (`ch01_prop_digital_clock_2359_n_idle`, `32 × 40 px`, top-left pivot `(0, 0)`, `offset = Vector2(0, 0)`):**
+     - Mounts on any **`WallN_k`** at wall depth `z_mount = 3` (rods `z = 0..3` attach directly below the `z_wall = 0..2` top cornice cap; housing `z = 4..21` sits at `z_wall = 7..24` on the upper ceramic course):
+       $$\text{position} = \text{WallN}_k.\text{position} + \text{Vector2}(-16,\; -53),\quad \text{offset} = \text{Vector2}(0,\; 0),\quad \text{centered} = \text{false}$$
+     - **Arrival Platform v2 (`Clock_8` on `WallN_8`, `tile (17, 0)`, `WallN_8.position = Vector2(592, 200)`):**
+       `position = Vector2(576, 147)`, `offset = Vector2(0, 0)`, `centered = false` (or equivalently `position = Vector2(592, 162)`, `offset = Vector2(-16, -15)`), world canvas rect `[576, 147, 32, 40]`, **`above_wall = 0 px`, `below_wall = 0 px`, `outside_wall = 0 px`** (`602 / 602` opaque pixels inside `WallN_8`).
+   - **W-wall Clock (`ch01_prop_digital_clock_2359_w_idle`, `32 × 40 px`, top-left pivot `(0, 15)`, `offset = Vector2(0, -15)`):**
+     - Mounts on any **`WallW_k`** at wall depth `z_mount = 3`:
+       $$\text{position} = \text{WallW}_k.\text{position} + \text{Vector2}(-16,\; -38),\quad \text{offset} = \text{Vector2}(0,\; -15),\quad \text{centered} = \text{false}$$
+       (world canvas top-left at `WallW_k.position + Vector2(-16, -53)`). On `WallW_2` (`tile (0, 5) = Vector2(240, 104)`): `position = Vector2(224, 66)`, `offset = Vector2(0, -15)`, world canvas rect `[224, 51, 32, 40]`, **`above_wall = 0 px`, `below_wall = 0 px`, `outside_wall = 0 px`** (`602 / 602` opaque pixels inside `WallW_2`).
+
+| Asset Family / ID | Wall Face & Slope | Canvas (`W×H`) | Top-Left Pivot / `offset` (`centered = false`) | Presenter Pivot / `offset` | Arrival Platform v2 Wall-Module Mount & World Rect | Wall-Silhouette Fit (`above / below / outside`, all-layer opaque px) |
+|---|---|---|---|---|---|---|
+| `ch01.prop.selector_line_n_pos{0,1,2}` | `N` (`2:1` down-right) | `32 × 48 px` | `(0, 0)` / `Vector2(0, 0)` | `(16, 40)` / `Vector2(-16, -40)` | `WallN_9..10` (`tile (21,1)` `(640,240)` + `Presenter (0,-28)` -> top-left `(624,172)`, rect `[624,172,32,48]`) | `0 / 0 / 0 px` (`776 / 776 px` on wall) |
+| `ch01.prop.selector_platform_n_pos{0,1,2}` | `N` (`2:1` down-right) | `32 × 48 px` | `(0, 0)` / `Vector2(0, 0)` | `(16, 40)` / `Vector2(-16, -40)` | `WallN_10..11` (`tile (23,1)` `(672,256)` + `Presenter (0,-28)` -> top-left `(656,188)`, rect `[656,188,32,48]`) | `0 / 0 / 0 px` (`776 / 776 px` on wall) |
+| `ch01.prop.selector_car_n_pos{0,1,2}` | `N` (`2:1` down-right) | `32 × 48 px` | `(0, 0)` / `Vector2(0, 0)` | `(16, 40)` / `Vector2(-16, -40)` | `WallN_11..12` (`tile (25,1)` `(704,272)` + `Presenter (0,-28)` -> top-left `(688,204)`, rect `[688,204,32,48]`) | `0 / 0 / 0 px` (`776 / 776 px` on wall) |
+| `ch01.prop.selector_{line,platform,car}_w_pos{0,1,2}` | `W` (`2:1` down-left) | `32 × 48 px` | `(0, 15)` / `Vector2(0, -15)` | `(16, 40)` / `Vector2(-16, -40)` | `WallW_k` (`WallW_k.position + (-16,-37)` with `offset (0,-15)` -> top-left `WallW_k.position + (-16,-52)`) | `0 / 0 / 0 px` (`776 / 776 px` on wall) |
+| `ch01.prop.digital_clock_2359_n_idle` | `N` (`2:1` down-right) | `32 × 40 px` | `(0, 0)` / `Vector2(0, 0)` | `(16, 20)` / `Vector2(-16, -20)` | `WallN_8` at `tile (17,0)` = `(592,200)` + `(-16,-53)` -> `position (576,147)`, `offset (0,0)`, rect `[576,147,32,40]` | `0 / 0 / 0 px` (`602 / 602 px` on wall) |
+| `ch01.prop.digital_clock_2359_w_idle` | `W` (`2:1` down-left) | `32 × 40 px` | `(0, 15)` / `Vector2(0, -15)` | `(16, 20)` / `Vector2(-16, -20)` | `WallW_2` at `tile (0,5)` = `(240,104)` + `(-16,-38)` -> `position (224,66)`, `offset (0,-15)`, rect `[224,51,32,40]` | `0 / 0 / 0 px` (`602 / 602 px` on wall) |
+
+### 11.2 `TLF-077` Asset Inventory Table (`row` 250–269)
+
+| Row | Asset ID | Category | Source `.pxo` (`assets/source/ch01/`) | Runtime Export (`res://assets/...`) | Canvas Size (`W×H px`) | Frames / FPS | Pivot `(px_x, px_y)` | Sorting / `z_index` | Palette Colors Used | QA State |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **250** | `ch01.prop.selector_line_n_pos0` | Props | `ch01_prop_selector_line_n_pos0.pxo` | `assets/props/ch01/ch01_prop_selector_line_n_pos0.png` | `32 × 48 px` | 1f (`static`) | `(0, 0)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **251** | `ch01.prop.selector_line_n_pos1` | Props | `ch01_prop_selector_line_n_pos1.pxo` | `assets/props/ch01/ch01_prop_selector_line_n_pos1.png` | `32 × 48 px` | 1f (`static`) | `(0, 0)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **252** | `ch01.prop.selector_line_n_pos2` | Props | `ch01_prop_selector_line_n_pos2.pxo` | `assets/props/ch01/ch01_prop_selector_line_n_pos2.png` | `32 × 48 px` | 1f (`static`) | `(0, 0)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **253** | `ch01.prop.selector_platform_n_pos0` | Props | `ch01_prop_selector_platform_n_pos0.pxo` | `assets/props/ch01/ch01_prop_selector_platform_n_pos0.png` | `32 × 48 px` | 1f (`static`) | `(0, 0)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **254** | `ch01.prop.selector_platform_n_pos1` | Props | `ch01_prop_selector_platform_n_pos1.pxo` | `assets/props/ch01/ch01_prop_selector_platform_n_pos1.png` | `32 × 48 px` | 1f (`static`) | `(0, 0)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **255** | `ch01.prop.selector_platform_n_pos2` | Props | `ch01_prop_selector_platform_n_pos2.pxo` | `assets/props/ch01/ch01_prop_selector_platform_n_pos2.png` | `32 × 48 px` | 1f (`static`) | `(0, 0)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **256** | `ch01.prop.selector_car_n_pos0` | Props | `ch01_prop_selector_car_n_pos0.pxo` | `assets/props/ch01/ch01_prop_selector_car_n_pos0.png` | `32 × 48 px` | 1f (`static`) | `(0, 0)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **257** | `ch01.prop.selector_car_n_pos1` | Props | `ch01_prop_selector_car_n_pos1.pxo` | `assets/props/ch01/ch01_prop_selector_car_n_pos1.png` | `32 × 48 px` | 1f (`static`) | `(0, 0)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **258** | `ch01.prop.selector_car_n_pos2` | Props | `ch01_prop_selector_car_n_pos2.pxo` | `assets/props/ch01/ch01_prop_selector_car_n_pos2.png` | `32 × 48 px` | 1f (`static`) | `(0, 0)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **259** | `ch01.prop.selector_line_w_pos0` | Props | `ch01_prop_selector_line_w_pos0.pxo` | `assets/props/ch01/ch01_prop_selector_line_w_pos0.png` | `32 × 48 px` | 1f (`static`) | `(0, 15)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **260** | `ch01.prop.selector_line_w_pos1` | Props | `ch01_prop_selector_line_w_pos1.pxo` | `assets/props/ch01/ch01_prop_selector_line_w_pos1.png` | `32 × 48 px` | 1f (`static`) | `(0, 15)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **261** | `ch01.prop.selector_line_w_pos2` | Props | `ch01_prop_selector_line_w_pos2.pxo` | `assets/props/ch01/ch01_prop_selector_line_w_pos2.png` | `32 × 48 px` | 1f (`static`) | `(0, 15)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **262** | `ch01.prop.selector_platform_w_pos0` | Props | `ch01_prop_selector_platform_w_pos0.pxo` | `assets/props/ch01/ch01_prop_selector_platform_w_pos0.png` | `32 × 48 px` | 1f (`static`) | `(0, 15)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **263** | `ch01.prop.selector_platform_w_pos1` | Props | `ch01_prop_selector_platform_w_pos1.pxo` | `assets/props/ch01/ch01_prop_selector_platform_w_pos1.png` | `32 × 48 px` | 1f (`static`) | `(0, 15)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **264** | `ch01.prop.selector_platform_w_pos2` | Props | `ch01_prop_selector_platform_w_pos2.pxo` | `assets/props/ch01/ch01_prop_selector_platform_w_pos2.png` | `32 × 48 px` | 1f (`static`) | `(0, 15)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **265** | `ch01.prop.selector_car_w_pos0` | Props | `ch01_prop_selector_car_w_pos0.pxo` | `assets/props/ch01/ch01_prop_selector_car_w_pos0.png` | `32 × 48 px` | 1f (`static`) | `(0, 15)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **266** | `ch01.prop.selector_car_w_pos1` | Props | `ch01_prop_selector_car_w_pos1.pxo` | `assets/props/ch01/ch01_prop_selector_car_w_pos1.png` | `32 × 48 px` | 1f (`static`) | `(0, 15)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **267** | `ch01.prop.selector_car_w_pos2` | Props | `ch01_prop_selector_car_w_pos2.pxo` | `assets/props/ch01/ch01_prop_selector_car_w_pos2.png` | `32 × 48 px` | 1f (`static`) | `(0, 15)` *(or presenter `(16, 40)`)* | `Wall_Fixtures (z_index = 7)` | `10 / 32` | **`exported`** |
+| **268** | `ch01.prop.digital_clock_2359_n_idle` | Props | `ch01_prop_digital_clock_2359_n_idle.pxo` | `assets/props/ch01/ch01_prop_digital_clock_2359_n_idle.png` | `32 × 40 px` | 1f (`static`) | `(0, 0)` | `Wall_Fixtures (z_index = 7)` | `12 / 32` | **`exported`** |
+| **269** | `ch01.prop.digital_clock_2359_w_idle` | Props | `ch01_prop_digital_clock_2359_w_idle.pxo` | `assets/props/ch01/ch01_prop_digital_clock_2359_w_idle.png` | `32 × 40 px` | 1f (`static`) | `(0, 15)` | `Wall_Fixtures (z_index = 7)` | `12 / 32` | **`exported`** |
+
+### 11.3 `TLF-077` Mockups & Greyscale Proofs (`design/art/mockups/`)
+
+| # | Mockup | File | Canvas Size | QA State |
+|---|---|---|---|---|
+| M16 | Sheared N-wall selector panels (`ch01_prop_selector_{line,platform,car}_n_pos{0,1,2}`) mounted on `WallN_9..WallN_12` in Arrival Platform v2 + `×2` module assembly + all 9 N-face states at `1×` native | `design/art/mockups/ch01_tlf077_selectors_n_wall_mockup.png` | `640 × 360 px` | **`concept`** |
+| M17 | Sheared W-wall selector panels (`ch01_prop_selector_{line,platform,car}_w_pos{0,1,2}`) mounted on `WallW_3..WallW_5` in Arrival Platform v2 + `×2` module assembly + all 9 W-face states at `1×` native | `design/art/mockups/ch01_tlf077_selectors_w_wall_mockup.png` | `640 × 360 px` | **`concept`** |
+| M18 | Sheared `23:59` digital clocks (`ch01_prop_digital_clock_2359_n_idle` on `WallN_8` and `ch01_prop_digital_clock_2359_w_idle` on `WallW_2`) in Arrival Platform v2 + `×2` module assembly + uncropped `1×` & `×2` native views | `design/art/mockups/ch01_tlf077_clocks_2359_wall_mockup.png` | `640 × 360 px` | **`concept`** |
+
+The colour + luminance-greyscale proof sheet (`design/art/mockups/ch01_tlf077_wall_fixtures_greyscale_proof.png` at `1320 × 1200 px` — containing the `640 × 360` wall-module mockups and all 20 sheared wall-fixture assets uncropped at `1×` native and `×2` zoom in colour on the upper half and `.convert("L")` luminance greyscale on the lower half) is generated deterministically from delivered runtime PNGs by `tools/art/gen/tlf077_wall_fixtures.py` and verified by `verify_regen.py`.

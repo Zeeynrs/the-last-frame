@@ -1,7 +1,7 @@
 """Single registry of every asset the generators produce (TLF-039 / TLF-042).
 Each entry knows its .pxo stem, runtime PNG folder, canvas, layers and frames."""
 from lib import *
-import tiles, props, t2, t3, elias_build, ui_wheel, step1_statues, step1_props, tlf063_story_props, tlf062_operator_city, tlf068_shape_kit, tlf073_wall_plaques
+import tiles, props, t2, t3, elias_build, ui_wheel, step1_statues, step1_props, tlf063_story_props, tlf062_operator_city, tlf068_shape_kit, tlf073_wall_plaques, tlf077_wall_fixtures
 
 
 class Asset:
@@ -56,4 +56,6 @@ def all_assets():
         out.append(Asset(stem, cat, w, h, names, frames, fps=fps, tags=tags, user_data='TLF-068'))
     for (stem, cat, w, h, names, frames, fps, tags, _m) in tlf073_wall_plaques.assets():
         out.append(Asset(stem, cat, w, h, names, frames, fps=fps, tags=tags, user_data='TLF-073'))
+    for (stem, cat, w, h, names, frames, fps, tags, _m) in tlf077_wall_fixtures.assets():
+        out.append(Asset(stem, cat, w, h, names, frames, fps=fps, tags=tags, user_data='TLF-077'))
     return out
