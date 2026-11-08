@@ -4,7 +4,7 @@ Deliverables (10 registered .pxo + .png assets + 1 960x540 assembled scene mocku
   1. ch01_char_elias_side_sheet (704x48, 22 frames of 32x48, pivot (16, 44)):
      - idle_e (2f @ 8 FPS, loop): breathing profile idle facing East (+x)
      - walk_e (6f @ 10 FPS, loop): 6-frame horizontal profile stride on ground line y=44
-     - interact_e (3f @ 12 FPS, one-shot): pocket-watch retrieve / hold & inspect (3x3 brass watch outside coat) / lower
+     - interact_e (3f @ 12 FPS, one-shot): neutral reach / short inspect hold / return gesture (watch chain stays at waist on costume per ADR-022 A3)
      - idle_w (2f), walk_w (6f), interact_w (3f): horizontal mirror (flip_h) of e (no separate drawing)
   2. ch01_env_side_bg_far_wall_arches_idle (960x360, pivot (0, 0), z=1):
      Far subterranean tunnel wall & 5 vaulted arch bays for the 960x360 active band (y=90..449 in 960x540).
@@ -119,93 +119,65 @@ def _render_elias_side_e(pose):
     iso_elias._top_plane(coat, b, 12, 19)
     iso_elias.part(bc, coat)
 
-    # Near arm + readable brass pocket watch (25/26)
+    # Near arm + costume brass pocket-watch chain at waist (25/26; stays on costume per ADR-022 A3)
     if interact_step == 0:
         narm = iso_elias.arm_pix(14, 15 + b, 14 + aN, 25 + b - abs(aN) // 2, hand_lit=True)
         iso_elias.part(ha, narm)
-        # Readable pocket-watch fob + chain glint at front waist/pocket (x=18..20, y=25..27+b)
-        w_dx = 1 if aN > 1 else 0
-        ha.put(18 + w_dx, 25 + b, BR)
-        ha.put(19 + w_dx, 25 + b, GOLD)
-        ha.put(18 + w_dx, 26 + b, GOLD)
-        ha.put(19 + w_dx, 26 + b, BR)
-        ha.put(20 + w_dx, 26 + b, GOLD)
     elif interact_step == 1:
-        # F1 of interact_e: elbow bends, forearm raises pocket watch from waist toward chest
-        arm_p = {}
-        for y in range(15 + b, 22 + b):
-            arm_p[(14, y)] = CL
-            arm_p[(15, y)] = CM
-        for x in range(15, 19):
-            arm_p[(x, 21 + b)] = CL
-            arm_p[(x, 22 + b)] = CM
-        arm_p[(18, 22 + b)] = CS  # cuff
-        # Hand holding watch at (19..20, 21..22+b)
-        arm_p[(19, 21 + b)] = SK_L
-        arm_p[(19, 22 + b)] = SK_S
-        arm_p[(20, 21 + b)] = SK_L
-        iso_elias.part(ha, arm_p)
-        # Watch case rising at x=21..23, y=20..22+b (with hollow 00 centre & 26 crown)
-        wx, wy = 21, 20 + b
-        for dy in range(3):
-            for dx in range(3):
-                ha.put(wx + dx, wy + dy, GOLD if (dx == 0 and dy == 0) else BR)
-        ha.put(wx + 1, wy + 1, O)     # dark dial centre
-        ha.put(wx + 1, wy - 1, GOLD)  # 1px watch crown
-        # Chain back to waist pocket
-        ha.put(20, 23 + b, BR)
-        ha.put(19, 24 + b, GOLD)
-        ha.put(18, 25 + b, BR)
-    elif interact_step == 2:
-        # F2 of interact_e: forearm extended forward, 3x3 hollow-centre brass pocket watch held clearly outside coat
+        # F1 of interact_e: neutral reach forward toward an object
         arm_p = {}
         for y in range(15 + b, 21 + b):
             arm_p[(14, y)] = CL
             arm_p[(15, y)] = CM
-        for x in range(15, 20):
+        for x in range(15, 21):
+            arm_p[(x, 20 + b)] = CL
+            arm_p[(x, 21 + b)] = CM
+        arm_p[(20, 21 + b)] = CS  # sleeve cuff
+        # Empty hand reaching forward at (21..22, 20..21+b)
+        arm_p[(21, 20 + b)] = SK_L
+        arm_p[(22, 20 + b)] = SK_L
+        arm_p[(21, 21 + b)] = SK_S
+        arm_p[(22, 21 + b)] = SK_S
+        iso_elias.part(ha, arm_p)
+    elif interact_step == 2:
+        # F2 of interact_e: short hold / inspect gesture with forearm & empty hand extended forward
+        arm_p = {}
+        for y in range(15 + b, 20 + b):
+            arm_p[(14, y)] = CL
+            arm_p[(15, y)] = CM
+        for x in range(15, 22):
             arm_p[(x, 19 + b)] = CL
             arm_p[(x, 20 + b)] = CM
-        arm_p[(19, 20 + b)] = CS  # cuff
-        # Lit hand at x=20..21, y=19..20+b
-        arm_p[(20, 19 + b)] = SK_L
-        arm_p[(20, 20 + b)] = SK_S
-        arm_p[(21, 19 + b)] = SK_L
-        arm_p[(21, 20 + b)] = SK_S
+        arm_p[(21, 20 + b)] = CS  # sleeve cuff
+        # Empty hand extended forward at x=22..24, y=19..20+b (outside coat contour x<=20)
+        arm_p[(22, 19 + b)] = SK_L
+        arm_p[(23, 19 + b)] = SK_L
+        arm_p[(24, 19 + b)] = SK_L
+        arm_p[(22, 20 + b)] = SK_S
+        arm_p[(23, 20 + b)] = SK_S
         iso_elias.part(ha, arm_p)
-        # 3x3 brass pocket watch at x=22..24, y=18..20+b (completely outside coat contour x<=20)
-        wx, wy = 22, 18 + b
-        for dy in range(3):
-            for dx in range(3):
-                ha.put(wx + dx, wy + dy, GOLD if (dx + dy <= 1) else BR)
-        ha.put(wx + 1, wy + 1, O)     # hollow dark dial centre
-        ha.put(wx + 1, wy - 1, GOLD)  # 1px top crown
-        # Brass watch chain loop back to waist (18, 25+b)
-        ha.put(21, 21 + b, GOLD)
-        ha.put(20, 22 + b, BR)
-        ha.put(19, 24 + b, GOLD)
-        ha.put(18, 25 + b, BR)
     elif interact_step == 3:
-        # F3 of interact_e: lowering watch back toward pocket
+        # F3 of interact_e: return arm back toward side
         arm_p = {}
         for y in range(15 + b, 23 + b):
             arm_p[(14, y)] = CL
             arm_p[(15, y)] = CM
-        for x in range(15, 19):
+        for x in range(15, 20):
             arm_p[(x, 22 + b)] = CL
             arm_p[(x, 23 + b)] = CM
-        arm_p[(18, 23 + b)] = CS
-        arm_p[(19, 22 + b)] = SK_L
-        arm_p[(19, 23 + b)] = SK_S
+        arm_p[(19, 23 + b)] = CS  # sleeve cuff
+        arm_p[(20, 22 + b)] = SK_L
+        arm_p[(21, 22 + b)] = SK_L
+        arm_p[(20, 23 + b)] = SK_S
         iso_elias.part(ha, arm_p)
-        # Watch at x=20..22, y=22..24+b
-        wx, wy = 20, 22 + b
-        for dy in range(3):
-            for dx in range(3):
-                ha.put(wx + dx, wy + dy, GOLD if (dx == 0 and dy == 0) else BR)
-        ha.put(wx + 1, wy + 1, O)
-        ha.put(wx + 1, wy - 1, GOLD)
-        ha.put(19, 25 + b, GOLD)
-        ha.put(18, 25 + b, BR)
+
+    # Readable pocket-watch fob + chain glint stays at front waist/pocket on costume (x=18..20, y=25..26+b)
+    w_dx = 1 if (interact_step == 0 and aN > 1) else 0
+    ha.put(18 + w_dx, 25 + b, BR)
+    ha.put(19 + w_dx, 25 + b, GOLD)
+    ha.put(18 + w_dx, 26 + b, GOLD)
+    ha.put(19 + w_dx, 26 + b, BR)
+    ha.put(20 + w_dx, 26 + b, GOLD)
 
     # Stamp profile head ('e')
     iso_elias.stamp_head(ha, 'e', 11, 3 + b_head)
@@ -237,7 +209,7 @@ def build_elias_side_e_frames():
     for spec in walk_specs:
         frames.append(_render_elias_side_e(spec))
 
-    # 3. interact_e (3 frames @ 12 FPS): retrieve watch -> hold & inspect 3x3 watch -> lower watch
+    # 3. interact_e (3 frames @ 12 FPS): neutral reach forward -> short inspect hold -> return arm
     frames.append(_render_elias_side_e(dict(
         bob=0, bob_head=0, near=(0, 44), far=(1, 44), fl=0, arm_near=0, arm_far=0, interact=1
     )))
@@ -1233,7 +1205,7 @@ def build_side_view_beat06_mockup():
     # 3. Place Side-View Elias (pivot (16, 44)) at THREE positions on Y_FLOOR_LINE = 394:
     #    Position 1 (Left, x=144):   idle_e F1 (frame 0)
     #    Position 2 (Center, x=388): walk_e F1 (frame 2)
-    #    Position 3 (Right, x=528):  interact_e F2 (frame 9, holding 3x3 pocket watch out toward bench & Mira silhouette)
+    #    Position 3 (Right, x=528):  interact_e F2 (frame 9, neutral reach/inspect gesture toward bench & recorder)
     elias_idle_e = side_sheet.crop((0 * 32, 0, 1 * 32, 48))
     elias_walk_e = side_sheet.crop((2 * 32, 0, 3 * 32, 48))
     elias_inter_e = side_sheet.crop((9 * 32, 0, 10 * 32, 48))
