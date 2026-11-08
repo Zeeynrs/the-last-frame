@@ -1,0 +1,59 @@
+TLF-077 exact delivery: 7cf8714fd2bdb2776aad8e27d5192f310f211280
+Fresh git archive; all 49 delivery files verified against exact git blobs.
+Commands: python tools/art/check_assets.py; python tools/art/gen/verify_regen.py; verify_pxo.main() restricted to the 20 added PXOs by git diff-tree.
+check_assets exit=0; verify_regen exit=0; verify_pxo exit=0.
+
+RESULT: ALL PASS (286 file(s))
+RESULT: ALL REPRODUCIBLE
+
+Pixelorama raw summary (temporary source copies, not edited masters):
+====================================================================================================
+SUMMARY (size-exit, export-exit, byte-identical)
+ch01_prop_digital_clock_2359_n_idle                  0 0 YES
+ch01_prop_digital_clock_2359_w_idle                  0 0 YES
+ch01_prop_selector_car_n_pos0                        0 0 YES
+ch01_prop_selector_car_n_pos1                        0 0 YES
+ch01_prop_selector_car_n_pos2                        0 0 YES
+ch01_prop_selector_car_w_pos0                        0 0 YES
+ch01_prop_selector_car_w_pos1                        0 0 YES
+ch01_prop_selector_car_w_pos2                        0 0 YES
+ch01_prop_selector_line_n_pos0                       0 0 YES
+ch01_prop_selector_line_n_pos1                       0 0 YES
+ch01_prop_selector_line_n_pos2                       0 0 YES
+ch01_prop_selector_line_w_pos0                       0 0 YES
+ch01_prop_selector_line_w_pos1                       0 0 YES
+ch01_prop_selector_line_w_pos2                       0 0 YES
+ch01_prop_selector_platform_n_pos0                   0 0 YES
+ch01_prop_selector_platform_n_pos1                   0 0 YES
+ch01_prop_selector_platform_n_pos2                   0 0 YES
+ch01_prop_selector_platform_w_pos0                   0 0 YES
+ch01_prop_selector_platform_w_pos1                   0 0 YES
+ch01_prop_selector_platform_w_pos2                   0 0 YES
+TOTAL pxo: 20, all identical: True
+
+Nonfatal Pixelorama diagnostics: 160 ERROR/custom_samplers lines; all size/export exits 0 and 20 byte-identical images.
+ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
+
+Independent native PNG geometry/state check:
+ch01_prop_digital_clock_2359_n_idle: opaque=602 normalized_depth=0..22 mount=3 outside_wall=0
+ch01_prop_digital_clock_2359_w_idle: opaque=602 normalized_depth=0..22 mount=3 outside_wall=0
+ch01_prop_selector_car_n_pos0: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_car_n_pos1: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_car_n_pos2: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_car_w_pos0: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_car_w_pos1: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_car_w_pos2: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_line_n_pos0: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_line_n_pos1: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_line_n_pos2: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_line_w_pos0: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_line_w_pos1: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_line_w_pos2: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_platform_n_pos0: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_platform_n_pos1: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_platform_n_pos2: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_platform_w_pos0: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_platform_w_pos1: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+ch01_prop_selector_platform_w_pos2: opaque=776 normalized_depth=0..30 mount=4 outside_wall=0
+PASS: 20/20 whole-alpha wall-mask containment; 6/6 selector face/families have 3 distinct images with stable silhouette.
+PASS: inverse-shear N/W equality for all 10 pairs; glyph/text columns follow the same exact 2:1 plane as casing, retaining top-left highlights.
