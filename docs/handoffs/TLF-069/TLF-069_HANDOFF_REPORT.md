@@ -47,7 +47,8 @@ All puzzle logic for CH1-SO-01 remains completely intact. The 4 windowed Forward
    - Added `tests/chapters/ch01/test_ch01_arrival_platform_v2.gd`: door sweep closed gate guard, stand spot reach within 2.6 px with interactable target assertion (`Player.choose_best_interactable` / `PocketWatch.choose_watch_target`), camera view rect bounding clamp, checkpoint save/load restoration, and real-input clock dialogue line test (`test_digital_clock_2359_dialogue_line_plays`).
    - Re-baselined `test_collision_freeze_all_10_rooms` and updated `test_room1_arrival_platform_kit_complete` in `tests/chapters/ch01/test_ch01_art_integration.gd`.
    - Updated `design/ch01/ROOM_GRAPH.md` and regenerated `data/chapters/ch01/ch01_graph.tres` via `tools/content/gen_ch01_graph.py` (30×18, door E (29,4), anchor (5,15)); removed arrival special cases from `tests/chapters/ch01/test_ch01_playthrough.gd`.
-   - Full validation: 479 passed, 0 failed, 0 leaks.
+   - Python builder test suite (`tools/content/test_build_room_from_shape.py`): 22 passed, 0 failed.
+   - Full Godot validation: 479 passed, 0 failed, 0 leaks.
 
 ---
 
@@ -357,3 +358,40 @@ Leak check: clean (test suite)
 - Total Tests Run: **479 passed, 0 failed**
 - SCRIPT ERROR: **0**
 - Leaks: **0**
+
+---
+
+## 7. Python Builder Test Suite Output
+
+Validation of `tools/content/build_room_from_shape.py` suite via `tools/content/test_build_room_from_shape.py`:
+
+```text
+test_parse_cells (test_build_room_from_shape.Cells.test_parse_cells) ... ok
+test_archway_across_two_modules_is_reported_not_cut (test_build_room_from_shape.Doors.test_archway_across_two_modules_is_reported_not_cut) ... ok
+test_door_must_be_a_boundary_tile_of_its_face (test_build_room_from_shape.Doors.test_door_must_be_a_boundary_tile_of_its_face) ... ok
+test_module_under_an_aligned_archway_is_left_to_it (test_build_room_from_shape.Doors.test_module_under_an_aligned_archway_is_left_to_it) ... ok
+test_module_without_an_archway_sprite_is_kept (test_build_room_from_shape.Doors.test_module_without_an_archway_sprite_is_kept) ... ok
+test_north_doors_in_today_s_rooms (test_build_room_from_shape.Doors.test_north_doors_in_today_s_rooms) ... ok
+test_arrival_strip_is_reproduced_without_its_door_row (test_build_room_from_shape.EdgeStrip.test_arrival_strip_is_reproduced_without_its_door_row) ... ok
+test_one_face_only (test_build_room_from_shape.EdgeStrip.test_one_face_only) ... ok
+test_parse (test_build_room_from_shape.EdgeStrip.test_parse) ... ok
+test_strip_does_not_clear_trench_side_tactile_tiles (test_build_room_from_shape.EdgeStrip.test_strip_does_not_clear_trench_side_tactile_tiles) ... ok
+test_committed_fixture_is_the_current_builder_output (test_build_room_from_shape.LOutlineFixture.test_committed_fixture_is_the_current_builder_output) ... ok
+test_floor_cells_sources_and_holes (test_build_room_from_shape.LOutlineFixture.test_floor_cells_sources_and_holes) ... ok
+test_polygon (test_build_room_from_shape.LOutlineFixture.test_polygon) ... ok
+test_strip_on_the_new_edge_and_cleared_from_the_old (test_build_room_from_shape.LOutlineFixture.test_strip_on_the_new_edge_and_cleared_from_the_old) ... ok
+test_walls_and_archways (test_build_room_from_shape.LOutlineFixture.test_walls_and_archways) ... ok
+test_collision_is_the_outline_outset_a_quarter_tile (test_build_room_from_shape.TenRoomsRoundTrip.test_collision_is_the_outline_outset_a_quarter_tile) ... ok
+test_floor_and_walls_equal_the_hand_built_rooms (test_build_room_from_shape.TenRoomsRoundTrip.test_floor_and_walls_equal_the_hand_built_rooms) ... ok
+test_new_tiles_use_the_room_default_source (test_build_room_from_shape.TenRoomsRoundTrip.test_new_tiles_use_the_room_default_source) ... ok
+test_only_floor_collision_walls_and_metadata_change (test_build_room_from_shape.TenRoomsRoundTrip.test_only_floor_collision_walls_and_metadata_change) ... ok
+test_rebuild_is_idempotent (test_build_room_from_shape.TenRoomsRoundTrip.test_rebuild_is_idempotent) ... ok
+test_room_shape_metadata_on_the_root (test_build_room_from_shape.TenRoomsRoundTrip.test_room_shape_metadata_on_the_root) ... ok
+test_security_crossing_needs_the_trench_hole (test_build_room_from_shape.TenRoomsRoundTrip.test_security_crossing_needs_the_trench_hole) ... ok
+----------------------------------------------------------------------
+Ran 22 tests in 0.293s
+
+OK
+```
+
+- Total Builder Tests Run: **22 passed, 0 failed**
