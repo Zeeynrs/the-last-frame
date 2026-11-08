@@ -1,0 +1,106 @@
+[
+  {
+    "object": "visual:YSort_Walls/Corner_Low_12_18",
+    "vertical_extent": 17
+  },
+  {
+    "object": "visual:YSort_Walls/Corner_Low_12_8",
+    "vertical_extent": 17
+  },
+  {
+    "object": "visual:YSort_Walls/Corner_Low_30_8",
+    "vertical_extent": 17
+  },
+  {
+    "object": "visual:YSort_Walls/LowE_arm_0",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowE_arm_1",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowE_arm_2",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowE_arm_3",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowE_arm_4",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowE_strip_0",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowE_strip_1",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowE_strip_2",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_arm_0",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_arm_1",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_arm_2",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_arm_3",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_arm_4",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_arm_5",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_pit_0",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_pit_1",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_pit_2",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_pit_3",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_pit_4",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_pit_5",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_pit_6",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_pit_7",
+    "vertical_extent": 16
+  },
+  {
+    "object": "visual:YSort_Walls/LowS_pit_8",
+    "vertical_extent": 16
+  }
+]

@@ -1,0 +1,57 @@
+{
+  "Wall_Fixtures/DepartureBoard": {
+    "world_rect": [
+      64,
+      86,
+      160,
+      32
+    ],
+    "opaque_pixels_above_tall_wall": 2222,
+    "opaque_pixels_below_tall_wall_foot": 12,
+    "opaque_pixels_outside_wall_mask": 2234
+  },
+  "Wall_Fixtures/ClosedTrackNotice": {
+    "world_rect": [
+      488,
+      116,
+      80,
+      16
+    ],
+    "opaque_pixels_above_tall_wall": 433,
+    "opaque_pixels_below_tall_wall_foot": 0,
+    "opaque_pixels_outside_wall_mask": 433
+  },
+  "selector_car": {
+    "world_rect": [
+      688,
+      232,
+      32,
+      48
+    ],
+    "opaque_pixels_above_tall_wall": 0,
+    "opaque_pixels_below_tall_wall_foot": 474,
+    "opaque_pixels_outside_wall_mask": 474
+  },
+  "selector_line": {
+    "world_rect": [
+      624,
+      200,
+      32,
+      48
+    ],
+    "opaque_pixels_above_tall_wall": 0,
+    "opaque_pixels_below_tall_wall_foot": 474,
+    "opaque_pixels_outside_wall_mask": 474
+  },
+  "selector_platform": {
+    "world_rect": [
+      656,
+      216,
+      32,
+      48
+    ],
+    "opaque_pixels_above_tall_wall": 0,
+    "opaque_pixels_below_tall_wall_foot": 474,
+    "opaque_pixels_outside_wall_mask": 474
+  }
+}
