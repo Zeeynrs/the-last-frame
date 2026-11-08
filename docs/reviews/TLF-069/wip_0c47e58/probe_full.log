@@ -1,0 +1,92 @@
+config/name="TLF Verify 0c47e58"
+exit 0
+PROBE A outline [(0.0, 0.0), (30.0, 0.0), (30.0, 8.0), (12.0, 8.0), (12.0, 18.0), (0.0, 18.0)] floor cells 360 bounds [P: (16.0, 0.0), S: (800.0, 384.0)] (router [P: (16.0, 0.0), S: (800.0, 384.0)])
+PROBE A hidden_floor_cells(): [] OK
+PROBE A object door_exit_east             px (720.0, 328.0) tile (29.0,4.0)   on floor
+PROBE A object safe_anchor_spawn          px (160.0, 224.0) tile (5.0,15.0)   on floor
+PROBE A object checkpoint                 px (160.0, 224.0) tile (5.0,15.0)   on floor
+PROBE A object pocket_watch_pickup        px (240.0, 232.0) tile (8.0,13.0)   on floor
+PROBE A object digital_clock_2359         px (400.0, 66.0) tile (2.63,-2.38) OFF FLOOR
+PROBE A object selector_line              px (640.0, 240.0) tile (21.0,1.0)   on floor
+PROBE A object selector_platform          px (672.0, 256.0) tile (23.0,1.0)   on floor
+PROBE A object selector_car               px (704.0, 272.0) tile (25.0,1.0)   on floor
+PROBE A object release_lever              px (752.0, 312.0) tile (29.0,2.0)   on floor
+PROBE A object platform_gate              px (720.0, 328.0) tile (29.0,4.0)   on floor
+PROBE A object doc_last_service           px (400.0, 120.0) tile (6.0,1.0)    on floor
+PROBE A object n01_conductor              px (496.0, 200.0) tile (14.0,3.0)   on floor
+PROBE A object n02_student                px (208.0, 168.0) tile (3.0,10.0)   on floor
+PROBE A object n03_old_man                px (448.0, 160.0) tile (10.0,2.0)   on floor
+PROBE A object n04_cleaner                px (608.0, 320.0) tile (25.0,7.0)   on floor
+PROBE A object operator_sighting          px (304.0, 216.0) tile (9.0,10.0)   on floor
+PROBE A decor YSort_Actors/StalledTransitCar px (480.0, 336.0) tile (22.0,12.0)
+PROBE A decor YSort_Actors/PlatformBench   px (448.0, 168.0) tile (10.5,2.5)
+PROBE A decor Wall_Fixtures/Clock_2        px (400.0, 66.0) tile (2.63,-2.38)
+PROBE B flood: 20828 reachable capsule positions (2 px grid) from the spawn (160.0, 224.0)
+PROBE B edge low_E (30, 0)->(30, 8): the player's position reaches 0.0 px past the edge line (perpendicular, corners excluded)
+PROBE B edge low_S (12, 8)->(30, 8): the player's position reaches 0.0 px past the edge line (perpendicular, corners excluded)
+PROBE B edge low_E (12, 8)->(12, 18): the player's position reaches 0.0 px past the edge line (perpendicular, corners excluded)
+PROBE B edge low_S (0, 18)->(12, 18): the player's position reaches 0.0 px past the edge line (perpendicular, corners excluded)
+PROBE C selector_line      use   (21.0,1.0) stand (21.0,2.0) px (624.0, 248.0) route 3.46 t | floor true free true nearest reachable 0.0 px | walk from (608.0, 256.0) closest 0.11 px OK | use picks selector_line   <- declared stand
+PROBE C selector_line      use   (21.0,1.0) stand (22.0,1.0) px (656.0, 248.0) route 4.26 t | floor true free true nearest reachable 0.0 px | walk from (672.0, 256.0) closest 0.11 px OK | use picks selector_line
+PROBE C selector_line      use   (21.0,1.0) stand (20.0,1.0) px (624.0, 232.0) route 4.63 t | floor true free true nearest reachable 0.0 px | walk from (608.0, 224.0) closest 0.11 px OK | use picks selector_line
+PROBE C selector_line      use   (21.0,1.0) stand (21.0,0.0) px (656.0, 232.0) route 5.43 t | floor true free false nearest reachable 7.2 px | walk from (664.0, 244.0) closest 6.96 px MISS | use picks selector_line
+PROBE C selector_platform  use   (23.0,1.0) stand (23.0,2.0) px (656.0, 264.0) route 3.09 t | floor true free true nearest reachable 0.0 px | walk from (640.0, 272.0) closest 0.11 px OK | use picks selector_platform   <- declared stand
+PROBE C selector_platform  use   (23.0,1.0) stand (24.0,1.0) px (688.0, 264.0) route 3.88 t | floor true free true nearest reachable 0.0 px | walk from (704.0, 272.0) closest 0.11 px OK | use picks selector_platform
+PROBE C selector_platform  use   (23.0,1.0) stand (22.0,1.0) px (656.0, 248.0) route 4.26 t | floor true free true nearest reachable 0.0 px | walk from (640.0, 240.0) closest 0.11 px OK | use picks selector_platform
+PROBE C selector_platform  use   (23.0,1.0) stand (23.0,0.0) px (688.0, 248.0) route 5.05 t | floor true free false nearest reachable 7.2 px | walk from (696.0, 260.0) closest 6.96 px MISS | use picks selector_platform
+PROBE C selector_car       use   (25.0,1.0) stand (25.0,2.0) px (688.0, 280.0) route 2.71 t | floor true free true nearest reachable 0.0 px | walk from (672.0, 288.0) closest 0.11 px OK | use picks selector_car   <- declared stand
+PROBE C selector_car       use   (25.0,1.0) stand (26.0,1.0) px (720.0, 280.0) route 3.51 t | floor true free true nearest reachable 0.0 px | walk from (736.0, 288.0) closest 0.11 px OK | use picks selector_car
+PROBE C selector_car       use   (25.0,1.0) stand (24.0,1.0) px (688.0, 264.0) route 3.88 t | floor true free true nearest reachable 0.0 px | walk from (672.0, 256.0) closest 0.11 px OK | use picks selector_car
+PROBE C selector_car       use   (25.0,1.0) stand (25.0,0.0) px (720.0, 264.0) route 4.68 t | floor true free false nearest reachable 7.2 px | walk from (728.0, 276.0) closest 6.96 px MISS | use picks selector_car
+PROBE C release_lever      use   (29.0,2.0) stand (28.0,2.0) px (736.0, 304.0) route 2.15 t | floor true free true nearest reachable 0.0 px | walk from (720.0, 296.0) closest 0.11 px OK | use picks release_lever   <- declared stand
+PROBE C release_lever      use   (29.0,2.0) stand (29.0,3.0) px (736.0, 320.0) route 1.00 t | floor true free false nearest reachable 4.5 px | walk from (720.0, 312.0) closest 6.31 px MISS | use picks release_lever
+PROBE C release_lever      use   (29.0,2.0) stand (30.0,2.0) px (768.0, 320.0) route 2.24 t | floor true free true nearest reachable 0.0 px | walk from (776.0, 316.0) closest 0.84 px OK | use picks release_lever
+PROBE C release_lever      use   (29.0,2.0) stand (29.0,1.0) px (768.0, 304.0) route 3.00 t | floor true free true nearest reachable 0.0 px | walk from (780.0, 302.0) closest 0.93 px OK | use picks release_lever
+PROBE C doc_last_service   use   (6.0,1.0) stand (5.0,1.0) px (384.0, 112.0) route 7.62 t | floor true free true nearest reachable 0.0 px | walk from (368.0, 104.0) closest 0.11 px OK | use picks doc_last_service   <- declared stand
+PROBE C doc_last_service   use   (6.0,1.0) stand (6.0,2.0) px (384.0, 128.0) route 6.32 t | floor true free true nearest reachable 0.0 px | walk from (368.0, 136.0) closest 0.11 px OK | use picks doc_last_service
+PROBE C doc_last_service   use   (6.0,1.0) stand (7.0,1.0) px (416.0, 128.0) route 7.06 t | floor true free true nearest reachable 0.0 px | walk from (432.0, 136.0) closest 0.11 px OK | use picks doc_last_service
+PROBE C doc_last_service   use   (6.0,1.0) stand (6.0,0.0) px (416.0, 112.0) route 8.25 t | floor true free false nearest reachable 7.2 px | walk from (424.0, 124.0) closest 6.96 px MISS | use picks doc_last_service
+PROBE C n01_conductor      trace (14.0,3.0) stand (14.0,4.0) px (480.0, 208.0) route 2.81 t | floor true free true nearest reachable 0.0 px | walk from (464.0, 216.0) closest 0.11 px OK | trace picks n01_conductor   <- declared stand
+PROBE C n01_conductor      trace (14.0,3.0) stand (15.0,3.0) px (512.0, 208.0) route 3.60 t | floor true free true nearest reachable 0.0 px | walk from (528.0, 216.0) closest 0.11 px OK | trace picks n01_conductor
+PROBE C n01_conductor      trace (14.0,3.0) stand (13.0,3.0) px (480.0, 192.0) route 3.98 t | floor true free true nearest reachable 0.0 px | walk from (464.0, 184.0) closest 0.11 px OK | trace picks n01_conductor
+PROBE C n01_conductor      trace (14.0,3.0) stand (14.0,2.0) px (512.0, 192.0) route 4.77 t | floor true free true nearest reachable 0.0 px | walk from (528.0, 184.0) closest 0.11 px OK | trace picks n01_conductor
+PROBE C n02_student        trace (3.0,10.0) stand (4.0,10.0) px (224.0, 176.0) route 2.89 t | floor true free true nearest reachable 0.0 px | walk from (240.0, 184.0) closest 0.11 px OK | trace picks n02_student   <- declared stand
+PROBE C n02_student        trace (3.0,10.0) stand (3.0,11.0) px (192.0, 176.0) route 3.41 t | floor true free true nearest reachable 0.0 px | walk from (176.0, 184.0) closest 0.11 px OK | trace picks n02_student
+PROBE C n02_student        trace (3.0,10.0) stand (3.0,9.0) px (224.0, 160.0) route 4.20 t | floor true free true nearest reachable 0.0 px | walk from (240.0, 152.0) closest 0.11 px OK | trace picks n02_student
+PROBE C n02_student        trace (3.0,10.0) stand (2.0,10.0) px (192.0, 160.0) route 4.73 t | floor true free true nearest reachable 0.0 px | walk from (176.0, 152.0) closest 0.11 px OK | trace picks n02_student
+PROBE C n03_old_man        trace (10.0,2.0) stand (10.0,3.0) px (432.0, 168.0) route 4.54 t | floor true free true nearest reachable 0.0 px | walk from (416.0, 176.0) closest 0.11 px OK | trace picks n03_old_man   <- declared stand
+PROBE C n03_old_man        trace (10.0,2.0) stand (11.0,2.0) px (464.0, 168.0) route 5.33 t | floor true free true nearest reachable 0.0 px | walk from (480.0, 176.0) closest 0.11 px OK | trace picks n03_old_man
+PROBE C n03_old_man        trace (10.0,2.0) stand (9.0,2.0) px (432.0, 152.0) route 5.71 t | floor true free true nearest reachable 0.0 px | walk from (416.0, 144.0) closest 0.11 px OK | trace picks n03_old_man
+PROBE C n03_old_man        trace (10.0,2.0) stand (10.0,1.0) px (464.0, 152.0) route 6.50 t | floor true free true nearest reachable 0.0 px | walk from (476.0, 150.0) closest 0.93 px OK | trace picks n03_old_man
+PROBE C n04_cleaner        trace (25.0,7.0) stand (25.0,6.0) px (624.0, 312.0) route 1.22 t | floor true free true nearest reachable 0.0 px | walk from (640.0, 304.0) closest 0.11 px OK | trace picks n04_cleaner   <- declared stand
+PROBE C n04_cleaner        trace (25.0,7.0) stand (24.0,7.0) px (592.0, 312.0) route 2.01 t | floor true free true nearest reachable 0.0 px | walk from (576.0, 304.0) closest 0.11 px OK | trace picks n04_cleaner
+PROBE C n04_cleaner        trace (25.0,7.0) stand (26.0,7.0) px (624.0, 328.0) route 2.39 t | floor true free true nearest reachable 0.0 px | walk from (640.0, 336.0) closest 0.11 px OK | trace picks n04_cleaner
+PROBE C n04_cleaner        trace (25.0,7.0) stand (25.0,8.0) px (592.0, 328.0) route 3.18 t | floor true free true nearest reachable 0.0 px | walk from (584.0, 324.0) closest 0.94 px OK | trace picks n04_cleaner
+PROBE D trigger pocket_watch_pickup                at (240.0, 232.0) reachable true (343 positions overlap, smallest gap -20.0 px)
+PROBE D trigger checkpoint                         at (160.0, 224.0) reachable true (273 positions overlap, smallest gap -6.0 px)
+PROBE D trigger digital_clock_2359                 at (400.0, 66.0) reachable false (0 positions overlap, smallest gap 14.7 px)
+PROBE FAIL D digital_clock_2359 cannot be reached by the capsule
+PROBE D trigger operator_sighting/ApproachTrigger  at (292.0, 224.0) reachable true (1196 positions overlap, smallest gap -38.0 px)
+PROBE D trigger door_exit_east                     at (720.0, 328.0) reachable false (0 positions overlap, smallest gap 4.0 px)
+PROBE E door sweep (gate closed, passage_blocked true): 166 start points within 96 px, 3 goals x 40 frames each; door entered from 0 []; closest end 14.0 px from the door centre
+PROBE F route (tiles) [(5.0, 15.0), (8.0, 8.0), (29.0, 4.0)]
+PROBE F n01_conductor  tile (14.0,3.0) distance to the line 3.79 tiles (49.1 px) OK
+PROBE F n02_student    tile (3.0,10.0) distance to the line 3.81 tiles (45.5 px) OK
+PROBE F n03_old_man    tile (10.0,2.0) distance to the line 5.52 tiles (71.5 px) OK
+PROBE F n04_cleaner    tile (25.0,7.0) distance to the line 2.20 tiles (28.5 px) OK
+PROBE F line walk spawn -> (320.0, 192.0) -> (696.0, 316.0) (1.5 t west of the gate (720.0, 328.0)): clear; closest capsule-to-footprint gaps { "n01_conductor": 50.7471771240234, "n02_student": 32.9909706115723, "n03_old_man": 68.7761306762695, "n04_cleaner": 15.7992248535156 }
+PROBE G camera at spawn                    player (161.7888, 224.8944) centre (336.0, 204.0) view [P: (16.0, 24.0), S: (640.0, 360.0)] bounds [P: (16.0, 0.0), S: (800.0, 384.0)] inside
+PROBE G   in view: ["safe_anchor_spawn", "pocket_watch_pickup", "operator_sighting", "n01_conductor", "n02_student", "n03_old_man", "n04_cleaner", "selector_line"]
+PROBE G camera at watch (pickup stand -x)  player (224.0, 224.0) centre (336.0, 204.0) view [P: (16.0, 24.0), S: (640.0, 360.0)] bounds [P: (16.0, 0.0), S: (800.0, 384.0)] inside
+PROBE G   in view: ["safe_anchor_spawn", "pocket_watch_pickup", "operator_sighting", "n01_conductor", "n02_student", "n03_old_man", "n04_cleaner", "selector_line"]
+PROBE G camera at gate (1 t west)          player (700.0, 318.0) centre (496.0, 204.0) view [P: (176.0, 24.0), S: (640.0, 360.0)] bounds [P: (16.0, 0.0), S: (800.0, 384.0)] inside
+PROBE G   in view: ["pocket_watch_pickup", "operator_sighting", "n01_conductor", "n02_student", "n03_old_man", "n04_cleaner", "selector_line", "selector_car", "release_lever", "platform_gate"]
+PROBE G camera at lever                    player (740.0, 318.0) centre (496.0, 204.0) view [P: (176.0, 24.0), S: (640.0, 360.0)] bounds [P: (16.0, 0.0), S: (800.0, 384.0)] inside
+PROBE G   in view: ["pocket_watch_pickup", "operator_sighting", "n01_conductor", "n02_student", "n03_old_man", "n04_cleaner", "selector_line", "selector_car", "release_lever", "platform_gate"]
+PROBE G operator figure rect [P: (288.0, 172.0), S: (32.0, 48.0)] fully in the view from the watch: true
+PROBE G centre_for() over all 20828 reachable positions: 0 views outside the bounds
+PROBE G camera centre range x 336.0..496.0 y 180.0..204.0
+PROBE SUMMARY 1 rule failures
+  PASS: test_probe_arrival_v2
+TESTS: 1 passed, 0 failed
+SCRIPT ERROR lines: 0

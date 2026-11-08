@@ -191,15 +191,25 @@ func test_probe_arrival_v2() -> void:
 		return
 	room = router.current_room as Node2D
 	cs = player.get_node("CollisionShape2D") as CollisionShape2D
+	# TLF_PROBE_SECTIONS="AD" runs only those sections (A and B always run).
+	var sections := OS.get_environment("TLF_PROBE_SECTIONS")
+	if sections == "":
+		sections = "ABCDEFG"
 	await _section_a()
 	_flood(player.global_position)
 	_p("B flood: %d reachable capsule positions (2 px grid) from the spawn %s" % [reach_pts.size(), player.global_position])
 	_section_b_edges()
-	await _section_c()
-	_section_d()
-	await _section_e()
-	await _section_f()
-	await _section_g()
+	if sections.contains("C"):
+		await _section_c()
+	if sections.contains("D"):
+		_section_d()
+		_section_d_points()
+	if sections.contains("E"):
+		await _section_e()
+	if sections.contains("F"):
+		await _section_f()
+	if sections.contains("G"):
+		await _section_g()
 	_p("SUMMARY %d rule failures" % fails)
 	stop()
 
@@ -353,6 +363,33 @@ func _section_d() -> void:
 			_fail("D door_exit_east overlaps the capsule from %d reachable positions with the gate closed" % hits)
 		elif path != "door_exit_east" and not reachable:
 			_fail("D %s cannot be reached by the capsule" % path)
+
+
+## TLF_PROBE_POINTS="label=x,y,r;..." (px): is a circle trigger of radius r at (x,y) reachable,
+## and which capsule positions overlap it (to place a trigger before moving it in the scene).
+func _section_d_points() -> void:
+	for item in OS.get_environment("TLF_PROBE_POINTS").split(";", false):
+		var kv := item.split("=")
+		var c := kv[1].split(",")
+		var probe := CollisionShape2D.new()
+		var circle := CircleShape2D.new()
+		circle.radius = float(c[2])
+		probe.shape = circle
+		room.add_child(probe)
+		probe.global_position = Vector2(float(c[0]), float(c[1]))
+		var hits: Array[Vector2] = []
+		var best := INF
+		for q in reach_pts:
+			var g := _gap_to(q, probe)
+			best = minf(best, g)
+			if g < 0.0:
+				hits.append(q)
+		var box := Rect2(hits[0], Vector2.ZERO) if not hits.is_empty() else Rect2()
+		for q in hits:
+			box = box.expand(q)
+		_p("D point %-12s at %-11s r %s: reachable %s (%d positions overlap, smallest gap %.1f px, overlap box %s)" % [
+			kv[0], probe.global_position, circle.radius, not hits.is_empty(), hits.size(), best, box])
+		probe.queue_free()
 
 
 func _section_e() -> void:

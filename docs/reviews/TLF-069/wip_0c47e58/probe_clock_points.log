@@ -1,0 +1,41 @@
+PROBE A outline [(0.0, 0.0), (30.0, 0.0), (30.0, 8.0), (12.0, 8.0), (12.0, 18.0), (0.0, 18.0)] floor cells 360 bounds [P: (16.0, 0.0), S: (800.0, 384.0)] (router [P: (16.0, 0.0), S: (800.0, 384.0)])
+PROBE A hidden_floor_cells(): [] OK
+PROBE A object door_exit_east             px (720.0, 328.0) tile (29.0,4.0)   on floor
+PROBE A object safe_anchor_spawn          px (160.0, 224.0) tile (5.0,15.0)   on floor
+PROBE A object checkpoint                 px (160.0, 224.0) tile (5.0,15.0)   on floor
+PROBE A object pocket_watch_pickup        px (240.0, 232.0) tile (8.0,13.0)   on floor
+PROBE A object digital_clock_2359         px (400.0, 66.0) tile (2.63,-2.38) OFF FLOOR
+PROBE A object selector_line              px (640.0, 240.0) tile (21.0,1.0)   on floor
+PROBE A object selector_platform          px (672.0, 256.0) tile (23.0,1.0)   on floor
+PROBE A object selector_car               px (704.0, 272.0) tile (25.0,1.0)   on floor
+PROBE A object release_lever              px (752.0, 312.0) tile (29.0,2.0)   on floor
+PROBE A object platform_gate              px (720.0, 328.0) tile (29.0,4.0)   on floor
+PROBE A object doc_last_service           px (400.0, 120.0) tile (6.0,1.0)    on floor
+PROBE A object n01_conductor              px (496.0, 200.0) tile (14.0,3.0)   on floor
+PROBE A object n02_student                px (208.0, 168.0) tile (3.0,10.0)   on floor
+PROBE A object n03_old_man                px (448.0, 160.0) tile (10.0,2.0)   on floor
+PROBE A object n04_cleaner                px (608.0, 320.0) tile (25.0,7.0)   on floor
+PROBE A object operator_sighting          px (304.0, 216.0) tile (9.0,10.0)   on floor
+PROBE A decor YSort_Actors/StalledTransitCar px (480.0, 336.0) tile (22.0,12.0)
+PROBE A decor YSort_Actors/PlatformBench   px (448.0, 168.0) tile (10.5,2.5)
+PROBE A decor Wall_Fixtures/Clock_2        px (400.0, 66.0) tile (2.63,-2.38)
+PROBE B flood: 20828 reachable capsule positions (2 px grid) from the spawn (160.0, 224.0)
+PROBE B edge low_E (30, 0)->(30, 8): the player's position reaches 0.0 px past the edge line (perpendicular, corners excluded)
+PROBE B edge low_S (12, 8)->(30, 8): the player's position reaches 0.0 px past the edge line (perpendicular, corners excluded)
+PROBE B edge low_E (12, 8)->(12, 18): the player's position reaches 0.0 px past the edge line (perpendicular, corners excluded)
+PROBE B edge low_S (0, 18)->(12, 18): the player's position reaches 0.0 px past the edge line (perpendicular, corners excluded)
+PROBE D trigger pocket_watch_pickup                at (240.0, 232.0) reachable true (343 positions overlap, smallest gap -20.0 px)
+PROBE D trigger checkpoint                         at (160.0, 224.0) reachable true (273 positions overlap, smallest gap -6.0 px)
+PROBE D trigger digital_clock_2359                 at (400.0, 66.0) reachable false (0 positions overlap, smallest gap 14.7 px)
+PROBE FAIL D digital_clock_2359 cannot be reached by the capsule
+PROBE D trigger operator_sighting/ApproachTrigger  at (292.0, 224.0) reachable true (1196 positions overlap, smallest gap -38.0 px)
+PROBE D trigger door_exit_east                     at (720.0, 328.0) reachable false (0 positions overlap, smallest gap 4.0 px)
+PROBE D point main_320_50  at (320.0, 50.0) r 16.0: reachable true (6 positions overlap, smallest gap -4.0 px, overlap box [P: (316.0, 72.0), S: (8.0, 2.0)])
+PROBE D point wallv_5_0    at (400.0, 104.0) r 16.0: reachable true (170 positions overlap, smallest gap -19.2 px, overlap box [P: (378.0, 102.0), S: (40.0, 26.0)])
+PROBE D point wallv_17_0   at (592.0, 200.0) r 16.0: reachable true (170 positions overlap, smallest gap -19.2 px, overlap box [P: (570.0, 198.0), S: (40.0, 26.0)])
+PROBE D point up8_17_0     at (592.0, 192.0) r 16.0: reachable true (90 positions overlap, smallest gap -12.0 px, overlap box [P: (570.0, 198.0), S: (34.0, 18.0)])
+PROBE D point up12_17_0    at (592.0, 188.0) r 16.0: reachable true (55 positions overlap, smallest gap -8.6 px, overlap box [P: (570.0, 198.0), S: (30.0, 14.0)])
+PROBE D point up8_5_0      at (400.0, 96.0) r 16.0: reachable true (90 positions overlap, smallest gap -12.0 px, overlap box [P: (378.0, 102.0), S: (34.0, 18.0)])
+PROBE SUMMARY 1 rule failures
+  PASS: test_probe_arrival_v2
+TESTS: 1 passed, 0 failed
