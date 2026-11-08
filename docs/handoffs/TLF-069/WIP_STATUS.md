@@ -1,7 +1,7 @@
 # TLF-069 WIP Status — Pilot Room Arrival Platform v2
 
-**Date:** 2026-11-07  
-**Branch:** `adityadaffa522/wip-tlf-069`  
+**Date:** 2026-11-07
+**Branch:** `adityadaffa522/wip-tlf-069`
 **Task:** `docs/tasks/TLF-069.md` (Pilot room: Arrival Platform v2)
 
 ---
