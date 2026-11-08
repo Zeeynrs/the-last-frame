@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/rooms/safe_anchor.gd" id="2_anchor"]
 [ext_resource type="Script" path="res://scripts/rooms/checkpoint_zone.gd" id="3_checkpoint"]
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png" id="4_archway"]
-[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_digital_clock_2359_idle.png" id="5_clock"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_digital_clock_2359_n_idle.png" id="5_clock"]
 [ext_resource type="Script" path="res://scripts/ui/dialogue_trigger.gd" id="6_trigger"]
 [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_station_bench_idle.png" id="art_bench"]
 [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_transit_car_stalled_idle.png" id="art_car"]
@@ -28,15 +28,15 @@
 [ext_resource type="Script" path="res://scripts/chapters/ch01/visuals/commuter_statue_presenter.gd" id="so_commuter_pres"]
 [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_platform_gate_closed.png" id="so_gate_closed"]
 [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_platform_gate_open.png" id="so_gate_open"]
-[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_line_pos0.png" id="so_sel_line_0"]
-[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_line_pos1.png" id="so_sel_line_1"]
-[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_line_pos2.png" id="so_sel_line_2"]
-[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_platform_pos0.png" id="so_sel_plat_0"]
-[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_platform_pos1.png" id="so_sel_plat_1"]
-[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_platform_pos2.png" id="so_sel_plat_2"]
-[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_car_pos0.png" id="so_sel_car_0"]
-[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_car_pos1.png" id="so_sel_car_1"]
-[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_car_pos2.png" id="so_sel_car_2"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_line_n_pos0.png" id="so_sel_line_0"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_line_n_pos1.png" id="so_sel_line_1"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_line_n_pos2.png" id="so_sel_line_2"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_platform_n_pos0.png" id="so_sel_plat_0"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_platform_n_pos1.png" id="so_sel_plat_1"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_platform_n_pos2.png" id="so_sel_plat_2"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_car_n_pos0.png" id="so_sel_car_0"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_car_n_pos1.png" id="so_sel_car_1"]
+[ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_selector_car_n_pos2.png" id="so_sel_car_2"]
 [ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n01_conductor_idle.png" id="so_n01_idle"]
 [ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n01_conductor_read.png" id="so_n01_read"]
 [ext_resource type="Texture2D" path="res://assets/characters/ch01/ch01_char_statue_commuter_n02_student_idle.png" id="so_n02_idle"]
@@ -458,8 +458,8 @@ centered = false
 texture = ExtResource("art_departure_board")
 
 [node name="Clock_8" type="Sprite2D" parent="Wall_Fixtures"]
-position = Vector2(592, 162)
-offset = Vector2(-16, -20)
+position = Vector2(576, 147)
+offset = Vector2(0, 0)
 centered = false
 texture = ExtResource("5_clock")
 
@@ -502,7 +502,7 @@ object_id = &"ch01.arrival_platform.selector_line"
 shape = SubResource("CircleShape2D_so_interact14")
 
 [node name="Presenter" type="Sprite2D" parent="selector_line"]
-position = Vector2(0, -22)
+position = Vector2(0, -28)
 z_index = 7
 z_as_relative = false
 script = ExtResource("so_sel_pres")
@@ -522,7 +522,7 @@ object_id = &"ch01.arrival_platform.selector_platform"
 shape = SubResource("CircleShape2D_so_interact14")
 
 [node name="Presenter" type="Sprite2D" parent="selector_platform"]
-position = Vector2(0, -22)
+position = Vector2(0, -28)
 z_index = 7
 z_as_relative = false
 script = ExtResource("so_sel_pres")
@@ -542,7 +542,7 @@ object_id = &"ch01.arrival_platform.selector_car"
 shape = SubResource("CircleShape2D_so_interact14")
 
 [node name="Presenter" type="Sprite2D" parent="selector_car"]
-position = Vector2(0, -22)
+position = Vector2(0, -28)
 z_index = 7
 z_as_relative = false
 script = ExtResource("so_sel_pres")

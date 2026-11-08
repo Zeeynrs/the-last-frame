@@ -1,16 +1,18 @@
 extends SceneTree
 
-## TLF-069: Re-capture 4 windowed Forward+ screenshots for Arrival Platform v2.
+## TLF-069: Re-capture 4 windowed Forward+ screenshots for Arrival Platform v2, plus close-up of selectors.
 ## 1. doc_arrival_v2_spawn.png     at Vector2(160, 224)
 ## 2. doc_arrival_v2_watch.png     at Vector2(240, 232)
 ## 3. doc_arrival_v2_pit_edge.png  at Vector2(512, 288)
 ## 4. doc_arrival_v2_gate.png      at Vector2(720, 328)
+## 5. doc_arrival_v2_selectors.png at Vector2(656, 264)
 
 const SPOTS: Array = [
 	["doc_arrival_v2_spawn.png", Vector2(160, 224)],
 	["doc_arrival_v2_watch.png", Vector2(240, 232)],
 	["doc_arrival_v2_pit_edge.png", Vector2(512, 288)],
 	["doc_arrival_v2_gate.png", Vector2(720, 328)],
+	["doc_arrival_v2_selectors.png", Vector2(656, 264)],
 ]
 
 
@@ -75,5 +77,5 @@ func _run() -> void:
 		assert(err == OK, "Failed to save " + out_path)
 		print("CAPTURED: %s at %s -> %s" % [filename, str(spot), out_path])
 
-	print("ALL 4 SCREENSHOTS CAPTURED SUCCESSFULLY")
+	print("ALL 5 SCREENSHOTS CAPTURED SUCCESSFULLY")
 	quit(0)

@@ -299,7 +299,7 @@ func test_room1_arrival_platform_kit_complete() -> void:
 	_assert_true(walls.get_node_or_null("Corner_Low_12_18") != null, "arrival_platform: Corner_Low_12_18 exists")
 	_assert_true(walls.get_node_or_null("Corner_W_Turn_0_18") != null, "arrival_platform: Corner_W_Turn_0_18 exists")
 
-	# Wall_Fixtures: Clock_8 at (592, 162), plus TLF-073 departure board and notice
+	# Wall_Fixtures: Clock_8 at (576, 147), plus TLF-073 departure board and notice
 	var fixtures := inst.get_node_or_null("Wall_Fixtures") as Node2D
 	_assert_true(fixtures != null, "arrival_platform: Wall_Fixtures exists")
 	_assert_eq(fixtures.z_index, 7, "arrival_platform: Wall_Fixtures at z_index 7")
@@ -307,7 +307,11 @@ func test_room1_arrival_platform_kit_complete() -> void:
 	var clk8 := fixtures.get_node_or_null("Clock_8") as Sprite2D
 	_assert_true(clk2 == null, "arrival_platform: Clock_2 removed near spawn (departure board carries 23:59)")
 	_assert_true(clk8 != null, "arrival_platform: Clock_8 exists")
-	_assert_eq(clk8.position, Vector2(592, 162), "arrival_platform: Clock_8 at (592, 162)")
+	_assert_eq(clk8.position, Vector2(576, 147), "arrival_platform: Clock_8 at (576, 147)")
+	_assert_eq(clk8.offset, Vector2.ZERO, "arrival_platform: Clock_8 offset is (0, 0)")
+	_assert_false(clk8.centered, "arrival_platform: Clock_8 centered is false")
+	_assert_true(clk8.texture.resource_path.ends_with("ch01_prop_digital_clock_2359_n_idle.png"),
+		"arrival_platform: Clock_8 has sheared N-face texture")
 
 	var dep_board := fixtures.get_node_or_null("DepartureBoard") as Sprite2D
 	var closed_track := fixtures.get_node_or_null("ClosedTrackNotice") as Sprite2D
@@ -315,6 +319,23 @@ func test_room1_arrival_platform_kit_complete() -> void:
 	_assert_true(closed_track != null, "arrival_platform: ClosedTrackNotice exists")
 	_assert_eq(dep_board.position, Vector2(64, 148), "arrival_platform: DepartureBoard at (64, 148)")
 	_assert_eq(closed_track.position, Vector2(488, 116), "arrival_platform: ClosedTrackNotice at (488, 116)")
+
+	# Selectors: 3 N-face sheared presenters
+	var sel_line := inst.get_node_or_null("selector_line/Presenter") as SelectorSwitchPresenter
+	var sel_plat := inst.get_node_or_null("selector_platform/Presenter") as SelectorSwitchPresenter
+	var sel_car := inst.get_node_or_null("selector_car/Presenter") as SelectorSwitchPresenter
+	_assert_true(sel_line != null, "arrival_platform: selector_line/Presenter exists")
+	_assert_true(sel_plat != null, "arrival_platform: selector_platform/Presenter exists")
+	_assert_true(sel_car != null, "arrival_platform: selector_car/Presenter exists")
+	_assert_eq(sel_line.position, Vector2(0, -28), "arrival_platform: selector_line Presenter at (0, -28)")
+	_assert_eq(sel_plat.position, Vector2(0, -28), "arrival_platform: selector_platform Presenter at (0, -28)")
+	_assert_eq(sel_car.position, Vector2(0, -28), "arrival_platform: selector_car Presenter at (0, -28)")
+	_assert_true(sel_line.textures.size() == 3 and sel_line.textures[0].resource_path.ends_with("selector_line_n_pos0.png"),
+		"arrival_platform: selector_line textures use sheared N art")
+	_assert_true(sel_plat.textures.size() == 3 and sel_plat.textures[0].resource_path.ends_with("selector_platform_n_pos0.png"),
+		"arrival_platform: selector_platform textures use sheared N art")
+	_assert_true(sel_car.textures.size() == 3 and sel_car.textures[0].resource_path.ends_with("selector_car_n_pos0.png"),
+		"arrival_platform: selector_car textures use sheared N art")
 
 	# YSort_Actors: Bench at (448, 168), Stalled car at (480, 336)
 	var actors := inst.get_node_or_null("YSort_Actors") as Node2D
