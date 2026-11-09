@@ -1,0 +1,54 @@
+Audited current origin/main SHA: 09996823d44c1540ba85f477d953157e78436a31
+Fresh git archive. Read-only audit of exact delivery; all 1721 tracked blobs except intentionally renamed scratch project.godot remain identical after import/render/probes.
+Only scratch project application name/custom user-dir and audit harnesses added outside repository.
+Commands (each exit 0):
+Godot_v4.7.2-stable_win64_console.exe --headless --editor --path <scratch> --import --quit
+Godot_v4.7.2-stable_win64_console.exe --path <scratch> --windowed --resolution 960x540 --position 100,100 --script res://sol_p0_capture.gd
+Godot_v4.7.2-stable_win64_console.exe --path <scratch> --windowed --resolution 960x540 --position 100,100 --script res://sol_p0_state_probe.gd
+Harness: actual Chapter01 and RoomRouter, 8 settling frames per room, dismiss dialogue, hide HUD, freeze chapter processing, stop player on idle_s frame 0. Real camera snap; no camera/scene layout edits. Initial unsolved room states; no user-input playthrough.
+Baseline/approach positions and actual view_rects recorded in manifest.json and log below. Do not interpret teleported approach positions as verified reach/collision routes.
+Reduced-effects setting toggled through Settings; all three unpowered/idle baseline vs reduced snapshots pixel-identical. No active Trace/Freeze/Echo animation was exercised; no complete VFX acceptance claim.
+Dial probe: after settling the actual Concourse, freeze processing, use each HistoryDial.apply_state({index:4}), call the existing presenter _refresh. Changed content logged below. Both complete viewports pixel-identical. HUD hidden for art proofs; source search separately confirms no label_key/index_changed consumer displaying dial values.
+Greyscale: exact rendered baseline converted through Pillow L. Nearest x2: exact rendered baseline expanded to 1920x1080 without interpolation. Neither is an edited proposal or post-change render.
+PASS no engine/script errors in import/capture/state-probe logs.
+PASS real save/settings inventory/hashes/sizes/mtime unchanged (139 files).
+No scenes/assets/scripts/generators modified on audit branch; findings only.
+
+Raw windowed baseline capture log:
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+AUDIT WINDOWED display=Windows user_dir=C:/Users/adity/AppData/Roaming/TLF Sol AppendixD P0 0999682
+CAPTURE arrival_platform_baseline player=(160.0, 224.0) view=[P: (-64.0, -78.0), S: (960.0, 540.0)]
+CAPTURE arrival_platform_approach player=(656.0, 264.0) view=[P: (-64.0, -78.0), S: (960.0, 540.0)]
+CAPTURE arrival_platform_reduced player=(160.0, 224.0) view=[P: (-64.0, -78.0), S: (960.0, 540.0)]
+ROOM arrival_platform Light2D_count=0 sprites=72
+CAPTURE concourse_west_baseline player=(304.0, 136.0) view=[P: (-160.0, -90.0), S: (960.0, 540.0)]
+CAPTURE concourse_west_approach player=(496.0, 200.0) view=[P: (-160.0, -90.0), S: (960.0, 540.0)]
+CAPTURE concourse_west_reduced player=(304.0, 136.0) view=[P: (-160.0, -90.0), S: (960.0, 540.0)]
+ROOM concourse_west Light2D_count=0 sprites=37
+CAPTURE signal_control_baseline player=(352.0, 176.0) view=[P: (-160.0, -90.0), S: (960.0, 540.0)]
+CAPTURE signal_control_approach player=(224.0, 136.0) view=[P: (-160.0, -90.0), S: (960.0, 540.0)]
+CAPTURE signal_control_reduced player=(352.0, 176.0) view=[P: (-160.0, -90.0), S: (960.0, 540.0)]
+ROOM signal_control Light2D_count=0 sprites=40
+P0 AUDIT CAPTURE COMPLETE views=9
+
+Raw dial state probe log:
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+CAPTURE concourse_dials_index5 player=(304.0, 136.0) view=[P: (-160.0, -90.0), S: (960.0, 540.0)]
+DIAL BEFORE dial_line index=5 key=PZ006_LINE_5 content=HILL ROAD
+DIAL AFTER dial_line index=4 key=PZ006_LINE_4 content=HOLLOW QUAY
+DIAL BEFORE dial_platform index=5 key=PZ006_PLAT_5 content=PLAT 5
+DIAL AFTER dial_platform index=4 key=PZ006_PLAT_4 content=PLAT 3
+DIAL BEFORE dial_time index=5 key=PZ006_TIME_5 content=23:57
+DIAL AFTER dial_time index=4 key=PZ006_TIME_4 content=23:53
+CAPTURE concourse_dials_index4 player=(304.0, 136.0) view=[P: (-160.0, -90.0), S: (960.0, 540.0)]
+P0 DIAL STATE PROBE COMPLETE (scratch state assignment, not an input playthrough)
+
+Independent alpha vs actual wall-module masks:
+concourse_west Wall_Fixtures/Clock_3 face=N opaque=556 outside_wall=185
+concourse_west Wall_Fixtures/CallBoxSprite face=W opaque=656 outside_wall=0
+signal_control intercom/IntercomSprite face=N opaque=656 outside_wall=0
+signal_control Wall_Fixtures/Clock_1 face=N opaque=556 outside_wall=185

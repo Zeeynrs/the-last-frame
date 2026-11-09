@@ -1,0 +1,4 @@
+concourse_west Wall_Fixtures/Clock_3 face=N opaque=556 outside_wall=185
+concourse_west Wall_Fixtures/CallBoxSprite face=W opaque=656 outside_wall=0
+signal_control intercom/IntercomSprite face=N opaque=656 outside_wall=0
+signal_control Wall_Fixtures/Clock_1 face=N opaque=556 outside_wall=185
