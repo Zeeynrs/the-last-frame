@@ -1,0 +1,105 @@
+Exact delivery: 8384d0f7b9b77afd9c2cb2c74b3f6610cb15f023
+Fresh git archive. All 1712 tracked files except the intentionally renamed scratch project.godot match the exact reviewed Git blobs after import/capture/tests.
+Scratch project name and custom user directory: TLF Sol 072 8384d0f.
+Original handoff contains 13 shot_*.png files. All were inspected. Independent capture adds the missing You are late. frame.
+Commands (each exit=0):
+Godot_v4.7.2-stable_win64_console.exe --headless --editor --path <scratch> --import --quit
+Godot_v4.7.2-stable_win64_console.exe --path <scratch> --windowed --resolution 1920x1080 --position 0,0 --script res://sol_capture072.gd
+Godot_v4.7.2-stable_win64_console.exe --headless --path <scratch> --script res://sol_focused_tests.gd
+Capture harness is tools/capture_tlf072.gd copied to scratch, output redirected to sol072_output, extra capture after the first outro shot +3.4 seconds for You are late., then +4.1 seconds to Again.; assertions check both texts, final pan -320 and isolated user-dir. No manual advance input.
+Focused test harness is the original tests/run_tests.gd, changing only discovery to the four files listed in its output below; all original test methods/assertions retained.
+No engine/script errors in import, capture or focused test logs.
+PASS real user-data inventory/hashes/sizes/mtime unchanged (139 files).
+Physical x2 evidence crops: exact nearest-neighbour enlargement of committed screenshot regions, matching the actual 1080p transform, without interpolation or repainting. Original coordinates:
+  dialogue: shot_02_dialogue_line_arrival.png (180,436)-(780,528)
+  document: shot_07_document_viewer.png (260,142)-(700,398)
+  title_hint: shot_01_title.png (372,506)-(589,530)
+All 7 temporary physical-x2 crops inspected: dialogue, document, wheel, feedback, chapter summary, title hint, HUD. Three representative crops committed.
+
+Committed screenshot SHA256 / dimensions:
+shot_01_title.png 1254837b91da509ea7144d4e717bddef6deb3dad815ed61f21956a6f87bbf79c (960, 540)
+shot_02_dialogue_line_arrival.png 4700947b54354e452dc80ddc689957105878aff1e6ac239d994484464f2adf2c (960, 540)
+shot_03_arrival_spawn.png 1bf8eefd1dfddb206dd956ba9640399cb07c4761a55f779f519ab45893306e57 (960, 540)
+shot_04_arrival_gate.png 79cebfc804efad800abcd23860db85256a38ded21846c16f76449cf0e4ae9010 (960, 540)
+shot_05_ability_wheel.png a0a6dc2284e2f0529c20118c94355fa25d4b243c1e26af87c8df2ab8d6db848e (960, 540)
+shot_06_feedback_line.png 489395e5cbcedacfb430fc478871daa863cadc936809734b7ff83c47f232ebde (960, 540)
+shot_07_document_viewer.png c1840d345db9c141c43e2ce9e058d1bcf01b8238db169ced4b9d95b91e3e6229 (960, 540)
+shot_08_old_room_maintenance_bay.png fe2e84eeff95251ace348910425fcc21525e7bb375f25c904bd0ddd91693fb15 (960, 540)
+shot_08_old_room_signal_control.png 5b512497e29d40407a7c7fd917f1f1209586401210bae18fe81b9de666e610c8 (960, 540)
+shot_09_cinematic_start.png 27390d703e345123be3e09873d1db6146a7da633be101e5df197f2fcb2030d38 (960, 540)
+shot_10_cinematic_end.png a9cbe4a1a959aeaac0aef777a40485bb905b437f6d69529e80356aa3ea957c0b (960, 540)
+shot_11_chapter_complete.png f8ccdb4f2f2193071e932c9157812017bf940917dac04ba0f8e49d44d0855071 (960, 540)
+shot_12_window_1280x720.png d37664da0cfd2f5f113f366e5997639a6a584f5fce0293f11912cc3976d2d12c (1280, 720)
+
+Margin samples from shot_03 and both shot_08: (0,100) and (950,400) = RGB (10,13,20), #0A0D14.
+Cinematic shot_09/10 corner bar samples: (0,0), (0,539) = RGB (0,0,0).
+
+Raw windowed capture log:
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+SOL_WINDOW size=(1920, 1080) view=[P: (0.0, 0.0), S: (960.0, 540.0)] final_transform=[X: (2.0, 0.0), Y: (0.0, 2.0), O: (0.0, 0.0)] user_dir=C:/Users/adity/AppData/Roaming/TLF Sol 072 8384d0f
+CAPTURED: shot_01_title.png
+CAPTURED: shot_02_dialogue_line_arrival.png
+CAPTURED: shot_03_arrival_spawn.png
+CAPTURED: shot_04_arrival_gate.png
+CAMERA arrival: bounds [P: (16.0, 0.0), S: (800.0, 384.0)] centre (416.0, 192.0) view [P: (-64.0, -78.0), S: (960.0, 540.0)]
+CAPTURED: shot_05_ability_wheel.png
+CAPTURED: shot_06_feedback_line.png
+CAPTURED: shot_07_document_viewer.png
+CAPTURED: shot_08_old_room_maintenance_bay.png
+CAMERA ch01.maintenance_bay: bounds [P: (0.0, 0.0), S: (640.0, 360.0)] centre (320.0, 180.0) view [P: (-160.0, -90.0), S: (960.0, 540.0)]
+CAPTURED: shot_08_old_room_signal_control.png
+CAMERA ch01.signal_control: bounds [P: (0.0, 0.0), S: (640.0, 360.0)] centre (320.0, 180.0) view [P: (-160.0, -90.0), S: (960.0, 540.0)]
+OUTRO start pan x -32.0 plate (-32.0, 90.0)
+CAPTURED: shot_09_cinematic_start.png
+SOL_LATE pan=-169.0 line=You are late.
+CAPTURED: shot_09b_you_are_late.png
+OUTRO end pan x -320.0 plate (-320.0, 90.0)
+CAPTURED: shot_10_cinematic_end.png
+SOL_AGAIN text=Again.
+OUTRO end line 2 active true
+OUTRO finished: true
+CAPTURED: shot_11_chapter_complete.png
+ALL TLF-072 SCREENSHOTS CAPTURED
+
+Raw focused test log:
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/TLF Sol 072 8384d0f/headless/settings.cfg)
+SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/TLF Sol 072 8384d0f/headless/saves)
+--- Running Test Suite ---
+Test file: res://tests/chapters/ch01/test_ch01_outro_cinematic.gd
+  PASS: test_outro_audio_hook_for_tlf064
+  PASS: test_outro_dialogue_line_sequence_and_mystery_invariants
+  PASS: test_outro_integer_pixel_pan_progression
+  PASS: test_outro_manual_advance_and_skip_still_work
+  PASS: test_outro_plays_to_the_end_without_input
+  PASS: test_outro_reduced_effects_static_frame
+  PASS: test_outro_save_load_lifecycle
+  PASS: test_outro_scene_and_properties
+  PASS: test_outro_simclock_pause_and_input_blocking
+  PASS: test_outro_skip_with_cancel_action
+  PASS: test_outro_skip_with_hold_confirm
+Test file: res://tests/rooms/test_room_camera.gd
+  PASS: test_clamp_edge_and_door_no_jitter_no_off_bounds_frame
+  PASS: test_clamps_to_bounds
+  PASS: test_position_is_whole_pixel_every_frame
+  PASS: test_room_smaller_than_screen_is_centred_and_fixed
+  PASS: test_snap_now_on_room_entry_same_frame
+Test file: res://tests/test_project_settings.gd
+  PASS: test_autoloads
+  PASS: test_controller_device_configuration
+  PASS: test_custom_theme_registered
+  PASS: test_input_actions
+  PASS: test_main_scene
+  PASS: test_no_input_binding_conflicts
+  PASS: test_viewport_and_display_settings
+Test file: res://tests/ui/test_ui_layout_960.gd
+  PASS: test_centred_panels_are_centred
+  PASS: test_chapter_complete_text_is_centred
+  PASS: test_dialogue_box_sits_at_the_bottom_centre
+  PASS: test_hud_feedback_and_title_follow_the_edges
+  PASS: test_root_view_is_960_x_540
+---------------------------
+TESTS: 28 passed, 0 failed
