@@ -228,10 +228,10 @@ In `tests/chapters/ch01/test_ch01_art_integration.gd`, `BASELINE_FINGERPRINTS_GZ
    - WallN modules expanded from 7 to 15.
    - WallW modules expanded from 5 to 9.
    - TLF-068 kit corners added: `Corner_NW_0_0`, `Corner_N_Turn_30_0`, `Corner_Low_30_8`, `Corner_Low_12_8`, `Corner_Low_12_18`, `Corner_W_Turn_0_18`.
-   - Duplicate `Clock_2` at `(400, 66)` removed near spawn per Lead instruction (the departure board carries 23:59 there); `Clock_8` preserved at `(592, 162)` (tile 17, 0); `digital_clock_2359` Area2D trigger placed on reachable floor vertex `(592, 200)` (tile 17, 0).
+   - Duplicate `Clock_2` at `(400, 66)` removed near spawn per Lead instruction (the departure board carries 23:59 there); `Clock_8` preserved at `(576, 147)` (tile 17, 0); `digital_clock_2359` Area2D trigger placed on reachable floor vertex `(592, 200)` (tile 17, 0).
    - `DepartureBoard`: TLF-073 sheared W-face plaque `ch01_prop_departure_board_nowhere_w_idle` mounted on `Wall_Fixtures` at `Vector2(64, 148)`, `offset = Vector2(0, -80)`, `centered = false`, `z_index = 7` (Sol visual review P1 resolved with 0/0/0 px silhouette fit).
    - `ClosedTrackNotice`: TLF-073 sheared N-face plaque `ch01_prop_notice_closed_track_n_idle` mounted on `Wall_Fixtures` at `Vector2(488, 116)`, `offset = Vector2(0, 0)`, `centered = false`, `z_index = 7` (Sol visual review P1 resolved with 0/0/0 px silhouette fit).
-   - Switch consoles (`selector_line`, `selector_platform`, `selector_car`): Area2D contacts and stand spots unchanged, `Presenter` visuals mounted on wall face with `position = Vector2(0, -22)` with 0 px above wall top silhouette (Sol review P1).
+   - Switch consoles (`selector_line`, `selector_platform`, `selector_car`): Area2D contacts and stand spots unchanged, `Presenter` visuals mounted on wall face with `position = Vector2(0, -28)` with 0 px above wall top silhouette (Sol review P1).
    - `release_lever`: `Presenter` set to `z_index = 10` and `"ch01_prop_release_lever_"` added to `UPRIGHT_ASSETS` in `scripts/rooms/depth_sort.gd` for TLF-067 contact-depth sorting with Elias (Sol review P2).
 4. **Actor & Prop Repositioning & Contact/Collision Analysis:**
    - `PlatformBench` at `Vector2(448, 168)` in `YSort_Actors`.
