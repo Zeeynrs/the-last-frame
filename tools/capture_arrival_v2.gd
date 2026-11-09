@@ -73,7 +73,7 @@ func _run() -> void:
 		await RenderingServer.frame_post_draw
 
 		var img := root.get_texture().get_image()
-		assert(img.get_size() == Vector2i(640, 360), "Screenshot size must be 640x360")
+		assert(img.get_size() == Vector2i(960, 540), "Screenshot size must be 960x540")
 		var out_path := out_dir.path_join(filename)
 		var err := img.save_png(out_path)
 		assert(err == OK, "Failed to save " + out_path)

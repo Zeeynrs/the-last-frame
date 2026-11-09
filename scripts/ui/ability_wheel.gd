@@ -80,7 +80,6 @@ var _seg_nodes: Array[TextureRect] = []
 var _icon_nodes: Array[TextureRect] = []
 var _label_nodes: Array[Label] = []
 
-var _wheel_center: Vector2 = Vector2(320, 180)
 var _mouse_start_pos: Vector2 = Vector2.ZERO
 var _mouse_moved: bool = false
 var _left_stick: Vector2 = Vector2.ZERO
@@ -300,6 +299,13 @@ func _process(_delta: float) -> void:
 	_check_aim_update()
 
 
+## Screen centre of the wheel (it is anchored to the middle of the view), for mouse aiming.
+func _wheel_center() -> Vector2:
+	if wheel_container != null and wheel_container.is_inside_tree():
+		return wheel_container.get_global_rect().get_center()
+	return get_viewport().get_visible_rect().get_center()
+
+
 func _check_aim_update() -> void:
 	var aim_vec := Vector2.ZERO
 	var move_vec := Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
@@ -315,7 +321,7 @@ func _check_aim_update() -> void:
 			aim_vec = right_stick
 		elif _mouse_moved:
 			var mouse_pos := get_viewport().get_mouse_position()
-			var m_vec := mouse_pos - _wheel_center
+			var m_vec := mouse_pos - _wheel_center()
 			if m_vec.length() > 20.0:
 				aim_vec = m_vec
 

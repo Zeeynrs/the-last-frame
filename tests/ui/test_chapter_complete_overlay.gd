@@ -2,15 +2,17 @@ extends "res://tests/support/base_test.gd"
 
 ## Automated unit tests for ChapterCompleteOverlay layout per TLF-051.
 ## Verifies:
-## 1. Overlay labels stay inside 640x360 minus 12 px safe margins (ART_BIBLE §8).
+## 1. Overlay labels stay inside the 960x540 view minus 12 px safe margins (ART_BIBLE §8).
 ## 2. Font sizes are strictly in {8, 16, 24} (and {16, 32, 48} at text_scale=2.0).
-## 3. No overlay element overlaps the SceneRouter return-to-title hint (y=320..340).
+## 3. No overlay element overlaps the SceneRouter return-to-title hint (y=500..520).
 ## 4. Backwards compatibility: hidden TitleLabel contains both complete & title text.
 ## 5. Overlay functions cleanly with and without playtest telemetry summary.
 
 const OVERLAY_SCENE_PATH := "res://scenes/ui/chapter_complete_overlay.tscn"
-const SAFE_RECT := Rect2(12.0, 12.0, 616.0, 336.0)
-const HINT_RECT := Rect2(120.0, 320.0, 400.0, 20.0)
+## The 960 x 540 view (ADR-023 addendum 3) minus 12 px on every side.
+const SAFE_RECT := Rect2(12.0, 12.0, 936.0, 516.0)
+## SceneRouter's hint label: centre-bottom anchors, offsets x -200..200, y -40..-20.
+const HINT_RECT := Rect2(280.0, 500.0, 400.0, 20.0)
 
 
 func _collect_visible_labels(node: Node, out: Array[Label]) -> void:
@@ -65,8 +67,8 @@ func test_overlay_layout_and_safe_margins() -> void:
 		var rect := lbl.get_global_rect()
 		_assert_true(rect.position.x >= SAFE_RECT.position.x, "Label '%s' x (%.1f) >= safe left (12)" % [lbl.name, rect.position.x])
 		_assert_true(rect.position.y >= SAFE_RECT.position.y, "Label '%s' y (%.1f) >= safe top (12)" % [lbl.name, rect.position.y])
-		_assert_true(rect.end.x <= SAFE_RECT.end.x, "Label '%s' end x (%.1f) <= safe right (628)" % [lbl.name, rect.end.x])
-		_assert_true(rect.end.y <= SAFE_RECT.end.y, "Label '%s' end y (%.1f) <= safe bottom (348)" % [lbl.name, rect.end.y])
+		_assert_true(rect.end.x <= SAFE_RECT.end.x, "Label '%s' end x (%.1f) <= safe right (948)" % [lbl.name, rect.end.x])
+		_assert_true(rect.end.y <= SAFE_RECT.end.y, "Label '%s' end y (%.1f) <= safe bottom (528)" % [lbl.name, rect.end.y])
 
 		var font_sz := _get_label_effective_font_size(lbl)
 		_assert_true(font_sz in allowed_sizes, "Label '%s' font size %d in [8, 16, 24]" % [lbl.name, font_sz])
@@ -78,7 +80,7 @@ func test_overlay_layout_and_safe_margins() -> void:
 	if _assert_true(panel != null, "SummaryPanel exists with summary"):
 		var p_rect := panel.get_global_rect()
 		_assert_false(p_rect.intersects(HINT_RECT), "SummaryPanel does not overlap SceneRouter hint")
-		_assert_true(p_rect.end.y <= HINT_RECT.position.y, "SummaryPanel ends before SceneRouter hint y (320)")
+		_assert_true(p_rect.end.y <= HINT_RECT.position.y, "SummaryPanel ends before SceneRouter hint y (500)")
 
 	overlay.free()
 

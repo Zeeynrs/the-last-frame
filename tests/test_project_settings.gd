@@ -78,9 +78,9 @@ func _events_conflict(ev1: InputEvent, ev2: InputEvent) -> bool:
 
 
 func test_viewport_and_display_settings() -> void:
-	# Viewport internal size 640x360
-	_assert_eq(ProjectSettings.get_setting("display/window/size/viewport_width"), 640, "viewport_width must be 640")
-	_assert_eq(ProjectSettings.get_setting("display/window/size/viewport_height"), 360, "viewport_height must be 360")
+	# Viewport internal size 960x540 (ADR-023 addendum 3; integer x2 to the 1920x1080 window)
+	_assert_eq(ProjectSettings.get_setting("display/window/size/viewport_width"), 960, "viewport_width must be 960")
+	_assert_eq(ProjectSettings.get_setting("display/window/size/viewport_height"), 540, "viewport_height must be 540")
 
 	# Window override 1920x1080
 	_assert_eq(ProjectSettings.get_setting("display/window/size/window_width_override"), 1920, "window_width_override must be 1920")
@@ -90,6 +90,12 @@ func test_viewport_and_display_settings() -> void:
 	_assert_eq(ProjectSettings.get_setting("display/window/stretch/mode"), "viewport", "stretch/mode must be viewport")
 	_assert_eq(ProjectSettings.get_setting("display/window/stretch/aspect"), "keep", "stretch/aspect must be keep")
 	_assert_eq(ProjectSettings.get_setting("display/window/stretch/scale_mode"), "integer", "stretch/scale_mode must be integer")
+
+	# Margin around rooms smaller than the view (TLF-072): the clear colour is TLF-CH01-32 index 00,
+	# Abyssal Void #0A0D14, the palette's darkest colour. It only fills where nothing is drawn.
+	var clear: Color = ProjectSettings.get_setting("rendering/environment/defaults/default_clear_color")
+	_assert_eq(clear.to_html(true), "0a0d14ff", "default_clear_color must be #0A0D14 (TLF-CH01-32 index 00)")
+	_assert_eq(RenderingServer.get_default_clear_color().to_html(true), "0a0d14ff", "and the renderer uses it")
 
 	# Pixel-art rendering: nearest filter and pixel snap
 	_assert_eq(ProjectSettings.get_setting("rendering/textures/canvas_textures/default_texture_filter"), 0, "default_texture_filter must be 0 (Nearest)")

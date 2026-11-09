@@ -90,6 +90,15 @@ func test_outro_scene_and_properties() -> void:
 	var plate_container := outro.get_node_or_null("PlateContainer") as Control
 	_assert_true(plate_container != null, "PlateContainer exists")
 	_assert_eq(plate_container.size, Vector2(1280, 360), "PlateContainer is 1280x360 px")
+	# ADR-023 addendum 3: letterboxed in the 960 x 540 view, 1:1 pixel scale, 90 px bars.
+	_assert_eq(plate_container.scale, Vector2.ONE, "the plate is not scaled")
+	_assert_eq(plate_container.position, Vector2(0, 90), "plate starts at x 0 under a 90 px top bar")
+	_assert_eq(Ch01Outro.letterbox_top() * 2.0 + 360.0, 540.0, "equal bars top and bottom of the 540 px view")
+	var dimmer := outro.get_node_or_null("Dimmer") as ColorRect
+	_assert_true(dimmer != null and dimmer.color == Color.BLACK and dimmer.anchor_right == 1.0 and dimmer.anchor_bottom == 1.0,
+		"the black Dimmer fills the whole view behind the plate (the bars)")
+	_assert_eq(outro.end_pan_x, 960.0 - 1280.0, "pan ends where the plate's right edge meets the view's (-320)")
+	_assert_eq(outro.reduced_effects_static_x, -320.0, "reduced_effects frame is the end frame (-320)")
 
 	var city_plate := outro.get_node_or_null("PlateContainer/CityPlate") as TextureRect
 	_assert_true(city_plate != null, "CityPlate node exists")
@@ -142,7 +151,9 @@ func test_outro_integer_pixel_pan_progression() -> void:
 		var cur_x := outro.get_current_pan_x()
 		_assert_eq(cur_x, round(cur_x), "Pan x (%.2f) is an exact integer (no subpixel blur)" % cur_x)
 		_assert_true(cur_x <= 0.0, "Pan moves leftward (x <= 0.0)")
-		_assert_true(cur_x >= -640.0, "Pan does not exceed -640.0")
+		_assert_true(cur_x >= -320.0, "Pan does not exceed -320.0")
+		_assert_eq(outro.plate_container.position.y, 90.0, "the plate stays between the bars")
+	_assert_eq(outro.get_current_pan_x(), -320.0, "Pan ends at x = -320.0 (plate right edge on the view's)")
 
 	outro.free()
 
@@ -161,12 +172,12 @@ func test_outro_reduced_effects_static_frame() -> void:
 	_tree().root.add_child(outro)
 
 	outro.start(null, null, null)
-	_assert_eq(outro.get_current_pan_x(), -640.0, "reduced_effects starts directly at static frame -640.0")
+	_assert_eq(outro.get_current_pan_x(), -320.0, "reduced_effects starts directly at static frame -320.0")
 
 	# Step delta and verify it never moves
 	for i in range(5):
 		outro._process(0.5)
-		_assert_eq(outro.get_current_pan_x(), -640.0, "reduced_effects stays strictly static at -640.0")
+		_assert_eq(outro.get_current_pan_x(), -320.0, "reduced_effects stays strictly static at -320.0")
 
 	outro.free()
 
@@ -397,3 +408,94 @@ func test_outro_audio_hook_for_tlf064() -> void:
 	_assert_true(audio_clicked[0], "device_click_played signal emitted for TLF-064")
 
 	outro.free()
+
+
+# -------------------------------------------------------------------------------------------------
+# 10. TLF-072: the timeline plays the lines by itself (TLF-059 timing table)
+# -------------------------------------------------------------------------------------------------
+func _outro_with_dialogue() -> Dictionary:
+	var diag := (load("res://scenes/ui/DialogueBox.tscn") as PackedScene).instantiate() as DialogueBox
+	_tree().root.add_child(diag)
+	var outro := (load(OUTRO_SCENE_PATH) as PackedScene).instantiate() as Ch01Outro
+	_tree().root.add_child(outro)
+	var events := {"completed": 0, "skipped": 0}
+	outro.cinematic_completed.connect(func() -> void: events["completed"] += 1)
+	outro.cinematic_skipped.connect(func() -> void: events["skipped"] += 1)
+	outro.start(null, null, diag)
+	return {"outro": outro, "diag": diag, "log": events}
+
+
+## Steps the outro's own clock (no input) until `until_t` seconds, in 1/20 s frames.
+func _run_outro_to(outro: Ch01Outro, until_t: float) -> void:
+	while outro._timeline < until_t - 0.001 and outro.is_playing():
+		outro._process(0.05)
+
+
+func _free_outro(rig: Dictionary) -> void:
+	if is_instance_valid(rig["outro"]):
+		rig["outro"].free()
+	rig["diag"].free()
+
+
+## Without any input the cinematic shows EL_B10_01, OP_B10_01 and OP_B10_02 at their table times,
+## holds the vista for outro_hold_duration after the last line and then completes, unskipped.
+## Before TLF-072 its own advance to OP_B10_01 counted as a manual one and it stopped there.
+func test_outro_plays_to_the_end_without_input() -> void:
+	var rig := _outro_with_dialogue()
+	var outro: Ch01Outro = rig["outro"]
+	var diag: DialogueBox = rig["diag"]
+	var t1_end := outro.line1_delay + outro.line1_duration              # 3.0
+	var t2_start := t1_end + outro.line2_pause                          # 4.0
+	var t3_start := t2_start + outro.line2_duration + outro.line3_pause # 6.8
+	var t3_end := t3_start + outro.line3_duration                       # 8.6
+	var outro_end := t3_end + outro.outro_hold_duration                 # 9.8
+
+	_run_outro_to(outro, outro.line1_delay + 0.1)
+	_assert_eq(diag.current_line_index, 0, "EL_B10_01 at %.1f s" % outro._timeline)
+	_run_outro_to(outro, t2_start + 0.1)
+	_assert_eq(diag.current_line_index, 1, "OP_B10_01 ('You are late.') at %.1f s, by itself" % outro._timeline)
+	_assert_true(diag.panel.visible, "its panel is shown")
+	_run_outro_to(outro, t3_start + 0.1)
+	_assert_eq(diag.current_line_index, 2, "OP_B10_02 ('Again.') at %.1f s, by itself" % outro._timeline)
+	_assert_eq(diag.text_label.text, tr("OP_B10_02"), "the 'Again.' text is on screen")
+	_run_outro_to(outro, t3_end + 0.1)
+	_assert_false(diag.is_active, "the dialogue ends after OP_B10_02's duration")
+	_assert_true(outro.is_playing(), "the final hold on the city: still playing at %.1f s" % outro._timeline)
+	_assert_eq(rig["log"]["completed"], 0, "not completed during the hold")
+	_run_outro_to(outro, outro_end + 0.2)
+	_assert_false(outro.is_playing(), "finished after the hold")
+	_assert_eq(rig["log"]["completed"], 1, "cinematic_completed once")
+	_assert_eq(rig["log"]["skipped"], 0, "never skipped")
+	_assert_eq(outro.get_current_pan_x(), -320.0, "pan ended at -320")
+	_free_outro(rig)
+
+
+## [Enter] still moves the lines on ahead of the timeline and ends the cinematic with the last
+## line; skipping still works after the timeline has advanced a line itself.
+func test_outro_manual_advance_and_skip_still_work() -> void:
+	var rig := _outro_with_dialogue()
+	var outro: Ch01Outro = rig["outro"]
+	var diag: DialogueBox = rig["diag"]
+	_run_outro_to(outro, 1.0)
+	diag.advance_line()   # [Enter] during EL_B10_01
+	_assert_eq(diag.current_line_index, 1, "manual advance shows OP_B10_01 at once (1.0 s)")
+	_run_outro_to(outro, 1.5)
+	_assert_eq(diag.current_line_index, 1, "the timeline does not move it back or on")
+	diag.advance_line()
+	_assert_eq(diag.current_line_index, 2, "manual advance shows OP_B10_02")
+	diag.advance_line()
+	_assert_false(diag.is_active, "manual advance past the last line ends the dialogue")
+	_run_outro_to(outro, 1.6)
+	_assert_eq(rig["log"]["completed"], 1, "the cinematic completes with the last manual line")
+	_assert_eq(rig["log"]["skipped"], 0, "without a skip")
+	_free_outro(rig)
+
+	var rig2 := _outro_with_dialogue()
+	var outro2: Ch01Outro = rig2["outro"]
+	_run_outro_to(outro2, 4.5)
+	_assert_eq((rig2["diag"] as DialogueBox).current_line_index, 1, "timeline advanced to OP_B10_01")
+	outro2.skip()
+	_assert_eq(rig2["log"]["skipped"], 1, "skip after a timeline advance: skipped")
+	_assert_eq(rig2["log"]["completed"], 1, "and completed")
+	_assert_false((rig2["diag"] as DialogueBox).is_active, "the dialogue is closed by the skip")
+	_free_outro(rig2)

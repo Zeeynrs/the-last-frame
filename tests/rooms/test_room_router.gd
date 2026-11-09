@@ -267,9 +267,12 @@ func test_restore_with_unknown_room_is_refused() -> void:
 const BIG := &"ch01.room_big"
 const SMALL := &"ch01.room_small"
 const BIG_GATE := &"ch01.room_big.gate"
+## 64 x 16 tiles: 1312 x 720 px of bounds, larger than the 960 x 540 view both ways.
+const BIG_W := 64
+const BIG_H := 16
 
 
-## A 40 x 12 room (scrolls both ways) with a door far east, a checkpoint and its anchor far west,
+## A 64 x 16 room (scrolls both ways) with a door far east, a checkpoint and its anchor far west,
 ## and a rewindable gate; a 14 x 10 room (fits the screen) with a door west.
 func _shaped_room(room: StringName, shape: RoomShape, door: StringName, door_tile: Vector2, extra: bool) -> PackedScene:
 	var root := Node2D.new()
@@ -315,7 +318,7 @@ func _camera_rig() -> Dictionary:
 	g.add_room(SMALL, [&"door_w"])
 	g.set_initial_pairs([[BIG, &"door_e", SMALL, &"door_w"]])
 	s.spatial_service.set_graph(g, BIG)
-	router.register_room(BIG, _shaped_room(BIG, RoomShape.rectangle(40, 12), &"door_e", Vector2(39.5, 6.5), true))
+	router.register_room(BIG, _shaped_room(BIG, RoomShape.rectangle(BIG_W, BIG_H), &"door_e", Vector2(BIG_W - 0.5, 6.5), true))
 	router.register_room(SMALL, _shaped_room(SMALL, RoomShape.rectangle(14, 10), &"door_w", Vector2(0.5, 5.5), false))
 	return rig
 
@@ -331,13 +334,15 @@ func test_transition_camera_correct_on_first_frame() -> void:
 	_assert_true(camera != null and camera.is_current(), "the router made its camera current")
 	var big_centre := camera.get_screen_center_position()
 	_assert_eq(big_centre, camera.centre_for(player.global_position), "big room: on the player at the east door")
-	_assert_true(big_centre.x > 320.0, "big room: scrolled east (%s)" % big_centre)
+	_assert_true(big_centre.x > camera.bounds.position.x + RoomCamera.view_size().x * 0.5, "big room: scrolled east (%s)" % big_centre)
 	rig["s"].sim_clock.step(20)
 	_walk(rig, &"ch01.room_big.door_e")               # same call stack: no frame in between
 	_assert_eq(router.current_room_id, SMALL, "now in the small room")
 	_assert_eq(camera.bounds, RoomShape.rectangle(14, 10).bounds_px(), "small room bounds handed over")
-	_assert_eq(camera.get_screen_center_position(), Vector2(320, 180), "small room: today's fixed view at once")
-	_assert_eq(camera.get_viewport().get_canvas_transform(), Transform2D.IDENTITY, "first frame draws the small room unscrolled")
+	# 14 x 10 bounds (144, 0, 416, 272), worked by hand: centred in the 960 x 540 view at once.
+	_assert_eq(camera.get_screen_center_position(), Vector2(352, 136), "small room: centred on its bounds at once")
+	_assert_eq(camera.get_viewport().get_canvas_transform().origin, Vector2(128, 134),
+		"first frame draws the small room in the middle of the view (dark margin around it)")
 	rig["s"].sim_clock.step(20)
 	_walk(rig, &"ch01.room_small.door_w")
 	_assert_eq(router.current_room_id, BIG, "back in the big room")
@@ -369,12 +374,13 @@ func test_save_load_restores_camera_with_player() -> void:
 	var player: Node2D = rig2["player"]
 	player.global_position = Vector2(9999, 9999)
 	_assert_true(r2.restore_from_save(data)["ok"], "restore ok")
-	var shape := RoomShape.rectangle(40, 12)
+	var shape := RoomShape.rectangle(BIG_W, BIG_H)
 	var anchor_px := RoomShape.tile_to_px(Vector2(2.5, 9.5))
 	_assert_eq(player.global_position, anchor_px, "player at the checkpoint anchor")
 	var camera := r2.camera
 	_assert_eq(camera.get_screen_center_position(), camera.centre_for(anchor_px), "camera on the player on the first frame")
-	_assert_eq(camera.get_screen_center_position().x, shape.bounds_px().position.x + 320.0, "camera at the west clamp, with the player")
+	_assert_eq(camera.get_screen_center_position().x, shape.bounds_px().position.x + RoomCamera.view_size().x * 0.5,
+		"camera at the west clamp, with the player")
 	_assert_eq(camera.bounds, shape.bounds_px(), "the big room's bounds")
 	var poly := shape.perimeter_polygon_px()
 	_assert_true(Geometry2D.is_point_in_polygon(player.global_position, poly), "player inside the collision shape")
@@ -388,8 +394,8 @@ func test_save_load_restores_camera_with_player() -> void:
 
 
 ## TLF-071: a room scene written by build_room_from_shape.py (metadata/room_shape on its root) gives
-## the router its real bounds, so the camera scrolls; before the builder wrote it, the router fell
-## back to the fixed 640 x 360 screen.
+## the router its real bounds; without it the router falls back to the old 640 x 360 screen area.
+## At 960 x 540 (ADR-023 addendum 3) this 704 x 368 room fits the view, so the camera centres it.
 func test_builder_written_room_gives_the_camera_its_bounds() -> void:
 	var rig := _rig()
 	var router: RoomRouter = rig["router"]
@@ -400,11 +406,11 @@ func test_builder_written_room_gives_the_camera_its_bounds() -> void:
 	_assert_true(router.enter_room(A), "entered the builder-written room")
 	var shape := router.current_room_shape()
 	_assert_true(shape != null, "the router reads the room's RoomShape")
-	_assert_eq(router.current_room_bounds(), Rect2(48, 0, 704, 368), "its bounds, not the 640 x 360 screen")
+	_assert_eq(router.current_room_bounds(), Rect2(48, 0, 704, 368), "its bounds, not the old 640 x 360 screen area")
 	var camera := router.camera
 	_assert_eq(camera.bounds, shape.bounds_px(), "handed to the camera")
 	var centre := camera.get_screen_center_position()
-	_assert_eq(centre, camera.centre_for(player.global_position), "camera on the player")
-	_assert_true(centre.x > 320.0 and centre.y > 180.0, "scrolled east and south of the fixed view (%s)" % centre)
-	_assert_true(camera.bounds.encloses(camera.view_rect()), "the view stays inside the bounds")
+	_assert_eq(centre, camera.centre_for(player.global_position), "camera from the player's position")
+	_assert_eq(centre, Vector2(400, 184), "centred on the bounds (48 + 704 / 2, 0 + 368 / 2), not on the player")
+	_assert_true(camera.view_rect().encloses(camera.bounds), "the whole room is on screen")
 	_done(rig)

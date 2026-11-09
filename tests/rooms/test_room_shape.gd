@@ -37,7 +37,7 @@ func test_rectangle_matches_adr003_math() -> void:
 	_assert_eq(bounds.size.x, (14 + 10) * 16 + 2 * RoomShape.MARGIN_SIDE, "bounds width = (W+H)*16 = 384 + margins")
 	_assert_eq(bounds.size.y, (14 + 10) * 8 + RoomShape.MARGIN_TOP + RoomShape.MARGIN_BOTTOM, "bounds height = (W+H)*8 = 192 + margins")
 	_assert_eq(bounds.position, Vector2(160 - RoomShape.MARGIN_SIDE, 64 - RoomShape.MARGIN_TOP), "bounds origin")
-	_assert_true(Rect2(0, 0, 640, 360).encloses(bounds), "a 14 x 10 room fits one screen")
+	_assert_true(RoomCamera.LEGACY_SCREEN.encloses(bounds), "a 14 x 10 room fits the old 640 x 360 screen area")
 
 	var room: Node = load("res://scenes/chapters/ch01/rooms/maintenance_bay.tscn").instantiate()
 	var floor_layer := room.get_node("TileMapLayer_Floor") as TileMapLayer

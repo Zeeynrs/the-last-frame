@@ -1,6 +1,6 @@
 extends Control
 
-## Title screen (TLF-037): New Game / Continue / Quit. 640x360, TLF Pixel Mono, ASCII only.
+## Title screen (TLF-037): New Game / Continue / Quit. 960x540 (ADR-023 addendum 3), TLF Pixel Mono, ASCII only.
 ## Keyboard and controller via move_up/move_down + confirm/interact; mouse optional.
 ## Continue is enabled only when SaveService has slot 0. New Game with a save asks once
 ## (UI_TITLE_OVERWRITE_CONFIRM); the save itself is only replaced at the first checkpoint.

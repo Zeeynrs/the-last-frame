@@ -81,8 +81,10 @@ func test_every_room_fits_the_fixed_camera() -> void:
 		var left := ChapterGraphDef.tile_to_px(0, h)        # west corner of the floor diamond
 		var right := ChapterGraphDef.tile_to_px(w, 0)       # east corner
 		var bottom := ChapterGraphDef.tile_to_px(w, h)      # south corner
-		_assert_true(left.x >= 0 and right.x <= 640, "%s fits horizontally (%d..%d)" % [room["room_id"], left.x, right.x])
-		_assert_true(bottom.y <= 360, "%s fits vertically (floor to y=%d)" % [room["room_id"], bottom.y])
+		# Rooms without metadata/room_shape use the old 640 x 360 screen area as camera bounds.
+		var legacy := RoomCamera.LEGACY_SCREEN
+		_assert_true(left.x >= legacy.position.x and right.x <= legacy.end.x, "%s fits horizontally (%d..%d)" % [room["room_id"], left.x, right.x])
+		_assert_true(bottom.y <= legacy.end.y, "%s fits vertically (floor to y=%d)" % [room["room_id"], bottom.y])
 
 
 func test_relocation_anchors_are_declared_safe_anchors() -> void:

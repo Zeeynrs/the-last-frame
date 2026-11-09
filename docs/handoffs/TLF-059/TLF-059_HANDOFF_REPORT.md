@@ -30,12 +30,14 @@ When Elias steps out of the station through the exit doorway, the scene transiti
 
 The cinematic is entirely data-driven with exported timing properties on `Ch01Outro` (`scripts/ui/cinematics/ch01_outro.gd`). These exact timings are documented below so the Lead can copy them directly into `docs/ENDING_DESIGN.md` for Ending 3 mirroring:
 
+> **TLF-072 update (ADR-023 addendum 3, 960 x 540 canvas):** the plate is letterboxed at its 1:1 pixel scale (black bars of 90 px above and below, plate at y 90..450), and the pan now runs `0` to `-320` (1280 plate minus the 960 view), 40 px/s over the same 8.0 s. The values below are the current ones; at 640 x 360 the end and reduced-effects frames were `-640`.
+
 | Property | Default Value | Description |
 |---|---|---|
-| `pan_duration` | `8.0 s` | Total duration of the horizontal pan from `start_pan_x` (`0.0`) to `end_pan_x` (`-640.0`). |
+| `pan_duration` | `8.0 s` | Total duration of the horizontal pan from `start_pan_x` (`0.0`) to `end_pan_x` (`-320.0`). |
 | `start_pan_x` | `0.0 px` | Pan start offset (Station Exit / West side of composite plate). |
-| `end_pan_x` | `-640.0 px` | Pan terminal offset (Broadcast screen & Central Tower / East side of composite plate). |
-| `reduced_effects_static_x` | `-640.0 px` | Static framing offset when `reduced_effects` is active. |
+| `end_pan_x` | `-320.0 px` | Pan terminal offset (Broadcast screen & Central Tower / East side of composite plate). |
+| `reduced_effects_static_x` | `-320.0 px` | Static framing offset when `reduced_effects` is active. |
 | `line1_delay` | `0.5 s` | Delay after cinematic starts before Elias's line `EL_B10_01` is presented. |
 | `line1_duration` | `2.5 s` | Display duration for `EL_B10_01`. |
 | `line2_pause` | `1.0 s` | Silence / street device activation pause between `EL_B10_01` and `OP_B10_01`. Emits `device_click_played` audio hook. |

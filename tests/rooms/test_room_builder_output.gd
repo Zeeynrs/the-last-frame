@@ -29,8 +29,10 @@ func test_built_room_carries_its_room_shape() -> void:
 	_assert_eq(shape.outline, PackedVector2Array(OUTLINE), "with the builder's (canonical) outline")
 	# Worked by hand from the outline corners: x 64..736, y 64..352, plus the side/top/bottom margins.
 	_assert_eq(shape.bounds_px(), Rect2(48, 0, 704, 368), "bounds")
-	_assert_true(shape.bounds_px().size.x > RoomCamera.view_size().x and shape.bounds_px().size.y > RoomCamera.view_size().y,
-		"larger than the 640 x 360 view on both axes: the camera scrolls")
+	_assert_true(shape.bounds_px().size.x > RoomCamera.LEGACY_SCREEN.size.x and shape.bounds_px().size.y > RoomCamera.LEGACY_SCREEN.size.y,
+		"larger than the old 640 x 360 screen on both axes")
+	_assert_true(shape.bounds_px().size.x < RoomCamera.view_size().x and shape.bounds_px().size.y < RoomCamera.view_size().y,
+		"and smaller than the 960 x 540 view: shown whole, centred")
 	room.free()
 
 
