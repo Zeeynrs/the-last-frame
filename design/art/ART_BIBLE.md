@@ -225,9 +225,12 @@ Added by the design-art agent (Claude Code, Sonnet 5.5). Nothing above is change
 Elias v2 uses palette index `03` (`#2D394F`, *Terrazzo Mid*) as the trouser highlight (trousers are `02`/`03`, boots `16`/`17`). It belongs to `TLF-CH01-32`, so the 32-colour rule is unchanged; Elias now uses 12 of 32 colours.
 
 ### A.3 Pivots of the sizes that §1.3 does not list
+
+**Owner decision, 2026-11-09 (TLF-078): the frontal wall-fixture allowance is withdrawn.** Every wall-mounted fixture, including its text and state variants, must pass three tests at native scale: **(1) follows the wall's 2:1 slope**, by pixel shear or correctly facing isometric art; **(2) sits flush on the actual wall face**, using a documented pivot/anchor; **(3) stays inside the wall silhouette**, with no opaque housing, text or mount shadow above the top or across the foot. Raising a frontal sprite or changing its z does not satisfy these tests.
+
 | Asset class | Canvas | Pivot rule | Used by |
 |---|---|---|---|
-| Small wall fixture (frontal) | `W × H` | `(W/2, H - 4)` (bottom casing mount; matches the 32×24 clock at `(16,20)`) | `prop_call_box_phone` 24×36 → `(12,32)`, `prop_pa_speaker` 16×16 → `(8,12)` |
+| Wall-mounted fixture (face-specific) | sized for the projected face | document the actual wall mount, pivot and offset; shear may change all three (TLF-073 examples) | clocks, selectors, phones, speakers, panels, signs/notices |
 | Free-standing small prop | `W × H` | `(W/2, H - 4)` | `prop_lever_switch` 24×32 → `(12,28)` |
 | Floor plate | `W × H` | footprint centre | `prop_pressure_switch` 32×20 → `(16,12)` |
 | Large hero mechanism / set-piece | any | **projected footprint centre at floor level** (the point the Y-sort and node position refer to) | gear/capacitor/shutter/terminal 64×64 → `(32,56)`, `prop_transit_car_stalled` 128×80 → `(64,52)`, `prop_bridge_platform` 48×32 → `(24,18)` |
@@ -237,6 +240,8 @@ The `(W/2, H - 8)` rule of §1.3 only fits footprints up to about two tiles: a f
 
 ### A.4 Axis-run pieces and `flip_h`
 `wall_railing_iron`, `prop_station_bench`, `tile_cable_conduit_*`, `prop_fire_shutter`, `prop_bridge_platform` are authored along the down-right (`+x`) axis; `prop_security_gate` spans the down-left (`y`) axis. The other axis is a `flip_h` of the sprite (baked light flips with it, the same accepted compromise as §2.3 #4).
+
+Wall fixtures follow **N = down-right (`+x`)**, **W = down-left (`+y`)**; text rows follow that plane too. Use a face-specific variant and its documented mount. A flip alone is not approval: the facing, top-left light and all three A.3 tests must still pass.
 
 ### A.5 Reproducibility
 Every generated asset can be rebuilt byte for byte: `python tools/art/gen/verify_regen.py` (see `tools/art/gen/README.md`). Files authored before TLF-039 (batch 1) have no generator and are reported as *not covered*.

@@ -1,0 +1,25 @@
+{
+  "rows": 103,
+  "placement_families": 67,
+  "needs_rows": 63,
+  "unique_source_state_pngs_needing_replacement": 40,
+  "required_face_state_variants": 42,
+  "unique_fixture_designs": 20,
+  "required_face_design_sets": 21,
+  "existing_approved_replacements": 1,
+  "new_face_state_variants_to_produce": 41,
+  "new_face_design_sets_to_produce": 20,
+  "rows_by_room": {
+    "ch01.arrival_platform": 17,
+    "ch01.arrival_platform@pilot90da970": 15,
+    "ch01.concourse_west": 17,
+    "ch01.maintenance_bay": 15,
+    "ch01.security_crossing": 10,
+    "ch01.signal_control": 12,
+    "ch01.station_atrium": 3,
+    "ch01.street_exit": 3,
+    "ch01.upper_vestibule": 5,
+    "ch01.vestibule_niche": 3,
+    "ch01.waiting_lounge": 3
+  }
+}

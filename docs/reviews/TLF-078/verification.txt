@@ -1,0 +1,17 @@
+TLF-078 focused audit verification (2026-11-09)
+Command: python %TEMP%/tlf078-main-3948ec5/verify_audit.py
+
+PASS baseline: review branch HEAD = 3948ec54d13e43791bff0c2d1612f3a00e134555
+PASS CSV: exact 8 headers; 103 unique state/use rows; enums, nonempty fields, source keys and pinned SHAs
+PASS coverage: all 10 main room scenes + exact Arrival Platform pilot snapshot
+PASS source paths: 67 fixture/use records resolve to exact scenes or runtime-created Badge A
+PASS source PNGs: 66 snapshot/path pairs exist and decode at their pinned SHAs
+PASS dedupe: 63 affected uses; 40 source PNGs / 20 designs -> 42 face-state slots / 21 design-face sets
+PASS support-state split: 6 support PNGs / 7 face slots; active 34 source PNGs / 35 face slots
+PASS ready replacement: TLF-073 N notice exists; 41 new outputs remain (34 active + 7 support)
+PASS plane-fit evidence: all 13 unchanged architecture/state-face pairs have normalized opaque depth <=48px
+NOTE plane-fit is an art extent check, not current-anchor/render certification. W ticket notice and conduit mounts are inferred.
+PASS git diff --check; changed/untracked paths restricted to ART_BIBLE.md and docs/reviews/TLF-078*
+METHOD no engine launch or save access; source/PNG audit only, not current-anchor/render certification
+
+Exit code: 0
