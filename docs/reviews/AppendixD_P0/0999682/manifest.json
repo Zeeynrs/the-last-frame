@@ -1,0 +1,2538 @@
+{
+	"rooms": [
+		{
+			"id": "arrival_platform",
+			"labels": [],
+			"lights": [],
+			"sprites": [
+				{
+					"path": "pocket_watch_pickup/WatchSprite",
+					"position": [
+						240.0,
+						232.0
+					],
+					"rect": [
+						-8.0,
+						-12.0,
+						16.0,
+						16.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_pocket_watch_idle.png",
+					"visible": true,
+					"z": 8
+				},
+				{
+					"path": "YSort_Walls/WallN_0",
+					"position": [
+						336.0,
+						72.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_1",
+					"position": [
+						368.0,
+						88.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_2",
+					"position": [
+						400.0,
+						104.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_3",
+					"position": [
+						432.0,
+						120.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_4",
+					"position": [
+						464.0,
+						136.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_5",
+					"position": [
+						496.0,
+						152.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_6",
+					"position": [
+						528.0,
+						168.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_7",
+					"position": [
+						560.0,
+						184.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_8",
+					"position": [
+						592.0,
+						200.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_9",
+					"position": [
+						624.0,
+						216.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_10",
+					"position": [
+						656.0,
+						232.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_11",
+					"position": [
+						688.0,
+						248.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_12",
+					"position": [
+						720.0,
+						264.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_13",
+					"position": [
+						752.0,
+						280.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_14",
+					"position": [
+						784.0,
+						296.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_0",
+					"position": [
+						304.0,
+						72.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_1",
+					"position": [
+						272.0,
+						88.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_2",
+					"position": [
+						240.0,
+						104.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_3",
+					"position": [
+						208.0,
+						120.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_4",
+					"position": [
+						176.0,
+						136.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_5",
+					"position": [
+						144.0,
+						152.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_6",
+					"position": [
+						112.0,
+						168.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_7",
+					"position": [
+						80.0,
+						184.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_8",
+					"position": [
+						48.0,
+						200.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/Archway_door_exit_east",
+					"position": [
+						720.0,
+						328.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png",
+					"visible": true,
+					"z": 6
+				},
+				{
+					"path": "YSort_Walls/Corner_NW_0_0",
+					"position": [
+						320.0,
+						64.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_corner_nw_outer_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/Corner_N_Turn_30_0",
+					"position": [
+						800.0,
+						304.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_corner_n_turn_outer_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/Corner_Low_30_8",
+					"position": [
+						672.0,
+						368.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_corner_outer_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/Corner_Low_12_8",
+					"position": [
+						384.0,
+						224.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_corner_inner_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/Corner_Low_12_18",
+					"position": [
+						224.0,
+						304.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_corner_outer_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/Corner_W_Turn_0_18",
+					"position": [
+						32.0,
+						208.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_corner_w_turn_outer_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_arm_0",
+					"position": [
+						48.0,
+						216.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_arm_1",
+					"position": [
+						80.0,
+						232.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_arm_2",
+					"position": [
+						112.0,
+						248.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_arm_3",
+					"position": [
+						144.0,
+						264.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_arm_4",
+					"position": [
+						176.0,
+						280.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_arm_5",
+					"position": [
+						208.0,
+						296.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowE_arm_0",
+					"position": [
+						368.0,
+						232.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_e_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowE_arm_1",
+					"position": [
+						336.0,
+						248.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_e_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowE_arm_2",
+					"position": [
+						304.0,
+						264.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_e_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowE_arm_3",
+					"position": [
+						272.0,
+						280.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_e_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowE_arm_4",
+					"position": [
+						240.0,
+						296.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_e_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_pit_0",
+					"position": [
+						400.0,
+						232.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_pit_1",
+					"position": [
+						432.0,
+						248.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_pit_2",
+					"position": [
+						464.0,
+						264.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_pit_3",
+					"position": [
+						496.0,
+						280.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_pit_4",
+					"position": [
+						528.0,
+						296.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_pit_5",
+					"position": [
+						560.0,
+						312.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_pit_6",
+					"position": [
+						592.0,
+						328.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_pit_7",
+					"position": [
+						624.0,
+						344.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowS_pit_8",
+					"position": [
+						656.0,
+						360.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_s_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowE_strip_0",
+					"position": [
+						784.0,
+						312.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_e_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowE_strip_1",
+					"position": [
+						752.0,
+						328.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_e_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/LowE_strip_2",
+					"position": [
+						688.0,
+						360.0
+					],
+					"rect": [
+						-16.0,
+						-24.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_partition_low_e_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "Wall_Fixtures/DepartureBoard",
+					"position": [
+						64.0,
+						148.0
+					],
+					"rect": [
+						0.0,
+						-80.0,
+						160.0,
+						112.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_departure_board_nowhere_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "Wall_Fixtures/Clock_8",
+					"position": [
+						576.0,
+						147.0
+					],
+					"rect": [
+						0.0,
+						0.0,
+						32.0,
+						40.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_digital_clock_2359_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "Wall_Fixtures/ClosedTrackNotice",
+					"position": [
+						488.0,
+						116.0
+					],
+					"rect": [
+						0.0,
+						0.0,
+						80.0,
+						56.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_notice_closed_track_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Actors/PlatformBench",
+					"position": [
+						448.0,
+						168.0
+					],
+					"rect": [
+						-24.0,
+						-26.0,
+						48.0,
+						32.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_station_bench_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Actors/StalledTransitCar",
+					"position": [
+						480.0,
+						336.0
+					],
+					"rect": [
+						-64.0,
+						-52.0,
+						128.0,
+						80.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_transit_car_stalled_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "selector_line/Presenter",
+					"position": [
+						640.0,
+						212.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_selector_line_n_pos0.png",
+					"visible": true,
+					"z": 7
+				},
+				{
+					"path": "selector_platform/Presenter",
+					"position": [
+						672.0,
+						228.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_selector_platform_n_pos0.png",
+					"visible": true,
+					"z": 7
+				},
+				{
+					"path": "selector_car/Presenter",
+					"position": [
+						704.0,
+						244.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_selector_car_n_pos0.png",
+					"visible": true,
+					"z": 7
+				},
+				{
+					"path": "release_lever/Presenter",
+					"position": [
+						752.0,
+						312.0
+					],
+					"rect": [
+						-12.0,
+						-32.0,
+						24.0,
+						36.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_release_lever_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "platform_gate/Presenter",
+					"position": [
+						720.0,
+						328.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_platform_gate_closed.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "doc_last_service/DocSprite",
+					"position": [
+						400.0,
+						120.0
+					],
+					"rect": [
+						-8.0,
+						-12.0,
+						16.0,
+						16.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_document_clipboard_idle.png",
+					"visible": true,
+					"z": 7
+				},
+				{
+					"path": "n01_conductor/Presenter",
+					"position": [
+						496.0,
+						200.0
+					],
+					"rect": [
+						-8.0,
+						-36.0,
+						16.0,
+						40.0
+					],
+					"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n01_conductor_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "n02_student/Presenter",
+					"position": [
+						208.0,
+						168.0
+					],
+					"rect": [
+						-8.0,
+						-36.0,
+						16.0,
+						40.0
+					],
+					"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n02_student_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "n03_old_man/Presenter",
+					"position": [
+						448.0,
+						169.0
+					],
+					"rect": [
+						-8.0,
+						-36.0,
+						16.0,
+						40.0
+					],
+					"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n03_old_man_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "n04_cleaner/Presenter",
+					"position": [
+						608.0,
+						320.0
+					],
+					"rect": [
+						-8.0,
+						-36.0,
+						16.0,
+						40.0
+					],
+					"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n04_cleaner_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "operator_sighting/GroundRing",
+					"position": [
+						304.0,
+						216.0
+					],
+					"rect": [
+						-16.0,
+						-44.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/props/ch01/ch01_fx_operator_sighting_trace_ring_idle.png",
+					"visible": false,
+					"z": 8
+				},
+				{
+					"path": "operator_sighting/FigureSprite",
+					"position": [
+						304.0,
+						216.0
+					],
+					"rect": [
+						-16.0,
+						-44.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/characters/ch01/ch01_char_operator_sighting_ne_sheet.png",
+					"visible": false,
+					"z": 10
+				}
+			]
+		},
+		{
+			"id": "concourse_west",
+			"labels": [],
+			"lights": [],
+			"sprites": [
+				{
+					"path": "ArchwayWest",
+					"position": [
+						240.0,
+						104.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "ArchwayEast",
+					"position": [
+						480.0,
+						224.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "turnstile_gate/Presenter",
+					"position": [
+						272.0,
+						120.0
+					],
+					"rect": [
+						-16.0,
+						-34.0,
+						32.0,
+						40.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_turnstile_gate_collapsed.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "reset_anchor_01/ConsoleSprite",
+					"position": [
+						256.0,
+						144.0
+					],
+					"rect": [
+						-16.0,
+						-30.0,
+						32.0,
+						36.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_reset_console_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "doc_evac_notice/DocSprite",
+					"position": [
+						352.0,
+						176.0
+					],
+					"rect": [
+						-8.0,
+						-12.0,
+						16.0,
+						16.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_document_clipboard_idle.png",
+					"visible": true,
+					"z": 8
+				},
+				{
+					"path": "YSort_Walls/WallN_0",
+					"position": [
+						336.0,
+						72.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_1",
+					"position": [
+						368.0,
+						88.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_2",
+					"position": [
+						400.0,
+						104.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_3",
+					"position": [
+						432.0,
+						120.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_4",
+					"position": [
+						464.0,
+						136.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_5",
+					"position": [
+						496.0,
+						152.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_6",
+					"position": [
+						528.0,
+						168.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_7",
+					"position": [
+						560.0,
+						184.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_0",
+					"position": [
+						304.0,
+						72.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_1",
+					"position": [
+						272.0,
+						88.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_2",
+					"position": [
+						240.0,
+						104.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_3",
+					"position": [
+						208.0,
+						120.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_4",
+					"position": [
+						176.0,
+						136.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_5",
+					"position": [
+						144.0,
+						152.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/PillarSprite",
+					"position": [
+						384.0,
+						184.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_corner_pillar_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "YSort_Walls/Archway_door_entry_west",
+					"position": [
+						240.0,
+						104.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png",
+					"visible": true,
+					"z": 6
+				},
+				{
+					"path": "YSort_Walls/Archway_door_exit_east",
+					"position": [
+						480.0,
+						224.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png",
+					"visible": true,
+					"z": 6
+				},
+				{
+					"path": "Wall_Fixtures/Clock_3",
+					"position": [
+						432.0,
+						82.0
+					],
+					"rect": [
+						-16.0,
+						-20.0,
+						32.0,
+						24.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_digital_clock_2359_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "Wall_Fixtures/CallBoxSprite",
+					"position": [
+						272.0,
+						74.0
+					],
+					"rect": [
+						-12.0,
+						-32.0,
+						24.0,
+						36.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_call_box_phone_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Actors/ConcourseBench",
+					"position": [
+						448.0,
+						184.0
+					],
+					"rect": [
+						-24.0,
+						-26.0,
+						48.0,
+						32.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_station_bench_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "conduit_01/Presenter",
+					"position": [
+						208.0,
+						152.0
+					],
+					"rect": [
+						-24.0,
+						-26.0,
+						48.0,
+						32.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_conduit_fallen.png",
+					"visible": true,
+					"z": 8
+				},
+				{
+					"path": "dial_line/Presenter",
+					"position": [
+						448.0,
+						144.0
+					],
+					"rect": [
+						-16.0,
+						-28.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_flap_dial_line_idle.png",
+					"visible": true,
+					"z": 7
+				},
+				{
+					"path": "dial_platform/Presenter",
+					"position": [
+						480.0,
+						160.0
+					],
+					"rect": [
+						-16.0,
+						-28.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_flap_dial_platform_idle.png",
+					"visible": true,
+					"z": 7
+				},
+				{
+					"path": "dial_time/Presenter",
+					"position": [
+						512.0,
+						176.0
+					],
+					"rect": [
+						-16.0,
+						-28.0,
+						32.0,
+						32.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_flap_dial_time_idle.png",
+					"visible": true,
+					"z": 7
+				},
+				{
+					"path": "ticket_validator/Presenter",
+					"position": [
+						512.0,
+						192.0
+					],
+					"rect": [
+						-12.0,
+						-30.0,
+						24.0,
+						36.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_ticket_validator_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "staff_door/Presenter",
+					"position": [
+						480.0,
+						224.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_staff_door_closed.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "doc_ticket_terms/DocSprite",
+					"position": [
+						320.0,
+						208.0
+					],
+					"rect": [
+						-8.0,
+						-16.0,
+						16.0,
+						20.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_ticket_terms_notice_idle.png",
+					"visible": true,
+					"z": 8
+				},
+				{
+					"path": "n05_courier/Presenter",
+					"position": [
+						240.0,
+						120.0
+					],
+					"rect": [
+						-8.0,
+						-36.0,
+						16.0,
+						40.0
+					],
+					"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n05_courier_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "n06_red_coat/Presenter",
+					"position": [
+						432.0,
+						216.0
+					],
+					"rect": [
+						-8.0,
+						-36.0,
+						16.0,
+						40.0
+					],
+					"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n06_red_coat_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "n07_briefcase/Presenter",
+					"position": [
+						400.0,
+						232.0
+					],
+					"rect": [
+						-8.0,
+						-36.0,
+						16.0,
+						40.0
+					],
+					"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n07_briefcase_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "n08_father/Presenter",
+					"position": [
+						368.0,
+						248.0
+					],
+					"rect": [
+						-8.0,
+						-36.0,
+						16.0,
+						40.0
+					],
+					"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n08_father_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "n09_teen/Presenter",
+					"position": [
+						352.0,
+						224.0
+					],
+					"rect": [
+						-8.0,
+						-36.0,
+						16.0,
+						40.0
+					],
+					"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n09_teen_idle.png",
+					"visible": true,
+					"z": 10
+				}
+			]
+		},
+		{
+			"id": "signal_control",
+			"labels": [],
+			"lights": [],
+			"sprites": [
+				{
+					"path": "surge_capacitor/Presenter",
+					"position": [
+						368.0,
+						168.0
+					],
+					"rect": [
+						-32.0,
+						-56.0,
+						64.0,
+						64.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_surge_capacitor_discharged.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "breaker_a/Presenter",
+					"position": [
+						160.0,
+						144.0
+					],
+					"rect": [
+						-12.0,
+						-28.0,
+						24.0,
+						32.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_lever_switch_off.png",
+					"visible": true,
+					"z": 7
+				},
+				{
+					"path": "breaker_a/Presenter/Badge",
+					"position": [
+						163.0,
+						136.0
+					],
+					"rect": [
+						-2.0,
+						-3.0,
+						5.0,
+						7.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_lever_badge_a_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "breaker_b/Presenter",
+					"position": [
+						544.0,
+						192.0
+					],
+					"rect": [
+						-12.0,
+						-28.0,
+						24.0,
+						32.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_lever_switch_off.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "breaker_b/Presenter/Badge",
+					"position": [
+						547.0,
+						184.0
+					],
+					"rect": [
+						-2.0,
+						-3.0,
+						5.0,
+						7.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_lever_badge_b_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "reset_anchor_01/ConsoleSprite",
+					"position": [
+						352.0,
+						192.0
+					],
+					"rect": [
+						-16.0,
+						-30.0,
+						32.0,
+						36.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_reset_console_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "intercom/IntercomSprite",
+					"position": [
+						528.0,
+						154.0
+					],
+					"rect": [
+						-12.0,
+						-32.0,
+						24.0,
+						36.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_call_box_phone_idle.png",
+					"visible": true,
+					"z": 7
+				},
+				{
+					"path": "YSort_Walls/WallN_0",
+					"position": [
+						336.0,
+						72.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_1",
+					"position": [
+						368.0,
+						88.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_2",
+					"position": [
+						400.0,
+						104.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_3",
+					"position": [
+						432.0,
+						120.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_4",
+					"position": [
+						464.0,
+						136.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_5",
+					"position": [
+						496.0,
+						152.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_6",
+					"position": [
+						528.0,
+						168.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallN_7",
+					"position": [
+						560.0,
+						184.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_0",
+					"position": [
+						304.0,
+						72.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_1",
+					"position": [
+						272.0,
+						88.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_2",
+					"position": [
+						240.0,
+						104.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_3",
+					"position": [
+						208.0,
+						120.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_4",
+					"position": [
+						176.0,
+						136.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/WallW_5",
+					"position": [
+						144.0,
+						152.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Walls/Archway_door_entry_south",
+					"position": [
+						272.0,
+						216.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_archway_frame_n_idle.png",
+					"visible": true,
+					"z": 6
+				},
+				{
+					"path": "YSort_Walls/Archway_door_exit_north",
+					"position": [
+						448.0,
+						128.0
+					],
+					"rect": [
+						-16.0,
+						-56.0,
+						32.0,
+						64.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_archway_frame_n_idle.png",
+					"visible": true,
+					"z": 6
+				},
+				{
+					"path": "Wall_Fixtures/Clock_1",
+					"position": [
+						368.0,
+						50.0
+					],
+					"rect": [
+						-16.0,
+						-20.0,
+						32.0,
+						24.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_digital_clock_2359_idle.png",
+					"visible": true,
+					"z": 0
+				},
+				{
+					"path": "YSort_Props/Railing_0",
+					"position": [
+						208.0,
+						136.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_railing_iron_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "YSort_Props/Railing_1",
+					"position": [
+						240.0,
+						152.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_railing_iron_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "YSort_Props/Railing_2",
+					"position": [
+						272.0,
+						168.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_railing_iron_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "YSort_Props/Railing_3",
+					"position": [
+						304.0,
+						184.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_railing_iron_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "YSort_Props/Railing_4",
+					"position": [
+						336.0,
+						200.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_railing_iron_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "YSort_Props/Railing_5",
+					"position": [
+						368.0,
+						216.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_railing_iron_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "YSort_Props/Railing_6",
+					"position": [
+						336.0,
+						120.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_railing_iron_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "YSort_Props/Railing_7",
+					"position": [
+						368.0,
+						136.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_railing_iron_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "YSort_Props/Railing_8",
+					"position": [
+						400.0,
+						152.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_railing_iron_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "YSort_Props/Railing_9",
+					"position": [
+						432.0,
+						168.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_railing_iron_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "YSort_Props/Railing_10",
+					"position": [
+						464.0,
+						184.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_railing_iron_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "YSort_Props/Railing_11",
+					"position": [
+						496.0,
+						200.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_railing_iron_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "YSort_Props/Railing_12",
+					"position": [
+						512.0,
+						208.0
+					],
+					"rect": [
+						-16.0,
+						-40.0,
+						32.0,
+						48.0
+					],
+					"texture": "res://assets/environments/ch01/ch01_env_wall_railing_iron_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "breaker_c/Presenter",
+					"position": [
+						224.0,
+						112.0
+					],
+					"rect": [
+						-12.0,
+						-32.0,
+						24.0,
+						36.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_breaker_c_browned_out.png",
+					"visible": true,
+					"z": 7
+				},
+				{
+					"path": "n20_engineer/Presenter",
+					"position": [
+						304.0,
+						168.0
+					],
+					"rect": [
+						-8.0,
+						-36.0,
+						16.0,
+						40.0
+					],
+					"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n20_engineer_idle.png",
+					"visible": true,
+					"z": 10
+				},
+				{
+					"path": "doc_bus_chart/DocSprite",
+					"position": [
+						272.0,
+						88.0
+					],
+					"rect": [
+						-8.0,
+						-12.0,
+						16.0,
+						16.0
+					],
+					"texture": "res://assets/props/ch01/ch01_prop_document_clipboard_idle.png",
+					"visible": true,
+					"z": 7
+				}
+			]
+		}
+	],
+	"sha": "09996823d44c1540ba85f477d953157e78436a31",
+	"views": [
+		{
+			"name": "arrival_platform_baseline",
+			"player": [
+				160.0,
+				224.0
+			],
+			"reduced_effects": false,
+			"view_rect": [
+				-64.0,
+				-78.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"name": "arrival_platform_approach",
+			"player": [
+				656.0,
+				264.0
+			],
+			"reduced_effects": false,
+			"view_rect": [
+				-64.0,
+				-78.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"name": "arrival_platform_reduced",
+			"player": [
+				160.0,
+				224.0
+			],
+			"reduced_effects": true,
+			"view_rect": [
+				-64.0,
+				-78.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"name": "concourse_west_baseline",
+			"player": [
+				304.0,
+				136.0
+			],
+			"reduced_effects": false,
+			"view_rect": [
+				-160.0,
+				-90.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"name": "concourse_west_approach",
+			"player": [
+				496.0,
+				200.0
+			],
+			"reduced_effects": false,
+			"view_rect": [
+				-160.0,
+				-90.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"name": "concourse_west_reduced",
+			"player": [
+				304.0,
+				136.0
+			],
+			"reduced_effects": true,
+			"view_rect": [
+				-160.0,
+				-90.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"name": "signal_control_baseline",
+			"player": [
+				352.0,
+				176.0
+			],
+			"reduced_effects": false,
+			"view_rect": [
+				-160.0,
+				-90.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"name": "signal_control_approach",
+			"player": [
+				224.0,
+				136.0
+			],
+			"reduced_effects": false,
+			"view_rect": [
+				-160.0,
+				-90.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"name": "signal_control_reduced",
+			"player": [
+				352.0,
+				176.0
+			],
+			"reduced_effects": true,
+			"view_rect": [
+				-160.0,
+				-90.0,
+				960.0,
+				540.0
+			]
+		}
+	]
+}
