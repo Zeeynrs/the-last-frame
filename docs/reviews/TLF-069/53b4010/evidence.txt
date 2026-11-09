@@ -1,0 +1,32 @@
+Exact delivery: 53b40104b267446d55e66b1dc7e8605ce1eecf3f
+Fresh git archive. Only scratch project configuration renamed and sol_focus.gd harness added.
+Commands: Godot_v4.7.2-stable_win64_console.exe --headless --editor --path <scratch> --import --quit
+          Godot_v4.7.2-stable_win64_console.exe --path <scratch> --windowed --resolution 640x360 --position 100,100 --script res://sol_focus.gd
+Import exit=0; capture exit=0. No engine/script errors in either log.
+Harness: instantiate Chapter01, freeze chapter processing after ready, set idle pose, hide HUD/dialogue, move player and snap camera. Capture each frame after RenderingServer.frame_post_draw. Selector states set directly on the three presenters' texture arrays while processing is frozen; this is an art-state render, not an interaction test.
+Views (player world position): spawn (160,224); watch (240,232); pit_edge (512,288); gate (720,328); clock (592,240); selectors_state_0/1/2 (656,264); departure_board (144,168); closed_track (528,200).
+Six representative native engine frames committed; all ten retained in local scratch.
+
+Raw windowed log:
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+SOL_FOCUSED_WINDOWED display=Windows user_dir=C:/Users/adity/AppData/Roaming/TLF Audit 069 53b4010
+SOL_FOCUSED_CAPTURE_COMPLETE views=10
+
+Independent committed PNG alpha vs instantiated scene wall masks:
+selector_line/Presenter ch01_prop_selector_line_n_pos0.png face=N top_left=(624,172) opaque=776 outside_wall=0 exact_art=7cf8714
+selector_line/Presenter ch01_prop_selector_line_n_pos1.png face=N top_left=(624,172) opaque=776 outside_wall=0 exact_art=7cf8714
+selector_line/Presenter ch01_prop_selector_line_n_pos2.png face=N top_left=(624,172) opaque=776 outside_wall=0 exact_art=7cf8714
+selector_platform/Presenter ch01_prop_selector_platform_n_pos0.png face=N top_left=(656,188) opaque=776 outside_wall=0 exact_art=7cf8714
+selector_platform/Presenter ch01_prop_selector_platform_n_pos1.png face=N top_left=(656,188) opaque=776 outside_wall=0 exact_art=7cf8714
+selector_platform/Presenter ch01_prop_selector_platform_n_pos2.png face=N top_left=(656,188) opaque=776 outside_wall=0 exact_art=7cf8714
+selector_car/Presenter ch01_prop_selector_car_n_pos0.png face=N top_left=(688,204) opaque=776 outside_wall=0 exact_art=7cf8714
+selector_car/Presenter ch01_prop_selector_car_n_pos1.png face=N top_left=(688,204) opaque=776 outside_wall=0 exact_art=7cf8714
+selector_car/Presenter ch01_prop_selector_car_n_pos2.png face=N top_left=(688,204) opaque=776 outside_wall=0 exact_art=7cf8714
+Wall_Fixtures/Clock_8 ch01_prop_digital_clock_2359_n_idle.png face=N top_left=(576,147) opaque=602 outside_wall=0 exact_art=7cf8714
+Wall_Fixtures/DepartureBoard ch01_prop_departure_board_nowhere_w_idle.png face=W top_left=(64,68) opaque=5112 outside_wall=0 exact_art=6ae10f1
+Wall_Fixtures/ClosedTrackNotice ch01_prop_notice_closed_track_n_idle.png face=N top_left=(488,116) opaque=1274 outside_wall=0 exact_art=6ae10f1
+PASS sole visible digital-clock drawable: ['Wall_Fixtures/Clock_8']
+PASS scratch arrival scene equals exact delivery blob
+PASS real user data inventory/hashes/sizes/mtime unchanged (139 files)

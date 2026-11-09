@@ -1,0 +1,28 @@
+Exact delivery: 76e63bf66682e9d24c21baaedf66526c023765a8
+Fresh git archive. Commands and exit codes:
+python tools/art/check_assets.py => 0
+python tools/art/gen/verify_regen.py => 0
+python tools/art/gen/verify_pxo.py --only ch01_char_elias_side_sheet --log sol_verify_pxo.log => 0
+
+RESULT: ALL PASS (274 file(s))
+RESULT: ALL REPRODUCIBLE
+TOTAL pxo: 1, all identical: True
+Known nonfatal custom_samplers diagnostic count: 8. Raw output preserved in verify_pxo.txt.
+Other 9 PXO-export approvals reused from 68b4f5b only after exact PNG/PXO blob equality.
+No game/asset files edited in the review worktree.
+
+Independent source/image checks:
+PASS all 27 delivery-file archive bytes match 76e63bf.
+PASS only six files differ from 68b4f5b; other 21 delivery-file blobs identical.
+PASS 16 idle/walk cells unchanged; only 8,9,10,19,20,21 changed (zero-based).
+PASS all 11 W cells exact horizontal E mirrors.
+PASS PXO data.json identical; 3 named layers, 6 animation tags and timing preserved.
+Changed PXO entries: ['image_data/frames/9/layer_2', 'image_data/frames/9/layer_3', 'image_data/final_images/9', 'image_data/frames/10/layer_2', 'image_data/frames/10/layer_3', 'image_data/final_images/10', 'image_data/frames/11/layer_2', 'image_data/frames/11/layer_3', 'image_data/final_images/11', 'image_data/frames/20/layer_2', 'image_data/frames/20/layer_3', 'image_data/final_images/20', 'image_data/frames/21/layer_2', 'image_data/frames/21/layer_3', 'image_data/final_images/21', 'image_data/frames/22/layer_2', 'image_data/frames/22/layer_3', 'image_data/final_images/22']
+
+Changed delivery files:
+assets/characters/ch01/ch01_char_elias_side_sheet.png
+assets/source/ch01/ch01_char_elias_side_sheet.pxo
+design/art/ASSET_METADATA.md
+design/art/mockups/ch01_tlf075_side_view_beat06_mockup.png
+design/art/mockups/ch01_tlf075_side_view_greyscale_proof.png
+tools/art/gen/tlf075_side_view.py
