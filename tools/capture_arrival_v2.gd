@@ -1,11 +1,12 @@
 extends SceneTree
 
-## TLF-069: Re-capture 4 windowed Forward+ screenshots for Arrival Platform v2, plus close-up of selectors.
+## TLF-069: Re-capture 4 windowed Forward+ screenshots for Arrival Platform v2, plus close-ups of selectors and clock.
 ## 1. doc_arrival_v2_spawn.png     at Vector2(160, 224)
 ## 2. doc_arrival_v2_watch.png     at Vector2(240, 232)
 ## 3. doc_arrival_v2_pit_edge.png  at Vector2(512, 288)
 ## 4. doc_arrival_v2_gate.png      at Vector2(720, 328)
 ## 5. doc_arrival_v2_selectors.png at Vector2(656, 264)
+## 6. doc_arrival_v2_clock.png     at Vector2(592, 200)
 
 const SPOTS: Array = [
 	["doc_arrival_v2_spawn.png", Vector2(160, 224)],
@@ -13,14 +14,15 @@ const SPOTS: Array = [
 	["doc_arrival_v2_pit_edge.png", Vector2(512, 288)],
 	["doc_arrival_v2_gate.png", Vector2(720, 328)],
 	["doc_arrival_v2_selectors.png", Vector2(656, 264)],
+	["doc_arrival_v2_clock.png", Vector2(592, 200)],
 ]
 
 
 func _initialize() -> void:
-	# Safety timeout: quit after 15 seconds if anything hangs
-	var timer := create_timer(15.0)
+	# Safety timeout: quit after 20 seconds if anything hangs
+	var timer := create_timer(20.0)
 	timer.timeout.connect(func():
-		printerr("TIMEOUT: capture_arrival_v2 exceeded 15 seconds")
+		printerr("TIMEOUT: capture_arrival_v2 exceeded 20 seconds")
 		quit(1)
 	)
 	call_deferred("_run")
@@ -77,5 +79,5 @@ func _run() -> void:
 		assert(err == OK, "Failed to save " + out_path)
 		print("CAPTURED: %s at %s -> %s" % [filename, str(spot), out_path])
 
-	print("ALL 5 SCREENSHOTS CAPTURED SUCCESSFULLY")
+	print("ALL 6 SCREENSHOTS CAPTURED SUCCESSFULLY")
 	quit(0)

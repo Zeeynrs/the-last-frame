@@ -6,7 +6,7 @@
 **Visual / Facing Review:** Sol
 **Lead:** Layout, validation, merge
 **Branch:** `adityadaffa522/tlf-069-arrival-platform-v2`
-**Status:** COMPLETE / VALIDATION GREEN (479 passed, 0 failed, 0 leaks)
+**Status:** COMPLETE / Lead validated b675a90: see Lead report
 
 ---
 
@@ -14,7 +14,7 @@
 
 This handoff delivers the complete rebuild of `scenes/chapters/ch01/rooms/arrival_platform.tscn` from the legacy 14×10 rectangular layout to the approved L-shaped, larger room layout (`[[0,0],[30,0],[30,8],[12,8],[12,18],[0,18]]`) with `RoomCamera` following and bounding per ADR-023 and `design/ch01/rooms_v2/arrival_platform.md`.
 
-All puzzle logic for CH1-SO-01 remains completely intact. The 4 windowed Forward+ screenshots have been captured from the running game, all Chapter 1 integration tests pass, and full clean validation passes on an isolated scratch copy with 0 errors, 0 failures, and 0 leaks.
+All puzzle logic for CH1-SO-01 remains completely intact. The 6 windowed Forward+ screenshots have been captured from the running game, all Chapter 1 integration tests pass, and validation: Lead validated b675a90: see Lead report.
 
 ### Key Deliverables:
 1. **L-Shaped Room Geometry & RoomShape (ADR-023):**
@@ -34,12 +34,12 @@ All puzzle logic for CH1-SO-01 remains completely intact. The 4 windowed Forward
    - `n01_conductor`: `Vector2(496, 200)` (tile 14, 3); stand spot `Vector2(480, 208)` (tile 14, 4).
    - `n04_cleaner`: `Vector2(608, 320)` (tile 25, 7) per Lead Decision 1; stand spot `Vector2(624, 312)` (tile 25, 6) gives 2.20 tiles clearance from walking line.
    - `doc_last_service`: `Vector2(400, 120)` (tile 6, 1); stand spot `Vector2(384, 128)` (tile 6, 2).
-   - Clocks: duplicate `Clock_2` at `Vector2(400, 66)` (tile 5, 0) removed near spawn per Lead instruction (the departure board carries 23:59 there); `Clock_8` at `Vector2(592, 162)` (tile 17, 0) preserved on N wall module 8; `digital_clock_2359` Area2D trigger placed on reachable floor spot at `Vector2(592, 200)` (tile 17, 0).
+   - Clocks: duplicate `Clock_2` at `Vector2(400, 66)` (tile 5, 0) removed near spawn per Lead instruction (the departure board carries 23:59 there); `Clock_8` at `Vector2(576, 147)` (tile 17, 0) preserved on N wall module 8 using the TLF-077 sheared N-face digital clock asset (`ch01_prop_digital_clock_2359_n_idle.png`, `offset = Vector2(0, 0)`, `centered = false`); `digital_clock_2359` Area2D trigger placed on reachable floor spot at `Vector2(592, 200)` (tile 17, 0).
    - `DepartureBoard`: TLF-073 sheared W-face plaque `ch01_prop_departure_board_nowhere_w_idle` mounted on `Wall_Fixtures` at `Vector2(64, 148)`, `offset = Vector2(0, -80)`, `centered = false`, `z_index = 7` (Sol visual review P1 resolved with 0/0/0 px silhouette fit).
    - `ClosedTrackNotice`: TLF-073 sheared N-face plaque `ch01_prop_notice_closed_track_n_idle` mounted on `Wall_Fixtures` at `Vector2(488, 116)`, `offset = Vector2(0, 0)`, `centered = false`, `z_index = 7` (Sol visual review P1 resolved with 0/0/0 px silhouette fit).
-   - `selector_line`: Area2D at `Vector2(640, 240)` (tile 21, 1), `Presenter` visual mounted on wall face at `Vector2(0, -22)` with whole sprite lying on wall face (0 px above top silhouette) (Sol visual review P1).
-   - `selector_platform`: Area2D at `Vector2(672, 256)` (tile 23, 1), `Presenter` visual mounted on wall face at `Vector2(0, -22)` with whole sprite lying on wall face (0 px above top silhouette) (Sol visual review P1).
-   - `selector_car`: Area2D at `Vector2(704, 272)` (tile 25, 1), `Presenter` visual mounted on wall face at `Vector2(0, -22)` with whole sprite lying on wall face (0 px above top silhouette) (Sol visual review P1).
+   - `selector_line`: Area2D at `Vector2(640, 240)` (tile 21, 1), `Presenter` visual mounted on wall face at `Vector2(0, -28)` with TLF-077 sheared 2:1 N-face selector art (`ch01_prop_selector_line_n_pos*.png`) lying entirely within the wall face silhouette (Sol visual review P1).
+   - `selector_platform`: Area2D at `Vector2(672, 256)` (tile 23, 1), `Presenter` visual mounted on wall face at `Vector2(0, -28)` with TLF-077 sheared 2:1 N-face selector art (`ch01_prop_selector_platform_n_pos*.png`) lying entirely within the wall face silhouette (Sol visual review P1).
+   - `selector_car`: Area2D at `Vector2(704, 272)` (tile 25, 1), `Presenter` visual mounted on wall face at `Vector2(0, -28)` with TLF-077 sheared 2:1 N-face selector art (`ch01_prop_selector_car_n_pos*.png`) lying entirely within the wall face silhouette (Sol visual review P1).
    - `release_lever`: `Vector2(752, 312)` (tile 29, 2), `Presenter` at `z_index = 10` with TLF-067 contact-depth rule (`UPRIGHT_ASSETS` in `scripts/rooms/depth_sort.gd`) (Sol visual review P2); stand spot `Vector2(736, 304)` (tile 28, 2) on West side per Lead Decision 2.
    - `door_exit_east`, archway, and `platform_gate`: `Vector2(720, 328)` (tile 29, 4), keeping 24 × 24 Blocker at offset `(0, 0)`.
    - `StalledTransitCar`: `Vector2(480, 336)` (tile 22, 12).
@@ -48,7 +48,7 @@ All puzzle logic for CH1-SO-01 remains completely intact. The 4 windowed Forward
    - Re-baselined `test_collision_freeze_all_10_rooms` and updated `test_room1_arrival_platform_kit_complete` in `tests/chapters/ch01/test_ch01_art_integration.gd`.
    - Updated `design/ch01/ROOM_GRAPH.md` and regenerated `data/chapters/ch01/ch01_graph.tres` via `tools/content/gen_ch01_graph.py` (30×18, door E (29,4), anchor (5,15)); removed arrival special cases from `tests/chapters/ch01/test_ch01_playthrough.gd`.
    - Python builder test suite (`tools/content/test_build_room_from_shape.py`): 22 passed, 0 failed.
-   - Full Godot validation: 479 passed, 0 failed, 0 leaks.
+   - Full Godot validation: Lead validated b675a90: see Lead report.
 
 ---
 
@@ -267,104 +267,22 @@ Captured using Godot 4.7.2 Forward+ windowed renderer (D3D12, 640×360 viewport)
    ![Pit Edge](doc_arrival_v2_pit_edge.png)
 
 4. **Platform Gate & East Door (`doc_arrival_v2_gate.png`):**
-   - Elias at `Vector2(720, 328)` showing `platform_gate`, `door_exit_east`, `release_lever` at `(752, 312)` with West stand spot `(736, 304)`, switch consoles with visuals mounted at `Vector2(0, -22)` flush on wall face with whole sprite inside silhouette (0 px above top edge), and `n04_cleaner` at `(608, 320)`.
+   - Elias at `Vector2(720, 328)` showing `platform_gate`, `door_exit_east`, `release_lever` at `(752, 312)` with West stand spot `(736, 304)`, switch consoles with TLF-077 sheared N visuals mounted at `Vector2(0, -28)` flush on wall face with whole sprite inside silhouette (0 px above top edge), and `n04_cleaner` at `(608, 320)`.
    ![Gate](doc_arrival_v2_gate.png)
+
+5. **North Wall Selector Row Close-Up (`doc_arrival_v2_selectors.png`):**
+   - Elias at `Vector2(656, 264)` showing the 3 TLF-077 sheared 2:1 wall-mounted selector switch consoles (`selector_line`, `selector_platform`, `selector_car`) mounted at `Vector2(0, -28)` flush on North wall modules 10, 11, and 12, fitting completely within the wall silhouette.
+   ![Selectors](doc_arrival_v2_selectors.png)
+
+6. **North Wall Clock at (17, 0) Close-Up (`doc_arrival_v2_clock.png`):**
+   - Elias at `Vector2(592, 200)` standing at the reachable `digital_clock_2359` Area2D trigger on tile (17, 0), directly facing `Clock_8` mounted at `Vector2(576, 147)` on North wall module 8 using the TLF-077 sheared N-face digital clock asset (`ch01_prop_digital_clock_2359_n_idle.png`).
+   ![Clock](doc_arrival_v2_clock.png)
 
 ---
 
 ## 6. Raw Validation Output
 
-Validation was run on an isolated clean scratch copy at `C:\temp\tlf_val_069` with `config/name="The Last Frame Val069"` (no BOM) using `tools/validate.ps1`:
-
-```text
-=== Validating The Last Frame Project ===
-Using Godot executable: D:\Godot\Godot_v4.7.2-stable_win64_console.exe
-Project root: C:\temp\tlf_val_069
-
-[1/3] Running headless import check...
-Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
-
-[   0% ] first_scan_filesystem | Started Project initialization (5 steps)
-[   0% ] first_scan_filesystem | Scanning file structure...
-[  16% ] first_scan_filesystem | Loading global class names...
-[  33% ] first_scan_filesystem | Verifying GDExtensions...
-[  50% ] first_scan_filesystem | Creating autoload scripts...
-[  66% ] first_scan_filesystem | Initializing plugins...
-[  83% ] first_scan_filesystem | Starting file scan...
-[ DONE ] first_scan_filesystem
-
-[   0% ] loading_editor_layout | Started Loading editor (5 steps)
-[   0% ] loading_editor_layout | Loading editor layout...
-[  16% ] loading_editor_layout | Loading docks...
-[ DONE ] loading_editor_layout
-
-Import check passed with zero errors.
-
-[2/3] Checking that every GDScript parses...
-Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
-
-Script check: 168 scripts, 0 failed.
-Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/Godot/app_userdata/The Last Frame Val069/headless/settings.cfg)
-SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/Godot/app_userdata/The Last Frame Val069/headless/saves)
-Leak check: clean (script check)
-
-[3/3] Running headless automated test suite...
-Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
-
-Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/Godot/app_userdata/The Last Frame Val069/headless/settings.cfg)
-SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/Godot/app_userdata/The Last Frame Val069/headless/saves)
---- Running Test Suite ---
-...
-Test file: res://tests/chapters/ch01/test_ch01_arrival_platform_v2.gd
-  PASS: test_camera_never_outside_room_bounds
-  PASS: test_digital_clock_2359_dialogue_line_plays
-  PASS: test_door_sweep_gate_closed_never_enters_door
-  PASS: test_every_stand_spot_reachable_within_2_6_px
-  PASS: test_save_load_at_checkpoint_restores_elias_and_camera_together
-Test file: res://tests/chapters/ch01/test_ch01_art_integration.gd
-  PASS: test_collision_freeze_all_10_rooms
-  PASS: test_intercom_reach_walkable
-  PASS: test_no_greybox_nodes_remain_across_all_rooms
-  PASS: test_puzzle_prop_presenter_state_mappings
-  PASS: test_real_save_unmodified
-  PASS: test_room1_arrival_platform_kit_complete
-Test file: res://tests/chapters/ch01/test_ch01_playthrough.gd
-  PASS: test_chapter01_scene_initialization_and_graph_validation
-  PASS: test_doorways_match_chapter_graph_def
-  PASS: test_every_door_has_spawn_outside_presenter_shape
-  PASS: test_playthrough_all_beats_in_sequence
-  PASS: test_playthrough_beat01_to_beat02_safe_anchor
-  PASS: test_playthrough_beat02_to_beat03_safe_anchor
-  PASS: test_playthrough_beat03_to_beat04_safe_anchor
-  PASS: test_playthrough_beat04_to_beat05_safe_anchor
-  PASS: test_playthrough_beat05_to_beat06_safe_anchor
-  PASS: test_playthrough_beat06_to_beat07_safe_anchor
-  PASS: test_playthrough_beat07_to_beat08_safe_anchor
-  PASS: test_playthrough_beat08_to_beat09_safe_anchor
-  PASS: test_playthrough_beat09_to_beat10_safe_anchor
-  PASS: test_playthrough_nonexistent_node_safeguard
-  PASS: test_playthrough_resilience_to_missing_session
-  PASS: test_puzzle_completion_zones_match_graph_def
-  PASS: test_room_initialization_order_and_id_assignment
-  PASS: test_room_router_tracks_visited_rooms
-  PASS: test_room_transitions_update_player_position
-Test file: res://tests/chapters/ch01/test_ch01_real_playthrough.gd
-  PASS: test_ch01_real_input_playthrough
-Test file: res://tests/chapters/ch01/test_ch01_step1_negatives.gd
-  PASS: test_so01_closed_gate_cannot_be_penetrated_from_west
-  PASS: test_so01_gate_opens_only_after_lever_toggle
-  PASS: test_so01_lockout_holds_until_puzzle_complete
-  ...
----------------------------
-TESTS: 479 passed, 0 failed
-Leak check: clean (test suite)
-
-=== All validation checks passed successfully! ===
-```
-
-- Total Tests Run: **479 passed, 0 failed**
-- SCRIPT ERROR: **0**
-- Leaks: **0**
+Lead validated b675a90: see Lead report
 
 ---
 
@@ -409,9 +327,9 @@ OK
 
 | Priority | Finding | Resolution |
 |---|---|---|
-| **P1** | **Three selectors floor-standing bodies at fixed z=7:** 474 px below N wall foot, player draws in front when standing behind; top-right corner rising up to 6 px above wall top edge at `dy = -28`. | Mounted `Presenter` visual on the actual wall face with `position = Vector2(0, -22)` so the whole sprite lies on the wall face (0 px above top silhouette). Preserved parent Area2D positions (`(640, 240)`, `(672, 256)`, `(704, 272)`) and canonical stand spots (`(624, 248)`, `(656, 264)`, `(688, 280)`). Note: sprite is frontal art; Argon redoes in TLF-077 sheared wall variants as a small follow-up. |
+| **P1** | **Three selectors floor-standing bodies at fixed z=7:** 474 px below N wall foot, player draws in front when standing behind; top-right corner rising up to 6 px above wall top edge at `dy = -28`. | Integrated TLF-077 sheared 2:1 N-face selector art (`ch01_prop_selector_*_n_pos*.png`) with `Presenter` visual mounted on wall face at `position = Vector2(0, -28)` so the whole sprite lies within the wall face silhouette (0 px above top silhouette). Preserved parent Area2D positions (`(640, 240)`, `(672, 256)`, `(704, 272)`) and canonical stand spots (`(624, 248)`, `(656, 264)`, `(688, 280)`). |
 | **P1** | **Departure Board 160×32 cannot fit sloped wall:** 80 px slope drop across 160 px on a 48 px tall wall. | Integrated Argon's TLF-073 sheared W-face plaque (`ch01_prop_departure_board_nowhere_w_idle`, 160×112 px) at `Vector2(64, 148)`, `offset = Vector2(0, -80)`, `centered = false`, `z_index = 7`. Fits 100% inside W wall silhouette (0 px above wall top / 0 px below foot / 0 px outside silhouette; 4,892 / 4,892 opaque pixels contained). |
 | **P1** | **CLOSED TRACK notice 80×16 wall fit:** 433 px above wall silhouette at flat mounting, 34 px above at `(528, 146)`. | Integrated Argon's TLF-073 sheared N-face plaque (`ch01_prop_notice_closed_track_n_idle`, 80×56 px) at `Vector2(488, 116)`, `offset = Vector2(0, 0)`, `centered = false`, `z_index = 7`. Fits 100% inside N wall silhouette (0 px above wall top / 0 px below foot / 0 px outside silhouette; 1,152 / 1,152 opaque pixels contained). |
 | **P2** | **Release lever floor-standing control at z=7:** Elias draws in front when behind. | Set `release_lever/Presenter` to `z_index = 10` and added `"ch01_prop_release_lever_"` to `UPRIGHT_ASSETS` in `scripts/rooms/depth_sort.gd` and `tests/chapters/ch01/test_ch01_sort_order.gd` (TLF-067 contact-depth rule). Y-sort at Y=312 puts Elias at Y=304 behind the lever. |
 | **P2** | **Old man seated pose hidden behind bench backrest:** Actor at (448, 160) depth-sorted behind bench at (448, 168). | Repositioned `n03_old_man` to `Vector2(448, 169)` (tile 10.56, 2.56; off-grid by 1 px, accepted by Lead). Sort Y=169 > 168 renders commuter statue in front of bench backrest, registering pelvis onto visible seat plank (world Y=158) with paper bag gesture reading clearly. Stand spot at `(432, 168)` (tile 10, 3) gives clearance $\sqrt{8^2 + 1^2} - 6 \approx 2.1\text{ px}$ to 12×8 footprint from horizontal capsule (r=6, length=16). |
-| **P2** | **Duplicate clocks near spawn:** Clocks at (5, 0) and (17, 0) appeared redundant. | Removed duplicate `Clock_2` at `(400, 66)` near spawn per Lead instruction (the departure board carries 23:59 there); preserved `Clock_8` at `(592, 162)` (tile 17, 0) with reachable `digital_clock_2359` Area2D trigger on floor at `Vector2(592, 200)` (tile 17, 0). |
+| **P2** | **Duplicate clocks near spawn:** Clocks at (5, 0) and (17, 0) appeared redundant. | Removed duplicate `Clock_2` at `(400, 66)` near spawn per Lead instruction (the departure board carries 23:59 there); preserved `Clock_8` mounted at `Vector2(576, 147)` (tile 17, 0) on N wall module 8 using TLF-077 sheared N-face digital clock art (`ch01_prop_digital_clock_2359_n_idle.png`) with `offset = Vector2(0, 0)` and `centered = false`, with reachable `digital_clock_2359` Area2D trigger on floor at `Vector2(592, 200)` (tile 17, 0). |
