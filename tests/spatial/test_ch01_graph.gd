@@ -73,6 +73,9 @@ func test_every_door_sits_on_its_boundary_wall() -> void:
 
 func test_every_room_fits_the_fixed_camera() -> void:
 	for room in _def().rooms:
+		if room["room_id"] == ARRIVAL:
+			# ADR-023: arrival_platform v2 is 30x18 and uses RoomCamera follow framing.
+			continue
 		var w: int = room["width"]
 		var h: int = room["height"]
 		var left := ChapterGraphDef.tile_to_px(0, h)        # west corner of the floor diamond

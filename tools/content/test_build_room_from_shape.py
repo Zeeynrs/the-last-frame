@@ -7,6 +7,7 @@ Godot side: tests/rooms/test_room_builder_output.gd loads the scene this file ke
 """
 import contextlib
 import io
+import json
 import os
 import re
 import sys
@@ -77,7 +78,16 @@ class TenRoomsRoundTrip(unittest.TestCase):
     def test_floor_and_walls_equal_the_hand_built_rooms(self):
         for name in ROOMS:
             with self.subTest(room=name):
-                old, (new, _) = build_room(name)
+                if name == "arrival_platform":
+                    shape_path = os.path.join(REPO, "design", "ch01", "rooms_v2", "arrival_platform.json")
+                    with open(shape_path, encoding="utf-8") as fh:
+                        spec = json.load(fh)
+                    poly = B.canonical(spec["outline"])
+                    path = os.path.join(ROOMS_DIR, "arrival_platform.tscn")
+                    old = read(path)
+                    new, _ = B.build(old, poly, outset=0.25, strip=B.parse_strip("0,S,E"), room_path=path)
+                else:
+                    old, (new, _) = build_room(name)
                 self.assertEqual(floor_data(new), floor_data(old), "floor tile_map_data (cells, sources, order)")
                 self.assertEqual(re.findall(WALL_RE, new), re.findall(WALL_RE, old), "WallN_* / WallW_* nodes")
 
@@ -202,9 +212,9 @@ class EdgeStrip(unittest.TestCase):
 
     def test_one_face_only(self):
         """Only the named faces are painted and cleared; the other face's strip is left as it is."""
-        poly = B.canonical([[0, 0], [14, 0], [14, 6], [0, 6]])   # arrival cut to rows 0-5
-        old = read(os.path.join(ROOMS_DIR, "arrival_platform.tscn"))
-        new, _ = B.build(old, poly, strip=(2, ("S",)), doors=[("E", (13, 5))], room_path="arrival_platform.tscn")
+        poly = B.canonical([[0, 0], [14, 0], [14, 6], [0, 6]])   # 14x10 template cut to rows 0-5
+        old = read(os.path.join(FIXTURES, "builder_template.tscn"))
+        new, _ = B.build(old, poly, strip=(2, ("S",)), doors=[("E", (13, 5))], room_path="builder_template.tscn")
         cells = B.decode_tiles(floor_data(new))
         self.assertEqual({c for c, v in cells.items() if v[0] == 2},
                          {(x, 5) for x in range(13)} | {(13, y) for y in range(5)},

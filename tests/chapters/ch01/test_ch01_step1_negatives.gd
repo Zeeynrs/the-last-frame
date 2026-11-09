@@ -33,10 +33,10 @@ func test_so01_closed_gate_holds_300_ticks() -> void:
 		return
 	var gate := resolve(&"ch01.arrival_platform.platform_gate") as PoweredDoor
 	_assert_true(gate.passage_blocked, "gate closed")
-	for start in [Vector2(416, 200), Vector2(440, 180), Vector2(412, 222)]:
+	for start in [Vector2(688, 320), Vector2(712, 300), Vector2(684, 342)]:
 		# Approach spots near the blocker: a slide along it is fine, the push below is the check.
 		await walk_to(player, "arrival -> approach %s" % start, start, Callable(), 300, true)
-		await push_for([Vector2(448, 208), Vector2(460, 214)], 100, in_room(R2))
+		await push_for([Vector2(720, 328), Vector2(732, 334)], 100, in_room(R2))
 		if not _assert_eq(router.current_room_id, R1, "the closed gate holds from %s" % start):
 			break
 	_assert_false(is_solved(&"CH1-SO-01"), "SO-01 still UNSOLVED")
@@ -53,10 +53,10 @@ func test_so01_lockout_holds_until_it_ends() -> void:
 	var lever := resolve(&"ch01.arrival_platform.release_lever")
 	var lock := resolve(&"ch01.arrival_platform.release_lock") as CodeLock
 	var clock := session.sim_clock
-	if not await walk_to(player, "arrival -> north of the gate", Vector2(440, 180)):
+	if not await walk_to(player, "arrival -> north of the gate", Vector2(712, 300)):
 		stop()
 		return
-	if not await use_at(Vector2(480, 192), lever, "arrival -> release_lever (wrong code)"):
+	if not await use_at(Vector2(736, 304), lever, "arrival -> release_lever (wrong code)"):
 		stop()
 		return
 	await physics_frames(1)
@@ -66,14 +66,14 @@ func test_so01_lockout_holds_until_it_ends() -> void:
 		return
 	var ends: int = lock.lockout_until_tick
 	_assert_eq(ends - int(wrong[3]), 360, "lock-out of 360 ticks from the wrong pull")
-	for row in [[&"selector_line", Vector2(400, 136), 1], [&"selector_platform", Vector2(432, 152), 2],
-			[&"selector_car", Vector2(464, 168), 1]]:
+	for row in [[&"selector_line", Vector2(624, 248), 1], [&"selector_platform", Vector2(656, 264), 2],
+			[&"selector_car", Vector2(688, 280), 1]]:
 		var selector := resolve(StringName("ch01.arrival_platform." + String(row[0]))) as SelectorSwitch
 		for i in row[2]:
 			if not await use_at(row[1], selector, "arrival -> %s" % row[0]):
 				stop()
 				return
-	if not await walk_to(player, "arrival -> release_lever", Vector2(480, 192), targets(lever)):
+	if not await walk_to(player, "arrival -> release_lever", Vector2(736, 304), targets(lever)):
 		stop()
 		return
 	_assert_true(clock.tick < ends - 4, "back at the lever before the lock-out ends (tick %d, ends %d)" % [clock.tick, ends])

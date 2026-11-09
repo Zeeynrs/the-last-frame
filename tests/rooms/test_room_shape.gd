@@ -26,7 +26,7 @@ func _faces_of(shape: RoomShape, kind: StringName) -> Array:
 	return shape.wall_segments().filter(func(s: Dictionary) -> bool: return s["kind"] == kind)
 
 
-## 14 x 10 (the Arrival Platform): ADR-003 / ROOM_GRAPH §1 math, and the same tiles, tile positions
+## 14 x 10 (Maintenance Bay): ADR-003 / ROOM_GRAPH §1 math, and the same tiles, tile positions
 ## and wall-module positions as the room scene in the project.
 func test_rectangle_matches_adr003_math() -> void:
 	var shape := RoomShape.rectangle(14, 10)
@@ -39,11 +39,11 @@ func test_rectangle_matches_adr003_math() -> void:
 	_assert_eq(bounds.position, Vector2(160 - RoomShape.MARGIN_SIDE, 64 - RoomShape.MARGIN_TOP), "bounds origin")
 	_assert_true(Rect2(0, 0, 640, 360).encloses(bounds), "a 14 x 10 room fits one screen")
 
-	var room: Node = load("res://scenes/chapters/ch01/rooms/arrival_platform.tscn").instantiate()
+	var room: Node = load("res://scenes/chapters/ch01/rooms/maintenance_bay.tscn").instantiate()
 	var floor_layer := room.get_node("TileMapLayer_Floor") as TileMapLayer
 	var used: Array[Vector2i] = floor_layer.get_used_cells()
 	used.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return a.y < b.y or (a.y == b.y and a.x < b.x))
-	_assert_eq(used, shape.floor_cells(), "same 140 tiles as the arrival platform's floor layer")
+	_assert_eq(used, shape.floor_cells(), "same 140 tiles as the maintenance bay's floor layer")
 	for t in [Vector2i(0, 0), Vector2i(13, 0), Vector2i(0, 9), Vector2i(13, 9), Vector2i(6, 4)]:
 		_assert_eq(floor_layer.position + floor_layer.map_to_local(t), RoomShape.tile_to_px(Vector2(t) + Vector2(0.5, 0.5)),
 			"tile %s centre: TileMapLayer == tile_to_px(t + 0.5)" % t)
@@ -58,6 +58,29 @@ func test_rectangle_matches_adr003_math() -> void:
 			"WallW_%d sits on the middle of its two-tile edge" % j)
 	room.free()
 	_assert_eq(shape.hidden_floor_cells(), [], "a rectangle hides no floor behind its walls")
+
+
+## Arrival Platform v2: 30x18 L-shape room matches metadata/room_shape, 360 floor tiles,
+## 15 N and 9 W modules, zero hidden floor cells.
+func test_arrival_platform_v2_shape_matches_scene() -> void:
+	var room: Node = load("res://scenes/chapters/ch01/rooms/arrival_platform.tscn").instantiate()
+	var shape: RoomShape = room.get_meta("room_shape", null)
+	_assert_true(shape != null, "arrival_platform has metadata/room_shape")
+	_assert_eq(shape.floor_cells().size(), 360, "360 floor tiles")
+	_assert_eq(shape.hidden_floor_cells(), [], "hidden_floor_cells is empty (Rule R2)")
+
+	var floor_layer := room.get_node("TileMapLayer_Floor") as TileMapLayer
+	var used: Array[Vector2i] = floor_layer.get_used_cells()
+	used.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return a.y < b.y or (a.y == b.y and a.x < b.x))
+	_assert_eq(used, shape.floor_cells(), "scene floor cells match shape.floor_cells()")
+
+	for k in 15:
+		_assert_eq(room.get_node("YSort_Walls/WallN_%d" % k).position, RoomShape.tile_to_px(Vector2(2 * k + 1, 0)),
+			"WallN_%d sits on the middle of its two-tile edge" % k)
+	for j in 9:
+		_assert_eq(room.get_node("YSort_Walls/WallW_%d" % j).position, RoomShape.tile_to_px(Vector2(0, 2 * j + 1)),
+			"WallW_%d sits on the middle of its two-tile edge" % j)
+	room.free()
 
 
 func test_l_shape_floor_and_collision_agree() -> void:

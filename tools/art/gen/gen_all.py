@@ -67,6 +67,10 @@ def main():
         tlf062_operator_city.write_mockups()
         import tlf068_shape_kit
         tlf068_shape_kit.write_mockups()
+        import tlf073_wall_plaques
+        tlf073_wall_plaques.write_mockups()
+        import tlf077_wall_fixtures
+        tlf077_wall_fixtures.write_mockups()
         with open(placement_md.SHEET_PATH, 'w', encoding='utf-8', newline='\n') as fh:
             fh.write(placement_md.SHEET_TEXT)
         print('wrote sheet + mockups (incl. the ability wheel and Step 1 mockups and greyscale proofs)')

@@ -26,7 +26,7 @@ const ROOM_PATHS: Array[String] = [
 ]
 
 ## Pre-change baseline collision fingerprint compressed as GZIP base64 string.
-const BASELINE_FINGERPRINTS_GZIP_B64: String = "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"
+const BASELINE_FINGERPRINTS_GZIP_B64: String = "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"
 
 
 func _get_baseline_data() -> Dictionary:
@@ -268,41 +268,76 @@ func test_room1_arrival_platform_kit_complete() -> void:
 	var scene := load("res://scenes/chapters/ch01/rooms/arrival_platform.tscn") as PackedScene
 	var inst := scene.instantiate() as Node2D
 
-	# Floor: 14x10 = 140 tiles
+	# Floor: 360 tiles used in L-shape v2
 	var floor_layer := inst.get_node_or_null("TileMapLayer_Floor") as TileMapLayer
 	_assert_true(floor_layer != null, "arrival_platform: TileMapLayer_Floor exists")
 	var used := floor_layer.get_used_cells()
-	_assert_eq(used.size(), 140, "arrival_platform: exactly 140 tiles used")
+	_assert_eq(used.size(), 360, "arrival_platform: exactly 360 tiles used")
 
-	# YSort_Walls: 7 N modules, 5 W modules, 1 Archway
+	# YSort_Walls: 15 N modules, 9 W modules, 1 Archway, plus shape kit corners and low partitions
 	var walls := inst.get_node_or_null("YSort_Walls") as Node2D
 	_assert_true(walls != null, "arrival_platform: YSort_Walls exists")
-	for k in range(7):
+	for k in range(15):
 		var w = walls.get_node_or_null("WallN_%d" % k) as Sprite2D
 		_assert_true(w != null, "arrival_platform: WallN_%d exists" % k)
 		_assert_eq(w.position, Vector2(336 + 32 * k, 72 + 16 * k), "arrival_platform: WallN_%d pivot" % k)
-	for j in range(5):
+	for j in range(9):
 		var w = walls.get_node_or_null("WallW_%d" % j) as Sprite2D
 		_assert_true(w != null, "arrival_platform: WallW_%d exists" % j)
 		_assert_eq(w.position, Vector2(304 - 32 * j, 72 + 16 * j), "arrival_platform: WallW_%d pivot" % j)
 
 	var arch := walls.get_node_or_null("Archway_door_exit_east") as Sprite2D
 	_assert_true(arch != null, "arrival_platform: Archway_door_exit_east exists")
-	_assert_eq(arch.position, Vector2(448, 208), "arrival_platform: archway at doorway position (448, 208)")
+	_assert_eq(arch.position, Vector2(720, 328), "arrival_platform: archway at doorway position (720, 328)")
 	_assert_eq(arch.z_index, 6, "arrival_platform: archway at z_index 6")
 
-	# Wall_Fixtures: 2 clocks at k=2 and k=5
+	# Corners and low partitions from TLF-068 shape kit
+	_assert_true(walls.get_node_or_null("Corner_NW_0_0") != null, "arrival_platform: Corner_NW_0_0 exists")
+	_assert_true(walls.get_node_or_null("Corner_N_Turn_30_0") != null, "arrival_platform: Corner_N_Turn_30_0 exists")
+	_assert_true(walls.get_node_or_null("Corner_Low_30_8") != null, "arrival_platform: Corner_Low_30_8 exists")
+	_assert_true(walls.get_node_or_null("Corner_Low_12_8") != null, "arrival_platform: Corner_Low_12_8 exists")
+	_assert_true(walls.get_node_or_null("Corner_Low_12_18") != null, "arrival_platform: Corner_Low_12_18 exists")
+	_assert_true(walls.get_node_or_null("Corner_W_Turn_0_18") != null, "arrival_platform: Corner_W_Turn_0_18 exists")
+
+	# Wall_Fixtures: Clock_8 at (576, 147), plus TLF-073 departure board and notice
 	var fixtures := inst.get_node_or_null("Wall_Fixtures") as Node2D
 	_assert_true(fixtures != null, "arrival_platform: Wall_Fixtures exists")
 	_assert_eq(fixtures.z_index, 7, "arrival_platform: Wall_Fixtures at z_index 7")
 	var clk2 := fixtures.get_node_or_null("Clock_2") as Sprite2D
-	var clk5 := fixtures.get_node_or_null("Clock_5") as Sprite2D
-	_assert_true(clk2 != null, "arrival_platform: Clock_2 exists")
-	_assert_true(clk5 != null, "arrival_platform: Clock_5 exists")
-	_assert_eq(clk2.position, Vector2(400, 66), "arrival_platform: Clock_2 at (400, 66)")
-	_assert_eq(clk5.position, Vector2(496, 114), "arrival_platform: Clock_5 at (496, 114)")
+	var clk8 := fixtures.get_node_or_null("Clock_8") as Sprite2D
+	_assert_true(clk2 == null, "arrival_platform: Clock_2 removed near spawn (departure board carries 23:59)")
+	_assert_true(clk8 != null, "arrival_platform: Clock_8 exists")
+	_assert_eq(clk8.position, Vector2(576, 147), "arrival_platform: Clock_8 at (576, 147)")
+	_assert_eq(clk8.offset, Vector2.ZERO, "arrival_platform: Clock_8 offset is (0, 0)")
+	_assert_false(clk8.centered, "arrival_platform: Clock_8 centered is false")
+	_assert_true(clk8.texture.resource_path.ends_with("ch01_prop_digital_clock_2359_n_idle.png"),
+		"arrival_platform: Clock_8 has sheared N-face texture")
 
-	# YSort_Actors: Bench at (352, 120), Stalled car at (251, 210)
+	var dep_board := fixtures.get_node_or_null("DepartureBoard") as Sprite2D
+	var closed_track := fixtures.get_node_or_null("ClosedTrackNotice") as Sprite2D
+	_assert_true(dep_board != null, "arrival_platform: DepartureBoard exists")
+	_assert_true(closed_track != null, "arrival_platform: ClosedTrackNotice exists")
+	_assert_eq(dep_board.position, Vector2(64, 148), "arrival_platform: DepartureBoard at (64, 148)")
+	_assert_eq(closed_track.position, Vector2(488, 116), "arrival_platform: ClosedTrackNotice at (488, 116)")
+
+	# Selectors: 3 N-face sheared presenters
+	var sel_line := inst.get_node_or_null("selector_line/Presenter") as SelectorSwitchPresenter
+	var sel_plat := inst.get_node_or_null("selector_platform/Presenter") as SelectorSwitchPresenter
+	var sel_car := inst.get_node_or_null("selector_car/Presenter") as SelectorSwitchPresenter
+	_assert_true(sel_line != null, "arrival_platform: selector_line/Presenter exists")
+	_assert_true(sel_plat != null, "arrival_platform: selector_platform/Presenter exists")
+	_assert_true(sel_car != null, "arrival_platform: selector_car/Presenter exists")
+	_assert_eq(sel_line.position, Vector2(0, -28), "arrival_platform: selector_line Presenter at (0, -28)")
+	_assert_eq(sel_plat.position, Vector2(0, -28), "arrival_platform: selector_platform Presenter at (0, -28)")
+	_assert_eq(sel_car.position, Vector2(0, -28), "arrival_platform: selector_car Presenter at (0, -28)")
+	_assert_true(sel_line.textures.size() == 3 and sel_line.textures[0].resource_path.ends_with("selector_line_n_pos0.png"),
+		"arrival_platform: selector_line textures use sheared N art")
+	_assert_true(sel_plat.textures.size() == 3 and sel_plat.textures[0].resource_path.ends_with("selector_platform_n_pos0.png"),
+		"arrival_platform: selector_platform textures use sheared N art")
+	_assert_true(sel_car.textures.size() == 3 and sel_car.textures[0].resource_path.ends_with("selector_car_n_pos0.png"),
+		"arrival_platform: selector_car textures use sheared N art")
+
+	# YSort_Actors: Bench at (448, 168), Stalled car at (480, 336)
 	var actors := inst.get_node_or_null("YSort_Actors") as Node2D
 	_assert_true(actors != null, "arrival_platform: YSort_Actors exists")
 	_assert_eq(actors.z_index, 10, "arrival_platform: YSort_Actors at z_index 10")
@@ -310,8 +345,8 @@ func test_room1_arrival_platform_kit_complete() -> void:
 	var car := actors.get_node_or_null("StalledTransitCar") as Sprite2D
 	_assert_true(bench != null, "arrival_platform: PlatformBench exists")
 	_assert_true(car != null, "arrival_platform: StalledTransitCar exists")
-	_assert_eq(bench.position, Vector2(352, 120), "arrival_platform: PlatformBench at (352, 120)")
-	_assert_eq(car.position, Vector2(251, 210), "arrival_platform: StalledTransitCar at (251, 210)")
+	_assert_eq(bench.position, Vector2(448, 168), "arrival_platform: PlatformBench at (448, 168)")
+	_assert_eq(car.position, Vector2(480, 336), "arrival_platform: StalledTransitCar at (480, 336)")
 
 	# Watch sprite on pocket_watch_pickup
 	var pickup := inst.get_node_or_null("pocket_watch_pickup")
