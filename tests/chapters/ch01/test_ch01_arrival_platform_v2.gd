@@ -4,7 +4,7 @@ extends "res://tests/support/ch01_real_input.gd"
 ## Requirements:
 ## 1. Door sweep with gate closed never enters door_exit_east.
 ## 2. Every interactable stand spot is reachable within 2.6 px with the real player capsule.
-## 3. Camera view rect never extends outside room bounds (bounds_px) at spawn, watch, pit edge, gate.
+## 3. Camera: the whole room is on screen, centred in the 960 x 540 view, at spawn, watch, pit edge, gate.
 ## 4. Save/load at checkpoint restores Elias and camera together.
 ## 5. Walking to digital_clock_2359 trigger at (592, 200) and interacting plays EL_CLOCK_2359.
 
@@ -103,8 +103,9 @@ func test_every_stand_spot_reachable_within_2_6_px() -> void:
 	stop()
 
 
-## 3. Camera bounds: Camera view rect never extends outside room bounds (bounds_px) at key spots.
-func test_camera_never_outside_room_bounds() -> void:
+## 3. Camera framing (ADR-023 addendum 3): the 30 x 18 pilot room's bounds (16, 0, 800, 384) fit
+## the 960 x 540 view, so the whole room is on screen from every key spot, centred, with no scroll.
+func test_camera_shows_the_whole_room_centred() -> void:
 	if not await start_at(R1, &""):
 		stop()
 		return
@@ -113,6 +114,7 @@ func test_camera_never_outside_room_bounds() -> void:
 	var shape: RoomShape = room.get_meta("room_shape", null)
 	_assert_true(shape != null, "room has metadata/room_shape")
 	var bounds: Rect2 = shape.bounds_px()
+	_assert_eq(bounds, Rect2(16, 0, 800, 384), "pilot room bounds")
 
 	var cam: RoomCamera = router.camera
 	_assert_true(cam != null, "router has RoomCamera")
@@ -132,12 +134,8 @@ func test_camera_never_outside_room_bounds() -> void:
 		await physics_frames(2)
 
 		var view := cam.view_rect()
-		var x_in := view.position.x >= bounds.position.x - 0.5 and view.end.x <= bounds.end.x + 0.5
-		var y_in := view.position.y >= bounds.position.y - 0.5 and view.end.y <= bounds.end.y + 0.5
-		_assert_true(x_in, "camera view X at %s stays within bounds (view x [%.1f, %.1f], bounds x [%.1f, %.1f])" % [
-			label, view.position.x, view.end.x, bounds.position.x, bounds.end.x])
-		_assert_true(y_in, "camera view Y at %s stays within bounds (view y [%.1f, %.1f], bounds y [%.1f, %.1f])" % [
-			label, view.position.y, view.end.y, bounds.position.y, bounds.end.y])
+		_assert_eq(cam.get_screen_center_position(), Vector2(416, 192), "camera at %s: on the bounds centre (416, 192)" % label)
+		_assert_true(view.encloses(bounds), "camera at %s: the whole room is on screen (view %s, bounds %s)" % [label, view, bounds])
 
 	stop()
 

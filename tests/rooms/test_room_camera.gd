@@ -4,9 +4,10 @@ extends "res://tests/support/base_test.gd"
 ## Review Focus 1 (clamp edge and door: no jitter, no off-bounds frame, no black strip) is here;
 ## Review Focus 2 and 3 (room transition, save/load) are in test_room_router.gd.
 
-## 40 x 12 tiles: (40+12)*16 = 832 px wide, 416 + margins tall, so the camera scrolls both ways.
-const LARGE_W := 40
-const LARGE_H := 12
+## 64 x 20 tiles: (64+20)*16 + 32 = 1376 px wide, (64+20)*8 + 80 = 752 px tall, larger than the
+## 960 x 540 view both ways, so the camera scrolls both ways.
+const LARGE_W := 64
+const LARGE_H := 20
 
 
 func _rig(bounds: Rect2) -> Dictionary:
@@ -82,23 +83,36 @@ func test_clamps_to_bounds() -> void:
 	target.position = bounds.get_center()
 	camera.snap_now()
 	_assert_eq(camera.get_screen_center_position(), bounds.get_center().round(), "centred on a target in the middle")
-	_assert_eq(view, Vector2(640, 360), "the view is the 640 x 360 internal canvas")
+	_assert_eq(view, Vector2(960, 540), "the view is the 960 x 540 internal canvas")
 	_done(rig)
 
 
-## A room that fits the screen keeps today's fixed view: camera at (320, 180), no canvas transform.
-## A small room off that spot is shown whole and does not move either.
-func test_room_smaller_than_screen_is_fixed() -> void:
-	var legacy := RoomShape.rectangle(14, 10).bounds_px()
-	var rig := _rig(legacy)
+## ADR-023 addendum 3: a room smaller than the 960 x 540 view sits centred in it (camera on the
+## bounds centre, dark margin around) and does not move. Rooms without metadata/room_shape use the
+## old 640 x 360 screen area as bounds, so they are drawn 160 px right and 90 px down.
+func test_room_smaller_than_screen_is_centred_and_fixed() -> void:
+	var rig := _rig(Rect2())
 	var camera: RoomCamera = rig["camera"]
 	var target: Node2D = rig["target"]
+	_assert_eq(camera.bounds, RoomCamera.LEGACY_SCREEN, "no bounds: the old 640 x 360 screen area")
 	for p in [Vector2(160, 144), Vector2(544, 176), Vector2(384, 256), Vector2(320, 64), Vector2(352, 160)]:
 		target.position = p
 		await physics_frames(1)
-		_assert_eq(camera.get_screen_center_position(), Vector2(320, 180), "14 x 10 room, target at %s: fixed at (320, 180)" % p)
-	_assert_eq(camera.get_viewport().get_canvas_transform(), Transform2D.IDENTITY, "same canvas transform as without a camera")
-	camera.set_bounds(Rect2(Vector2(420, 260), Vector2(300, 150)))   # small, partly right of / below the legacy screen
+		_assert_eq(camera.get_screen_center_position(), Vector2(320, 180), "legacy room, target at %s: fixed at (320, 180)" % p)
+	_assert_eq(camera.get_viewport().get_canvas_transform(), Transform2D(0.0, Vector2(160, 90)),
+		"the old screen is drawn in the middle of the view: 160 px margins left/right, 90 px top/bottom")
+	_assert_eq(_shown(camera), Rect2(-160, -90, 960, 540), "the view shows the old screen area plus the margin")
+	camera.set_bounds(RoomShape.rectangle(14, 10).bounds_px())   # (144, 0, 416, 272)
+	for p in [Vector2(160, 144), Vector2(544, 176), Vector2(384, 256)]:
+		target.position = p
+		await physics_frames(1)
+		_assert_eq(camera.get_screen_center_position(), Vector2(352, 136), "14 x 10 room, target at %s: on the bounds centre" % p)
+	camera.set_bounds(Rect2(Vector2(16, 0), Vector2(800, 384)))   # Arrival Platform v2's bounds fit the view too
+	target.position = Vector2(720, 328)
+	await physics_frames(1)
+	_assert_eq(camera.get_screen_center_position(), Vector2(416, 192), "pilot room bounds: centred, no scroll")
+	_assert_true(_shown(camera).encloses(camera.bounds), "pilot room: all of it on screen")
+	camera.set_bounds(Rect2(Vector2(421, 261), Vector2(301, 151)))   # odd size: the centre is rounded to whole pixels
 	var first := Vector2.INF
 	for p in [Vector2(430, 270), Vector2(700, 400), Vector2(560, 330)]:
 		target.position = p
@@ -107,6 +121,7 @@ func test_room_smaller_than_screen_is_fixed() -> void:
 		if first == Vector2.INF:
 			first = centre
 		_assert_eq(centre, first, "small room, target at %s: the camera does not move" % p)
+		_assert_true(_whole(centre), "small room: centre %s on whole pixels" % centre)
 		_assert_true(_shown(camera).encloses(camera.bounds), "small room: all of it is on screen")
 	_done(rig)
 

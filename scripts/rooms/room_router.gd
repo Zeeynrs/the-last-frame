@@ -16,8 +16,8 @@ extends Node
 ##   never inside the presenter callback: freeing a room while one of its nodes is mid-call is unsafe.
 ## - Camera (ADR-023): after every placement the RoomCamera gets the room's bounds and snaps onto
 ##   the player on the same frame (no pan from the previous room). A room declares its floor with
-##   `metadata/room_shape` (a RoomShape) on its root node; without one the bounds are the 640x360
-##   screen, so the camera stays where today's fixed view is.
+##   `metadata/room_shape` (a RoomShape) on its root node; without one the bounds are the old
+##   640x360 screen area, which the camera centres in the 960x540 view (dark margin around it).
 
 signal room_entered(room_id: StringName)
 signal checkpoint_reached(checkpoint_id: StringName, error: Error)
@@ -162,12 +162,13 @@ func current_room_shape() -> RoomShape:
 	return current_room.get_meta(&"room_shape") as RoomShape
 
 
-## Camera bounds of the current room: its shape's bounds_px(), else the 640x360 screen.
+## Camera bounds of the current room: its shape's bounds_px(), else the old 640x360 screen area
+## (RoomCamera.LEGACY_SCREEN), which the camera centres in the 960x540 view.
 func current_room_bounds() -> Rect2:
 	var shape := current_room_shape()
 	if shape != null and shape.is_valid():
 		return shape.bounds_px()
-	return Rect2(Vector2.ZERO, RoomCamera.view_size())
+	return RoomCamera.LEGACY_SCREEN
 
 
 func get_cached_ids() -> Array:

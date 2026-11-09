@@ -90,6 +90,15 @@ func test_outro_scene_and_properties() -> void:
 	var plate_container := outro.get_node_or_null("PlateContainer") as Control
 	_assert_true(plate_container != null, "PlateContainer exists")
 	_assert_eq(plate_container.size, Vector2(1280, 360), "PlateContainer is 1280x360 px")
+	# ADR-023 addendum 3: letterboxed in the 960 x 540 view, 1:1 pixel scale, 90 px bars.
+	_assert_eq(plate_container.scale, Vector2.ONE, "the plate is not scaled")
+	_assert_eq(plate_container.position, Vector2(0, 90), "plate starts at x 0 under a 90 px top bar")
+	_assert_eq(Ch01Outro.letterbox_top() * 2.0 + 360.0, 540.0, "equal bars top and bottom of the 540 px view")
+	var dimmer := outro.get_node_or_null("Dimmer") as ColorRect
+	_assert_true(dimmer != null and dimmer.color == Color.BLACK and dimmer.anchor_right == 1.0 and dimmer.anchor_bottom == 1.0,
+		"the black Dimmer fills the whole view behind the plate (the bars)")
+	_assert_eq(outro.end_pan_x, 960.0 - 1280.0, "pan ends where the plate's right edge meets the view's (-320)")
+	_assert_eq(outro.reduced_effects_static_x, -320.0, "reduced_effects frame is the end frame (-320)")
 
 	var city_plate := outro.get_node_or_null("PlateContainer/CityPlate") as TextureRect
 	_assert_true(city_plate != null, "CityPlate node exists")
@@ -142,7 +151,9 @@ func test_outro_integer_pixel_pan_progression() -> void:
 		var cur_x := outro.get_current_pan_x()
 		_assert_eq(cur_x, round(cur_x), "Pan x (%.2f) is an exact integer (no subpixel blur)" % cur_x)
 		_assert_true(cur_x <= 0.0, "Pan moves leftward (x <= 0.0)")
-		_assert_true(cur_x >= -640.0, "Pan does not exceed -640.0")
+		_assert_true(cur_x >= -320.0, "Pan does not exceed -320.0")
+		_assert_eq(outro.plate_container.position.y, 90.0, "the plate stays between the bars")
+	_assert_eq(outro.get_current_pan_x(), -320.0, "Pan ends at x = -320.0 (plate right edge on the view's)")
 
 	outro.free()
 
@@ -161,12 +172,12 @@ func test_outro_reduced_effects_static_frame() -> void:
 	_tree().root.add_child(outro)
 
 	outro.start(null, null, null)
-	_assert_eq(outro.get_current_pan_x(), -640.0, "reduced_effects starts directly at static frame -640.0")
+	_assert_eq(outro.get_current_pan_x(), -320.0, "reduced_effects starts directly at static frame -320.0")
 
 	# Step delta and verify it never moves
 	for i in range(5):
 		outro._process(0.5)
-		_assert_eq(outro.get_current_pan_x(), -640.0, "reduced_effects stays strictly static at -640.0")
+		_assert_eq(outro.get_current_pan_x(), -320.0, "reduced_effects stays strictly static at -320.0")
 
 	outro.free()
 

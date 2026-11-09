@@ -78,9 +78,9 @@ func _events_conflict(ev1: InputEvent, ev2: InputEvent) -> bool:
 
 
 func test_viewport_and_display_settings() -> void:
-	# Viewport internal size 640x360
-	_assert_eq(ProjectSettings.get_setting("display/window/size/viewport_width"), 640, "viewport_width must be 640")
-	_assert_eq(ProjectSettings.get_setting("display/window/size/viewport_height"), 360, "viewport_height must be 360")
+	# Viewport internal size 960x540 (ADR-023 addendum 3; integer x2 to the 1920x1080 window)
+	_assert_eq(ProjectSettings.get_setting("display/window/size/viewport_width"), 960, "viewport_width must be 960")
+	_assert_eq(ProjectSettings.get_setting("display/window/size/viewport_height"), 540, "viewport_height must be 540")
 
 	# Window override 1920x1080
 	_assert_eq(ProjectSettings.get_setting("display/window/size/window_width_override"), 1920, "window_width_override must be 1920")

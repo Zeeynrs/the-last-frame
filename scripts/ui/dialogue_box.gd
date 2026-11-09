@@ -2,7 +2,7 @@ class_name DialogueBox
 extends CanvasLayer
 
 ## Dialogue and monologue box per TLF-032.
-## Displays speaker-labeled lines (SPK_*) at the bottom of the 640x360 screen.
+## Displays speaker-labeled lines (SPK_*) at the bottom of the 960x540 screen (ADR-023 addendum 3).
 ## Non-blocking for device voices (player can walk); blocking for key story beats (Beats 01, 09, 10).
 ## One-shot sequences record 'heard.<sequence_id>' in NarrativeState to prevent replay on reload.
 

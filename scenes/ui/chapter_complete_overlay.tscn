@@ -20,10 +20,17 @@ text = "CHAPTER 1 COMPLETE
 THE FORGOTTEN STATION"
 
 [node name="VBox" type="VBoxContainer" parent="."]
-offset_left = 20.0
-offset_top = 16.0
-offset_right = 620.0
-offset_bottom = 308.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -164.0
+offset_right = 300.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 8
 
 [node name="Title" type="Label" parent="VBox"]

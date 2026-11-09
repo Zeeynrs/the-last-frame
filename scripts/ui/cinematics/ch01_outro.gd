@@ -2,14 +2,18 @@ class_name Ch01Outro
 extends CanvasLayer
 
 ## Beat 10 Cinematic Controller (Story Bible Ch1 Event 10 / ADR-022 D2 / TLF-059).
-## Displays the nocturnal frozen city plate at 1280x360 across the 640x360 viewport:
-## - Slow pan by integer-pixel steps (no subpixel blur) from x = 0 to x = -640.
+## Displays the nocturnal frozen city plate at 1280x360 across the 960x540 viewport, letterboxed
+## (ADR-023 addendum 3): the plate keeps its 1:1 pixel scale between black bars of 90 px (the Dimmer).
+## - Slow pan by integer-pixel steps (no subpixel blur) from x = 0 to x = -320 (1280 - 960).
 ## - Frozen suspended rain and silent Mira broadcast screen on the plaza.
 ## - Narrative dialogue: EL_B10_01, pause, OP_B10_01 ("You are late."), 1s pause, OP_B10_02 ("Again.").
 ## - Skippable via hold `confirm` (1.0 s) or `cancel`.
 ## - SimClock paused and player input blocked while running.
 ## - Accessibility `reduced_effects`: no pan, holds static frame.
 ## - Data-driven timing with exported shot parameters for Ending 3 parity.
+
+## The city plate's size in pixels; it is never scaled.
+const PLATE_SIZE := Vector2(1280, 360)
 
 signal cinematic_started()
 signal cinematic_completed()
@@ -18,7 +22,7 @@ signal device_click_played()
 signal shot_advanced(shot_index: int)
 
 @export_group("Cinematic Timing")
-@export var pan_duration: float = 8.0          ## Total duration of integer-pixel pan (640 px / 8.0 s = 80 px/s)
+@export var pan_duration: float = 8.0          ## Total duration of integer-pixel pan (320 px / 8.0 s = 40 px/s)
 @export var line1_delay: float = 0.5           ## Lead-in before Elias speaks EL_B10_01
 @export var line1_duration: float = 2.5        ## On-screen time for EL_B10_01
 @export var line2_pause: float = 1.0           ## Dramatic pause + street device activation
@@ -30,8 +34,8 @@ signal shot_advanced(shot_index: int)
 
 @export_group("Pan Geometry")
 @export var start_pan_x: float = 0.0           ## Start position (Station Exit -> Plaza crop)
-@export var end_pan_x: float = -640.0          ## End position (Broadcast Tower -> City crop)
-@export var reduced_effects_static_x: float = -640.0 ## Static crop under reduced_effects
+@export var end_pan_x: float = -320.0          ## End position (Broadcast Tower -> City crop)
+@export var reduced_effects_static_x: float = -320.0 ## Static crop under reduced_effects
 
 @export_group("Compositing")
 @export var use_layer_compositing: bool = false ## When true, composites backdrop + screens + rain at runtime
@@ -185,10 +189,16 @@ func get_current_pan_x() -> float:
 	return start_pan_x
 
 
+## Top of the plate: the black bar above it, (540 - 360) / 2 = 90 px at 960 x 540.
+static func letterbox_top() -> float:
+	var view_h: float = ProjectSettings.get_setting("display/window/size/viewport_height", 540)
+	return floorf((view_h - PLATE_SIZE.y) * 0.5)
+
+
 func _apply_pan_position(target_x: float) -> void:
 	if plate_container != null:
 		# Enforce exact integer pixel step to avoid subpixel blur
-		plate_container.position = Vector2(round(target_x), 0.0)
+		plate_container.position = Vector2(round(target_x), letterbox_top())
 
 
 func _update_timeline_shots() -> void:
