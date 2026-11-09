@@ -240,7 +240,7 @@ func _section_a() -> void:
 		_p("A object %-26s px %-12s tile %-12s %s" % [n2.name, p, _ts(_tile(p)), "on floor" if inside else "OFF FLOOR"])
 		if not inside and n2.name != "digital_clock_2359":
 			_fail("A %s is off the floor (tile %s)" % [n2.name, _ts(_tile(p))])
-	for path in ["YSort_Actors/StalledTransitCar", "YSort_Actors/PlatformBench", "Wall_Fixtures/Clock_2", "Wall_Fixtures/Clock_5"]:
+	for path in ["YSort_Actors/StalledTransitCar", "YSort_Actors/PlatformBench", "Wall_Fixtures/Clock_2", "Wall_Fixtures/Clock_5", "Wall_Fixtures/Clock_8", "Wall_Fixtures/DepartureBoard", "Wall_Fixtures/ClosedTrackNotice"]:
 		var d := _node(path)
 		if d != null:
 			_p("A decor %-28s px %-12s tile %s" % [path, d.global_position, _ts(_tile(d.global_position))])
@@ -519,12 +519,13 @@ func _section_g() -> void:
 	_p("G camera centre range x %s..%s y %s..%s" % [xs.min(), xs.max(), ys.min(), ys.max()])
 
 
-## Rows of the N wall face at screen column x: [first, last] opaque pixel row of the WallN module
-## sprite covering x (the real art, alpha > 0.5). Empty when no module covers x.
-func _wall_face_span(x: float) -> Array:
+## Rows of a wall face at screen column x: [first, last] opaque pixel row of the wall module
+## sprite (name prefix "WallN_" or "WallW_") covering x (the real art, alpha > 0.5). Empty when no
+## module covers x.
+func _wall_face_span(x: float, prefix: String = "WallN_") -> Array:
 	for n in room.get_node("YSort_Walls").get_children():
 		var s := n as Sprite2D
-		if s == null or not String(s.name).begins_with("WallN_"):
+		if s == null or not String(s.name).begins_with(prefix):
 			continue
 		var r := Rect2(s.global_position + s.offset, s.texture.get_size())
 		if x < r.position.x or x >= r.end.x:
@@ -552,10 +553,15 @@ func _sprite_rect(s: Sprite2D) -> Rect2:
 
 func _section_h() -> void:
 	# Wall-mounted art: the art's opaque columns must lie inside the wall face's opaque rows.
-	var mounted := {"selector_line": "selector_line/Presenter", "selector_platform": "selector_platform/Presenter",
-		"selector_car": "selector_car/Presenter", "ClosedTrackNotice": "Wall_Fixtures/ClosedTrackNotice"}
+	var mounted := {"selector_line": ["selector_line/Presenter", "WallN_"],
+		"selector_platform": ["selector_platform/Presenter", "WallN_"],
+		"selector_car": ["selector_car/Presenter", "WallN_"],
+		"ClosedTrackNotice": ["Wall_Fixtures/ClosedTrackNotice", "WallN_"],
+		"Clock_8": ["Wall_Fixtures/Clock_8", "WallN_"],
+		"DepartureBoard": ["Wall_Fixtures/DepartureBoard", "WallW_"]}
 	for label in mounted:
-		var s := _node(mounted[label]) as Sprite2D
+		var prefix: String = mounted[label][1]
+		var s := _node(mounted[label][0]) as Sprite2D
 		if s == null:
 			_p("H %s: no sprite" % label)
 			continue
@@ -564,6 +570,7 @@ func _section_h() -> void:
 		var worst_above := 0.0
 		var worst_below := 0.0
 		var cols := 0
+		var uncovered := 0
 		var over_cols: Array[float] = []
 		for c in img.get_width():
 			var first := -1
@@ -575,8 +582,9 @@ func _section_h() -> void:
 					last = row
 			if first < 0:
 				continue
-			var span := _wall_face_span(r.position.x + c + 0.5)
+			var span := _wall_face_span(r.position.x + c + 0.5, prefix)
 			if span.is_empty():
+				uncovered += 1
 				continue
 			cols += 1
 			if span[0] - (r.position.y + first) > 0.0:
@@ -584,8 +592,8 @@ func _section_h() -> void:
 			worst_above = maxf(worst_above, span[0] - (r.position.y + first))
 			worst_below = maxf(worst_below, (r.position.y + last) - span[1])
 		var owner := s.get_parent() as Node2D
-		var line := "H %-18s art %s z %d%s | %d columns checked: art above the wall top by up to %.0f px in %d columns %s, below the wall foot by up to %.0f px" % [
-			label, r, s.z_index, "" if s.z_as_relative else " (absolute)", cols, worst_above, over_cols.size(),
+		var line := "H %-18s art %s z %d%s | %s %d columns checked (%d art columns over no wall module): art above the wall top by up to %.0f px in %d columns %s, below the wall foot by up to %.0f px" % [
+			label, r, s.z_index, "" if s.z_as_relative else " (absolute)", prefix, cols, uncovered, worst_above, over_cols.size(),
 			("x %s..%s" % [over_cols.min(), over_cols.max()]) if not over_cols.is_empty() else "", worst_below]
 		if owner is Area2D:
 			var area := owner as Area2D
@@ -594,7 +602,7 @@ func _section_h() -> void:
 		_p(line)
 		# Visual containment is Sol's call: reported as a note, not a rule failure.
 		if worst_above > 0.0 or worst_below > 0.0:
-			_p("NOTE H %s art crosses the N wall face outline (above the top %.0f px, below the foot %.0f px)" % [label, worst_above, worst_below])
+			_p("NOTE H %s art crosses the %s wall face outline (above the top %.0f px, below the foot %.0f px)" % [label, prefix.substr(4, 1), worst_above, worst_below])
 	# Upright lever: actor layer, sorted with Elias by its contact (the lever node's y).
 	var lever := _node("release_lever") as Node2D
 	var lp := lever.get_node("Presenter") as Sprite2D
