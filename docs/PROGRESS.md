@@ -90,6 +90,7 @@
 | 2026-10-31 | Re-review passed; merged TLF-006 (`c1492d8`) and TLF-003 (`db09cc2`); validate on main: import clean, 5/5 tests; README validation section; tag `m0-complete`; TLF-004/TLF-007 dispatched | Agent 1 |
 | 2026-10-31 | Lead review of TLF-003 (`33e25d5`) and TLF-006 (`a792438`): both CHANGES REQUESTED; ADR-007 pre-history amendment; ADR-014 accepted (Trace) | Agent 1 |
 | 2026-10-31 | Orca role worktrees created; TLF-003 and TLF-006 dispatched; Gemini models confirmed; Pixelorama 1.2.3 pinned; Godot MCP chosen and pinned (ADR-012 amendment) | Human + Agent 1 |
+| 2026-11-10 | Owner ART_BIBLE edit merged (owner "Ya, merge setelah Sol review"): Appendix D visual quality upgrade (PROPOSED; darker Ch1, light with a reason, density gate, puzzle readability, proof protocol, scorecard, P0 read-only audit) and the illustrated character study C.5.1-C.5.5 next to the kept 32x48 schematic; concept sheet in `design/art/reference/ch01/`. Lead aligned it to 960x540 / ADR-025; Sol CHANGES REQUIRED on `60352a0` (ADR-022 A3 scarf/watch, Beat 06 memory, side-view fallback, x2 proofs), fixed in `bbfb707`, Sol APPROVE (review `docs/reviews/2026-11-10_ART_BIBLE_appendix_D-sol.md`) | Owner + Agent 1 + Sol |
 
 ## Update instructions
 
