@@ -174,6 +174,20 @@ def main():
                 tag = 'DIFFER'
             ok_all &= same
             print('%s mockup %-44s %s' % ('ok  ' if same else 'FAIL', os.path.basename(c), tag))
+    import tlf075_side_view
+    with tempfile.TemporaryDirectory() as td:
+        tlf075_side_view.write_mockups(td)
+        for fname in tlf075_side_view.MOCKUP_FILES:
+            c, t = tlf075_side_view.mockup_path(fname), tlf075_side_view.mockup_path(fname, td)
+            same = os.path.exists(c) and read(c) == read(t)
+            tag = 'BYTE-IDENTICAL'
+            if not same and os.path.exists(c):
+                same = Image.open(c).convert('RGBA').tobytes() == Image.open(t).convert('RGBA').tobytes()
+                tag = 'pixels IDENTICAL (bytes differ)' if same else 'DIFFER'
+            elif not same:
+                tag = 'DIFFER'
+            ok_all &= same
+            print('%s mockup %-44s %s' % ('ok  ' if same else 'FAIL', os.path.basename(c), tag))
     cur = open(placement_md.SHEET_PATH, 'rb').read().replace(b'\r\n', b'\n')
     new = placement_md.SHEET_TEXT.encode('utf-8')
     same = cur == new
