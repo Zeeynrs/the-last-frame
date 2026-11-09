@@ -2,7 +2,7 @@
 
 **Task:** TLF-010  
 **Owner:** Agent 2 (Argon — Narrative, Puzzle, Level Design & Art)  
-**Architecture Baseline:** `docs/ADR_LOG.md` (ADR-003, ADR-004, ADR-008, ADR-014, ADR-015), `docs/ART_PIPELINE.md`, `design/ch01/ROOM_GRAPH.md`
+**Architecture Baseline:** `docs/ADR_LOG.md` (ADR-003, ADR-004, ADR-008, ADR-014, ADR-015; canvas superseded by ADR-023 addendum 3), `docs/ART_PIPELINE.md`, `design/ch01/ROOM_GRAPH.md`
 
 ---
 
@@ -11,11 +11,13 @@
 ### 1.1 Viewport & Scaling Standard
 | Parameter | Exact Value | Notes / Engine Binding |
 |---|---|---|
-| **Internal Authoring Canvas** | **`640 × 360 px`** (`16:9`) | `display/window/size/viewport_width = 640`, `viewport_height = 360` |
-| **Default Window Output** | **`1920 × 1080 px`** (`×3` integer scale) | `stretch/mode = "viewport"`, `stretch/scale_mode = "integer"`, `aspect = "keep"` |
-| **Supported Integer Multipliers** | `×2` (`1280×720`), `×3` (`1920×1080`), `×4` (`2560×1440`), `×6` (`3840×2160`) | Zero fractional scaling; letterboxed on non-`16:9` monitors |
+| **Internal Authoring Canvas** | **`960 × 540 px`** (`16:9`, ADR-023 addendum 3) | `display/window/size/viewport_width = 960`, `viewport_height = 540` |
+| **Default Window Output** | **`1920 × 1080 px`** (`×2` integer scale) | `stretch/mode = "viewport"`, `stretch/scale_mode = "integer"`, `aspect = "keep"` |
+| **Supported Integer Multipliers** | `×1` (`960×540`), `×2` (`1920×1080`), `×3` (`2880×1620`), `×4` (`3840×2160`) | Zero fractional scaling; unused window area is letterboxed. A `1280×720` window uses `×1`, with `160 px` side borders and `90 px` top/bottom borders. |
 | **Texture Filtering & Pixel Snap** | **`Nearest`** + **`2D Transform Snap = true`** | `default_texture_filter = Nearest`, `snap_2d_transforms_to_pixel = true` |
 | **Renderer** | **Forward+** (`Compatibility` fallback) | Supports 2D HDR glow, bloom, and GPU particle overlays without blurring base sprites |
+
+Sprites retain their native dimensions: a `32 × 48 px` character frame is about **9% of the 540 px screen height**. At 1080p, art and UI scale `×2`; UI glyphs appear one third smaller than under the former `×3` output. A separate UI scale remains a follow-up decision (ADR-023 addendum 3).
 
 ### 1.2 Isometric Projection & Pixel Density
 - **Projection:** **2:1 Dimetric Isometric** (`±2 px` horizontal step per `±1 px` vertical step along floor diamond edges; floor axis angle = $\arctan(0.5) \approx 26.565^\circ$).
@@ -188,16 +190,16 @@ Per `GDD.md` §15–16 and `ADR-014`/`ADR-015`, no temporal state may rely on co
 
 ---
 
-## 8. UI Scale & Pixel Font Specification (`640 × 360`)
+## 8. UI Scale & Pixel Font Specification (`960 × 540`)
 
-### 8.1 UI Grid & HUD Scale at `640 × 360`
-- **Authoring Canvas:** `640 × 360 px` (`1:1` pixel match with the gameplay viewport; scales `×3` to `1920 × 1080`).
-- **Screen Safe Margin:** **`12 px`** inset from all four viewport edges (`active HUD box = (12, 12) to (628, 348)`).
+### 8.1 UI Grid & HUD Scale at `960 × 540`
+- **Authoring Canvas:** `960 × 540 px` (`1:1` pixel match with the gameplay viewport; scales `×2` to `1920 × 1080`, ADR-023 addendum 3).
+- **Screen Safe Margin:** **`12 px`** inset from all four viewport edges (`active HUD box = (12, 12) to (948, 528)`).
 - **Panel Construction:** Snap all panel positions and dimensions to a **`4 px` grid**; `1 px` outer border (`#464E5C` idle, `#4CE0D2` focused/active, `#EB8A28` warning), `#0A0D14` solid interior fill (`100%` opaque `A = 255`), and `4 px` internal text padding.
 - **HUD Element Dimensions (`ADR-015`):**
   - **Top-Left Location / Status Bar:** `212 × 16 px` at `(12, 12)`.
-  - **Top-Right Pocket-Watch & `23:59` Indicator:** `80 × 16 px` at `(548, 12)`; ability icon slots = `16 × 16 px` each (`Trace`, `Rewind`, `Freeze`, `Echo`).
-  - **Bottom-Center Contextual Interaction Prompt (`[E] ...`):** `192 × 16 px` centered at `(224, 330)`.
+  - **Top-Right Pocket-Watch & `23:59` Indicator:** `80 × 16 px` at `(868, 12)`; ability icon slots = `16 × 16 px` each (`Trace`, `Rewind`, `Freeze`, `Echo`).
+  - **Bottom-Center Contextual Interaction Prompt (`[E] ...`):** `192 × 16 px`, top-left `(384, 510)`.
   - **World-Space Watch Target Highlight (`≤ 96 px` radius per `ADR-015`):** `12 × 12 px` floating ability badge centered `6 px` above the targeted `Interactable`'s top bound.
 
 ### 8.2 Pixel Font Specification
@@ -205,11 +207,11 @@ Per `GDD.md` §15–16 and `ADR-014`/`ADR-015`, no temporal state may rely on co
 - **License:** **CC0 1.0 Universal (Public Domain Dedication)** — committed at `assets/ui/fonts/LICENSE.txt` (original production font authored by Argon for *The Last Frame*).
 - **Glyph Metrics:**
   - Native glyph matrix: **`5 × 7 px`** inside a **`6 × 8 px` monospace character cell** (`5 px` glyph width + `1 px` right tracking; `7 px` cap/ascender height + `1 px` descender/row gap; `unitsPerEm = 512` where `1 px = 64 font units`).
-  - Allowed integer point/pixel sizes at `640 × 360` (`subpixel_positioning = disabled`, `antialiased = false`, `hinting = none`):
+  - Allowed integer point/pixel sizes at `960 × 540` (`subpixel_positioning = disabled`, `antialiased = false`, `hinting = none`):
     - **`8 px` (`1×` native):** HUD badges, interaction prompts (`[E]`), subtitle/dialogue body (`96` characters max per `576 px` line; recommended `≤ 64` chars/line for comfort), Journal body text.
     - **`16 px` (`2×` integer multiple):** Room title cards, Journal section headers, Pause/Settings menu headings.
     - **`24 px` (`3×` integer multiple):** Chapter title cards (`CHAPTER 1 — THE FORGOTTEN STATION`) and ending summary headers.
-  - **Accessibility Text Size Multiplier (`SD-1` / `GDD.md` §16):** `Small/Default (100%) = 8 px`, `Large (200%) = 16 px` (maintaining strict integer pixel alignment on the `640 × 360` canvas).
+  - **Accessibility Text Size Multiplier (`SD-1` / `GDD.md` §16):** `Small/Default (100%) = 8 px`, `Large (200%) = 16 px` (maintaining strict integer pixel alignment on the `960 × 540` canvas; `16 px` / `32 px` physical text cells respectively at 1080p `×2`).
 
 
 ---
@@ -311,7 +313,7 @@ Follow the wishlist's suggested canvases and existing family pivots; document an
 
 Argon supplies the exact pushed branch/SHA, proof paths, inventory and a state matrix covering every A/B row, plus:
 
-- Room composition with statues and Elias at native 640×360 and nearest ×3; matching greyscale, plus an assembly sheet covering all thirteen commuters and four specific poses.
+- Room composition with statues and Elias at native 960×540 and nearest ×2 (1080p); matching greyscale, plus an assembly sheet covering all thirteen commuters and four specific poses.
 - Prop-family contact sheets showing every state side by side in colour and greyscale, with a legend outside runtime sprite bounds. Judge silhouettes and symbols at native size as well as ×3.
 - All four shimmer frames, clock glyph, static read outline and reduced-effects view. Include an effects-hidden statue/Elias comparison.
 - Raw `check_assets.py` and `verify_regen.py` output; Pixelorama source-to-PNG pixel-equality evidence for **every** new `.pxo`, with the exact source count; complete asset metadata and open issues.
@@ -327,7 +329,7 @@ Sol records **APPROVE** or **CHANGES REQUIRED**, tied to the reviewed SHA and co
 
 - **Binding direction for TLF-062/063:** Operator silhouette, pocket-watch motif, non-combat gesture specification, Mira's silent broadcast look, unchanged Ch1 palette and the four-purpose prop list below. Lead merges this note before those tasks proceed.
 - **Owner decision still required:** Elias v3, including whether to reveal a lab coat, introduce a red scarf, goggles or badge. This note proposes it; it does not replace Elias v2 or authorise a player-art rebuild.
-- Keep 640×360, nearest integer scaling, 32×48 character frames, foot pivot (16,44), 2:1 placement, top-left light, binary alpha, 1 px silhouette outlines and the existing reproducibility gates. Assets belong to Argon; runtime/camera/timing contracts and integration approval belong to Opus/Flash.
+- Keep 960×540 (ADR-023 addendum 3), nearest integer scaling (×2 at 1080p), 32×48 character frames, foot pivot (16,44), 2:1 placement, top-left light, binary alpha, 1 px silhouette outlines and the existing reproducibility gates. Assets belong to Argon; runtime/camera/timing contracts and integration approval belong to Opus/Flash.
 - **Recommended approach:** retain the finished v2 for the present slice and build the Operator on separate robe/mask/watch/scarf layers. If the owner later chooses v3, use the restrained candidate below. A wholesale recreation of the reference sheet would add unsupported combat states and premature research symbolism; it is outside scope.
 
 ### C.2 Elias v3 proposal — not approved for production
