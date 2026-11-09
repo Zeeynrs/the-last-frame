@@ -114,15 +114,12 @@ func _run() -> void:
 	await _wait(7.6)
 	print("OUTRO end pan x %s plate %s" % [outro.get_current_pan_x(), outro.plate_container.position])
 	await _shot("shot_10_cinematic_end.png")
-	# The outro waits for [Enter] after its own advance to OP_B10_01 (see the TLF-072 handoff), so
-	# the capture advances the last two lines itself.
-	if diag != null and diag.is_active:
-		diag.advance_line()
-		await _shot("shot_10b_cinematic_end_again.png")
-		diag.advance_line()
+	print("OUTRO end line %d active %s" % [diag.current_line_index if diag != null else -2, diag.is_active if diag != null else false])
 
-	# 7. Chapter-complete overlay (after the cinematic) with the SceneRouter hint.
-	await _wait(1.5)
+	# 7. Chapter-complete overlay (the cinematic ends by itself after its 1.2 s hold) with the
+	# SceneRouter hint.
+	await _wait(2.0)
+	print("OUTRO finished: %s" % [not is_instance_valid(outro)])
 	var scene_router := root.get_node_or_null("SceneRouter")
 	if scene_router != null:
 		scene_router.call("_show_complete_hint")   # shown by SceneRouter when it launched the chapter

@@ -61,6 +61,7 @@ var _confirm_hold_time: float = 0.0
 var _current_shot: int = 0
 var _device_click_fired: bool = false
 var _dialogue_manually_advanced: bool = false
+var _timeline_advancing: bool = false   ## true while the timeline itself advances the dialogue
 var _dialogue_finished: bool = false
 
 
@@ -202,8 +203,9 @@ func _apply_pan_position(target_x: float) -> void:
 
 
 func _update_timeline_shots() -> void:
-	if _dialogue_finished or _dialogue_manually_advanced:
-		# If dialogue finished early via manual taps or test runner, finish after brief settle
+	if _dialogue_manually_advanced:
+		# The player advanced the lines ([Enter]): they drive the dialogue now, and the cinematic
+		# ends with the last line.
 		if _dialogue_finished:
 			_finish_cinematic()
 		return
@@ -244,7 +246,7 @@ func _update_timeline_shots() -> void:
 			shot_advanced.emit(4)
 			if _diag != null and _diag.is_active:
 				if _diag.current_line_index == 0:
-					_diag.advance_line()
+					_timeline_advance()
 				if _diag.panel != null:
 					_diag.panel.visible = true
 
@@ -263,7 +265,7 @@ func _update_timeline_shots() -> void:
 			shot_advanced.emit(6)
 			if _diag != null and _diag.is_active:
 				if _diag.current_line_index == 1:
-					_diag.advance_line()
+					_timeline_advance()
 				if _diag.panel != null:
 					_diag.panel.visible = true
 
@@ -273,13 +275,22 @@ func _update_timeline_shots() -> void:
 			_current_shot = 7
 			shot_advanced.emit(7)
 			if _diag != null and _diag.is_active:
-				_diag.advance_line()
+				_timeline_advance()
 
 	elif _timeline >= outro_end:
 		_finish_cinematic()
 
 
+## Advances the dialogue on the timeline's schedule; not a manual advance.
+func _timeline_advance() -> void:
+	_timeline_advancing = true
+	_diag.advance_line()
+	_timeline_advancing = false
+
+
 func _on_dialogue_line_advanced(_line_idx: int, _total: int) -> void:
+	if _timeline_advancing:
+		return
 	_dialogue_manually_advanced = true
 	if _diag != null and _diag.panel != null:
 		_diag.panel.visible = true

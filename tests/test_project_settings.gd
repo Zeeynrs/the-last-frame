@@ -91,6 +91,12 @@ func test_viewport_and_display_settings() -> void:
 	_assert_eq(ProjectSettings.get_setting("display/window/stretch/aspect"), "keep", "stretch/aspect must be keep")
 	_assert_eq(ProjectSettings.get_setting("display/window/stretch/scale_mode"), "integer", "stretch/scale_mode must be integer")
 
+	# Margin around rooms smaller than the view (TLF-072): the clear colour is TLF-CH01-32 index 00,
+	# Abyssal Void #0A0D14, the palette's darkest colour. It only fills where nothing is drawn.
+	var clear: Color = ProjectSettings.get_setting("rendering/environment/defaults/default_clear_color")
+	_assert_eq(clear.to_html(true), "0a0d14ff", "default_clear_color must be #0A0D14 (TLF-CH01-32 index 00)")
+	_assert_eq(RenderingServer.get_default_clear_color().to_html(true), "0a0d14ff", "and the renderer uses it")
+
 	# Pixel-art rendering: nearest filter and pixel snap
 	_assert_eq(ProjectSettings.get_setting("rendering/textures/canvas_textures/default_texture_filter"), 0, "default_texture_filter must be 0 (Nearest)")
 	_assert_eq(ProjectSettings.get_setting("rendering/2d/snap/snap_2d_transforms_to_pixel"), true, "snap_2d_transforms_to_pixel must be true")
