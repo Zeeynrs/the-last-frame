@@ -1,0 +1,23 @@
+Exact SHA: 31b430d45e36d07251e02896f0cc252d66f802e1
+Fresh git archive; only scratch project configuration renamed and inspection harness added.
+Godot --headless --editor --path <scratch> --import --quit => 0
+Godot --path <scratch> --windowed --resolution 960x540 --position 100,100 --script res://sol_side_strip.gd => 0
+Harness loads the actual SpriteFrames and extracts the actual Player Sprite without running the player controller. Displays every ordered frame at native scale and asserts frame regions, durations, loop flags, speeds and centred-sprite pivot calculation.
+PASS exact approved TLF-075 76e63bf PNG, all 11 W cells exact E mirrors.
+PASS actual Player scene, SpriteFrames resource and PNG match 31b430d blobs after import/render.
+PASS no engine/script errors in import/capture logs.
+PASS real save/settings inventory/hashes/sizes/mtime unchanged (139 files).
+PXO global fps 10; idle preview tags 8fps_loop; walk 10fps_loop; interact 12fps_oneshot.
+Approved runtime override: idle 2 fps, walk 10 fps, interact 10 fps; both directions.
+
+Raw capture log:
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+ANIM idle_e cells=[0, 1] fps=2.0 loop=true
+ANIM walk_e cells=[2, 3, 4, 5, 6, 7] fps=10.0 loop=true
+ANIM interact_e cells=[8, 9, 10] fps=10.0 loop=false
+ANIM idle_w cells=[11, 12] fps=2.0 loop=true
+ANIM walk_w cells=[13, 14, 15, 16, 17, 18] fps=10.0 loop=true
+ANIM interact_w cells=[19, 20, 21] fps=10.0 loop=false
+PASS 6 tags / 22 cells / loop flags / frame order / (16,44) foot pivot; WINDOWED STRIP COMPLETE
