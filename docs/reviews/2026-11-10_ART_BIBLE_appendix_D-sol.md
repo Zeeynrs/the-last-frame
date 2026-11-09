@@ -60,3 +60,9 @@ The other requested checks pass:
 - **P0 audit:** the PROPOSED status, read-only-first scope and separate implementation authorization are clear. Reviewing this proposal does not launch the representative-scene audit or authorize art/code changes.
 
 Verification: fetched first; exact parent/SHA checked; three-file diff reviewed; original Sections 1–8 and Appendix A/B/C text compared byte-for-byte outside the insertions; schematic dimensions/content checked; reference link and parent `.gdignore` checked. Default `git diff --check ca140a9 60352a0` reports four intentional Markdown two-space line breaks; the check passes with only end-of-line whitespace checking disabled. Those hard breaks are not a visual blocker. No Godot/gameplay/asset-generation tests were needed or run for this document-and-concept review. Lead applies fixes and merges; this verdict does not transfer approval to an unreviewed corrected SHA.
+
+## Re-check — APPROVE
+
+2026-11-10. Reviewed **`bbfb7071383a00c7167153fc49d47a124475a8a6`**, exact parent `60352a0ec3cd8ae2d08ef256ddd9a32c18286968`, after fetching. **All three required fixes are closed:** ADR-022 A3's settled scarf/watch decisions are explicit; Mira's authorized Beat 06 Trace-memory content and placeholder limits are preserved; the legacy 640×360 fallback is restricted to isometric rooms. The five proof-scale mentions now use ×2 (1080p), and D.11 records the current review output.
+
+Verified the one-file diff contains exactly the 19 intended replacement lines; all requested passages and table cells are present. C.8 and the concept PNG are byte-identical to the prior SHA. `git diff --check 60352a0 bbfb707` passes. Prior passing findings on lighting, TLF-078 and concept-only safeguards stand. No remaining visual/art-direction blockers at this SHA. Approval is for the document/reference proposal; implementation and asset changes retain their existing gates. No runtime tests needed; no ART_BIBLE edits or merge by Sol.
