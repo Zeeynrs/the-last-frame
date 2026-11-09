@@ -9,6 +9,8 @@ extends Camera2D
 ## bounds (ADR-023 addendum 3), so a room smaller than the screen sits centred with a dark margin
 ## around it and does not scroll on that axis.
 ## RoomRouter calls set_bounds() and snap_now() after every placement (room entry, door, restore).
+## Side-view rooms (ADR-025, TLF-074) set `horizontal_only`: the centre's y is fixed on the middle of
+## the bounds and only x follows (fixed too when the scene fits the screen).
 
 ## The old 640 x 360 canvas (ADR-003). Rooms without `metadata/room_shape` were laid out to fill it,
 ## so it is their bounds (RoomRouter.current_room_bounds()).
@@ -16,6 +18,8 @@ const LEGACY_SCREEN := Rect2(0, 0, 640, 360)
 
 var target: Node2D = null
 var bounds: Rect2 = Rect2()
+## Side view: never follow the target vertically.
+var horizontal_only: bool = false
 
 
 func _init() -> void:
@@ -42,8 +46,8 @@ func set_bounds(r: Rect2) -> void:
 ## Whole-pixel camera centre for a target at `point` inside `bounds`.
 func centre_for(point: Vector2) -> Vector2:
 	var view := view_size()
-	return Vector2(_axis(point.x, bounds.position.x, bounds.end.x, view.x),
-		_axis(point.y, bounds.position.y, bounds.end.y, view.y))
+	var y := roundf(bounds.get_center().y) if horizontal_only else _axis(point.y, bounds.position.y, bounds.end.y, view.y)
+	return Vector2(_axis(point.x, bounds.position.x, bounds.end.x, view.x), y)
 
 
 ## Puts the camera on the target now and applies it on this frame (room entry, restore).

@@ -4,6 +4,13 @@ extends CharacterBody2D
 ## Playable protagonist controller per TLF-007 and TLF-018.
 ## Implements 8-direction screen-relative isometric movement, deterministic targeting,
 ## PocketWatch abilities integration, and feedback toast / dynamic prompt presentation.
+## Side view (ADR-025, TLF-074): RoomRouter calls set_view_mode() on room entry. In `side` only
+## move_left / move_right move Elias, at walk_speed, with his feet on the SideView floor line;
+## he faces `e` or `w` and uses the side SpriteFrames (TLF-075 sheet), with `interact_<e|w>` played
+## when a use or watch request succeeds.
+
+const ISO_FRAMES: SpriteFrames = preload("res://scenes/player/elias_sprite_frames.tres")
+const SIDE_FRAMES: SpriteFrames = preload("res://scenes/player/elias_side_sprite_frames.tres")
 
 @export var walk_speed: float = 120.0
 @export var actor_id: StringName = &"player"
@@ -15,6 +22,10 @@ extends CharacterBody2D
 
 var hud: HUD = null
 var facing_direction: String = "s"
+## ViewMode.ISO or ViewMode.SIDE (set by RoomRouter on room entry).
+var view_mode: StringName = ViewMode.ISO
+## The side scene's layout while view_mode is SIDE, else null.
+var side_view: SideView = null
 
 var _candidates: Array[Interactable] = []
 var current_target: Interactable = null
@@ -62,10 +73,41 @@ func _physics_process(_delta: float) -> void:
 
 func _handle_movement() -> void:
 	var raw_input = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	if view_mode == ViewMode.SIDE:
+		var side_dir := compute_side_movement_vector(raw_input)
+		velocity = side_dir * walk_speed
+		move_and_slide()
+		global_position = side_view.snap(global_position)
+		_update_animation(side_dir)
+		return
 	var move_dir = compute_movement_vector(raw_input)
 	velocity = move_dir * walk_speed
 	move_and_slide()
 	_update_animation(move_dir)
+
+
+## Switches movement, facing and SpriteFrames to `mode` (ViewMode.ISO / SIDE). In SIDE, `side` is
+## the scene's layout (the default SideView when null) and Elias is put on its floor line.
+func set_view_mode(mode: StringName, side: SideView = null) -> void:
+	view_mode = ViewMode.SIDE if mode == ViewMode.SIDE else ViewMode.ISO
+	side_view = null
+	if view_mode == ViewMode.SIDE:
+		side_view = side if side != null else SideView.new()
+		facing_direction = "w" if facing_direction.contains("w") else "e"
+		global_position = side_view.snap(global_position)
+	velocity = Vector2.ZERO
+	if sprite == null:
+		sprite = get_node_or_null("Sprite") as AnimatedSprite2D
+	if sprite != null:
+		sprite.sprite_frames = SIDE_FRAMES if view_mode == ViewMode.SIDE else ISO_FRAMES
+		sprite.play(StringName("idle_" + facing_direction))
+
+
+## Side view: only the horizontal input counts; full speed left or right.
+static func compute_side_movement_vector(raw_input: Vector2) -> Vector2:
+	if absf(raw_input.x) <= 0.3:
+		return Vector2.ZERO
+	return Vector2(signf(raw_input.x), 0.0)
 
 
 func _update_animation(move_dir: Vector2) -> void:
@@ -81,9 +123,17 @@ func _update_animation(move_dir: Vector2) -> void:
 		if sprite.animation != anim or not sprite.is_playing():
 			sprite.play(anim)
 	else:
+		if String(sprite.animation).begins_with("interact_") and sprite.is_playing():
+			return   # let the side-view reach gesture finish (it does not loop)
 		var anim = &"idle_" + facing_direction
 		if sprite.animation != anim or not sprite.is_playing():
 			sprite.play(anim)
+
+
+## Side view: the neutral reach gesture after a successful use or watch request.
+func _play_interact() -> void:
+	if view_mode == ViewMode.SIDE and sprite != null and sprite.sprite_frames != null:
+		sprite.play(StringName("interact_" + facing_direction))
 
 
 static func direction_tag_from_vector(v: Vector2) -> String:
@@ -242,12 +292,16 @@ func _handle_interaction() -> void:
 				var res = session.interaction_service.request(actor_id, current_target.object_id, &"use")
 				if res != null and not res.ok and hud != null:
 					hud.show_feedback(res.reason, &"use")
+				elif res != null and res.ok:
+					_play_interact()
 
 	if Input.is_action_just_pressed(&"watch"):
 		if pocket_watch != null:
 			var res = pocket_watch.activate_watch()
 			if res != null and not res.ok and hud != null:
 				hud.show_feedback(res.reason, &"watch")
+			elif res != null and res.ok:
+				_play_interact()
 
 	if Input.is_action_just_pressed(&"ability_next"):
 		if pocket_watch != null:
