@@ -46,8 +46,11 @@ static func is_upright_texture(texture: Texture2D) -> bool:
 
 ## Puts every sprite under `root` that shows an upright asset into the actor layer. Returns how
 ## many sprites it moved. Presenters swap textures between states of the same asset, so the
-## layer stays right after open/close, Rewind or Freeze.
+## layer stays right after open/close, Rewind or Freeze. A side-view room (ViewMode.SIDE) is flat:
+## nothing is sorted by floor contact there, so it is skipped (returns 0).
 static func apply(root: Node) -> int:
+	if ViewMode.of(root) == ViewMode.SIDE:
+		return 0
 	var moved := 0
 	for node in root.find_children("*", "Sprite2D", true, false):
 		var sprite := node as Sprite2D

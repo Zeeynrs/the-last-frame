@@ -18,8 +18,13 @@ extends Node
 ##   the player on the same frame (no pan from the previous room). A room declares its floor with
 ##   `metadata/room_shape` (a RoomShape) on its root node; without one the bounds are the old
 ##   640x360 screen area, which the camera centres in the 960x540 view (dark margin around it).
+## - View mode (ADR-025, TLF-074): `metadata/view_mode` on the room root (ViewMode). On every room
+##   entry the router hands the mode to the player (`set_view_mode`), and in `side` rooms places
+##   him on the SideView floor line and gives the camera the scene bounds, horizontal-only;
+##   `view_mode_changed` is emitted when the mode differs from the previous room's.
 
 signal room_entered(room_id: StringName)
+signal view_mode_changed(mode: StringName)
 signal checkpoint_reached(checkpoint_id: StringName, error: Error)
 
 const ARRIVAL_GRACE_TICKS: int = 12
@@ -44,6 +49,7 @@ var _room_scenes: Dictionary = {}     # room_id -> PackedScene
 var _temporal_cache: Dictionary = {}  # object_id(String) -> TemporalComponent.export_history()
 var _grace_until_tick: int = -1
 var _pending: Array = []              # queued [room_id, door_id, anchor_id] transitions
+var _view_mode: StringName = ViewMode.ISO
 
 
 func _ready() -> void:
@@ -103,6 +109,7 @@ func enter_room(room_id: StringName, door_id: StringName = &"", anchor_id: Strin
 		room_container.add_child(current_room)
 		_restore_cache(current_room)
 		_connect_doorways(current_room)
+		_apply_view_mode()
 		room_entered.emit(room_id)
 	if session.spatial_service != null:
 		session.spatial_service.set_actor_room(PLAYER_ACTOR, room_id)
@@ -162,9 +169,24 @@ func current_room_shape() -> RoomShape:
 	return current_room.get_meta(&"room_shape") as RoomShape
 
 
-## Camera bounds of the current room: its shape's bounds_px(), else the old 640x360 screen area
-## (RoomCamera.LEGACY_SCREEN), which the camera centres in the 960x540 view.
+## The current room's view mode (ViewMode.ISO when no room is loaded).
+func current_view_mode() -> StringName:
+	return ViewMode.of(current_room)
+
+
+## The current room's SideView, or null when it is not a `side` room.
+func current_side_view() -> SideView:
+	if current_view_mode() != ViewMode.SIDE:
+		return null
+	return ViewMode.side_view_of(current_room)
+
+
+## Camera bounds of the current room: a side room's scene, else its shape's bounds_px(), else the
+## old 640x360 screen area (RoomCamera.LEGACY_SCREEN), which the camera centres in the 960x540 view.
 func current_room_bounds() -> Rect2:
+	var side := current_side_view()
+	if side != null:
+		return side.bounds_px()
 	var shape := current_room_shape()
 	if shape != null and shape.is_valid():
 		return shape.bounds_px()
@@ -240,7 +262,8 @@ func _place_player(door_id: StringName, anchor_id: StringName) -> void:
 
 
 func _move_player_to(position: Vector2) -> void:
-	player.global_position = position
+	var side := current_side_view()
+	player.global_position = side.snap(position) if side != null else position
 	if player is CharacterBody2D:
 		player.velocity = Vector2.ZERO
 	_grace_until_tick = _now() + ARRIVAL_GRACE_TICKS
@@ -253,10 +276,22 @@ func _sync_camera() -> void:
 		camera = RoomCamera.new()
 		add_child(camera)
 	camera.target = player
+	camera.horizontal_only = current_view_mode() == ViewMode.SIDE
 	camera.set_bounds(current_room_bounds())
 	if camera.is_inside_tree() and not camera.is_current():
 		camera.make_current()
 	camera.snap_now()
+
+
+## Hands the new room's view mode to the player (sprites, movement, floor line) and announces a
+## change. The camera follows in _sync_camera(), after the player is placed.
+func _apply_view_mode() -> void:
+	var mode := current_view_mode()
+	if player != null and player.has_method(&"set_view_mode"):
+		player.set_view_mode(mode, current_side_view())
+	if mode != _view_mode:
+		_view_mode = mode
+		view_mode_changed.emit(mode)
 
 
 func _find_checkpoint(room: Node, checkpoint_id: StringName) -> CheckpointZone:
