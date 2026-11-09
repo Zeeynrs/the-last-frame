@@ -6,6 +6,11 @@
 
 ---
 
+> **Art Direction Enhancement — 2026-11-10 (proposed review, not automatically approved)**  
+> This revision preserves the existing technical/art production contract in Sections 1–8 and Appendices A–C, and adds Appendix D: a production-focused visual quality framework. It does **not** authorize new assets, code modifications, scene restructuring, replacement of Elias v2, new palette entries, or a new lighting system. Opus/Lead approves any implementation; Argon authors assets (Sol is the fallback, ADR-017 amendment); Sol reviews visual proofs. Canvas and camera follow ADR-023 addenda 3-4 (`960 × 540`) and ADR-025 (a view mode per room). **Current production priority: finish Chapter 1.**
+
+---
+
 ## 1. Resolution, Projection, Pixel Density & Grid Metrics (`ADR-003`)
 
 ### 1.1 Viewport & Scaling Standard
@@ -440,6 +445,74 @@ ELIAS (candidate)                 | OPERATOR                         | MIRA (loo
 
 **Read criteria:** Elias has an uncovered irregular hair crown, squared coat shoulders, split hem and separated legs; Operator has a higher peaked hood, taper-to-broad robe hem with no long leg gap, and a watch-hand projection; Mira has the side flower/hair notch, inward waist and short flared hem with exposed lower legs. Watch/scarf are recognition clues across the first two, not the means of telling those silhouettes apart. Check native 1× and nearest ×3 on floor 02 and wall 08; no effect, labels, coloured edges or facial detail may be needed to tell the three apart. A production pass must retain these silhouette differences and prove them in Argon's own delivery. This schematic is not approval of a replacement Elias.
 
+#### C.5.1 Detailed character concept study — Elias / Operator / Mira (visual reference; not production approval)
+
+This subsection **adds** a more readable illustrated comparison and a production translation specification. The 32×48 schematic above stays the native-size reference, and the C.8 verification still refers to it. The illustration below is **concept-only**. It conveys visual richness, clothing layers, facial character, and different silhouettes, **not approved final character design, not a new sprite asset, and not permission to change Chapter 1 canon**.
+
+Reference sheet (linked, not embedded; concept only): [`reference/ch01/character_comparison_detailed_CONCEPT_ONLY.png`](reference/ch01/character_comparison_detailed_CONCEPT_ONLY.png)
+
+> **Important canon and pipeline boundary:** The illustration is aspirational, with noncanonical details. **Do not copy** the Elias lab coat/red scarf/goggles/ID as shipped v2 without owner approval; the current v2 brown coat and no-scarf state remain unchanged. **Do not ship** the artwork's visible hourglasses, ornate white/gold Operator robe, exposed or identifiable face/mask, combat imagery, invented devices, purple magic, or extra Mira-in-world appearances. Elias/Operator's only personal timepiece is the **same pocket-watch motif**. Mira remains a **silent, static broadcast image** in Ch1. The illustration's extra costume/equipment icons are not an asset manifest. **Also excluded:** a pocket watch or any other timepiece on Mira (C.7: the watch belongs only to Elias and the Operator); the sheet's chibi head-to-body proportions (keep the grounded adult proportions of the 32×48 frames); the armillary sphere, scroll, books, glowing vial, bandage, ribbon props and the clock/rune halos behind the busts.
+
+#### C.5.2 Art-quality goals distilled from the detailed reference
+
+| Quality dimension | Required interpretation for actual 32×48 sprites | Avoid |
+|---|---|---|
+| Silhouette | Distinct head, shoulder, torso, hem and foot contours at **native 1×** | Detail readable only when zoomed in |
+| Forms | 2–4 deliberate colour clusters per large material plane; strong separation between outerwear and trousers | Speckled noise, excessive 1px decorations |
+| Character identity | Silhouette and posture first, then face/watch/flower accessories | Reliance on palette hue or VFX alone |
+| Costume richness | Imply seams and layered garments with broad value bands and selective highlight pixels | Shrinking portrait-level embroidery into noisy sprites |
+| Facial expression | Minimal readable pixel clusters in 32×48; detailed portraits only in **separate approved portrait assets** | Assuming illustration-scale eyes and facial marks fit runtime sprite |
+| Presentation | One neutral turnaround, grayscale, 1× and nearest-neighbour ×2 (1080p, ADR-023 addendum 3), plus placed scene view | Passing a beautiful splash image as pixel-perfect runtime QA |
+| Mystery | Operator's face and identity remain unknowable | Literal future-Elias reveal, face features, readable identity tags |
+
+#### C.5.3 Three-character design intent and physical read
+
+**ELIAS — current v2 (shipping baseline)**
+- Uncovered irregular dark hair crown; exposed recognizable human face, compact shoulders and grounded adult proportions.
+- Current **weathered umber/brown coat** with clear split hem, two separate legs and boots; pocket-watch case and short chain are the small distinctive accent.
+- At native scale, prioritize **hair silhouette → face → coat split → boots → watch**. Light face pixels must not create a halo that looks like temporal magic.
+- **Optional v3 exploration only:** short dark-crimson scarf and restrained light research-coat visual language, as described in C.2. That proposal is *not* approved; do not repaint 80-frame sheet or add ID/goggles by default.
+- Noncombat idle/walk remain the approved animation baseline. Do not import run/hurt/knockdown states merely because the reference displays them.
+
+**THE OPERATOR — mysterious observer**
+- Higher peaked hood, wider upper silhouette and broad uninterrupted lower robe mass; legs mostly hidden; **no leg-gap similarity** with Elias.
+- Ch1 approved sighting remains **back three-quarter**, hood up, mask closed/concealed; no human facial anatomy or identity clue beyond **circumstantial watch/gesture**.
+- Robe uses **near-black slate** family 00–04, tiny restrained metallic mask edges 12–15 only when visible; no cream-white main robe, elaborate gilding, magical gold rings, or personal hourglass.
+- The watch checking gesture is slow and weary, not threatening. Keep a clear readable watch-hand protrusion without changing hand side through automatic mirroring.
+- A proposed scarf-link may exist as a **separate concept layer**. Current Elias v2 does **not** include a matching scarf; never claim parity is resolved.
+
+**MIRA — look study only / Ch1 broadcast**
+- Shoulder-length lavender-tinted hair with a small asymmetric flower; visible hair notch and open face.
+- More tapered waist and short, softly flared lower garment, unlike Elias's divided coat or Operator's continuous robe.
+- Preserve figure's lightness through shape and local value, **not** big purple surfaces or full-screen lavender lighting.
+- In Chapter 1, only a **silent, static broadcast portrait** is authorized. This full-body turnaround is an external concept reference, not permission to place Mira in a walkable scene.
+- At small broadcast size, prioritize **hair outline + flower + cheek/eye/shoulder arrangement**. Do not introduce revealing dialogue, biography cards, or unapproved abilities.
+
+#### C.5.4 Detailed study panels required before any production redesign
+
+For each character, the art team must supply an **original** working sheet separate from this illustrative reference:
+
+1. **Hero concept:** one readable full-body 3/4 study and one controlled bust portrait. Concept images may be richer than runtime sprites; mark the status clearly.
+2. **Turnaround:** front, back and both 3/4 angles, with consistent cloth panels, silhouette and the same watch/flower placement where applicable.
+3. **Silhouette test:** identical solid grey fill for all three at 32×48, plus native 1×, nearest ×2 on both floor `02` and wall `08` backgrounds.
+4. **Value study:** grayscale rendering with 3–5 principal value bands, proving separation of head, torso, hands, hem and feet with all VFX disabled.
+5. **Material callouts:** only approved palette indices from `TLF-CH01-32`; each callout points to a *large* garment mass, not a decorative micro-pixel.
+6. **Scene proof:** Elias and relevant Operator sighting placed in the approved Chapter 1 room, in that room's view mode (ADR-025); Mira only on the approved Beat 10 broadcast display. Include effects-on/effects-off and reduced-effects views.
+7. **Technical handoff:** approved frame bounds, pivot `(16,44)`, eight-direction rules for Elias (plus the TLF-075 side-view `e`/`w` set where a room uses `side`), source/export paths, palette/alpha validation and regeneration evidence. Operator and Mira follow their existing narrower shot/portrait contracts, not Elias's full walk sheet.
+
+#### C.5.5 Character differentiation checklist
+
+| Test | Elias | Operator | Mira |
+|---|---|---|---|
+| Head | Uncovered, messy hair | Peaked hood hides head | Shoulder-length side-flower hair |
+| Torso | Rectangular practical coat, human face | Layered but monolithic dark robe | Narrowed waist / soft shoulder line |
+| Hem | Two coat tails, **visible leg separation** | Broad continuous robe mass | Short flared garment, exposed lower legs |
+| Unique cue | Small brass pocket watch | Matching watch shape used as uncertain clue | Tiny flower and asymmetrical hair shape |
+| Ch1 status | Existing v2 playable character | Restricted observation shot | Static broadcast only |
+| Unapproved elements | New lab coat, scarf, ID/goggles | White/gold robe, face reveal, hourglass | Playable/walkable appearance, unapproved story text |
+
+**Approval gate:** Owner decides whether Elias v3 is desired and resolves the missing v2 scarf explicitly. Until then **keep v2** and keep the shared-scarf clue **PENDING**. Sol reviews exact source/assets and grayscale proof, Argon (fallback Sol) authors approved changes, and Opus/Flash retain technical integration/merge authority. This illustrated panel is a *visual direction reference*, not proof that native 32×48 runtime art has passed review.
+
 ### C.6 Chapter 1 mood and TLF-063 props
 
 **Keep TLF-CH01-32 unchanged: 32 colours, zero new RGB entries.** Choose the cool blue-teal architecture of `chapter1.1_map.png` as the mood emphasis within the existing palette: floor 00–05, ceramic 06–10 and steel 11–15. Borrow the warm pools, worn brass and quiet transit signage of `chapter1.2_map.png` locally using 22–26; do not globally warm/repaint the finished room tiles. Dark floor and grey commuters stay subordinate to Elias's face, watch and puzzle glyphs. Sparse amber station practicals are different from the cyan of active technology. Large purple environments, ubiquitous bloom, lush vines, new stairs/rooms and the overview's “unfreeze time” objective are not adopted. The approved room graph, 23:54 evacuation, 23:59 clocks and street exit stay.
@@ -488,3 +561,147 @@ Watch: matching 3x3 case with hollow centre in both; scarf markers present in bo
 ```
 
 IoU is the occupied-cell intersection/union, recorded for reproducibility rather than used as a substitute for visual judgement. `git diff --check` passed (exit 0); `git diff --name-only` returned only `design/art/ART_BIBLE.md`. No production asset files, sources, exports, generators, scenes, scripts or task files were created/edited. No Godot or gameplay validation was run for this direction-only edit. Final handoff reports the branch and pushed SHA with the open decisions above; Lead integrates.
+
+---
+
+## Appendix D — Visual Quality Upgrade for Chapter 1 (2026-11-10; PROPOSED)
+
+**Status:** Visual-direction proposal for owner/Lead review; not an implementation task.  
+**Primary purpose:** Make *The Forgotten Station* feel like a premium, restrained, authored HD pixel-art location rather than a uniformly illuminated asset showcase.  
+**Scope:** Polish existing Chapter 1 spaces and assets within the approved room graph, animation contracts, `TLF-CH01-32` palette, the `960 × 540` canvas (ADR-023 addenda 3-4) and each room's view mode (ADR-025: 2:1 isometric by default, `side` for the Trace memory pilot).  
+**Invariants:** Sections 1–8, Appendices A–C, ADRs, approved assets, puzzle beats, timestamps and spoiler boundaries remain authoritative wherever this appendix is less specific or conflicts. Ask the Lead to resolve a conflict; never silently override a contract.
+
+### D.1 Six visual pillars (decision filter)
+
+1. **Loneliness before spectacle.** Most of the station is quiet, empty and unlit. Preserve negative space and the feeling of a place interrupted mid-routine; avoid a magical ruin or a glowing cyberpunk hub.
+2. **Shape before texture.** Floor heights, door openings, switches, platform edges and character silhouettes must read at **native 960×540**, before grime, outlines or post-processing are considered.
+3. **Light carries meaning.** Each brighter area needs a story, navigation, or gameplay reason. A lit control panel is information; decorative light strings are noise.
+4. **Physical materials, restrained age.** Concrete, ceramic, iron, old glass, paper and worn brass must each read through plane, wear and local material patterns, not random noisy pixels.
+5. **Time disruption is rare and specific.** Temporal VFX use the existing ability shape/colour vocabulary; they must never turn the station into an all-purple magic scene.
+6. **Consistency beats isolated beautiful assets.** A modest sprite that fits scale, palette, lighting, and camera is better than a visually impressive sprite that breaks the scene.
+
+### D.2 Chapter 1 darkness and practical-light policy
+
+**User visual direction:** Earlier isometric map concept had *too many lights and was too bright*. Prefer darker, colder, less evenly lit rooms. This is a composition requirement, not permission to make clues invisible.
+
+| Area type | Mood target | Lighting role | Avoid |
+|---|---|---|---|
+| Awakening platform (`ch01.arrival_platform`) | Deep blue-grey darkness, isolated human scale | Small readable silhouette zone around Elias; optional subdued status indicator | Repeating bright lamps down the whole platform |
+| Concourse and hub (`ch01.concourse_west`, `ch01.upper_vestibule`, `ch01.vestibule_niche`) | Dark open space, selective silhouettes of architecture | Broad low-value ambient separation to reveal exits/steps | Golden floodlighting every bench and floor tile |
+| Maintenance bay (`ch01.maintenance_bay`) | Claustrophobic and nearly unlit | One purposeful cue at the next traversal decision | Evenly spaced glowing sconces |
+| Security and signal rooms (`ch01.security_crossing`, `ch01.signal_control`) | Functional industrial darkness | Console status and mechanical form are focal points | Multiple competing neon displays |
+| Waiting lounge (`ch01.waiting_lounge`) | Abandoned everyday space | Gentle pooled or reflected illumination only when needed | Cozy, inhabited-room warmth |
+| Atrium clock and street exit (`ch01.station_atrium`, `ch01.street_exit`) | Distinct but still restrained | Controlled clock-face or single focused source | Giant bloom washing out surrounding details |
+
+**Suggested authoring targets, not validated engine numeric thresholds:**
+- Treat most of the frame as low-to-mid values and reserve the brightest palette entries for small, actionable accents and carefully chosen focal points.
+- Keep **one dominant focal light motivation per screenshot** where feasible; do not automatically add a lamp to every prop/architectural column.
+- Favor non-emissive surfaces and existing palette ramps. A powered-off fixture should look off, not merely less saturated.
+- The absence of light is safe only when ledges, doorways, collision-relevant boundaries, and interactive affordances remain distinguishable at native resolution.
+- Preserve existing screen-top-left planar highlight conventions (§4) as stylized authored shading; these **do not imply** every physical lamp must be on. Light scarcity is a level composition principle, not a replacement for §4.
+- If runtime illumination changes are proposed, Lead/Flash must evaluate rendering, performance, gameplay accessibility, and asset implications **before** implementation. This appendix does not request 2D light nodes, shaders, bloom, or new post-processing.
+
+### D.3 Pixel-art craftsmanship: clusters, edges, and perceived detail
+
+- **Silhouette pass first:** examine solid black/grey masks before colour. Elias, a frozen commuter, operator silhouette, and foreground props must remain separate when reduced to shape.
+- **Cluster hierarchy:** large contiguous colour masses define materials; mid-sized clusters define structure; individual 1-pixel highlights are reserved for deliberate visual priorities (watch rim, control glyph, edge specular). Avoid scattered decorative single pixels across entire surfaces.
+- **Directional materials:** iron beams use continuous edges and joint logic; ceramic tiles use readable planes and occasional cracks; worn terrazzo has subtle local variation, not high-frequency uniform noise. Weathering accumulates near seams, traffic areas, leaks, and corners.
+- **Controlled edge quality:** preserve binary alpha, nearest-neighbour scaling, existing 1px silhouette outline rules, no external AA, and restricted dithering per §5. Do not introduce blur to make low-resolution images look smoother.
+- **Material value separation:** steel, ceramic and floor should not collapse into one identical grey when displayed in greyscale. Prefer the established material ramps; avoid solving separation by adding a new colour.
+- **Depth staging:** foreground silhouettes and props can obscure noncritical decoration, but must not cover navigable routes or critical clues. Validate y-sorting and foot pivots against actual player movement.
+- **No fake resolution:** do not use high-resolution painted textures or soft photo overlays that are inconsistent with the 32×16 tile language. Concept art is direction only, not sprite source.
+
+### D.4 Environmental storytelling density (Chapter 1)
+
+Use **small, readable evidence clusters** rather than scattering props everywhere. Every added visual detail should pass at least one purpose check: **place history**, **navigation**, **puzzle communication**, or **emotional atmosphere**.
+
+Examples of *visual treatments* for **already-approved** objects and spaces (not new interactables):
+- An abandoned bench: uneven wear at hand-contact zones and dust on unused sections, while maintaining the original silhouette.
+- A ticket counter: mostly dark glazing and restrained faded signage rather than a brightly illuminated storefront.
+- Station control equipment: clear active/inactive mechanical states; the working element should be the visual focus.
+- A commuter frozen in time: everyday human pose and muted material masses, avoiding stone statue cracks, ice shells or a bright ghost interior (Appendix B).
+- Signage: only Lead-approved wording/placement, not invented lore, new route clues or premature ELYSIUM revelations (Appendix C). Wall-mounted signs also pass the three wall-fixture tests in A.3 (TLF-078).
+
+**Density gate:** if a detail makes the main interaction or character harder to see at native size, remove/simplify it even when attractive enlarged. Do not populate rooms with extra benches, vines, luggage, lamps, or posters just to appear more detailed.
+
+### D.5 Narrative art guardrails: Elias, Mira, Operator
+
+| Subject | Keep | Improve without spoiler | Do not change without approval |
+|---|---|---|---|
+| **Elias** | Existing approved v2, brown coat, hair, face, pocket watch, 32×48, established directional sheet, TLF-075 side-view set | Cleaner coat cluster readability, readable foot separation and watch glint in the actual room composition | Lab coat/scarf/goggles/badge v3; new combat or story-revealing equipment |
+| **Operator** | Enclosed hood and mask, watch motif, calm observational gesture, back-facing Ch1 sighting | Strong hood-to-robe silhouette, deliberate hand/watch negative space, subdued grey value hierarchy | Face reveal, explicit Elias features, hourglass, dramatic attack gestures, purple aura |
+| **Mira** | Ch1 silent broadcast image only; modest lavender accent and small flower | Readable head/flower/shoulder shapes at in-world display size | Physical Ch1 appearance, invented dialogue, walking encounters, bright purple body fill |
+| **Frozen commuters** | Ordinary poses, grey body ramps, modular overlays, per-character anchors | Distinct ages/builds/gestures with one clear silhouette story each | Ice, stone pedestals, animated bodies, extra colour clues identifying correct memories |
+
+All proposed character polishing goes through the existing acceptance and approval workflow. The unresolved shared-scarf and watch-gesture parity issues in Appendix C remain **open**, not automatically resolved here.
+
+### D.6 Puzzle readability is part of art quality
+
+An attractive screenshot fails production if it obscures important gameplay state. For every puzzle-facing sprite, prove all of the following:
+
+1. **Recognizable object identity:** players can distinguish panel vs lever vs gate before activation.
+2. **Distinct state shapes:** idle / active / jammed / accepted / open / closed use silhouette, detent, aperture, glyph or geometry changes as applicable; colour is supplementary.
+3. **Persistence:** after the animation, the new state remains recognizable in a still frame.
+4. **Spatial clarity:** doors, walkable edges, floor plates and raised props remain clear in unlit and lit compositions.
+5. **Correct meaning:** cyan/teal/violet/white and symbol vocabulary follow §7, not decorative use.
+6. **No accidental answer:** prop highlights, signs, floor markings or commuters do not silently expose puzzle solutions or contradict canonical clue text.
+
+**Important:** Do not add unsolicited tutorial arrows, floating UI markers, map numbers or puzzle labels to shippable environment art. Planning-map annotations stay outside production sprites.
+
+### D.7 Composition, camera and polish review (contact-sheet protocol)
+
+For each high-impact room or asset family under review, Argon (fallback Sol) provides a compact proof set using *actual current in-project* backgrounds, not invented mock rooms. Shoot each proof in the room's view mode (ADR-025) at the real ADR-023 follow-camera framing; a room without `metadata/room_shape` is shown in its 640 × 360 fallback frame inside the 960 × 540 view (ADR-023 addendum 4):
+
+| Proof | Required observation |
+|---|---|
+| A. Native 960×540 | Elias and critical paths discernible without zoom; dark-but-readable |
+| B. Nearest ×2 output (1080p) | Crisp pixel clusters; no fractional scaling artifacts |
+| C. Greyscale | Actor, props and actionable cues separate by value and/or shape |
+| D. Effects hidden | Environment and characters still readable without magical VFX |
+| E. Puzzle states side by side | Open/closed, on/off, held/released etc. visibly distinct |
+| F. Reduced effects | Important information survives shimmer/flicker removal |
+| G. Dark-area stress test | No inaccessible-looking doorway, invisible ledge or lost interaction cue |
+| H. Existing baseline vs proposed | Visual improvement visible without introducing a new mismatch or spoiler |
+
+Review at **native scale first**. Enlarged presentation alone is not evidence. If a reference or mockup is not the actual asset exported from the approved generator/source, label it clearly as **concept only**.
+
+### D.8 Quality scorecard (acceptance rubric; suggested)
+
+For each new/reworked visual delivery, reviewers score **0 = fails, 1 = needs work, 2 = good**:
+
+| Dimension | 0 — Fails | 1 — Needs work | 2 — Good |
+|---|---|---|---|
+| Native readability | Unclear silhouette/route | Reads after inspection | Reads instantly |
+| Composition | No focal hierarchy | Several competing focal points | Clear focus/negative space |
+| Lighting restraint | Uniform bright/decorative glow | Some unnecessary illumination | Sparse motivated light |
+| Material definition | Noisy/indistinguishable | Uneven but recognizable | Clean material/ramp hierarchy |
+| Pixel craft | Blur/fringe/random 1px noise | Isolated craft defects | Clean clusters, crisp edges |
+| Canon consistency | Contradicts approved design | Unclear/open decision | Matches approved beat/design |
+| Game-state clarity | Colour-only/ambiguous | Partially separated | Shape+state independently readable |
+| Pipeline correctness | Breaks export/scale/pivot | Minor metadata gap | Validated by existing checks |
+
+**Suggested review rule:** all eight dimensions should score **2** before final art approval; any safety/canon/pipeline failure is a blocking issue regardless of total. This rubric guides subjective review; the technical validation commands already in the Bible remain mandatory and authoritative. Do not treat this rubric as proof that asset tests have run.
+
+### D.9 Implementation priority while Chapter 1 is in development
+
+| Priority | Action | Ownership | Scope guard |
+|---|---|---|---|
+| **P0 — now (read-only first)** | Audit 2–3 representative current scenes: awakening platform, concourse, one puzzle room. Identify excessive lamps, low silhouette contrast, and visual clutter. | Sol visual review; Opus approves access/plan | Findings/report only; do not block Chapter 1 delivery or modify scene files |
+| **P1 — upon approval** | Small targeted corrections to light placement, cluster readability, material accents, and existing state sprites. | Argon (fallback Sol) produces; Sol reviews; Opus/Flash integrates | Only approved art files / existing rooms; avoid changes to room graph, puzzle logic, collisions |
+| **P2 — later** | Comprehensive room polish and broader presentation consistency pass after Chapter 1 vertical slice plays end-to-end. | Lead schedules | No wholesale reskin before gameplay completion |
+| **Deferred** | Elias v3, new shader systems, remade environment tilesets, new chapter palettes or New Game Plus visuals | Owner decision required | Not authorized by this appendix |
+
+### D.10 Agent handoff contract (copy into task brief)
+
+> Review Appendix D together with the complete existing ART_BIBLE, the current branch/commit, approved ADRs, Chapter 1 room graph and story documents. This is a **visual quality proposal**, not a command to rework production art. Begin with a read-only audit of the actual current assets/scenes. Report up to ten concrete, ranked issues with screenshots or source filenames, their effect on native-size legibility/mood, and the smallest safe fix. Protect the approved 32-colour palette, the 960×540 canvas (ADR-023 addenda 3-4), the 2:1 grid of isometric rooms, the ADR-025 view-mode rules, pivots, alpha rules, sprite sheets, asset generator contracts and story reveal restrictions. Chapter 1 must become darker and less uniformly illuminated **without hiding gameplay information**. No new lighting tech, objects, room geometry, canon, or unapproved changes. Argon (fallback Sol) authors any approved asset edits; Sol inspects the exact pushed SHA; Opus retains implementation and merge approval. Do not start modifying project files until the Lead/owner approves the identified changes.
+
+**Deliverable format (audit stage):** `visual_issue_id | scene/asset path | current behavior | proposed minimal change | visual reference/proof | risk | dependency | priority | approval status`.
+
+### D.11 Unresolved decisions / explicit non-goals
+
+- **Elias v2 vs v3:** owner approval still missing; **default unchanged v2**.
+- **Scarf link:** character-to-Operator scarf parity is an unresolved proposed clue, not a fact shipped in current Ch1.
+- **Older ×3 review views:** B.1 (statue and N-11 notes), the B.4 handoff list, the C.3 proof row and the C.5 read criteria still ask for nearest ×3; under ADR-023 addendum 3 the 1080p review view is nearest ×2. Sol aligns those lines in the next ART_BIBLE pass. The C.8 verification record stays as run.
+- **Watch-check cadence:** verify existing authorised animation contract before claiming a shared gesture.
+- **Runtime light budget:** no fixed count of lamps is imposed here; evaluate actual compositions and approved locations. If art-only correction is insufficient, Lead decides whether engine work is justified.
+- **This document cannot prove the current art looks better:** screenshots and actual post-change deliverables must be reviewed. The appended criteria give a practical way to make that judgment without destabilizing the game.

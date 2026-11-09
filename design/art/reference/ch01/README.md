@@ -10,5 +10,6 @@
 | `elias_ref.png` | Elias: lab coat, red scarf, goggles | Elias v3 proposal (TLF-061; owner decides) |
 | `mira_ref.png` | Mira: lavender, flower, research partner | Look only; the sheet's text is not canon |
 | `operator_ref.png` | Operator: hood, mask | Look per ADR-022 A4: Elias's pocket watch, no attack, no face |
+| `character_comparison_detailed_CONCEPT_ONLY.png` | Owner concept sheet (2026-11-10): Elias candidate, Operator, Mira, busts, turnarounds, expressions, items. Cropped from the owner's screenshot | Read only through ART_BIBLE C.5.1, which lists what must not be copied (white/gold robe, hourglasses, Mira's watch, chibi proportions, lab coat/scarf/goggles/ID) |
 
 `.gdignore` keeps Godot from importing these files.
