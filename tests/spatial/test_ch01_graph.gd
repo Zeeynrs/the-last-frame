@@ -65,7 +65,11 @@ func test_every_door_sits_on_its_boundary_wall() -> void:
 			var ok := false
 			match door["side"]:
 				"W": ok = x == 0 and y >= 1 and y <= h - 2
-				"E": ok = (x == w - 1 or x == w) and y >= 1 and y <= h - 2
+				"E":
+					if StringName(room["room_id"]) == &"ch01.concourse_west":
+						ok = (x == w or x == w - 1) and y >= 1 and y <= h - 2
+					else:
+						ok = x == w - 1 and y >= 1 and y <= h - 2
 				"N": ok = y == 0 and x >= 1 and x <= w - 2
 				"S": ok = y == h - 1 and x >= 1 and x <= w - 2
 			_assert_true(ok, "%s:%s (%s @ %d,%d) on its wall in %dx%d" % [room["room_id"], door["door_id"], door["side"], x, y, w, h])

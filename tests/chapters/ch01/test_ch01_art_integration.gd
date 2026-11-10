@@ -1,4 +1,4 @@
-﻿extends "res://tests/support/base_test.gd"
+extends "res://tests/support/base_test.gd"
 
 ## Comprehensive Art Integration & Collision Freeze Test Suite (TLF-041).
 ## Verifies that:
@@ -262,7 +262,7 @@ func test_no_greybox_nodes_remain_across_all_rooms() -> void:
 
 
 # -------------------------------------------------------------------------------------------------
-# 4. Complete Room 1 Check (CH01_PLACEMENT_SHEET.md Â§1)
+# 4. Complete Room 1 Check (CH01_PLACEMENT_SHEET.md §1)
 # -------------------------------------------------------------------------------------------------
 func test_room1_arrival_platform_kit_complete() -> void:
 	var scene := load("res://scenes/chapters/ch01/rooms/arrival_platform.tscn") as PackedScene
