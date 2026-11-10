@@ -1,0 +1,30 @@
+extends "res://tests/support/ch01_real_input.gd"
+
+## Round 2: the watch right after the deferred entry (PocketWatch.current_target is the freed bench).
+
+
+func _init() -> void:
+	timeout_frames = 4000
+
+
+func test_watch_after_entry() -> void:
+	if not await start_at(&"ch01.waiting_lounge", &"door_entry_west"):
+		stop()
+		return
+	var diag := ch01.call("get_dialogue_box") as DialogueBox
+	if diag.is_active:
+		diag.finish_sequence()
+	await walk_to(player, "bench", Vector2(320, 160))
+	await select_ability(&"trace")
+	await tap(&"interact")
+	await physics_frames(2)
+	var w := player.pocket_watch
+	var res: Array = []
+	w.watch_used.connect(func(ab, id, r): res.append([ab, id, r.ok, r.reason]))
+	await tap(&"watch")
+	await until(func() -> bool: return router.current_room_id == &"ch01.side_mira_memory", 10)
+	print("PROBE R entered %s; watch target freed %s (== null: %s)" % [router.current_room_id, not is_instance_valid(w.current_target), w.current_target == null])
+	await tap(&"watch")
+	await physics_frames(2)
+	print("PROBE R watch at the spawn: %s; HUD marker visible %s" % [res, player.hud.target_highlight.visible])
+	stop()
