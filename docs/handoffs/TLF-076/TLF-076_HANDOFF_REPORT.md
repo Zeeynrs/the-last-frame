@@ -1,4 +1,4 @@
-# TLF-076 Handoff Report: Pilot Side-View Scene (Beat 06 Mira Departure Memory) — Round 2
+# TLF-076 Handoff Report: Pilot Side-View Scene (Beat 06 Mira Departure Memory) — Round 3
 
 **Task:** TLF-076 — Pilot: Beat 06 Mira departure memory in side view (ADR-025, `design/ch01/side_view/mira_memory.md`)  
 **Owner:** Flash (build and wiring)  
@@ -6,7 +6,7 @@
 **Technical Review:** Opus  
 **Visual Review:** Sol  
 **Branch:** `adityadaffa522/tlf-076-mira-memory-side`  
-**Status:** READY FOR REVIEW (Round 2 — All Opus & Sol findings addressed)  
+**Status:** READY FOR REVIEW (Round 3 — Letterbox Palette Restoration)  
 
 ---
 
@@ -54,6 +54,14 @@ The player accesses this historical flashback during Beat 06 in Chapter 1:
 - **Dead Code Cleanup:** Removed dead `_on_watch`/`_can_watch` methods.
 - **Namespace:** Stored return flag as `ch01.flag.mira_memory_return` (String).
 
+### 2.6 Sol Round 3 — Letterbox Palette Restoration & Pixel Measurement
+- **Palette Restoration:** In `scenes/chapters/ch01/rooms/side_mira_memory.tscn`, restored letterbox bars and hairlines to strict 32-color project palette per `design/art/ASSET_METADATA.md` §13.1 / `ART_BIBLE`:
+  - `LetterboxTop` and `LetterboxBottom`: `Color(0.0392157, 0.0509804, 0.0784314, 1)` (`#0A0D14`, palette 00).
+  - `LetterboxTopHairline` and `LetterboxBottomHairline`: `Color(0.180392, 0.2, 0.239216, 1)` (`#2E333D`, palette 12).
+- **Pixel Measurements:** Verified across recaptured 960×540 Forward+ screenshots (`doc_mira_side_start.png`, `doc_mira_side_bench.png`, `doc_mira_side_mira.png`, `doc_mira_side_clock.png`):
+  - Bar sample at `(900, 60)` = `RGB(10, 13, 20)` (`#0A0D14`).
+  - Hairline sample at `(900, 89)` = `RGB(46, 51, 61)` (`#2E333D`).
+
 ---
 
 ## 3. Scene Geometry & Placements (Sol P2 Corrected)
@@ -62,7 +70,7 @@ The player accesses this historical flashback during Beat 06 in Chapter 1:
 - **Canvas:** 960 × 540 viewport, full room width 1440 px, floor contact line at $y = 394$.
 - **Camera Configuration:** Attached `RoomCamera` configured with `limit_left = 0`, `limit_right = 1440`, `limit_top = 0`, `limit_bottom = 540`, center-follow framing ($x \in [480, 960]$, $y = 270$).
 - **View Mode Metadata:** Declared with `metadata/view_mode = "side"` and `SideView` resource setting `floor_y = 394.0`, `walk_min_x = 16.0`, `walk_max_x = 1424.0` (16 px margin).
-- **Cinematic Letterbox:** 90 px top/bottom bars ($y = 0..90$, $y = 450..540$) at `z_index = 15`.
+- **Cinematic Letterbox:** 90 px top/bottom bars ($y = 0..90$, $y = 450..540$) at `z_index = 15` in `#0A0D14` with 1 px boundary hairlines in `#2E333D`.
 
 ### 3.2 Layers
 - **FarWall:** `ch01_env_side_bg_far_wall_arches_idle.png` ($960 \times 360$ at $y = 90$, repeated at $x = 0, 960$, `z_index = 1`).
