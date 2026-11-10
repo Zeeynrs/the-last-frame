@@ -1,0 +1,25 @@
+# TLF-076 round 2 — CHANGES REQUIRED
+
+Sol, 2026-11-10. Reviewed **`1e8a0cafb00854797d874b96fe52b69b8caa8cf3`**, parent `a94aee3`, branch `adityadaffa522/tlf-076-mira-memory-side`. Inspected the diff, updated handoff and all five new screenshots; independently repeated the windowed walk. **The original P1 marker occlusion is closed. One newly introduced letterbox-colour mismatch needs a small correction before approval.** The previous review remains unchanged.
+
+1. **P1 from round 1: CLOSED.** At the left stand `(756,394)`, Mira remains at `(780,394)`, visibly separate from Elias. The marker occupies **x499–508 / y333–342**; Mira's first opaque pixel is at y353. There are **10 clear pixel rows** between them, exceeding the requested six. Independent alpha comparison finds **zero covered Mira pixels**, versus 95 previously. The right approach at x802 and the reduced-effects view also have zero overlap. Trace succeeds and the fragment is recorded. The supplied `doc_mira_side_mira.png` now demonstrates the target correctly. [Left native](TLF-076/1e8a0ca/mira_approach.png), [right native](TLF-076/1e8a0ca/mira_right_approach.png), [reduced effects](TLF-076/1e8a0ca/mira_reduced.png), [diagnostic zoom](TLF-076/1e8a0ca/mira_clearance_x8.png).
+
+2. **P2 — Required: restore the side-view kit's specified letterbox colours.** In `scenes/chapters/ch01/rooms/side_mira_memory.tscn`, this revision also changes both bars from `#0A0D14` to opaque **`#000000`**, and both hairlines from `#2E333D` to **`#1F242E`**. Those changes are independent of the target fix. `design/art/ASSET_METADATA.md` §13.1 still explicitly specifies `#0A0D14` (palette 00) for these bars and `#2E333D` (palette 12) for their hairlines; ART_BIBLE §3 / C.6 retain the unchanged 32-colour contract. The two new colours are absent from that palette. Exact supplied and independent frame samples confirm RGB `(0,0,0)` at `(900,60)` and `(31,36,46)` at `(900,89)`.
+
+   **Smallest fix: change only these four colour fields**, retaining the corrected hairline node placement and 90 px geometry:
+
+   - `LetterboxTop`, `LetterboxBottom`: `color = Color(0.0392157, 0.0509804, 0.0784314, 1)` — `#0A0D14`.
+   - `LetterboxTopHairline`, `LetterboxBottomHairline`: `color = Color(0.180392, 0.2, 0.239216, 1)` — `#2E333D`.
+
+   No Mira, HUD anchor, camera, source PNG or palette-file change is needed. Verify the corrected native frame samples against §13.1. This is the sole remaining required visual correction at this SHA.
+
+Other checks pass:
+
+- **HUD code:** the seven-line change uses `TargetAnchor`, then `target_marker_offset`, then the existing `(0,-28)` default. Mira's two supplied anchors agree at `(0,-56)`. Canvas-position conversion is retained; the moving-camera and both-side captures confirm the icon stays above the target. The ordinary fallback remains intact in the returned lounge view. No additional marker adjustment is requested.
+- **Composition / props:** far/near/floor layers, bench/cup/trolley scale and y394 contacts remain coherent. Rewind returns the cup to `(540,384)` on the bench; the old ability-name toast is gone. The clock still reads 23:59. [Cup on bench](TLF-076/1e8a0ca/cup_on_bench.png).
+- **Camera / exit:** 636 walking physics samples pass the y394 foot line, whole-pixel horizontal camera, fixed camera y270 and viewport containment in x0..1440. [East before exit](TLF-076/1e8a0ca/east_before_exit.png) shows continuous wall/floor/tracks through the right edge. The exit returns to [Waiting Lounge `(336,152)`, iso](TLF-076/1e8a0ca/returned_lounge.png). The supplied `doc_mira_side_exit.png` actually depicts this returned lounge; use the independent pre-exit frame for the right-edge check.
+- **HUD / letterbox geometry:** 90 px bars and boundary hairlines remain correctly positioned; the ability panel `(12,12,270,32)` stays in the top bar. The prior generic dialogue-panel overlap with the lowest 14 px of track is unchanged and remains nonblocking. Handoff positions, layer dimensions/repeats and centre-follow framing are substantially corrected; they do not call for another layout change.
+
+Verification: fresh archive with renamed project and separate custom user directory; import and Windows D3D12 Forward+ 960×540 walk both exit **0**, no engine/script errors. Actual controller input actions drive the route, with bench/clock interaction and PocketWatch Rewind/Trace calls. Direct entry at the side anchor was used; lounge entry/autosave/continue and the full gameplay suite remain the technical reviewer's checks. **12 native captures**, all **1,783 original tracked blobs except the deliberately renamed scratch configuration** unchanged after the run; real save/settings inventory, hashes, sizes and mtimes unchanged (**140 files**). [Raw logs, pixel measurements and source checks](TLF-076/1e8a0ca/evidence.txt), [camera manifest](TLF-076/1e8a0ca/manifest.json).
+
+New add-only review branch starts at `origin/main` **`5399674768d22791dadc78c3df9d59b566cf57d9`**. No old report overwritten; no scenes, assets, scripts or metadata edited; no merge.

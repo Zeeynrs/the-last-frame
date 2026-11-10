@@ -1,0 +1,222 @@
+{
+	"camera_samples": 636,
+	"sha": "1e8a0cafb00854797d874b96fe52b69b8caa8cf3",
+	"views": [
+		{
+			"camera": [
+				480.0,
+				270.0
+			],
+			"name": "start",
+			"player": [
+				120.0,
+				394.0
+			],
+			"room": "ch01.side_mira_memory",
+			"view": [
+				0.0,
+				0.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"camera": [
+				496.0,
+				270.0
+			],
+			"name": "bench_approach",
+			"player": [
+				496.0,
+				394.0
+			],
+			"room": "ch01.side_mira_memory",
+			"view": [
+				16.0,
+				0.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"camera": [
+				496.0,
+				270.0
+			],
+			"name": "bench_dialogue",
+			"player": [
+				496.0,
+				394.0
+			],
+			"room": "ch01.side_mira_memory",
+			"view": [
+				16.0,
+				0.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"camera": [
+				576.0,
+				270.0
+			],
+			"name": "cup_on_bench",
+			"player": [
+				576.0,
+				394.0
+			],
+			"room": "ch01.side_mira_memory",
+			"view": [
+				96.0,
+				0.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"camera": [
+				756.0,
+				270.0
+			],
+			"name": "mira_approach",
+			"player": [
+				756.0,
+				394.0
+			],
+			"room": "ch01.side_mira_memory",
+			"view": [
+				276.0,
+				0.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"camera": [
+				756.0,
+				270.0
+			],
+			"name": "mira_traced",
+			"player": [
+				756.0,
+				394.0
+			],
+			"room": "ch01.side_mira_memory",
+			"view": [
+				276.0,
+				0.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"camera": [
+				756.0,
+				270.0
+			],
+			"name": "mira_reduced",
+			"player": [
+				756.0,
+				394.0
+			],
+			"room": "ch01.side_mira_memory",
+			"view": [
+				276.0,
+				0.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"camera": [
+				802.0,
+				270.0
+			],
+			"name": "mira_right_approach",
+			"player": [
+				802.0,
+				394.0
+			],
+			"room": "ch01.side_mira_memory",
+			"view": [
+				322.0,
+				0.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"camera": [
+				960.0,
+				270.0
+			],
+			"name": "clock_approach",
+			"player": [
+				1156.0,
+				394.0
+			],
+			"room": "ch01.side_mira_memory",
+			"view": [
+				480.0,
+				0.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"camera": [
+				960.0,
+				270.0
+			],
+			"name": "clock_dialogue",
+			"player": [
+				1156.0,
+				394.0
+			],
+			"room": "ch01.side_mira_memory",
+			"view": [
+				480.0,
+				0.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"camera": [
+				960.0,
+				270.0
+			],
+			"name": "east_before_exit",
+			"player": [
+				1348.0,
+				394.0
+			],
+			"room": "ch01.side_mira_memory",
+			"view": [
+				480.0,
+				0.0,
+				960.0,
+				540.0
+			]
+		},
+		{
+			"camera": [
+				320.0,
+				180.0
+			],
+			"name": "returned_lounge",
+			"player": [
+				336.0,
+				152.0
+			],
+			"room": "ch01.waiting_lounge",
+			"view": [
+				-160.0,
+				-90.0,
+				960.0,
+				540.0
+			]
+		}
+	]
+}
