@@ -1,0 +1,286 @@
+extends SceneTree
+
+## TLF-082 lighting spike (scratch copy only; never on a game branch).
+##   godot --path . -s res://spike/spike_tlf082.gd
+## Arrival Platform at the spawn and at the gate, five variants each:
+##   v0 baseline (no lighting)
+##   v1 Godot runtime: CanvasModulate ambient + PointLight2D (stepped light textures)
+##   v2 v1 + post-quantize to the nearest TLF-CH01-32 colour
+##   v3 authored overlay mock: static 2x2-Bayer stipple of #0A0D14 (binary alpha) at z 9
+##   v4 palette-indexed ramp shift (recommended): ambient k steps down each material ramp,
+##      stepped lift bands around motivated lights, emissive indices 24-31 never shift
+## Output: res://spike_out/<pos>_<variant>[_nohud].png and timings in the log.
+
+const OUT := "res://spike_out"
+const PALETTE_GPL := "res://assets/source/ch01/ch01_palette_elysium09.gpl"
+const VIEW := Vector2(960, 540)
+
+var _ch01: Node2D
+var _player: Player
+var _router: RoomRouter
+var _hud: HUD
+var _palette: Array = []
+
+# runtime nodes per variant
+var _modulate: CanvasModulate
+var _lights: Array = []
+var _post_layer: CanvasLayer
+var _post: ColorRect
+var _overlay: Sprite2D
+
+# motivated lights (world px): [name, position, radius x, radius y, lift, colour, energy]
+var LIGHTS := [
+	["clock", Vector2(592, 160), 64.0, 44.0, 2, Color("#EB8A28"), 0.9],
+	["gate", Vector2(720, 314), 72.0, 36.0, 2, Color("#94A2B8"), 0.8],
+	["elias", Vector2.ZERO, 44.0, 30.0, 2, Color("#94A2B8"), 0.55],
+]
+
+
+func _initialize() -> void:
+	var timer := create_timer(120.0)
+	timer.timeout.connect(func():
+		printerr("TIMEOUT: spike_tlf082 exceeded 120 s")
+		quit(1))
+	call_deferred("_run")
+
+
+func _frames(n: int) -> void:
+	for i in n:
+		await process_frame
+
+
+func _load_palette() -> void:
+	var f := FileAccess.open(PALETTE_GPL, FileAccess.READ)
+	while f != null and not f.eof_reached():
+		var line := f.get_line().strip_edges()
+		var parts := line.split("	")[0].split_floats(" ", false) if line.length() > 0 and line[0].is_valid_int() else PackedFloat64Array()
+		if parts.size() >= 3:
+			_palette.append(Vector3(parts[0] / 255.0, parts[1] / 255.0, parts[2] / 255.0))
+	print("PALETTE entries %d" % _palette.size())
+
+
+func _shot(name: String) -> void:
+	await _frames(3)
+	await RenderingServer.frame_post_draw
+	var img := root.get_texture().get_image()
+	img.save_png(ProjectSettings.globalize_path(OUT).path_join(name + ".png"))
+	print("CAPTURED %s %s" % [name, img.get_size()])
+
+
+func _gpu_ms(frames: int = 90) -> float:
+	var rid := root.get_viewport_rid()
+	RenderingServer.viewport_set_measure_render_time(rid, true)
+	await _frames(10)
+	var total := 0.0
+	for i in frames:
+		await process_frame
+		total += RenderingServer.viewport_get_measured_render_time_gpu(rid)
+	return total / frames
+
+
+func _light_texture() -> Texture2D:
+	# Pixel-stepped falloff: three flat bands, nearest filtering (no smooth gradient).
+	var g := Gradient.new()
+	g.interpolation_mode = Gradient.GRADIENT_INTERPOLATE_CONSTANT
+	g.offsets = PackedFloat32Array([0.0, 0.55, 0.8, 1.0])
+	g.colors = PackedColorArray([Color(1, 1, 1), Color(0.6, 0.6, 0.6), Color(0.3, 0.3, 0.3), Color(0, 0, 0)])
+	var t := GradientTexture2D.new()
+	t.gradient = g
+	t.fill = GradientTexture2D.FILL_RADIAL
+	t.fill_from = Vector2(0.5, 0.5)
+	t.fill_to = Vector2(1.0, 0.5)
+	t.width = 128
+	t.height = 128
+	return t
+
+
+func _light_pos(l: Array) -> Vector2:
+	return _player.global_position + Vector2(0, -20) if l[0] == "elias" else l[1]
+
+
+func _clear() -> void:
+	if _modulate != null:
+		_modulate.queue_free()
+		_modulate = null
+	for n in _lights:
+		n.queue_free()
+	_lights.clear()
+	if _post_layer != null:
+		_post_layer.visible = false
+	if _overlay != null:
+		_overlay.queue_free()
+		_overlay = null
+
+
+func _apply_runtime() -> void:
+	_modulate = CanvasModulate.new()
+	_modulate.color = Color(0.42, 0.47, 0.6)
+	_ch01.add_child(_modulate)
+	var tex := _light_texture()
+	for l in LIGHTS:
+		var pl := PointLight2D.new()
+		pl.texture = tex
+		pl.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		pl.color = l[5]
+		pl.energy = l[6]
+		pl.blend_mode = Light2D.BLEND_MODE_ADD
+		pl.global_position = _light_pos(l)
+		pl.texture_scale = l[2] / 64.0
+		pl.scale = Vector2(1.0, l[3] / l[2])
+		_ch01.add_child(pl)
+		_lights.append(pl)
+
+
+func _set_post(mode: int, exempt_from: int = 24, dither: bool = false) -> void:
+	var cam_xform := _ch01.get_viewport().get_canvas_transform()
+	var arr: Array = []
+	var lifts := PackedInt32Array()
+	for l in LIGHTS:
+		var p: Vector2 = cam_xform * _light_pos(l)
+		arr.append(Vector4(roundf(p.x), roundf(p.y), l[2], l[3]))
+		lifts.append(l[4])
+	while arr.size() < 8:
+		arr.append(Vector4(-9999, -9999, 1, 1))
+		lifts.append(0)
+	var m := _post.material as ShaderMaterial
+	m.set_shader_parameter("mode", mode)
+	m.set_shader_parameter("lights", arr)
+	m.set_shader_parameter("light_lift", lifts)
+	m.set_shader_parameter("light_count", LIGHTS.size())
+	m.set_shader_parameter("exempt_from", exempt_from)
+	m.set_shader_parameter("dither", dither)
+	_post_layer.visible = true
+
+
+func _apply_overlay() -> void:
+	# Authored-overlay mock: what a static dithered darkness sprite gives. Binary alpha, palette 00.
+	var bounds := Rect2(-64, -78, 960, 540)   # the room's fixed view
+	var img := Image.create(int(bounds.size.x), int(bounds.size.y), false, Image.FORMAT_RGBA8)
+	var void_c := Color("#0A0D14")
+	var bayer := [[0.0, 0.5], [0.75, 0.25]]
+	for y in img.get_height():
+		for x in img.get_width():
+			var w := bounds.position + Vector2(x, y)
+			var dark := 0.5   # ambient stipple density
+			for l in LIGHTS:
+				if l[0] == "elias":
+					continue   # static art cannot follow Elias
+				var q: Vector2 = (w - l[1]) / Vector2(l[2], l[3])
+				var d := q.length()
+				var lit := 0.5 if d < 0.55 else (0.25 if d < 1.0 else 0.0)
+				dark = minf(dark, 0.5 - lit)
+			if dark > bayer[y % 2][x % 2]:
+				img.set_pixel(x, y, void_c)
+	_overlay = Sprite2D.new()
+	_overlay.texture = ImageTexture.create_from_image(img)
+	_overlay.centered = false
+	_overlay.position = bounds.position
+	_overlay.z_as_relative = false
+	_overlay.z_index = 9
+	_ch01.add_child(_overlay)
+
+
+func _variant(pos_name: String, v: String) -> void:
+	_clear()
+	await _frames(2)
+	match v:
+		"v1_runtime":
+			_apply_runtime()
+		"v2_runtime_quantized":
+			_apply_runtime()
+			_set_post(0)
+		"v3_overlay":
+			_apply_overlay()
+		"v4_ramp_shift":
+			_set_post(1)
+		"v4b_ramp_shift_exempt25":
+			_set_post(1, 25)
+		"v4c_ramp_shift_dither":
+			_set_post(1, 24, true)
+	await _frames(3)
+	_hud.visible = true
+	await _shot("%s_%s" % [pos_name, v])
+	_hud.visible = false
+	await _shot("%s_%s_nohud" % [pos_name, v])
+	var ms := await _gpu_ms()
+	print("TIMING %s %s gpu_ms %.3f" % [pos_name, v, ms])
+	_hud.visible = true
+
+
+func _run() -> void:
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
+	var save = root.get_node_or_null("SaveService")
+	if save != null:
+		save.save_root = "user://tlf082_spike_saves"
+	_load_palette()
+	_ch01 = (load("res://scenes/chapters/ch01/Chapter01.tscn") as PackedScene).instantiate() as Node2D
+	root.add_child(_ch01)
+	await _frames(30)
+	_router = _ch01.get_node("RoomRouter") as RoomRouter
+	_player = _ch01.get_node("Player") as Player
+	_hud = _player.hud
+	var diag := _ch01.call("get_dialogue_box") as DialogueBox
+	if diag != null and diag.is_active:
+		diag.finish_sequence()
+	_hud.layer = 2   # the world post pass sits on layer 1, under every UI layer
+
+	_post_layer = CanvasLayer.new()
+	_post_layer.layer = 1
+	_post_layer.visible = false
+	_post = ColorRect.new()
+	_post.size = VIEW
+	_post.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://spike/palette_light.gdshader")
+	mat.set_shader_parameter("palette", _palette)
+	mat.set_shader_parameter("ambient_steps", 2)
+	_post.material = mat
+	_post_layer.add_child(_post)
+	root.add_child(_post_layer)
+
+	for pos in [["spawn", Vector2(160, 224)], ["gate", Vector2(656, 264)]]:
+		_player.global_position = pos[1]
+		_router.camera.snap_now()
+		_player.set_physics_process(false)
+		if _player.sprite != null:
+			var anim := "idle_s" if pos[0] == "spawn" else "idle_se"
+			if _player.sprite.sprite_frames.has_animation(anim):
+				_player.sprite.play(anim)
+			_player.sprite.pause()
+			_player.sprite.frame = 0
+		await _frames(5)
+		# a watch target so the HUD marker shows (it must stay unlit)
+		_player.pocket_watch.update_targeting()
+		for v in ["v0_baseline", "v1_runtime", "v2_runtime_quantized", "v3_overlay", "v4_ramp_shift", "v4b_ramp_shift_exempt25", "v4c_ramp_shift_dither"]:
+			await _variant(pos[0], v)
+	# determinism: v4 again at the gate, HUD hidden, compared with gate_v4_ramp_shift_nohud
+	_clear()
+	_set_post(1)
+	_hud.visible = false
+	await _shot("gate_v4_ramp_shift_repeat_nohud")
+	# side view (ADR-025): the Mira memory, scrolling camera, same pass and the same light nodes idea
+	_clear()
+	_hud.visible = true
+	_player.set_physics_process(true)
+	_router.enter_room(&"ch01.side_mira_memory", &"", &"ch01.side_mira_memory.anchor")
+	await _frames(10)
+	_player.global_position = Vector2(720, 394)
+	_router.camera.snap_now()
+	_player.set_physics_process(false)
+	await _frames(5)
+	LIGHTS = [
+		["clock", Vector2(1180, 160), 70.0, 60.0, 2, Color("#EB8A28"), 0.9],
+		["mira", Vector2(780, 360), 56.0, 70.0, 2, Color("#94A2B8"), 0.8],
+		["elias", Vector2.ZERO, 40.0, 56.0, 2, Color("#94A2B8"), 0.55],
+	]
+	await _shot("side_v0_baseline")
+	_set_post(1)
+	await _shot("side_v4_ramp_shift")
+	_player.global_position = Vector2(1100, 394)
+	_router.camera.snap_now()
+	await _frames(5)
+	_set_post(1)
+	await _shot("side_v4_ramp_shift_scrolled")
+	print("SIDE camera %s" % _router.camera.get_screen_center_position())
+	print("SPIKE DONE")
+	quit(0)

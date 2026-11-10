@@ -1,0 +1,68 @@
+shader_type canvas_item;
+
+// TLF-082 spike (scratch only). A full-screen pass over the world canvas, drawn under the HUD.
+// mode 0: snap every pixel to the nearest TLF-CH01-32 colour (post-quantize).
+// mode 1: palette-indexed ramp shift: find the pixel's palette index, then move it `k` steps down
+//         its own material ramp, where k = ambient_steps - (lift of the strongest light here).
+//         Emissive / information indices (ramp 5 hot entries 24-26, ramp 6 27-31) never shift.
+
+uniform sampler2D screen_tex : hint_screen_texture, filter_nearest;
+uniform vec3 palette[32];
+uniform int mode = 1;
+uniform int ambient_steps = 2;
+uniform int light_count = 0;
+uniform vec4 lights[8];        // centre x, y in view pixels; radius x, y
+uniform int light_lift[8];     // steps of lift in the inner band; one less in the outer band
+uniform float inner = 0.55;    // inner band edge, as a fraction of the radius
+uniform vec2 view_size = vec2(960.0, 540.0);
+uniform int exempt_from = 24;  // indices >= this never shift (24: dado stripe too; 25: studs/digits/VFX only)
+uniform bool dither = false;   // 2x2 Bayer across each band edge (adjacent steps only)
+
+int ramp_start(int i) {
+	if (i <= 5) { return 0; }
+	if (i <= 10) { return 6; }
+	if (i <= 15) { return 11; }
+	if (i <= 21) { return 16; }
+	if (i <= 26) { return 22; }
+	return 27;
+}
+
+bool exempt(int i) {
+	return i >= exempt_from;
+}
+
+void fragment() {
+	vec4 c = texture(screen_tex, SCREEN_UV);
+	int best = 0;
+	float bd = 1e9;
+	for (int i = 0; i < 32; i++) {
+		vec3 d = c.rgb - palette[i];
+		float dd = dot(d, d);
+		if (dd < bd) { bd = dd; best = i; }
+	}
+	int idx = best;
+	if (mode == 1 && !exempt(best)) {
+		vec2 p = floor(SCREEN_UV * view_size) + vec2(0.5);
+		int lift = 0;
+		for (int l = 0; l < 8; l++) {
+			if (l >= light_count) { break; }
+			vec2 q = (p - lights[l].xy) / lights[l].zw;
+			float d = length(q);
+			if (dither) {
+				ivec2 b = ivec2(mod(p - vec2(0.5), 2.0));
+				float bayer = (b.x == 0) ? ((b.y == 0) ? 0.0 : 0.75) : ((b.y == 0) ? 0.5 : 0.25);
+				d += (bayer - 0.375) * 0.12;
+			}
+			int v = d < inner ? light_lift[l] : (d < 1.0 ? light_lift[l] - 1 : 0);
+			lift = max(lift, v);
+		}
+		int k = max(0, ambient_steps - lift);
+		int s = ramp_start(best);
+		int j = best - k;
+		if (j < s) {
+			j = (s == 0) ? 0 : ((s - j) == 1 ? 1 : 0);
+		}
+		idx = j;
+	}
+	COLOR = vec4(palette[idx], 1.0);
+}
