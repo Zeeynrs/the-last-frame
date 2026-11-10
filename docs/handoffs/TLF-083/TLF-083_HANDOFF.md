@@ -2,11 +2,39 @@
 
 Opus, 2026-11-10. Branch `agent/opus-core-tlf083` from `origin/main` `f21aef6`.
 
-**Commits:** code, tests and proofs in **`f1545bd`**; this handoff in the commit after it. Not merged.
+**Commits:** code, tests and proofs in **`f1545bd`**, handoff `70ba0e9`; round 2 (Sol's Elias zone) in **`c49b9c9`**, this update in the commit after it. Not merged (the Lead keeps it unmerged tonight).
 
 **Sources:** task `docs/tasks/TLF-083.md` and ADR-026 (`origin/lead/tlf-080-spec` `1a571ce` / `e8c8155`); Sol's direction `docs/reviews/TLF-082_art_direction.md` (`0326cbf`).
 
 **Scope:** Part 1 only, the pass. **No room scene is changed**, so every room looks exactly as today until a room gets `metadata/lighting`. Part 2 (lighting Concourse West) waits for TLF-080 to land on main.
+
+## Round 2: Sol's visual review `b71c0a9` (P1 Elias zone)
+
+Sol's verdict on `f1545bd` was CHANGES REQUIRED with one P1. The 30×45, 2/1 Elias zone read as a spotlight following him: a blue oval that also shows in greyscale. Everything else in Part 1 was accepted: palette-space model, index-24 board protection, dado threshold 25, clock, HUD above the pass, and setting off == baseline.
+
+**Change in `c49b9c9`:** the `RoomLighting` default for A 2 rooms is now Sol's exact values: radius **(18,28)**, offset (0,−20), inner **0.85**, lifts **1/0**. Hard bands, dither off. Elias's body therefore stays one ramp step down instead of fully restored, and the floor footprint is small and weak. Per Sol:
+- **A 1 rooms:** use 1/0.
+- **Maintenance (A 3):** gets its own values (lift 2) and stress proof.
+
+**Test (`test_room_lighting_ranges`):**
+- **Defaults:** asserts the radius and the 1/0 lifts.
+- **Coverage on the real sheets:** every body pixel of `ch01_char_elias_base_sheet.png` (80 frames) and `ch01_char_elias_side_sheet.png` (22 frames), outline 00 and shadow 01 aside, must lie inside the inner band. Measured maximum normalized distance: **0.816** iso and **0.761** side, below 0.85; Sol's estimate was ≈ 0.813. The sprite is centred on (0,−20) like the zone.
+- **Not vacuous:** with radius (14,22) it goes **RED** (max 1.041 / 0.970). Lighting test file: 15/0.
+
+**Rendered proof** (`capture_tlf083.gd`, windowed Forward+ D3D12, same runtime-only Arrival lighting):
+- **`spawn_lit.png`, `gate_lit.png` and their `_nohud` / greyscale copies:** re-captured with the new zone.
+- **Motion sheets (new):** `elias_motion_lit.png`, `elias_motion_unlit.png` and `elias_motion_lit_greyscale.png`. Each is 8 facings (s, se, e, ne, n, nw, w, sw) × idle frame 0 and walk frames 1, 3 and 5, as 96×96 native crops centred on Elias. He steps 4 px per column across the gate floor, so the zone is shown following him through idle, walk and turn.
+- **Checks, unchanged:**
+
+  | Check | Spawn | Gate |
+  |---|---|---|
+  | Shader vs reference mismatches | **0 / 518 400 px** | **0 / 518 400 px** |
+  | Off-palette pixels | **0** | **0** |
+  | Setting off == unlit | **true** | **true** |
+  | Board glyphs kept | 234 / 234 | 234 / 234 |
+  | Pass cost | +0.07 ms | +0.07 ms |
+
+**For Sol:** the sheets are the requested proof of "no conspicuous oval during idle/walk/turn" and of the body read at native size and in greyscale. If it still reads as a spotlight or the darker body fails, Sol's fallback is an actor/silhouette receiver (lift only Elias's own visible pixels). That is a pass extension (e.g. a mask from the player sprite), not a bigger ellipse.
 
 ## What was built
 
@@ -14,7 +42,7 @@ Opus, 2026-11-10. Branch `agent/opus-core-tlf083` from `origin/main` `f21aef6`.
 |---|---|
 | `scripts/rendering/lighting/lighting_pass.gd` (`LightingPass`) | **Pass:** a `CanvasLayer` at **layer 1** with one full-screen `ColorRect` running the palette shader, above the world canvas and under every UI layer. **Rules:** pure functions (`shifted_index`, `shift_table`, `lift_at`, `output_index`, `validate_room`). The shader indexes the same table and mirrors `lift_at`. **Room handling:** `apply_room(room, lighting, player)` takes the room's `RoomLight` nodes (the first 8; more give a warning). `screen_lights()` converts positions through the viewport's canvas transform and rounds them to whole pixels; it runs every frame. **Visibility:** visible only with a lit room *and* `Settings.lighting_enabled`. |
 | `scripts/rendering/lighting/palette_lighting.gdshader` | **Per pixel:** snap to the nearest of the 32 colours (exact for palette art), then lift = the strongest of ≤ 9 slots (8 room lights + the Elias zone; **no sum**), `k = clamp(A − lift, 0, 3)`, output `palette[shift_table[index*4 + k]]`. **Hard bands:** no dither, glow, tint or flicker. |
-| `scripts/rendering/lighting/room_lighting.gd` (`RoomLighting`, `metadata/lighting`) | **Room values:** `ambient_steps` 0–3 (default 2), `exempt_from` 25–32 (default **25**; 24 is rejected because index-24 information is protected locally), `dither` (must stay **false**; validation rejects true until Sol accepts a dither). **Elias zone:** offset (0,−20), radius (30,45), lifts **2/1**, inner 0.8. The inner band (24×36) covers his 32×48 sprite; the outer band is a 6–9 px ring (see open point 1). `validate()` lists every range problem. |
+| `scripts/rendering/lighting/room_lighting.gd` (`RoomLighting`, `metadata/lighting`) | **Room values:** `ambient_steps` 0–3 (default 2), `exempt_from` 25–32 (default **25**; 24 is rejected because index-24 information is protected locally), `dither` (must stay **false**; validation rejects true until Sol accepts a dither). **Elias zone (round 2, Sol `b71c0a9`):** offset (0,−20), radius **(18,28)**, lifts **1/0**, inner **0.85**. Every body pixel of both Elias sheets is inside the inner band. `validate()` lists every range problem. |
 | `scripts/rendering/lighting/room_light.gd` (`RoomLight`, a `Marker2D`) | **`ELLIPSE` pool:** radius x/y, lift inner/outer, inner 0.55 (iso floor pools 2:1). **`QUAD` region:** 4 local points around a convex area, lifting `lift_inner` inside. **`only_indices`:** restricts either kind to some palette indices. A QUAD with `only_indices = [24]` is the **information region** for the departure-board glyphs (item 3). `validate()` checks lifts 0..3, outer ≤ inner, positive radius, a convex 4-point quad, and indices 0..31. |
 | `scripts/rendering/lighting/tlf_palette.gd` (`TlfPalette`) | The 32 colours and 6 ramp starts (ART_BIBLE §3.1); a test keeps them equal to the `.gpl`. |
 | `scripts/rooms/room_router.gd` | `current_room_lighting()`. **Entry:** `_apply_lighting()` runs on every room entry right after `_apply_view_mode()`, and creates the pass as a child the first time a lit room is entered (an unlit chapter never creates one). **Unload:** the pass is cleared on unload, so it never holds freed lights. |
@@ -67,7 +95,7 @@ Opus, 2026-11-10. Branch `agent/opus-core-tlf083` from `origin/main` `f21aef6`.
 - clock 2/1 at (592,160), radius 40×28;
 - gate helper 1/0 at (720,326), 64×32;
 - the board information quad;
-- the Elias zone 2/1.
+- the Elias zone (round 2: 18×28, 1/0).
 
 At the spawn and the gate it saved lit / unlit / setting-off frames (HUD hidden for the checks). `capture.log`:
 
@@ -134,9 +162,7 @@ Raw key lines (`validate_capped_f1545bd.log`, sha256 `2367ac71227d2a067b57b2dae2
 
 ## Open points for Sol and the Lead
 
-1. **Elias zone shape.** The first default (radius 44×66, inner 0.55) read as a spotlight moving with Elias. The default is now a tight zone: inner 24×36 just covers the sprite, plus a 6–9 px outer ring (`spawn_lit.png`). It still shows as a narrow capsule of un-darkened floor around him.
-   - **Index masking cannot replace it:** his trousers use 02/03, the floor's terrazzo indices (ART_BIBLE A.2).
-   - **For Sol:** keep 2/1 tight, use 2/2 tight (no ring), or lower the zone in A-1 rooms. These are data on `RoomLighting`.
+1. **Elias zone shape:** resolved in round 2 with Sol's values (above), pending Sol's look at the motion sheets. Index masking still cannot replace the zone, because his trousers use 02/03, the floor's terrazzo indices (ART_BIBLE A.2). Sol's fallback, if needed, is an actor/silhouette receiver.
 2. **Receiver masks.** Not built. A `QUAD` with `only_indices` already confines a lift to a face and a set of indices. A painted per-room mask (Sol §5) is added only if a room's proof shows spill (ADR-026); Part 2 decides that for the concourse.
 3. **Side-view shared indices 25/26** (Sol §2: lamp strips and rails). With `exempt_from` 25 these indices never shift, and a `RoomLight` can only *lift*, so no light can calm a decorative 25/26 strip.
    - **Option 1:** a small extension, a "receiver override" region that lets the indices inside it shift although they are ≥ `exempt_from`.
@@ -152,6 +178,6 @@ Concourse West values from ADR-026:
 - A 2;
 - one focal 2/1 on the turnstile/decision area or the 23:59 clock (choose with Sol);
 - one helper 1/0 toward the east door;
-- the Elias zone 2/1.
+- the Elias zone at the round-2 default (18×28, 1/0).
 
 The D.7 proof pack covers the arrival, gate, dials and east door, lit and unlit, measured for 0 off-palette pixels and with greyscale copies. `capture_tlf083.gd` already does the pixel and palette checks.
