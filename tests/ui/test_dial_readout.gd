@@ -78,7 +78,7 @@ func test_readout_follows_focus_and_rewind() -> void:
 		return
 	var hud := player.hud
 	_assert_false(hud.readout_panel.visible, "no readout at the west door")
-	if not await walk_to(player, "concourse -> through the turnstile", Vector2(304, 136)):
+	if not await walk_to(player, "concourse -> through the turnstile", Vector2(352, 208)):
 		stop()
 		return
 	_assert_false(hud.readout_panel.visible, "no readout past the turnstile")
@@ -87,7 +87,7 @@ func test_readout_follows_focus_and_rewind() -> void:
 		return
 
 	var line := _dial(&"dial_line")
-	if not await walk_to(player, "concourse -> dial_line", Vector2(432, 152), func() -> bool: return player.pocket_watch.current_target == line):
+	if not await walk_to(player, "concourse -> dial_line", Vector2(544, 200), func() -> bool: return player.pocket_watch.current_target == line):
 		stop()
 		return
 	await physics_frames(1)
@@ -111,7 +111,7 @@ func test_readout_follows_focus_and_rewind() -> void:
 	await idle_frames(1)
 	_assert_eq(_readout_text(hud), "HOLLOW QUAY", "after the Rewind the readout shows index 4")
 
-	for row in [[&"dial_platform", Vector2(464, 168), "PLAT 5"], [&"dial_time", Vector2(496, 184), "23:57"]]:
+	for row in [[&"dial_platform", Vector2(576, 216), "PLAT 5"], [&"dial_time", Vector2(608, 232), "23:57"]]:
 		var dial := _dial(row[0])
 		if not await walk_to(player, "concourse -> %s" % row[0], row[1], func() -> bool: return player.pocket_watch.current_target == dial):
 			stop()
@@ -121,7 +121,7 @@ func test_readout_follows_focus_and_rewind() -> void:
 		_assert_eq(_readout_text(hud), tr(dial.label_key()), "%s focused: readout is its label" % row[0])
 		_assert_eq(_readout_text(hud), row[2], "%s value at index 5" % row[0])
 
-	if not await walk_to(player, "concourse -> away from the dials", Vector2(304, 136)):
+	if not await walk_to(player, "concourse -> away from the dials", Vector2(352, 208)):
 		stop()
 		return
 	await physics_frames(1)
@@ -141,13 +141,13 @@ func test_readout_does_not_hide_feedback() -> void:
 	var hud := player.hud
 	var platform := _dial(&"dial_platform")
 	var line := _dial(&"dial_line")
-	if not await walk_to(player, "concourse -> through the turnstile", Vector2(304, 136)):
+	if not await walk_to(player, "concourse -> through the turnstile", Vector2(352, 208)):
 		stop()
 		return
 	if not await select_ability(&"rewind"):
 		stop()
 		return
-	if not await walk_to(player, "concourse -> dial_platform", Vector2(464, 168), func() -> bool: return player.pocket_watch.current_target == platform):
+	if not await walk_to(player, "concourse -> dial_platform", Vector2(576, 216), func() -> bool: return player.pocket_watch.current_target == platform):
 		stop()
 		return
 	while platform.index > 0:
@@ -168,7 +168,7 @@ func test_readout_does_not_hide_feedback() -> void:
 	_check_stacked(hud, "no_history")
 
 	var start_frame := Engine.get_physics_frames()
-	if not await walk_to(player, "concourse -> dial_line", Vector2(432, 152), func() -> bool: return player.pocket_watch.current_target == line):
+	if not await walk_to(player, "concourse -> dial_line", Vector2(544, 200), func() -> bool: return player.pocket_watch.current_target == line):
 		stop()
 		return
 	await idle_frames(1)
