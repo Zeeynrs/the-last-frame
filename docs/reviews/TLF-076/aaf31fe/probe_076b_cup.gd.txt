@@ -1,0 +1,81 @@
+extends "res://tests/support/ch01_real_input.gd"
+
+## TLF-076b review probe: the cup's rewound state across exit, lounge autosave (disk/JSON) and Continue.
+
+const LOUNGE := &"ch01.waiting_lounge"
+const MEMORY := &"ch01.side_mira_memory"
+const CUP := &"ch01.side_mira_memory.cup"
+const FLAG := &"ch01.flag.mira_memory_cup_rewound"
+
+
+func _init() -> void:
+	timeout_frames = 8000
+
+
+func _enter_memory() -> bool:
+	if not await walk_to(player, "lounge -> bench", Vector2(320, 160)):
+		return false
+	await select_ability(&"trace")
+	if not session.narrative_state.get_flag(&"heard.ch01_b06_bench", false):
+		await tap(&"interact")
+		await physics_frames(3)
+		var diag := ch01.call("get_dialogue_box") as DialogueBox
+		if diag.is_active:
+			diag.finish_sequence()
+	await tap(&"watch")
+	return await until(in_room(MEMORY), 20)
+
+
+func _cup_report(label: String) -> void:
+	var cup := resolve(CUP) as Node2D
+	await push_for([Vector2(560, 394)], 400, func() -> bool: return player.global_position.x >= 560.0)
+	await select_ability(&"rewind")
+	await physics_frames(2)
+	var w := player.pocket_watch
+	print("PROBE %s: cup pos %s layer %d supports_rewind %s flag %s | watch target %s | use target %s" % [label, cup.position,
+		cup.collision_layer, cup.supports_ability(&"rewind"), session.narrative_state.get_flag(FLAG, false),
+		w.current_target.object_id if w.current_target else &"-", player.current_target.object_id if player.current_target else &"-"])
+
+
+func test_cup_save_load() -> void:
+	if not await start_at(LOUNGE, &"door_entry_west", [], [FLAG_REWIND]):
+		stop()
+		return
+	var diag := ch01.call("get_dialogue_box") as DialogueBox
+	if diag.is_active:
+		diag.finish_sequence()
+	if not _assert_true(await _enter_memory(), "entered the memory"):
+		stop()
+		return
+	var cup := resolve(CUP) as Node2D
+	await push_for([Vector2(588, 394)], 400, func() -> bool: return player.global_position.x >= 588.0)
+	await select_ability(&"rewind")
+	await physics_frames(1)
+	await tap(&"watch")
+	await physics_frames(3)
+	print("PROBE after Rewind: cup %s flag %s" % [cup.position, session.narrative_state.get_flag(FLAG, false)])
+	await push_for([Vector2(1430, 394)], 900, func() -> bool: return router.current_room_id == LOUNGE)
+	await physics_frames(3)
+	if not await save_at_checkpoint(&"ch01.cp.waiting_lounge", Vector2(256, 112), Vector2(336, 152)):
+		stop()
+		return
+	var read: Dictionary = store.read_slot(router.autosave_slot)
+	var data: Dictionary = read["data"]
+	print("PROBE autosave room %s flag %s temporal cup %s" % [data["spatial"]["actor_rooms"], data["narrative_flags"].get(String(FLAG), "<none>"),
+		data["temporal"].get(String(CUP), "<none>")])
+	var no_temporal := data.duplicate(true)
+	no_temporal["temporal"].erase(String(CUP))
+	var no_flag := data.duplicate(true)
+	no_flag["narrative_flags"].erase(String(FLAG))
+	stop()
+
+	for row in [["Continue (full save)", data], ["Continue (save without the cup temporal entry)", no_temporal], ["Continue (save without the flag, older save)", no_flag]]:
+		if not await start_at(&"ch01.arrival_platform", &""):
+			stop()
+			return
+		var res := router.restore_from_save(row[1])
+		await physics_frames(3)
+		print("PROBE %s: restore %s room %s" % [row[0], res, router.current_room_id])
+		if await _enter_memory():
+			await _cup_report(row[0])
+		stop()

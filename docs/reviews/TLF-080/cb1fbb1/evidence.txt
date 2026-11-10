@@ -1,0 +1,30 @@
+== conduit probe (real input after setup; save at ch01.cp.concourse_west to disk, Continue into a fresh chapter)
+PROBE start: conduit fallen at (328.0, 184.0), gate blocked true
+PROBE AU-08 Trace from (304.0, 184.0) -> n05_courier; conduit at 24.0 px, trace anchor at 26.8 px
+PROBE AU-08 Trace from (312.0, 188.0) -> turnstile_trace_anchor; conduit at 16.5 px, trace anchor at 17.9 px
+PROBE AU-08 Trace from (224.0, 144.0) -> n05_courier; conduit at 111.4 px, trace anchor at 116.3 px
+PROBE at gate spot: Rewind target turnstile_gate
+PROBE gate Rewind while pinned: refusal [&"player", &"ch01.concourse_west.turnstile_gate", &"pinned", 61]
+PROBE at conduit spot: Rewind target conduit_01
+PROBE after conduit Rewind: mounted at (144.0, 160.0)
+PROBE autosave ok true, conduit entry { "schema_version": 1, "cursor": 0, "entries": [{ "conduit_state": &"mounted" }, { "conduit_state": &"fallen" }], "is_frozen": false }
+PROBE at gate spot after lifting: Rewind target turnstile_gate
+PROBE gate open after Rewind: true
+PROBE reset_anchor_01 use: ok true; conduit fallen at (328.0, 184.0); gate blocked true
+PROBE Continue: { "ok": true, "reason": &"" } room ch01.concourse_west; conduit mounted at (144.0, 160.0); presenter TL (120.0, 134.0)
+PROBE re-entry: conduit mounted at (144.0, 160.0)
+(second run, presenter read after 2 idle frames:)
+PROBE Continue (physics frames only): presenter TL (120.0, 134.0)
+PROBE Continue: { "ok": true, "reason": &"" } room ch01.concourse_west; conduit mounted at (144.0, 160.0); presenter TL (112.0, 102.0)
+
+== affected test files on cb1fbb1 (run_tests.gd -- <file>, 120 s cap each)
+test_ch01_concourse_west_v2 | TESTS: 12 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_real_playthrough | TESTS: 1 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_step1_negatives | TESTS: 12 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_step1_r1_deltas | TESTS: 39 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_art_integration | TESTS: 6 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_sort_order | TESTS: 3 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_audio_real_input | TESTS: 2 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_playthrough | TESTS: 19 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_unlock_guards | TESTS: 4 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+import: exit 0, 0 ERROR lines

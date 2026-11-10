@@ -1,0 +1,19 @@
+== f84f19e extract: python tools/art/test_tlf081.py
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 3.076s
+
+OK
+
+== check_assets.py
+RESULT: ALL PASS (314 file(s))
+
+== verify_regen.py: ok lines 321
+NOT COVERED (authored by Argon in batch 1, no generator in this repo): ch01_env_archway_frame_e_idle, ch01_env_arrival_platform_target_sheet, ch01_env_tile_tactile_amber_idle, ch01_env_tile_terrazzo_cracked_idle, ch01_env_tile_terrazzo_dark_idle, ch01_env_wall_subterranean_n_idle, ch01_env_wall_subterranean_w_idle, ch01_palette_elysium09, ch01_prop_digital_clock_2359_idle
+RESULT: ALL REPRODUCIBLE
+
+== composite against f44af6e WallW_* transforms (Opus script)
+WallW_5 TL (128,96)  WallW_6 TL (96,112)  WallW_7 TL (64,128)  WallW_1 TL (256,32); WallN_7..9 TL (544,128) (576,144) (608,160)
+conduit/notice opaque overlap 0
+conduit 536 opaque px, 0 outside W wall alpha; notice 263, 0; phone idle 677, 0; phone ringing 699, 0
+wall-axis tile y: conduit 10.125..12.875, notice 14.562..15.438; door aperture 7..9

@@ -1,0 +1,49 @@
+PALETTE entries 32
+CAPTURED spawn_v0_baseline (960, 540)
+CAPTURED spawn_v0_baseline_nohud (960, 540)
+TIMING spawn v0_baseline gpu_ms 0.033
+CAPTURED spawn_v1_runtime (960, 540)
+CAPTURED spawn_v1_runtime_nohud (960, 540)
+TIMING spawn v1_runtime gpu_ms 0.044
+CAPTURED spawn_v2_runtime_quantized (960, 540)
+CAPTURED spawn_v2_runtime_quantized_nohud (960, 540)
+TIMING spawn v2_runtime_quantized gpu_ms 0.102
+CAPTURED spawn_v3_overlay (960, 540)
+CAPTURED spawn_v3_overlay_nohud (960, 540)
+TIMING spawn v3_overlay gpu_ms 0.041
+CAPTURED spawn_v4_ramp_shift (960, 540)
+CAPTURED spawn_v4_ramp_shift_nohud (960, 540)
+TIMING spawn v4_ramp_shift gpu_ms 0.101
+CAPTURED spawn_v4b_ramp_shift_exempt25 (960, 540)
+CAPTURED spawn_v4b_ramp_shift_exempt25_nohud (960, 540)
+TIMING spawn v4b_ramp_shift_exempt25 gpu_ms 0.101
+CAPTURED spawn_v4c_ramp_shift_dither (960, 540)
+CAPTURED spawn_v4c_ramp_shift_dither_nohud (960, 540)
+TIMING spawn v4c_ramp_shift_dither gpu_ms 0.106
+CAPTURED gate_v0_baseline (960, 540)
+CAPTURED gate_v0_baseline_nohud (960, 540)
+TIMING gate v0_baseline gpu_ms 0.034
+CAPTURED gate_v1_runtime (960, 540)
+CAPTURED gate_v1_runtime_nohud (960, 540)
+TIMING gate v1_runtime gpu_ms 0.043
+CAPTURED gate_v2_runtime_quantized (960, 540)
+CAPTURED gate_v2_runtime_quantized_nohud (960, 540)
+TIMING gate v2_runtime_quantized gpu_ms 0.101
+CAPTURED gate_v3_overlay (960, 540)
+CAPTURED gate_v3_overlay_nohud (960, 540)
+TIMING gate v3_overlay gpu_ms 0.041
+CAPTURED gate_v4_ramp_shift (960, 540)
+CAPTURED gate_v4_ramp_shift_nohud (960, 540)
+TIMING gate v4_ramp_shift gpu_ms 0.101
+CAPTURED gate_v4b_ramp_shift_exempt25 (960, 540)
+CAPTURED gate_v4b_ramp_shift_exempt25_nohud (960, 540)
+TIMING gate v4b_ramp_shift_exempt25 gpu_ms 0.102
+CAPTURED gate_v4c_ramp_shift_dither (960, 540)
+CAPTURED gate_v4c_ramp_shift_dither_nohud (960, 540)
+TIMING gate v4c_ramp_shift_dither gpu_ms 0.106
+CAPTURED gate_v4_ramp_shift_repeat_nohud (960, 540)
+CAPTURED side_v0_baseline (960, 540)
+CAPTURED side_v4_ramp_shift (960, 540)
+CAPTURED side_v4_ramp_shift_scrolled (960, 540)
+SIDE camera (960.0, 270.0)
+SPIKE DONE

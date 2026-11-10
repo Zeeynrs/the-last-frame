@@ -1,0 +1,75 @@
+extends "res://tests/support/ch01_real_input.gd"
+
+## Opus review probes for TLF-080 (scratch copy only). Real input after setup; PROBE lines are the
+## evidence, the asserts only guard the setup.
+
+const R2 := &"ch01.concourse_west"
+const R1 := &"ch01.arrival_platform"
+
+
+func _init() -> void:
+	timeout_frames = 7000
+
+
+static func tile_px(x: float, y: float) -> Vector2:
+	return Vector2(320 + 16 * (x - y), 64 + 8 * (x + y))
+
+
+static func px_tile(p: Vector2) -> Vector2:
+	var a := (p.x - 320.0) / 16.0
+	var b := (p.y - 64.0) / 8.0
+	return Vector2((a + b) / 2.0, (b - a) / 2.0)
+
+
+func _place(p: Vector2, frames: int = 15) -> void:
+	hold_moves([])
+	if router.current_room_id != R2:
+		router.enter_room(R2, &"door_entry_west")
+		await physics_frames(3)
+	player.global_position = p
+	player.velocity = Vector2.ZERO
+	await physics_frames(frames)
+
+
+## West door from the inside: push into the W wall at tile (−1, y) from (1, y); which y reach the
+## arrival platform? Also a straight walk at the archway from the spawn.
+func test_a_west_door_aperture_from_inside() -> void:
+	if not await start_at(R2, &"door_entry_west", [&"CH1-SO-01"]):
+		stop()
+		return
+	var hits: Array = []
+	var y := 6.5
+	while y <= 9.51:
+		await _place(tile_px(1.0, y))
+		await push_for([tile_px(-1.0, y)], 90, in_room(R1))
+		var hit := router.current_room_id == R1
+		print("PROBE A push into W wall at tile y %.2f (from %s): %s, stopped at %s" % [y, tile_px(1.0, y), "DOOR" if hit else "wall", px_tile(player.global_position) if not hit else Vector2.ZERO])
+		if hit:
+			hits.append(y)
+		y += 0.25
+	print("PROBE A door triggered for y in %s" % [hits])
+	await _place(Vector2(224, 144))
+	await push_for([Vector2(192, 128)], 120, in_room(R1))
+	print("PROBE A walk from the spawn at the archway centre (192,128): room %s" % router.current_room_id)
+	stop()
+
+## Diagonal presses from the arrival for 3 s (the task requires left/up/down; these are extra).
+func test_b_diagonal_sweeps_from_arrival() -> void:
+	if not await start_at(R2, &"door_entry_west", [&"CH1-SO-01"]):
+		stop()
+		return
+	for combo in [[&"move_left", &"move_up"], [&"move_left", &"move_down"], [&"move_up"], [&"move_left"], [&"move_down"]]:
+		await _place(Vector2(224, 144))
+		var arr: Array[StringName] = []
+		for a in combo:
+			arr.append(a)
+		hold_moves(arr)
+		var left := false
+		for i in 180:
+			await physics_frames(1)
+			if router.current_room_id != R2:
+				left = true
+				break
+		hold_moves([])
+		print("PROBE B hold %s for 3 s from (224,144): %s (end %s)" % [combo, "DOOR TRIGGERED" if left else "stayed", player.global_position])
+	stop()

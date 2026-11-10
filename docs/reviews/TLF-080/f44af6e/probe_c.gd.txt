@@ -1,0 +1,70 @@
+extends "res://tests/support/ch01_real_input.gd"
+
+## Opus review probes for TLF-080 (scratch copy only). Real input after setup; PROBE lines are the
+## evidence, the asserts only guard the setup.
+
+const R2 := &"ch01.concourse_west"
+const R1 := &"ch01.arrival_platform"
+
+
+func _init() -> void:
+	timeout_frames = 7000
+
+
+static func tile_px(x: float, y: float) -> Vector2:
+	return Vector2(320 + 16 * (x - y), 64 + 8 * (x + y))
+
+
+static func px_tile(p: Vector2) -> Vector2:
+	var a := (p.x - 320.0) / 16.0
+	var b := (p.y - 64.0) / 8.0
+	return Vector2((a + b) / 2.0, (b - a) / 2.0)
+
+
+func _place(p: Vector2, frames: int = 15) -> void:
+	hold_moves([])
+	if router.current_room_id != R2:
+		router.enter_room(R2, &"door_entry_west")
+		await physics_frames(3)
+	player.global_position = p
+	player.velocity = Vector2.ZERO
+	await physics_frames(frames)
+
+
+## Turnstile dividers along x = 8 with the gate closed (PZ-001 unsolved): push east from x 7.2 at
+## every half tile of y, plus the wall ends and the Blocker corners. Then the passage once open.
+func test_c_divider_and_gate() -> void:
+	if not await start_at(R2, &"door_entry_west", [&"CH1-SO-01"], [FLAG_REWIND]):
+		stop()
+		return
+	var gate := resolve(&"ch01.concourse_west.turnstile_gate")
+	print("PROBE C gate passage_blocked %s" % gate.get("passage_blocked"))
+	var crossed: Array = []
+	var max_x := -99.0
+	var y := 0.4
+	while y <= 15.61:
+		var cases := [[tile_px(7.2, y), tile_px(9.5, y)], [tile_px(7.2, y), tile_px(9.5, y - 0.6)]]
+		for c in cases:
+			await _place(c[0], 4)
+			await push_for([c[1]], 60)
+			var t := px_tile(player.global_position)
+			max_x = maxf(max_x, t.x)
+			if t.x > 8.2:
+				crossed.append([y, c[1], t])
+		y += 0.8
+	print("PROBE C closed gate: furthest tile x reached from the west %.2f; crossings %s" % [max_x, crossed])
+	# open the gate (PZ-001 solved) and sweep the opening
+	session.puzzle_service.mark_solved(&"CH1-PZ-001")
+	await physics_frames(3)
+	print("PROBE C after SOLVED: passage_blocked %s" % gate.get("passage_blocked"))
+	var open_ys: Array = []
+	y = 6.8
+	while y <= 9.21:
+		await _place(tile_px(7.0, y), 4)
+		await push_for([tile_px(9.6, y)], 90)
+		var t2 := px_tile(player.global_position)
+		if t2.x > 8.5:
+			open_ys.append(snappedf(y, 0.01))
+		y += 0.1
+	print("PROBE C open gate: passable for start y %s" % [open_ys])
+	stop()

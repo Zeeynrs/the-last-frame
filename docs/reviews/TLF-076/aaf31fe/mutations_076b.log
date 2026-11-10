@@ -1,0 +1,19 @@
+BASELINE | TESTS: 6 passed, 0 failed | SCRIPT ERROR 0
+L1 room swap leaks the old room (orphans) | RED | TESTS: 5 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_mode_switch_leaves_no_leaks] no orphan nodes leaked after 3 mode-switch round trips (Expected 280.0, got 484.0)
+R1 cup back on the floor on re-entry | RED | TESTS: 5 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_reentry_memory_flow] re-entry: cup remains on bench at (540, 384) (Expected (540.0, 384.0), got (600.0, 394.0))
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_reentry_memory_flow] re-entry: cup is not targetable for watch
+R2 rewound state not restored on re-entry (_is_cup_rewound false) | RED | TESTS: 5 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_reentry_memory_flow] re-entry: cup is not targetable for watch
+C1 left walk not clamped | RED | TESTS: 5 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_walk_bounds_and_clamping] left walk clamped at x >= 16 (got -12.0)
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_walk_bounds_and_clamping] left walk hits clamp limit exactly at x=16 (Expected 16.0, got -12.0)
+C2 right walk not clamped | RED | TESTS: 5 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_walk_bounds_and_clamping] right walk clamped at x <= 1424 (got 1468.0)
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_walk_bounds_and_clamping] right walk hits clamp limit exactly at x=1424 (Expected 1424.0, got 1468.0)
+C3 camera not clamped | RED | TESTS: 4 passed, 2 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] camera clamped at left clamp 480 at spawn x=120 (Expected 480.0, got 120.0)
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_walk_bounds_and_clamping] camera clamped at left clamp 480 when player is at x=16 (Expected 480.0, got 16.0)
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_walk_bounds_and_clamping] camera clamped at right clamp 960 when player is at x=1424 (bounds 0..1440) (Expected 960.0, got 1424.0)
+RESTORED | TESTS: 6 passed, 0 failed | SCRIPT ERROR 0

@@ -1,0 +1,70 @@
+extends "res://tests/support/ch01_real_input.gd"
+
+## Opus review probes for TLF-080 (scratch copy only). Real input after setup; PROBE lines are the
+## evidence, the asserts only guard the setup.
+
+const R2 := &"ch01.concourse_west"
+const R1 := &"ch01.arrival_platform"
+
+
+func _init() -> void:
+	timeout_frames = 7000
+
+
+static func tile_px(x: float, y: float) -> Vector2:
+	return Vector2(320 + 16 * (x - y), 64 + 8 * (x + y))
+
+
+static func px_tile(p: Vector2) -> Vector2:
+	var a := (p.x - 320.0) / 16.0
+	var b := (p.y - 64.0) / 8.0
+	return Vector2((a + b) / 2.0, (b - a) / 2.0)
+
+
+func _place(p: Vector2, frames: int = 15) -> void:
+	hold_moves([])
+	if router.current_room_id != R2:
+		router.enter_room(R2, &"door_entry_west")
+		await physics_frames(3)
+	player.global_position = p
+	player.velocity = Vector2.ZERO
+	await physics_frames(frames)
+
+
+## Camera at the four points with the real 960 x 540 view.
+func test_e_camera() -> void:
+	if not await start_at(R2, &"door_entry_west", [&"CH1-SO-01"]):
+		stop()
+		return
+	var cam := router.camera as RoomCamera
+	var b := router.current_room_bounds()
+	print("PROBE E bounds %s, view size %s, room_shape %s" % [b, RoomCamera.view_size(), router.current_room_shape() != null])
+	for row in [["arrival", Vector2(224, 144)], ["gate", Vector2(298, 198)], ["dials", Vector2(576, 216)], ["east door", Vector2(608, 336)]]:
+		await _place(row[1], 3)
+		cam.snap_now()
+		await physics_frames(1)
+		var v := cam.view_rect()
+		print("PROBE E %s: centre %s view %s; room inside view %s; player on screen %s" % [row[0], cam.get_screen_center_position(), v, v.encloses(b), v.has_point(player.global_position)])
+	stop()
+
+## TEST-AU-08 with the real colliders: Trace targets from the spec spots, and reachability.
+func test_f_au08() -> void:
+	if not await start_at(R2, &"door_entry_west", [&"CH1-SO-01"]):
+		stop()
+		return
+	var w := player.pocket_watch
+	w.selected_ability = &"trace"
+	var cands := _tree().get_nodes_in_group(&"interactable")
+	for spot in [Vector2(224, 144), Vector2(304, 184), Vector2(312, 188)]:
+		var t = PocketWatch.choose_watch_target(spot, cands, &"trace", w.watch_radius, &"player")
+		var dist: float = spot.distance_to(t.global_position) if t != null else -1.0
+		var traceables: Array = []
+		for c in cands:
+			if c is Interactable and c.supports_ability(&"trace") and spot.distance_to(c.global_position) <= w.watch_radius:
+				traceables.append("%s %.1f" % [c.name, spot.distance_to(c.global_position)])
+		print("PROBE F Trace from %s -> %s (%.1f px); traceable in range: %s" % [spot, t.name if t != null else "none", dist, traceables])
+	for spot in [Vector2(304, 184), Vector2(312, 188), Vector2(298, 198)]:
+		await _place(Vector2(224, 144), 3)
+		await walk_to(player, "reach %s" % spot, spot, Callable(), 300, true)
+		print("PROBE F walk (gate closed) to %s: end %s, distance %.2f" % [spot, player.global_position, player.global_position.distance_to(spot)])
+	stop()

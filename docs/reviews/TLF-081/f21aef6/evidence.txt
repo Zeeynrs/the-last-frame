@@ -1,0 +1,21 @@
+Old room audited at current origin/main: f21aef6899d183e5101db9dc369811bd10a18455
+Task, PATTERN rules9/12 and proposed v2 destination placements read from origin/lead/tlf-080-spec at 085b55440607828c0d6b41396a98976abc617e01.
+Fresh git archive; only scratch project configuration renamed and audit harness added. All 1831 tracked blobs except intentionally renamed project.godot remain identical to baseline after import/capture.
+Commands (exit0; subprocess timeout120 seconds each):
+Godot_v4.7.2-stable_win64_console.exe --headless --editor --path <scratch> --import --quit
+Godot_v4.7.2-stable_win64_console.exe --path <scratch> --windowed --resolution 960x540 --position 100,100 --script res://sol081_facing.gd
+Actual Chapter01 and RoomRouter entering ch01.concourse_west, 8 settling frames, original sprites/presenters; HUD/dialogue hidden for prop inspection; chapter processing frozen; player idle at (304,136); original camera view(-160,-90,960,540).
+37 visible textured Sprite2Ds plus TileMapLayer_Floor (192 cells), zero other Polygon2D/Line2D/ColorRect scene drawables. inventory.json preserves every path, visual anchor, rect, exact current PNG and exported state textures.
+Two root archways render exactly on canonical copies: ArchwayWest/Archway_door_entry_west and ArchwayEast/Archway_door_exit_east; not four unique art designs.
+reset_anchor_02 has no drawable in the packed scene; no invisible extra reset cabinet commissioned.
+All13 required source exports exist; none of their new face-specific destinations exists at baseline. Existing N clock variant exists. Required source/export filenames enumerated in required_variants.csv.
+Current prop contact sheets are nearest x4 of untouched source PNGs, with audit captions outside sprite bounds; not new art or target-facing mockups. Native screenshot is primary evidence; x2 is nearest expansion of that frame.
+No engine/script errors. Real save/settings inventory/hashes/sizes/mtime unchanged (140 files).
+Read-only audit: no production files changed; no gameplay or new-art validation suite run.
+
+Raw capture log:
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+SOL081 WINDOWED user_dir=C:/Users/adity/AppData/Roaming/TLF Sol 081 f21aef6
+SOL081 COMPLETE sprites=37 terrain=[{ "path": "TileMapLayer_Floor", "cells": 192, "source_counts": { "1": 17, "0": 172, "2": 3 } }] other_drawables=[] view=[P: (-160.0, -90.0), S: (960.0, 540.0)]

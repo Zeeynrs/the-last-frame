@@ -1,0 +1,688 @@
+{
+	"other_drawables": [],
+	"sha": "f21aef6899d183e5101db9dc369811bd10a18455",
+	"sprites": [
+		{
+			"path": "ArchwayWest",
+			"position": [
+				240.0,
+				104.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png",
+			"visible": true
+		},
+		{
+			"path": "ArchwayEast",
+			"position": [
+				480.0,
+				224.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png",
+			"visible": true
+		},
+		{
+			"path": "turnstile_gate/Presenter",
+			"position": [
+				272.0,
+				120.0
+			],
+			"rect": [
+				-16.0,
+				-34.0,
+				32.0,
+				40.0
+			],
+			"script": "res://scripts/chapters/ch01/visuals/turnstile_presenter.gd",
+			"states": {
+				"tex_collapsed": "res://assets/props/ch01/ch01_prop_turnstile_gate_collapsed.png",
+				"tex_open": "res://assets/props/ch01/ch01_prop_turnstile_gate_open.png"
+			},
+			"texture": "res://assets/props/ch01/ch01_prop_turnstile_gate_collapsed.png",
+			"visible": true
+		},
+		{
+			"path": "reset_anchor_01/ConsoleSprite",
+			"position": [
+				256.0,
+				144.0
+			],
+			"rect": [
+				-16.0,
+				-30.0,
+				32.0,
+				36.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/props/ch01/ch01_prop_reset_console_idle.png",
+			"visible": true
+		},
+		{
+			"path": "doc_evac_notice/DocSprite",
+			"position": [
+				352.0,
+				176.0
+			],
+			"rect": [
+				-8.0,
+				-12.0,
+				16.0,
+				16.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/props/ch01/ch01_prop_document_clipboard_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/WallN_0",
+			"position": [
+				336.0,
+				72.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/WallN_1",
+			"position": [
+				368.0,
+				88.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/WallN_2",
+			"position": [
+				400.0,
+				104.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/WallN_3",
+			"position": [
+				432.0,
+				120.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/WallN_4",
+			"position": [
+				464.0,
+				136.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/WallN_5",
+			"position": [
+				496.0,
+				152.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/WallN_6",
+			"position": [
+				528.0,
+				168.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/WallN_7",
+			"position": [
+				560.0,
+				184.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_n_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/WallW_0",
+			"position": [
+				304.0,
+				72.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/WallW_1",
+			"position": [
+				272.0,
+				88.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/WallW_2",
+			"position": [
+				240.0,
+				104.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/WallW_3",
+			"position": [
+				208.0,
+				120.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/WallW_4",
+			"position": [
+				176.0,
+				136.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/WallW_5",
+			"position": [
+				144.0,
+				152.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_subterranean_w_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/PillarSprite",
+			"position": [
+				384.0,
+				184.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_wall_corner_pillar_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/Archway_door_entry_west",
+			"position": [
+				240.0,
+				104.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Walls/Archway_door_exit_east",
+			"position": [
+				480.0,
+				224.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png",
+			"visible": true
+		},
+		{
+			"path": "Wall_Fixtures/Clock_3",
+			"position": [
+				432.0,
+				82.0
+			],
+			"rect": [
+				-16.0,
+				-20.0,
+				32.0,
+				24.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/props/ch01/ch01_prop_digital_clock_2359_idle.png",
+			"visible": true
+		},
+		{
+			"path": "Wall_Fixtures/CallBoxSprite",
+			"position": [
+				272.0,
+				74.0
+			],
+			"rect": [
+				-12.0,
+				-32.0,
+				24.0,
+				36.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/props/ch01/ch01_prop_call_box_phone_idle.png",
+			"visible": true
+		},
+		{
+			"path": "YSort_Actors/ConcourseBench",
+			"position": [
+				448.0,
+				184.0
+			],
+			"rect": [
+				-24.0,
+				-26.0,
+				48.0,
+				32.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/props/ch01/ch01_prop_station_bench_idle.png",
+			"visible": true
+		},
+		{
+			"path": "conduit_01/Presenter",
+			"position": [
+				208.0,
+				152.0
+			],
+			"rect": [
+				-24.0,
+				-26.0,
+				48.0,
+				32.0
+			],
+			"script": "res://scripts/chapters/ch01/visuals/conduit_prop_presenter.gd",
+			"states": {
+				"tex_fallen": "res://assets/props/ch01/ch01_prop_conduit_fallen.png",
+				"tex_mounted": "res://assets/props/ch01/ch01_prop_conduit_mounted.png"
+			},
+			"texture": "res://assets/props/ch01/ch01_prop_conduit_fallen.png",
+			"visible": true
+		},
+		{
+			"path": "dial_line/Presenter",
+			"position": [
+				448.0,
+				144.0
+			],
+			"rect": [
+				-16.0,
+				-28.0,
+				32.0,
+				32.0
+			],
+			"script": "res://scripts/chapters/ch01/visuals/history_dial_presenter.gd",
+			"states": {
+				"tex_idle": "res://assets/props/ch01/ch01_prop_flap_dial_line_idle.png",
+				"tex_jammed": "res://assets/props/ch01/ch01_prop_flap_dial_line_jammed.png"
+			},
+			"texture": "res://assets/props/ch01/ch01_prop_flap_dial_line_idle.png",
+			"visible": true
+		},
+		{
+			"path": "dial_platform/Presenter",
+			"position": [
+				480.0,
+				160.0
+			],
+			"rect": [
+				-16.0,
+				-28.0,
+				32.0,
+				32.0
+			],
+			"script": "res://scripts/chapters/ch01/visuals/history_dial_presenter.gd",
+			"states": {
+				"tex_idle": "res://assets/props/ch01/ch01_prop_flap_dial_platform_idle.png",
+				"tex_jammed": "res://assets/props/ch01/ch01_prop_flap_dial_platform_jammed.png"
+			},
+			"texture": "res://assets/props/ch01/ch01_prop_flap_dial_platform_idle.png",
+			"visible": true
+		},
+		{
+			"path": "dial_time/Presenter",
+			"position": [
+				512.0,
+				176.0
+			],
+			"rect": [
+				-16.0,
+				-28.0,
+				32.0,
+				32.0
+			],
+			"script": "res://scripts/chapters/ch01/visuals/history_dial_presenter.gd",
+			"states": {
+				"tex_idle": "res://assets/props/ch01/ch01_prop_flap_dial_time_idle.png",
+				"tex_jammed": "res://assets/props/ch01/ch01_prop_flap_dial_time_jammed.png"
+			},
+			"texture": "res://assets/props/ch01/ch01_prop_flap_dial_time_idle.png",
+			"visible": true
+		},
+		{
+			"path": "ticket_validator/Presenter",
+			"position": [
+				512.0,
+				192.0
+			],
+			"rect": [
+				-12.0,
+				-30.0,
+				24.0,
+				36.0
+			],
+			"script": "res://scripts/chapters/ch01/visuals/ticket_validator_presenter.gd",
+			"states": {
+				"tex_accepted": "res://assets/props/ch01/ch01_prop_ticket_validator_accepted.png",
+				"tex_idle": "res://assets/props/ch01/ch01_prop_ticket_validator_idle.png"
+			},
+			"texture": "res://assets/props/ch01/ch01_prop_ticket_validator_idle.png",
+			"visible": true
+		},
+		{
+			"path": "staff_door/Presenter",
+			"position": [
+				480.0,
+				224.0
+			],
+			"rect": [
+				-16.0,
+				-56.0,
+				32.0,
+				64.0
+			],
+			"script": "res://scripts/chapters/ch01/visuals/security_gate_presenter.gd",
+			"states": {
+				"tex_closed": "res://assets/props/ch01/ch01_prop_staff_door_closed.png",
+				"tex_open": "res://assets/props/ch01/ch01_prop_staff_door_open.png"
+			},
+			"texture": "res://assets/props/ch01/ch01_prop_staff_door_closed.png",
+			"visible": true
+		},
+		{
+			"path": "doc_ticket_terms/DocSprite",
+			"position": [
+				320.0,
+				208.0
+			],
+			"rect": [
+				-8.0,
+				-16.0,
+				16.0,
+				20.0
+			],
+			"script": "",
+			"states": {},
+			"texture": "res://assets/props/ch01/ch01_prop_ticket_terms_notice_idle.png",
+			"visible": true
+		},
+		{
+			"path": "n05_courier/Presenter",
+			"position": [
+				240.0,
+				120.0
+			],
+			"rect": [
+				-8.0,
+				-36.0,
+				16.0,
+				40.0
+			],
+			"script": "res://scripts/chapters/ch01/visuals/commuter_statue_presenter.gd",
+			"states": {
+				"tex_idle": "res://assets/characters/ch01/ch01_char_statue_commuter_n05_courier_idle.png",
+				"tex_read": "res://assets/characters/ch01/ch01_char_statue_commuter_n05_courier_read.png"
+			},
+			"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n05_courier_idle.png",
+			"visible": true
+		},
+		{
+			"path": "n06_red_coat/Presenter",
+			"position": [
+				432.0,
+				216.0
+			],
+			"rect": [
+				-8.0,
+				-36.0,
+				16.0,
+				40.0
+			],
+			"script": "res://scripts/chapters/ch01/visuals/commuter_statue_presenter.gd",
+			"states": {
+				"tex_idle": "res://assets/characters/ch01/ch01_char_statue_commuter_n06_red_coat_idle.png",
+				"tex_read": "res://assets/characters/ch01/ch01_char_statue_commuter_n06_red_coat_read.png"
+			},
+			"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n06_red_coat_idle.png",
+			"visible": true
+		},
+		{
+			"path": "n07_briefcase/Presenter",
+			"position": [
+				400.0,
+				232.0
+			],
+			"rect": [
+				-8.0,
+				-36.0,
+				16.0,
+				40.0
+			],
+			"script": "res://scripts/chapters/ch01/visuals/commuter_statue_presenter.gd",
+			"states": {
+				"tex_idle": "res://assets/characters/ch01/ch01_char_statue_commuter_n07_briefcase_idle.png",
+				"tex_read": "res://assets/characters/ch01/ch01_char_statue_commuter_n07_briefcase_read.png"
+			},
+			"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n07_briefcase_idle.png",
+			"visible": true
+		},
+		{
+			"path": "n08_father/Presenter",
+			"position": [
+				368.0,
+				248.0
+			],
+			"rect": [
+				-8.0,
+				-36.0,
+				16.0,
+				40.0
+			],
+			"script": "res://scripts/chapters/ch01/visuals/commuter_statue_presenter.gd",
+			"states": {
+				"tex_idle": "res://assets/characters/ch01/ch01_char_statue_commuter_n08_father_idle.png",
+				"tex_read": "res://assets/characters/ch01/ch01_char_statue_commuter_n08_father_read.png"
+			},
+			"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n08_father_idle.png",
+			"visible": true
+		},
+		{
+			"path": "n09_teen/Presenter",
+			"position": [
+				352.0,
+				224.0
+			],
+			"rect": [
+				-8.0,
+				-36.0,
+				16.0,
+				40.0
+			],
+			"script": "res://scripts/chapters/ch01/visuals/commuter_statue_presenter.gd",
+			"states": {
+				"tex_idle": "res://assets/characters/ch01/ch01_char_statue_commuter_n09_teen_idle.png",
+				"tex_read": "res://assets/characters/ch01/ch01_char_statue_commuter_n09_teen_read.png"
+			},
+			"texture": "res://assets/characters/ch01/ch01_char_statue_commuter_n09_teen_idle.png",
+			"visible": true
+		}
+	],
+	"terrain": [
+		{
+			"cells": 192,
+			"path": "TileMapLayer_Floor",
+			"source_counts": {
+				"0": 172,
+				"1": 17,
+				"2": 3
+			}
+		}
+	],
+	"view_rect": [
+		-160.0,
+		-90.0,
+		960.0,
+		540.0
+	]
+}

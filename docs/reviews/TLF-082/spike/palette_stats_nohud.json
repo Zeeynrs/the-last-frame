@@ -1,0 +1,128 @@
+{
+ "gate_v0_baseline_nohud.png": {
+  "off_palette": 0,
+  "off_pct": 0.0,
+  "unique": 30,
+  "mean_luma": 22.68,
+  "md5": "a2144746395a"
+ },
+ "gate_v1_runtime_nohud.png": {
+  "off_palette": 134912,
+  "off_pct": 26.02,
+  "unique": 170,
+  "mean_luma": 16.25,
+  "md5": "5e7eb2c39243"
+ },
+ "gate_v2_runtime_quantized_nohud.png": {
+  "off_palette": 0,
+  "off_pct": 0.0,
+  "unique": 27,
+  "mean_luma": 17.24,
+  "md5": "859ce9317ade"
+ },
+ "gate_v3_overlay_nohud.png": {
+  "off_palette": 0,
+  "off_pct": 0.0,
+  "unique": 29,
+  "mean_luma": 18.51,
+  "md5": "2442d148e603"
+ },
+ "gate_v4_ramp_shift_nohud.png": {
+  "off_palette": 0,
+  "off_pct": 0.0,
+  "unique": 29,
+  "mean_luma": 16.0,
+  "md5": "1049fb6914e8"
+ },
+ "gate_v4_ramp_shift_repeat_nohud.png": {
+  "off_palette": 0,
+  "off_pct": 0.0,
+  "unique": 29,
+  "mean_luma": 16.0,
+  "md5": "1049fb6914e8"
+ },
+ "gate_v4b_ramp_shift_exempt25_nohud.png": {
+  "off_palette": 0,
+  "off_pct": 0.0,
+  "unique": 29,
+  "mean_luma": 15.84,
+  "md5": "385861d99c86"
+ },
+ "gate_v4c_ramp_shift_dither_nohud.png": {
+  "off_palette": 0,
+  "off_pct": 0.0,
+  "unique": 29,
+  "mean_luma": 16.0,
+  "md5": "3d94ee632c6b"
+ },
+ "spawn_v0_baseline_nohud.png": {
+  "off_palette": 0,
+  "off_pct": 0.0,
+  "unique": 30,
+  "mean_luma": 22.68,
+  "md5": "9f8249e45956"
+ },
+ "spawn_v1_runtime_nohud.png": {
+  "off_palette": 134912,
+  "off_pct": 26.02,
+  "unique": 149,
+  "mean_luma": 16.25,
+  "md5": "b31e499369e6"
+ },
+ "spawn_v2_runtime_quantized_nohud.png": {
+  "off_palette": 0,
+  "off_pct": 0.0,
+  "unique": 27,
+  "mean_luma": 17.23,
+  "md5": "bcd30972a37c"
+ },
+ "spawn_v3_overlay_nohud.png": {
+  "off_palette": 0,
+  "off_pct": 0.0,
+  "unique": 29,
+  "mean_luma": 18.51,
+  "md5": "f8a05ff8890b"
+ },
+ "spawn_v4_ramp_shift_nohud.png": {
+  "off_palette": 0,
+  "off_pct": 0.0,
+  "unique": 29,
+  "mean_luma": 16.01,
+  "md5": "b404583734b1"
+ },
+ "spawn_v4b_ramp_shift_exempt25_nohud.png": {
+  "off_palette": 0,
+  "off_pct": 0.0,
+  "unique": 29,
+  "mean_luma": 15.85,
+  "md5": "74590bc28244"
+ },
+ "spawn_v4c_ramp_shift_dither_nohud.png": {
+  "off_palette": 0,
+  "off_pct": 0.0,
+  "unique": 29,
+  "mean_luma": 16.01,
+  "md5": "e3170b728b13"
+ },
+ "side_v0_baseline.png": {
+  "off_palette": 844,
+  "off_pct": 0.16,
+  "unique": 30,
+  "mean_luma": 34.15,
+  "md5": "1a7aeaddce8c"
+ },
+ "side_v4_ramp_shift.png": {
+  "off_palette": 844,
+  "off_pct": 0.16,
+  "unique": 30,
+  "mean_luma": 21.0,
+  "md5": "27922c194f81"
+ },
+ "side_v4_ramp_shift_scrolled.png": {
+  "off_palette": 844,
+  "off_pct": 0.16,
+  "unique": 30,
+  "mean_luma": 20.95,
+  "md5": "962341e48915"
+ }
+}

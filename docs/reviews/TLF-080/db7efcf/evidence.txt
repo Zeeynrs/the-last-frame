@@ -1,0 +1,19 @@
+== probe_c (divider sweep, straight + diagonal, gate closed then open; f44af6e probe file reused on db7efcf)
+PROBE C gate passage_blocked true
+PROBE C closed gate: furthest tile x reached from the west 7.77; crossings []
+PROBE C after SOLVED: passage_blocked false
+PROBE C open gate: passable for start y [7.6, 7.7, 7.8, 7.9, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 9.0, 9.1, 9.2]
+TESTS: 1 passed, 0 failed
+
+== affected test files on db7efcf (run_tests.gd -- <file>, 120 s cap each)
+test_ch01_concourse_west_v2 | TESTS: 11 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_step1_negatives | TESTS: 12 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_real_playthrough | TESTS: 1 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_art_integration | TESTS: 6 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_sort_order | TESTS: 3 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_graph | TESTS: 9 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_dial_readout | TESTS: 3 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_playthrough | TESTS: 19 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_unlock_guards | TESTS: 4 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_audio_real_input | TESTS: 2 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+import: exit 0, 0 ERROR lines

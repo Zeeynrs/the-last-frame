@@ -1,0 +1,52 @@
+===== aaf31fe: test_ch01_mira_memory_side
+  PASS: test_freeze_and_echo_safety
+  PASS: test_mode_switch_leaves_no_leaks
+  PASS: test_real_input_full_memory_flow
+  PASS: test_reentry_memory_flow
+  PASS: test_save_and_continue_from_disk
+  PASS: test_walk_bounds_and_clamping
+TESTS: 6 passed, 0 failed
+SCRIPT ERROR 0
+===== aaf31fe: test_zz_076b_cup
+PROBE after Rewind: cup (540.0, 384.0) flag true
+PROBE autosave room { "player": "ch01.waiting_lounge" } flag true temporal cup { "schema_version": 1, "cursor": 0, "entries": [{ "position_x": 540.0, "position_y": 384.0 }, { "position_x": 600.0, "position_y": 394.0 }], "is_frozen": false }
+PROBE Continue (full save): restore { "ok": true, "reason": &"" } room ch01.waiting_lounge
+PROBE Continue (full save): cup pos (540.0, 384.0) layer 0 supports_rewind false flag true | watch target ch01.side_mira_memory.bench | use target ch01.side_mira_memory.bench
+PROBE Continue (save without the cup temporal entry): restore { "ok": true, "reason": &"" } room ch01.waiting_lounge
+PROBE Continue (save without the cup temporal entry): cup pos (600.0, 394.0) layer 0 supports_rewind false flag true | watch target ch01.side_mira_memory.bench | use target ch01.side_mira_memory.bench
+PROBE Continue (save without the flag, older save): restore { "ok": true, "reason": &"" } room ch01.waiting_lounge
+PROBE Continue (save without the flag, older save): cup pos (540.0, 384.0) layer 0 supports_rewind false flag false | watch target ch01.side_mira_memory.bench | use target ch01.side_mira_memory.bench
+  PASS: test_cup_save_load
+TESTS: 1 passed, 0 failed
+SCRIPT ERROR 0
+===== aaf31fe: test_ch01_narrative_beats
+  PASS: test_all_narrative_text_keys_localized_and_ascii
+  PASS: test_beat01_platform_awakening_and_watch_pickup
+  PASS: test_beat01_player_moves_immediately_and_dialogue_auto_advances
+  PASS: test_beat01_watch_pickup_real_input_interact_advance_and_unblock_wheel
+  PASS: test_beat03_call_box_09
+  PASS: test_beat05_security_crossing_pa_speaker_echo
+  PASS: test_beat06_waiting_lounge_trace_bench_and_mira_audio
+  PASS: test_beat07_signal_control_intercom_warning_once
+  PASS: test_beat08_upper_vestibule_loop_detection
+  PASS: test_beat09_dispatch_terminal_revelation
+  PASS: test_beat10_outro_and_chapter_complete
+  PASS: test_clocks_2359_are_reusable
+  PASS: test_movement_hint_lifecycle
+TESTS: 13 passed, 0 failed
+SCRIPT ERROR 0
+===== aaf31fe: test_ch01_real_playthrough
+  PASS: test_real_input_new_game_to_chapter_complete
+TESTS: 1 passed, 0 failed
+SCRIPT ERROR 0
+===== aaf31fe: test_view_mode_side
+  PASS: test_each_ability_in_the_side_room
+  PASS: test_echo_and_rewind_positions_on_the_floor_line
+  PASS: test_mode_switch_both_ways_without_leaks
+  PASS: test_save_load_in_the_side_room
+  PASS: test_side_camera_horizontal_clamp_and_fixed
+  PASS: test_side_movement_and_facing
+  PASS: test_side_sprite_frames_and_reach_gesture
+  PASS: test_unknown_or_reserved_mode_is_iso
+TESTS: 8 passed, 0 failed
+SCRIPT ERROR 0

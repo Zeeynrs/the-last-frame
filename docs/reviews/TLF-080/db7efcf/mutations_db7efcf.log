@@ -1,0 +1,31 @@
+BASELINE | TESTS: 11 passed, 0 failed | SCRIPT ERROR 0
+D1 DividerNorth disabled in the scene | RED | TESTS: 10 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_divider_sweep_with_gate_closed_never_passes_x_8_2] divider sweep at y=0.8: player stopped at tile_x=8.88 <= 8.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_divider_sweep_with_gate_closed_never_passes_x_8_2] divider sweep at y=1.6: player stopped at tile_x=9.21 <= 8.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_divider_sweep_with_gate_closed_never_passes_x_8_2] divider sweep at y=2.4: player stopped at tile_x=8.99 <= 8.2
+D2 DividerSouth disabled in the scene | RED | TESTS: 10 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_divider_sweep_with_gate_closed_never_passes_x_8_2] divider sweep at y=9.6: player stopped at tile_x=9.11 <= 8.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_divider_sweep_with_gate_closed_never_passes_x_8_2] divider sweep at y=10.4: player stopped at tile_x=8.99 <= 8.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_divider_sweep_with_gate_closed_never_passes_x_8_2] divider sweep at y=11.2: player stopped at tile_x=9.02 <= 8.2
+MC3 room bounds ignore metadata/room_shape | RED | TESTS: 10 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_camera_view_bounds_clamped] explicit concourse_west v2 room bounds Rect2(48, 0, 736, 432) (Expected [P: (48.0, 0.0), S: (736.0, 432.0)], got [P: (0.0, 0.0), S: (640.0, 360.0)])
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_camera_view_bounds_clamped] explicit concourse_west v2 room bounds center (416, 216) (Expected (416.0, 216.0), got (320.0, 180.0))
+R1 dial_line presenter 1 px off | RED | TESTS: 10 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_tlf081_wall_art_integration_and_transforms] dial_line PNG top-left is (544, 134) (Expected (544.0, 134.0), got (544.0, 135.0))
+R2 mounted conduit position 1 px off | RED | TESTS: 10 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_tlf081_wall_art_integration_and_transforms] mounted conduit final PNG top-left is (112, 102) (Expected (112.0, 102.0), got (112.0, 103.0))
+R3 ticket-terms DocSprite 1 px off | RED | TESTS: 10 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_tlf081_wall_art_integration_and_transforms] ticket terms notice final PNG top-left is (72, 146) (Expected (72.0, 146.0), got (72.0, 147.0))
+R4 validator offset 1 px off (presenter script) | RED | TESTS: 10 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_tlf081_wall_art_integration_and_transforms] ticket validator PNG top-left is (608, 198) (Expected (608.0, 198.0), got (608.0, 199.0))
+R5 call box sprite 1 px off | RED | TESTS: 10 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_tlf081_wall_art_integration_and_transforms] call box phone PNG top-left is (260, 36) (Expected (260.0, 36.0), got (260.0, 37.0))
+R6 dial presenter offset back to the frontal (-16,-28) | RED | TESTS: 10 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_tlf081_wall_art_integration_and_transforms] dial_line PNG top-left is (544, 134) (Expected (544.0, 134.0), got (528.0, 106.0))
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_tlf081_wall_art_integration_and_transforms] dial_platform PNG top-left is (576, 150) (Expected (576.0, 150.0), got (560.0, 122.0))
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_tlf081_wall_art_integration_and_transforms] dial_time PNG top-left is (608, 166) (Expected (608.0, 166.0), got (592.0, 138.0))
+R7 WallW_6 module 1 px off | RED | TESTS: 10 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_tlf081_wall_art_integration_and_transforms] WallW_6 image top-left is (96, 112) (Expected (96.0, 112.0), got (96.0, 113.0))
+R8 WallN_7 module 1 px off (the dial_line wall) | GREEN (not caught) | TESTS: 11 passed, 0 failed | SCRIPT ERROR 0
+R9 WallW_1 module 1 px off (the call box wall) | GREEN (not caught) | TESTS: 11 passed, 0 failed | SCRIPT ERROR 0
+RESTORED | TESTS: 11 passed, 0 failed | SCRIPT ERROR 0

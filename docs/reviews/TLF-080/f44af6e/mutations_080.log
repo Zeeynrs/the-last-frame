@@ -1,0 +1,25 @@
+BASELINE suite | TESTS: 7 passed, 0 failed | SCRIPT ERROR 0
+MD1 door_entry_west trigger radius 6 -> 40 (door reaches the arrival paths) | test_ch01_concourse_west_v2.gd | RED | TESTS: 3 passed, 4 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_checkpoint_saveload_restores_player_and_camera] continue restored concourse_west (Expected ch01.concourse_west, got ch01.arrival_platform)
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_checkpoint_saveload_restores_player_and_camera] player restored to safe anchor east (304.0, 184.0) (got (576.0, 218.0))
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] holding up for 3s never leaves concourse_west (Expected ch01.concourse_west, got ch01.arrival_platform)
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] holding down for 3s never leaves concourse_west (Expected ch01.concourse_west, got ch01.arrival_platform)
+MD2 arrival Spawn moved next to the door (32,16) -> (14,7) | test_ch01_concourse_west_v2.gd | RED | TESTS: 5 passed, 2 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_au08_courier_unlocks_rewind_with_real_colliders] n05_courier is auto-targeted by Trace from arrival (Expected n05_courier:<Area2D#157772942239>, got conduit_01:<Area2D#157252848511>)
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_au08_courier_unlocks_rewind_with_real_colliders] n05 traced flag set
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_au08_courier_unlocks_rewind_with_real_colliders] Rewind unlocked by courier Trace
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] player spawned at arrival (224, 144) (Expected (224.0, 144.0), got (206.0, 135.0))
+MC1 camera does not centre a room that fits (follows Elias) | test_ch01_concourse_west_v2.gd | RED | TESTS: 6 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_camera_view_bounds_clamped] arrival camera x centered on bounds (Expected 416.0, got 224.0)
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_camera_view_bounds_clamped] arrival camera y centered on bounds (Expected 216.0, got 144.0)
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_camera_view_bounds_clamped] gate camera x centered on bounds (Expected 416.0, got 320.0)
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_camera_view_bounds_clamped] gate camera y centered on bounds (Expected 216.0, got 192.0)
+MC2 camera clamp branch removed (rooms larger than the view) | test_ch01_concourse_west_v2.gd | GREEN (not caught) | TESTS: 7 passed, 0 failed | SCRIPT ERROR 0
+MC3 room bounds ignore metadata/room_shape (legacy 640x360) | test_ch01_concourse_west_v2.gd | GREEN (not caught) | TESTS: 7 passed, 0 failed | SCRIPT ERROR 0
+MK1 checkpoint spawn anchor removed (restore at the zone) | test_ch01_concourse_west_v2.gd | RED | TESTS: 6 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_checkpoint_saveload_restores_player_and_camera] player restored to safe anchor east (304.0, 184.0) (got (240.0, 152.0))
+MK2 restore_from_save does not place the player at the anchor | test_ch01_concourse_west_v2.gd | RED | TESTS: 6 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_checkpoint_saveload_restores_player_and_camera] player restored to safe anchor east (304.0, 184.0) (got (576.0, 218.0))
+MV1 north turnstile divider disabled (hall open around the gate) | test_ch01_concourse_west_v2.gd | GREEN (not caught) | TESTS: 7 passed, 0 failed | SCRIPT ERROR 0
+MV1 north turnstile divider disabled (hall open around the gate) | test_ch01_step1_negatives.gd | GREEN (not caught) | TESTS: 12 passed, 0 failed | SCRIPT ERROR 0
+RESTORED suite | TESTS: 7 passed, 0 failed | SCRIPT ERROR 0

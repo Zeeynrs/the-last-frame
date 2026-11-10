@@ -1,0 +1,16 @@
+BASELINE | TESTS: 12 passed, 0 failed | SCRIPT ERROR 0
+WallN_7 +1 px | RED | TESTS: 11 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_tlf081_wall_art_integration_and_transforms] WallN_7 image top-left is (544, 128) (Expected (544.0, 128.0), got (544.0, 129.0))
+WallN_8 +1 px | RED | TESTS: 11 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_tlf081_wall_art_integration_and_transforms] WallN_8 image top-left is (576, 144) (Expected (576.0, 144.0), got (576.0, 145.0))
+WallN_9 +1 px | RED | TESTS: 11 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_tlf081_wall_art_integration_and_transforms] WallN_9 image top-left is (608, 160) (Expected (608.0, 160.0), got (608.0, 161.0))
+WallW_1 +1 px | RED | TESTS: 11 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_tlf081_wall_art_integration_and_transforms] WallW_1 image top-left is (256, 32) (Expected (256.0, 32.0), got (256.0, 33.0))
+conduit fallen position +1 px | RED | TESTS: 10 passed, 2 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_conduit_fallen_and_mounted_state_and_rewind_lifecycle] fallen floor pivot is (328, 184) (Expected (328.0, 184.0), got (328.0, 185.0))
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_conduit_fallen_and_mounted_state_and_rewind_lifecycle] fallen PNG TL is (304, 158) (Expected (304.0, 158.0), got (304.0, 159.0))
+apply_state does not move the conduit | RED | TESTS: 11 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_conduit_fallen_and_mounted_state_and_rewind_lifecycle] mounted floor pivot is (144, 160) (Expected (144.0, 160.0), got (328.0, 184.0))
+    FAIL: [res://tests/chapters/ch01/test_ch01_concourse_west_v2.gd::test_conduit_fallen_and_mounted_state_and_rewind_lifecycle] mounted PNG TL is (112, 102) (Expected (112.0, 102.0), got (296.0, 126.0))
+RESTORED | TESTS: 12 passed, 0 failed | SCRIPT ERROR 0

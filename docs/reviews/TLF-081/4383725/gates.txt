@@ -1,0 +1,16 @@
+== python tools/art/test_tlf081.py (4383725 extract)
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 1.681s
+
+OK
+
+== tools/art/gen/verify_regen.py (non-ok lines and result)
+ok lines: 321
+NOT COVERED (authored by Argon in batch 1, no generator in this repo): ch01_env_archway_frame_e_idle, ch01_env_arrival_platform_target_sheet, ch01_env_tile_tactile_amber_idle, ch01_env_tile_terrazzo_cracked_idle, ch01_env_tile_terrazzo_dark_idle, ch01_env_wall_subterranean_n_idle, ch01_env_wall_subterranean_w_idle, ch01_palette_elysium09, ch01_prop_digital_clock_2359_idle
+RESULT: ALL REPRODUCIBLE
+
+== tools/art/check_assets.py (tail)
+  ok   alpha: binary (0/255 only)
+  ok   palette: 20 unique colours, all in TLF-CH01-32 (indices 00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,24,25,26,29)
+RESULT: ALL PASS (314 file(s))
