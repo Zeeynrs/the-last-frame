@@ -1,0 +1,110 @@
+{
+  "review_sha": "c791193621eee2e5831951ff6f81b1dea697cc06",
+  "lead_spec_sha": "e3f7b7661a5326bb250c49ff99707301148014fe",
+  "conduit": {
+    "target_tile": [
+      0.5,
+      11.5
+    ],
+    "anchor": [
+      144,
+      160
+    ],
+    "png_top_left": [
+      112,
+      102
+    ],
+    "pivot": [
+      0,
+      23
+    ],
+    "offset": [
+      0,
+      -23
+    ],
+    "presenter_local": [
+      -32,
+      -35
+    ],
+    "assembly_origin": [
+      96,
+      96
+    ],
+    "assembly_offset": [
+      16,
+      6
+    ],
+    "modules": {
+      "W5": [
+        128,
+        96
+      ],
+      "W6": [
+        96,
+        112
+      ]
+    }
+  },
+  "notice": {
+    "target_tile": [
+      0.5,
+      15
+    ],
+    "anchor": [
+      88,
+      188
+    ],
+    "png_top_left": [
+      72,
+      146
+    ],
+    "pivot": [
+      0,
+      7
+    ],
+    "offset": [
+      0,
+      -7
+    ],
+    "presenter_local": [
+      -16,
+      -35
+    ],
+    "assembly_origin": [
+      64,
+      128
+    ],
+    "assembly_offset": [
+      8,
+      18
+    ],
+    "modules": {
+      "W7": [
+        64,
+        128
+      ]
+    }
+  },
+  "old_opaque_overlap": 76,
+  "new_opaque_overlap": 0,
+  "conduit_opaque_outside_wall": 0,
+  "notice_opaque_outside_wall": 0,
+  "opaque_wall_axis_y": {
+    "conduit": [
+      10.125,
+      12.875
+    ],
+    "notice": [
+      14.5625,
+      15.4375
+    ]
+  },
+  "door_aperture_y": [
+    7,
+    9
+  ],
+  "minimum_clearance_from_aperture_end_tiles": 1.125,
+  "all_png_pxo_unchanged": 586,
+  "builder_verified": false,
+  "integration_requirement": "TLF-080 must assert actual module transforms, final PNG top-lefts, opaque overlap/containment and aperture clearance."
+}

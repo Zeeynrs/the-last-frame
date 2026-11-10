@@ -11,7 +11,7 @@ var _target: HistoryDial
 
 func _ready() -> void:
 	centered = false
-	offset = Vector2(-16, -28)
+	offset = Vector2.ZERO
 	_target = get_parent() as HistoryDial
 	_refresh()
 

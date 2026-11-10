@@ -26,7 +26,7 @@ FIXTURES = os.path.join(REPO, "tests", "rooms", "fixtures")
 # arrival's platform-edge strip skips its east-door row; security_crossing's trench column is empty.
 ROOMS = {
     "arrival_platform": (14, 10, {"strip": (2, ("S", "E")), "doors": [("E", (13, 5))]}),
-    "concourse_west": (16, 12, {}),
+    "concourse_west": (28, 16, {}),
     "maintenance_bay": (14, 10, {}),
     "security_crossing": (16, 12, {"holes": B.parse_cells("9,0..11")}),
     "waiting_lounge": (12, 10, {}),
@@ -86,6 +86,14 @@ class TenRoomsRoundTrip(unittest.TestCase):
                     path = os.path.join(ROOMS_DIR, "arrival_platform.tscn")
                     old = read(path)
                     new, _ = B.build(old, poly, outset=0.25, strip=B.parse_strip("0,S,E"), room_path=path)
+                elif name == "concourse_west":
+                    shape_path = os.path.join(REPO, "design", "ch01", "rooms_v2", "concourse_west.json")
+                    with open(shape_path, encoding="utf-8") as fh:
+                        spec = json.load(fh)
+                    poly = B.canonical(spec["outline"])
+                    path = os.path.join(ROOMS_DIR, "concourse_west.tscn")
+                    old = read(path)
+                    new, _ = B.build(old, poly, outset=0.25, room_path=path)
                 else:
                     old, (new, _) = build_room(name)
                 self.assertEqual(floor_data(new), floor_data(old), "floor tile_map_data (cells, sources, order)")
@@ -149,9 +157,9 @@ class TenRoomsRoundTrip(unittest.TestCase):
 
 class Doors(unittest.TestCase):
     def test_module_under_an_aligned_archway_is_left_to_it(self):
-        old, (new, notes) = build_room("concourse_west", doors=[("W", (0, 5)), ("E", (15, 5))])
+        old, (new, notes) = build_room("maintenance_bay", doors=[("W", (0, 5))])
         self.assertNotIn('[node name="WallW_2"', new)
-        self.assertIn('[node name="WallW_3"', new, "the other modules keep their names")
+        self.assertIn('[node name="WallW_1"', new, "the other modules keep their names")
         self.assertIn('[node name="Archway_door_entry_west"', new)
         self.assertEqual(len(re.findall(WALL_RE, new)), len(re.findall(WALL_RE, old)) - 1)
         self.assertTrue(any("left to the archway Archway_door_entry_west" in n for n in notes))

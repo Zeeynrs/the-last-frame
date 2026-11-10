@@ -307,11 +307,13 @@ func _play() -> bool:
 	if not await _expect_unlock(&"rewind"):
 		return false
 	if wrong_moves:
-		# Rewind on the gate while the conduit still pins it (via the conduit spot: the straight line
-		# from the door spawn catches the Blocker's corner).
-		if not await walk_to(_player, "concourse -> conduit spot", Vector2(208, 136)):
+		# Rewind on the gate while the conduit still pins it (via the west hall waypoint: the straight line
+		# from the conduit spot catches the Blocker's corner).
+		if not await walk_to(_player, "concourse -> conduit spot", Vector2(320, 168)):
 			return false
-		if not await walk_to(_player, "concourse -> gate Rewind spot", Vector2(250, 126)):
+		if not await walk_to(_player, "concourse -> west hall waypoint", Vector2(280, 168)):
+			return false
+		if not await walk_to(_player, "concourse -> gate Rewind spot", Vector2(298, 198)):
 			return false
 		if not await _select(&"rewind"):
 			return false
@@ -319,24 +321,28 @@ func _play() -> bool:
 		_assert_eq(watch.current_target, turnstile, "Rewind targets the turnstile from the gate spot")
 		await tap(&"watch")
 		await _expect_refusal(turnstile, &"pinned", "PZ001_FB_PINNED", "PZ-001 gate pinned by the conduit")
-	if not await walk_to(_player, "concourse -> conduit spot", Vector2(208, 136)):
+		if not await walk_to(_player, "concourse -> west hall waypoint", Vector2(280, 168)):
+			return false
+	if not await walk_to(_player, "concourse -> conduit spot", Vector2(320, 168)):
 		return false
 	if not await _use_watch(&"rewind", conduit, func() -> bool: return conduit.get("conduit_state") == &"mounted", "conduit mounted after Rewind"):
 		return false
 	# Gate Rewind spot in the entry strip (TLF-055 review): the gate is nearer than the conduit (by 26.6 px)
 	# and the capsule stays 3.7 px clear of door_entry_west and 1.2 px clear of the walls.
-	if not await walk_to(_player, "concourse -> gate Rewind spot", Vector2(250, 126)):
+	if not await walk_to(_player, "concourse -> west hall waypoint", Vector2(280, 168)):
+		return false
+	if not await walk_to(_player, "concourse -> gate Rewind spot", Vector2(298, 198)):
 		return false
 	if not await _use_watch(&"rewind", turnstile, func() -> bool: return not turnstile.passage_blocked, "turnstile opens after Rewind"):
 		return false
 	if wrong_moves:
-		# The anchor's memory (the conduit falling onto the arm), from the spec spot (264,116) now that
+		# The anchor's memory (the conduit falling onto the arm), from the spec spot (312,188) now that
 		# the gate's Blocker is gone: while it is closed that spot overlaps the Blocker, and the pocket
 		# north of it connects to the entry strip only past door_entry_west (reported, TLF-056).
-		if not await _trace_at(Vector2(264, 116), &"ch01.concourse_west.turnstile_trace_anchor",
+		if not await _trace_at(Vector2(312, 188), &"ch01.concourse_west.turnstile_trace_anchor",
 				&"traced.ch01.concourse_west.turnstile_trace_anchor"):
 			return false
-	if not await walk_to(_player, "concourse -> exit_trigger", Vector2(304, 136), _solved(&"CH1-PZ-001")):
+	if not await walk_to(_player, "concourse -> exit_trigger", Vector2(352, 208), _solved(&"CH1-PZ-001")):
 		return false
 	_assert_true(_session.puzzle_service.is_solved(&"CH1-PZ-001"), "PZ-001 SOLVED by walking through")
 	_segment("2a concourse PZ-001")
@@ -346,25 +352,31 @@ func _play() -> bool:
 		# The terms and the four commuters by the staff door (CH1-PZ-006 clues), then the validator
 		# with the dials untouched.
 		var terms := _resolve(&"ch01.concourse_west.doc_ticket_terms")
-		if not await _use_at(Vector2(304, 216), terms, "concourse -> doc_ticket_terms"):
+		if not await walk_to(_player, "concourse -> gate aperture west", Vector2(320, 192)):
+			return false
+		if not await _use_at(Vector2(104, 196), terms, "concourse -> doc_ticket_terms"):
 			return false
 		_assert_true(blocking_ui_open(), "the ticket terms open the document viewer")
 		await dismiss_blocking_ui()
-		for row in [[&"n09_teen", Vector2(336, 232)], [&"n08_father", Vector2(384, 256)],
-				[&"n07_briefcase", Vector2(416, 240)], [&"n06_red_coat", Vector2(448, 224)]]:
+		if not await walk_to(_player, "concourse -> gate aperture east", Vector2(320, 192)):
+			return false
+		if not await walk_to(_player, "concourse -> east corridor", Vector2(352, 208)):
+			return false
+		for row in [[&"n09_teen", Vector2(432, 336)], [&"n08_father", Vector2(480, 360)],
+				[&"n07_briefcase", Vector2(512, 344)], [&"n06_red_coat", Vector2(544, 328)]]:
 			var id := StringName("ch01.concourse_west." + String(row[0]))
 			if row[0] == &"n08_father":
-				# South of N-08's footprint (362..374 x 244..252), which sits on the straight line.
-				if not await walk_to(_player, "concourse -> south of N-08", Vector2(356, 262)):
+				# South of N-08's footprint, which sits on the straight line.
+				if not await walk_to(_player, "concourse -> south of N-08", Vector2(452, 366)):
 					return false
 			if not await _trace_at(row[1], id, StringName("ch01.npc.%s.traced" % String(row[0]).left(3))):
 				return false
-		if not await _use_at(Vector2(496, 200), validator, "concourse -> ticket_validator (dials untouched)"):
+		if not await _use_at(Vector2(608, 248), validator, "concourse -> ticket_validator (dials untouched)"):
 			return false
 		await _expect_refusal(validator, &"invalid_ticket", "PZ006_FB_NO_SUCH_TICKET", "PZ-006 validator before the dials")
 	# PZ-006: Rewind the dials 3 / 2 / 4 steps (index 5 -> 2 / 3 / 1), then use the validator.
-	for row in [[&"dial_line", Vector2(432, 152), 2], [&"dial_platform", Vector2(464, 168), 3],
-			[&"dial_time", Vector2(496, 184), 1]]:
+	for row in [[&"dial_line", Vector2(544, 200), 2], [&"dial_platform", Vector2(576, 216), 3],
+			[&"dial_time", Vector2(608, 232), 1]]:
 		var dial := _resolve(StringName("ch01.concourse_west." + String(row[0]))) as HistoryDial
 		if not await walk_to(_player, "concourse -> %s" % row[0], row[1]):
 			return false
@@ -373,12 +385,12 @@ func _play() -> bool:
 			if not await _use_watch(&"rewind", dial, func() -> bool: return dial.index == before - 1, "%s steps back" % row[0]):
 				return false
 	var staff_door := _resolve(&"ch01.concourse_west.staff_door") as PoweredDoor
-	if not await _use_at(Vector2(496, 200), validator, "concourse -> ticket_validator"):
+	if not await _use_at(Vector2(608, 248), validator, "concourse -> ticket_validator"):
 		return false
 	if not _assert_true(await until(_solved(&"CH1-PZ-006"), 10), "PZ-006 SOLVED by the validator"):
 		return false
 	_assert_false(staff_door.passage_blocked, "staff door open")
-	if not await walk_to(_player, "concourse -> door_exit_east", Vector2(480, 224), _in_room(&"ch01.maintenance_bay")):
+	if not await walk_to(_player, "concourse -> door_exit_east", Vector2(640, 352), _in_room(&"ch01.maintenance_bay")):
 		return false
 	await physics_frames(2)
 	_segment("2b concourse PZ-006")

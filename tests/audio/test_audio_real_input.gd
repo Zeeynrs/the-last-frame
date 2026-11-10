@@ -55,7 +55,7 @@ func test_audio_real_input_abilities_refusal_and_echo() -> void:
 	await physics_frames(2)
 	var conduit := resolve(&"ch01.concourse_west.conduit_01")
 	if conduit != null:
-		var ok := await walk_to(player, "walk to conduit_01", Vector2(208, 152), targets(conduit), 180)
+		var ok := await walk_to(player, "walk to conduit_01", Vector2(320, 168), targets(conduit), 180)
 		if ok:
 			fb.clear_history()
 			await tap(&"watch")

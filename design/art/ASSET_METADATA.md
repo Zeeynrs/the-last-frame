@@ -1199,3 +1199,79 @@ The colour + luminance-greyscale proof sheet (`design/art/mockups/ch01_tlf077_wa
 | M16 | Beat 06 side-view memory scene mockup (`960 × 540` canvas, `90 px` letterbox bars, 2 background layers, floor strip, 6 props, and Elias at 3 positions `idle_e`, `walk_e`, `interact_e` + `walk_w` mirror & `1×` Iso vs. Side scale check) | `design/art/mockups/ch01_tlf075_side_view_beat06_mockup.png` | `960 × 540 px` | **`concept`** |
 
 The colour + luminance-greyscale proof sheet (`design/art/mockups/ch01_tlf075_side_view_greyscale_proof.png` at `1960 × 1240 px` — containing the `960 × 540` Beat 06 side-view mockup in both colour and `.convert("L")` luminance greyscale plus `×3` zoom comparisons of Iso Elias `s/se/e` vs. Side Elias `idle_e 2f`, `walk_e 6f`, `interact_e 3f`, `interact_w`, Mira silhouette, and all 6 side-view props on Wall `08` and Floor `02`; luminance `.convert("L")` sections are not palette-table-checked) is generated deterministically from delivered runtime PNGs by `tools/art/gen/tlf075_side_view.py` and verified by `verify_regen.py`.
+
+
+## 14. Concourse West face variants (`TLF-081`)
+
+Sol's Part 2 delivery: **13 new PNG/PXO pairs** (ten wall states, three floor-standing validator states). Based on accepted audit `5096ef8`, baseline main `f21aef6`; deterministic generator `tools/art/gen/tlf081_concourse_wall_art.py`. Wall primitives adapted from Argon's uncommitted draft, inspected and revised by Sol; validator and new proof/mount contract authored by Sol. Independent visual acceptance belongs to Lead/owner, with Opus checking gates/metadata. `exported` below means authored/exported, not owner-approved or integrated.
+
+### 14.1 Inventory
+
+Category **Props**, Chapter 1, room `ch01.concourse_west`; native 1x pixels, nearest x2 at 1080p. Asset IDs follow the `ch01.prop.*` convention; the original export/source stems and inventory rows 270-282 are unchanged. **Source/license:** original project-owned procedural pixel art, adapting existing TLF-057/039 forms and Argon's in-repository draft; no external art, AI bitmap, font or licensed texture input. Sol is responsible for the delivered result. PXO `author_display_name` explicitly credits Sol and the adapted Argon wall primitives; the legacy author default for all older assets is untouched.
+
+Every file is one static frame at 1 FPS (no animation tags). Idle/jammed/ringing/rejecting/accepted are separate state files, not a frame sequence. Source `.pxo` files have editable named layers and deterministic RGBA cels from the fixed palette; binary alpha, no antialiasing. All opaque colours belong to the existing TLF-CH01-32 palette.
+
+| Row | Asset ID | Category | Source `.pxo` under `assets/source/ch01/` | Runtime export | Canvas | Frames / FPS | Pivot | Sorting | Colours | State |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **270** | `ch01.prop.flap_dial_line_n_idle` | Props | `ch01_prop_flap_dial_line_n_idle.pxo` | `assets/props/ch01/ch01_prop_flap_dial_line_n_idle.png` | `32 x 48 px` | 1f @ 1 FPS; no tags | `(0, 0)` | `Wall_Fixtures, z=7` | 11/32 | exported; review pending |
+| **271** | `ch01.prop.flap_dial_line_n_jammed` | Props | `ch01_prop_flap_dial_line_n_jammed.pxo` | `assets/props/ch01/ch01_prop_flap_dial_line_n_jammed.png` | `32 x 48 px` | 1f @ 1 FPS; no tags | `(0, 0)` | `Wall_Fixtures, z=7` | 13/32 | exported; review pending |
+| **272** | `ch01.prop.flap_dial_platform_n_idle` | Props | `ch01_prop_flap_dial_platform_n_idle.pxo` | `assets/props/ch01/ch01_prop_flap_dial_platform_n_idle.png` | `32 x 48 px` | 1f @ 1 FPS; no tags | `(0, 0)` | `Wall_Fixtures, z=7` | 10/32 | exported; review pending |
+| **273** | `ch01.prop.flap_dial_platform_n_jammed` | Props | `ch01_prop_flap_dial_platform_n_jammed.pxo` | `assets/props/ch01/ch01_prop_flap_dial_platform_n_jammed.png` | `32 x 48 px` | 1f @ 1 FPS; no tags | `(0, 0)` | `Wall_Fixtures, z=7` | 12/32 | exported; review pending |
+| **274** | `ch01.prop.flap_dial_time_n_idle` | Props | `ch01_prop_flap_dial_time_n_idle.pxo` | `assets/props/ch01/ch01_prop_flap_dial_time_n_idle.png` | `32 x 48 px` | 1f @ 1 FPS; no tags | `(0, 0)` | `Wall_Fixtures, z=7` | 11/32 | exported; review pending |
+| **275** | `ch01.prop.flap_dial_time_n_jammed` | Props | `ch01_prop_flap_dial_time_n_jammed.pxo` | `assets/props/ch01/ch01_prop_flap_dial_time_n_jammed.png` | `32 x 48 px` | 1f @ 1 FPS; no tags | `(0, 0)` | `Wall_Fixtures, z=7` | 13/32 | exported; review pending |
+| **276** | `ch01.prop.call_box_phone_w_idle` | Props | `ch01_prop_call_box_phone_w_idle.pxo` | `assets/props/ch01/ch01_prop_call_box_phone_w_idle.png` | `24 x 48 px` | 1f @ 1 FPS; no tags | `(0, 11)` | `Wall_Fixtures, z=7` | 8/32 | exported; review pending |
+| **277** | `ch01.prop.call_box_phone_w_ringing` | Props | `ch01_prop_call_box_phone_w_ringing.pxo` | `assets/props/ch01/ch01_prop_call_box_phone_w_ringing.png` | `24 x 48 px` | 1f @ 1 FPS; no tags | `(0, 11)` | `Wall_Fixtures, z=7` | 9/32 | exported; review pending |
+| **278** | `ch01.prop.conduit_w_mounted` | Props | `ch01_prop_conduit_w_mounted.pxo` | `assets/props/ch01/ch01_prop_conduit_w_mounted.png` | `48 x 40 px` | 1f @ 1 FPS; no tags | `(0, 23)` | `Wall_Fixtures, z=7` | 8/32 | exported; review pending |
+| **279** | `ch01.prop.ticket_terms_notice_w_idle` | Props | `ch01_prop_ticket_terms_notice_w_idle.pxo` | `assets/props/ch01/ch01_prop_ticket_terms_notice_w_idle.png` | `16 x 28 px` | 1f @ 1 FPS; no tags | `(0, 7)` | `Wall_Fixtures, z=7` | 10/32 | exported; review pending |
+| **280** | `ch01.prop.ticket_validator_n_idle` | Props | `ch01_prop_ticket_validator_n_idle.pxo` | `assets/props/ch01/ch01_prop_ticket_validator_n_idle.png` | `32 x 48 px` | 1f @ 1 FPS; no tags | `(16, 42)` | `YSort_Actors, z=10` | 8/32 | exported; review pending |
+| **281** | `ch01.prop.ticket_validator_n_rejecting` | Props | `ch01_prop_ticket_validator_n_rejecting.pxo` | `assets/props/ch01/ch01_prop_ticket_validator_n_rejecting.png` | `32 x 48 px` | 1f @ 1 FPS; no tags | `(16, 42)` | `YSort_Actors, z=10` | 11/32 | exported; review pending |
+| **282** | `ch01.prop.ticket_validator_n_accepted` | Props | `ch01_prop_ticket_validator_n_accepted.pxo` | `assets/props/ch01/ch01_prop_ticket_validator_n_accepted.png` | `32 x 48 px` | 1f @ 1 FPS; no tags | `(16, 42)` | `YSort_Actors, z=10` | 10/32 | exported; review pending |
+
+### 14.2 Wall mounting contract
+
+**N** means down-right (+x), **W** means down-left (+y). Each complete wall layer, including outline, glyph, shadow and ringing strikes, shares the same 2:1 projection. No readable words, numbers, answer values or new symbols were added. The dials retain the old family glyphs and split-flap/jammed geometry. Current localized dial values remain in the TLF-079 HUD.
+
+Use the **existing** 32x64 N/W tall modules, pivot `(16,56)`. In module-local image coordinates their upper silhouette edges are `y=x//2` (N) and `y=15-x//2` (W). Fixture placement below is the **PNG top-left relative to the module image top-left**, not a floor anchor or legacy frontal offset. W conduit spans two modules: image top-lefts `(0,16)` and `(32,0)` in a 64x80 assembly. Its 48px body may not be clipped to one module.
+
+| Family | Module assembly | PNG top-left | Authored pivot / Sprite2D.offset with centered=false | Wall-relative depth of all opaque pixels |
+|---|---|---|---|---|
+| All six N dials | one N | `(0,6)` | `(0,0)` / `(0,0)` | 6..34 px |
+| W phone, both states | one W | `(4,4)` | `(0,11)` / `(0,-11)` | idle 5..35; ringing 2..35 px |
+| W conduit mounted | W6 + W5 as above | `(16,6)` | `(0,23)` / `(0,-23)` | 6..19 px |
+| W notice | one W | `(8,18)` | `(0,7)` / `(0,-7)` | 14..31 px |
+
+All opaque pixels, including mount shadows, must land inside the actual wall alpha. They do in the supplied proof/check. Do not reuse old frontal `Presenter.position`/`offset` by assumption. Top-left image anchors are deliberate face-space pivots, not floor-contact sorting points; keep these fixtures under wall-fixture sorting.
+
+**Dial pivot convention (Opus P3):** these six N dials use the top-left **face-space pivot `(0,0)`**, offset `(0,0)` with `centered=false`. TLF-077 N selectors use **`(16,40)`**, offset `(-16,-40)`. Do not copy the selector pivot/Presenter arrangement to these dials. The local `(-16,-58)` below already places the entire dial canvas correctly; neither convention is a floor-contact sorting point.
+
+For the proposed v2 origin `(320,64)`, `tile(x,y)=(320+16(x-y),64+8(x+y))`, these are exact integration recipes. Every row assumes `Sprite2D.centered=false`, `Sprite2D.offset=-pivot` from the previous table. The presenter position is relative to its logical Area2D anchor. Equivalent node arrangements are fine only if the final PNG top-left is identical.
+
+| Logical target | Wall module image top-left / assembly origin | Required PNG world top-left | Presenter local position |
+|---|---|---|---|
+| LINE `(15.5,0.5)` -> `(560,192)` | N7 `(544,128)` | `(544,134)` | `(-16,-58)` |
+| PLATFORM `(17.5,0.5)` -> `(592,208)` | N8 `(576,144)` | `(576,150)` | `(-16,-58)` |
+| TIME `(19.5,0.5)` -> `(624,224)` | N9 `(608,160)` | `(608,166)` | `(-16,-58)` |
+| Phone `(0.5,3)` -> `(280,92)` | W1 `(256,32)` | `(260,36)` | `(-20,-45)` |
+| Conduit `(0.5,11.5)` -> `(144,160)` | W6 `(96,112)` + W5 `(128,96)`, assembly `(96,96)` | `(112,102)` | `(-32,-35)` |
+| Notice `(0.5,15)` -> `(88,188)` | W7 `(64,128)` | `(72,146)` | `(-16,-35)` |
+| Validator `(20.5,1.5)` -> `(624,240)` | floor-standing, not mounted | `(608,198)` | `(0,0)`; offset `(-16,-42)` |
+
+**2026-11-10 mount correction:** Lead's `concourse_west.md` at `origin/lead/tlf-080-spec` **`e3f7b76`** supersedes the old conduit `(0.5,12)` / notice `(0.5,14)` placement. Opus review **`c791193`**, `docs/reviews/TLF-081/TLF-081_4383725_OPUS_REVIEW.md`, reproduced **76 overlapping opaque pixels** with the old recipes. The new pair has **0**, without redrawing either asset. The conduit's image origin moves `(+8,-4)` within the same W5/W6 span, preserving wall depth 6..19. The notice moves to the last W module, W7, and its presenter changes to `(-16,-35)`; moving its Area2D alone while retaining `(0,-43)` would be wrong.
+
+**Door clearance:** the aperture is W-wall y=7..9; no prop is allowed within one tile (the approach exclusion extends to y=6..10). With the new source recipes, all opaque conduit pixels project to W-wall y=**10.125..12.875** (including outline/shadow), and notice pixels to **14.5625..15.4375**. The closest conduit pixel is **1.125 tiles** past the aperture's y=9 end. The 48px canvas spans about three wall-axis tiles, so the spec's "about y=10.5..12.5" is approximate; the full opaque extent above is the clearance measurement, not the anchor alone. Both remain within y=0..16.
+
+**TLF-080 builder/integration gate (Opus P2):** these source proofs assume full N modules at x=`2k+1` and W modules at y=`2k+1`, with module image pivot `(16,56)`. In particular W5 is anchored at tile `(0,11)` / world `(144,152)`, image TL `(128,96)`; W6 at `(0,13)` / `(112,168)`, TL `(96,112)`; W7 at `(0,15)` / `(80,184)`, TL `(64,128)`. This branch does **not** assert that the future TLF-080 builder has produced those nodes unchanged. Its integration tests must assert the actual generated module textures/transforms and image top-lefts, then the final conduit TL `(112,102)` and notice TL `(72,146)` with actual parent/Presenter/Sprite transforms. Recompute the recipes if module positions, names/indexing, endcaps or aperture trimming differ; do not place art by node label alone. Assert actual-wall alpha containment, simultaneous mounted-conduit/notice opacity overlap 0 and one-tile door clearance in the built room, with windowed proof. Source-table/pair tests here do not replace that builder test. Validator reach, 16x8 collider and actor occlusion remain integration checks as before.
+
+### 14.3 Validator volume / floor contact
+
+All three 32x48 validator files have **floor pivot `(16,42)`**, `centered=false`, offset `(-16,-42)`, actor floor-contact sorting. Preserve the existing **16x8 collision rectangle**, centred on the logical `(624,240)` target: no collider resizing, position changes or gameplay wiring are included here. The drawn plinth is a 16x8 iso diamond, with an opaque contact shadow; the upper 24px-wide housing overhangs the plinth. This is deliberate cabinet volume, not a wall plaque or a claim that every housing pixel fits a 16px collider. Top is lit steel, N working face down-right, W return darker/down-left. All states share the same body/plinth. Quiet dash, rejection X plus ejected stub, and accepted chevrons plus swallowed/amber slot edge preserve the old meanings. The old source actually draws **two** chevrons despite its `>>>` description; this delivery retains that pair, without inventing a third.
+
+The new bank proof uses actual proposed target offsets: TIME top-left `(608,166)` vs validator `(608,198)`. Their opaque pixels do not overlap, even with jammed TIME and rejecting validator. This does not prove final actor occlusion/collision or interaction readability in the integrated room.
+
+### 14.4 Reproduction, proof and scope
+
+- Export: `python tools/art/gen/gen_all.py --task TLF-081 --export`. All 13 are in `registry.all_assets()`; `--task` filters registry user_data exactly.
+- Proof: `python tools/art/gen/tlf081_concourse_wall_art.py`. Files in `docs/handoffs/TLF-081/`: `tlf081_modules_1x.png` (960x540), `tlf081_modules_x2.png` (1920x1080 nearest), plus matching luminance-greyscale proofs. All 13 states are shown on actual production modules, uncropped. The bottom N bank and simultaneous W5-W7 conduit/notice pair are source assemblies at proposed v2 spacing, **not** integrated room screenshots. Greyscale is a QA transform, not a runtime palette expansion.
+- `gen_all.py --sheet` also writes these proofs; `verify_regen.py` verifies them. `python tools/art/test_tlf081.py` checks exact delivery, actual wall-alpha containment, preserved phone feature projection, greyscale state differences, N-bank overlap, the joint W-pair overlap/door clearance and new Lead target/recipe arithmetic. TLF-080 must separately assert the real builder output as required in section 14.2.
+- Existing frontal exports/sources, fallen conduit, N clock, bench, reset console, palette, scene files and state wiring stay unchanged. Jammed/ringing/rejecting are support-state art only where runtime does not yet select them.
+- Gate logs, authorship boundaries and visual limitations are recorded in `docs/handoffs/TLF-081/TLF-081_HANDOFF.md`. Small native glyphs are category/state cues; reading exact dial values depends on the HUD. Final room composition, HUD, lighting and gameplay need TLF-080 integration review.

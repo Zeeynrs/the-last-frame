@@ -98,7 +98,7 @@ func test_pz001_gate_pinned_and_turnstile_holds() -> void:
 		stop()
 		return
 	var turnstile := resolve(&"ch01.concourse_west.turnstile_gate") as TurnstileGate
-	for point in [Vector2(208, 136), Vector2(250, 126)]:
+	for point in [Vector2(160, 168), Vector2(298, 198)]:
 		if not await walk_to(player, "concourse -> gate Rewind spot", point):
 			stop()
 			return
@@ -112,7 +112,7 @@ func test_pz001_gate_pinned_and_turnstile_holds() -> void:
 	var refusal := last_refusal(turnstile)
 	_assert_true(not refusal.is_empty() and refusal[2] == &"pinned", "Rewind on the pinned gate refused: pinned (%s)" % [refusal])
 	_assert_true(turnstile.passage_blocked, "turnstile still blocked")
-	await push_for([Vector2(272, 128), Vector2(304, 136)], 300, func() -> bool: return is_solved(&"CH1-PZ-001"))
+	await push_for([Vector2(320, 200), Vector2(352, 208)], 300, func() -> bool: return is_solved(&"CH1-PZ-001"))
 	_assert_false(is_solved(&"CH1-PZ-001"), "300 ticks at the turnstile: PZ-001 still UNSOLVED (player at %s)" % player.global_position)
 	stop()
 
@@ -127,13 +127,13 @@ func test_pz006_staff_door_holds_300_ticks() -> void:
 		return
 	var door := resolve(&"ch01.concourse_west.staff_door") as PoweredDoor
 	_assert_true(door.passage_blocked, "staff door closed")
-	if not await walk_to(player, "concourse -> through the turnstile", Vector2(304, 136)):
+	if not await walk_to(player, "concourse -> through the turnstile", Vector2(352, 208)):
 		stop()
 		return
-	for start in [Vector2(448, 200), Vector2(470, 196), Vector2(452, 232)]:
+	for start in [Vector2(608, 328), Vector2(630, 324), Vector2(612, 360)]:
 		# Approach spots near the blocker: a slide along it is fine, the push below is the check.
 		await walk_to(player, "concourse -> approach %s" % start, start, Callable(), 300, true)
-		await push_for([Vector2(480, 224), Vector2(492, 230)], 100, in_room(R3))
+		await push_for([Vector2(640, 352), Vector2(652, 358)], 100, in_room(R3))
 		if not _assert_eq(router.current_room_id, R2, "the staff door holds from %s" % start):
 			break
 	_assert_false(is_solved(&"CH1-PZ-006"), "PZ-006 still UNSOLVED")

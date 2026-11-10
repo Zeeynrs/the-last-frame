@@ -1,0 +1,7 @@
+{
+  "tracked_engine_resource_files_matching_final_branch": 593,
+  "new_runtime_pngs_matching_final_manifest": 13,
+  "scene_script_changes": 0,
+  "scratch_project_name_and_custom_user_dir_confirmed": true,
+  "note": "The mount revision changes only metadata, Python QA/proof composition and documentation. All tracked engine/test inputs and all 13 original runtime PNG hashes match the isolated validation copy byte-for-byte."
+}

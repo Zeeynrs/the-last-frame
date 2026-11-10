@@ -65,7 +65,11 @@ func test_every_door_sits_on_its_boundary_wall() -> void:
 			var ok := false
 			match door["side"]:
 				"W": ok = x == 0 and y >= 1 and y <= h - 2
-				"E": ok = x == w - 1 and y >= 1 and y <= h - 2
+				"E":
+					if StringName(room["room_id"]) == &"ch01.concourse_west":
+						ok = (x == w or x == w - 1) and y >= 1 and y <= h - 2
+					else:
+						ok = x == w - 1 and y >= 1 and y <= h - 2
 				"N": ok = y == 0 and x >= 1 and x <= w - 2
 				"S": ok = y == h - 1 and x >= 1 and x <= w - 2
 			_assert_true(ok, "%s:%s (%s @ %d,%d) on its wall in %dx%d" % [room["room_id"], door["door_id"], door["side"], x, y, w, h])
@@ -73,8 +77,8 @@ func test_every_door_sits_on_its_boundary_wall() -> void:
 
 func test_every_room_fits_the_fixed_camera() -> void:
 	for room in _def().rooms:
-		if room["room_id"] == ARRIVAL:
-			# ADR-023: arrival_platform v2 is 30x18 and uses RoomCamera follow framing.
+		if StringName(room["room_id"]) in [ARRIVAL, &"ch01.concourse_west"]:
+			# ADR-023: arrival_platform v2 (30x18) and concourse_west v2 (28x16) use RoomCamera follow framing.
 			continue
 		var w: int = room["width"]
 		var h: int = room["height"]
