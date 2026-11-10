@@ -25,6 +25,10 @@ All three primary owner complaints and subsequent review findings (from Opus and
 5. **Notice Placement & Tactile Cells Clean-Up:**
    - Moved `doc_evac_notice` to tile $(15, 11) \implies (384, 272)$ so paper pixels sit beside rather than on top of the support pillar. Updated stand spot, reach test, render manifest, and collision fingerprint baseline.
    - Converted legacy tactile floor cells $(3,4), (3,5), (3,6)$ back to plain terrazzo (source 0).
+6. **Fallen Conduit at Gate Contact (Sol Visual Review Round 3):**
+   - Repositioned the fallen conduit sprite and interaction target from the distant West wall to floor pivot $(328, 184)$ (PNG top-left $(304, 158)$), visibly pinning the turnstile arm at gate $(320, 192)$.
+   - Interaction Area2D and stand spot follow the visible object dynamically: $(320, 168)$ when fallen, $(160, 168)$ when mounted.
+   - Re-proved TEST-AU-08, Rewind lifecycle, PZ-001 negatives, and real-input playthrough with Forward+ screenshots.
 
 Zero new narrative text, zero new object IDs, and zero custom lighting were introduced.
 
@@ -77,7 +81,8 @@ All scene positions and tile coordinates have been regenerated directly from the
 | `door_entry_west` | `(0, 8)` | `(192, 128)` | `(2, 8)` | `(224, 144)` | East | 35.8 px | Entry spawn. Capsule holding L/U/D never triggers aperture. |
 | `checkpoint` | `(3, 8)` | `(240, 152)` | `(3, 8)` | `(240, 152)` | Center | 0.0 px | Autosave zone beside spawn. Restores to `safe_anchor_east`. |
 | `call_box_09` | `(0.5, 3)` | `(280, 92)` | `(1.0, 3.5)` | `(280, 100)` | South | 8.0 px | Mounted on W wall module 1. TLF-081 W idle/ringing prop variant. |
-| `conduit_01` | `(0.5, 11.5)` | `(144, 160)` | `(1.5, 11.5)` | `(160, 168)` | East | 17.89 px | Mounted on W wall module 5. Stand spot on floor. Fallen art on floor. |
+| `conduit_01` (fallen) | `(7.75, 7.25)` | `(328, 184)` | `(6.5, 6.5)` | `(320, 168)` | North | 17.89 px | Fallen across turnstile arm at gate contact (Sol R3). Rewind lifts to mounted. |
+| `conduit_01` (mounted) | `(0.5, 11.5)` | `(144, 160)` | `(1.5, 11.5)` | `(160, 168)` | East | 17.89 px | Mounted on W wall module 5. TLF-081 W mounted prop variant. Latched on solve. |
 | `doc_ticket_terms` | `(0.5, 15)` | `(88, 188)` | `(1.5, 15)` | `(104, 196)` | East | 17.89 px | Plaque mounted on W wall module 7. Opens document viewer. |
 | `safe_anchor_east` | `(7, 8)` | `(304, 184)` | `(7, 8)` | `(304, 184)` | Center | 0.0 px | Pre-turnstile safe anchor. |
 | `n05_courier` | `(7, 9)` | `(288, 192)` | `(2, 8)` | `(224, 144)` | Arrival | 80.0 px | Auto-targeted by Trace from arrival and entry anchor; unlocks Rewind. |
@@ -90,7 +95,7 @@ All scene positions and tile coordinates have been regenerated directly from the
 | `ConcourseBench` | `(13, 2)` | `(496, 184)` | `(13, 3)` | `(496, 200)` | South | 16.0 px | Bench facing south into the room along North wall. |
 | `reset_anchor_02` | `(14.5, 0.5)`| `(544, 184)` | `(14.5, 1.5)`| `(544, 200)` | Center | 0.0 px | PZ-006 puzzle reset anchor. |
 | `doc_evac_notice` | `(15, 11)` | `(384, 272)` | `(15, 11)` | `(384, 272)` | Center | 0.0 px | Evacuation notice moved beside pillar (Sol/Opus fix). |
-| `dial_line` | `(15.5, 0.5)`| `(560, 192)` | `(14.5, 0.5)`| `(544, 200)` | South-West | 17.89 px | History Dial 1. TLF-081 N idle/jammed prop variant. |
+| `dial_line` | `(15.5, 0.5)`| `(560, 192)` | `(15.5, 1.5)`| `(544, 200)` | South-West | 17.89 px | History Dial 1. TLF-081 N idle/jammed prop variant. |
 | `support_pillar_01` | `(17, 11)` | `(416, 288)` | `(17, 11)` | `(416, 288)` | Obstacle | — | Pillar with circular collider. Detour south of walking line. |
 | `dial_platform` | `(17.5, 0.5)`| `(592, 208)` | `(16.5, 0.5)`| `(576, 216)` | South-West | 17.89 px | History Dial 2. TLF-081 N idle/jammed prop variant. |
 | `dial_time` | `(19.5, 0.5)`| `(624, 224)` | `(18.5, 0.5)`| `(608, 232)` | South-West | 17.89 px | History Dial 3. TLF-081 N idle/jammed prop variant. |
@@ -106,16 +111,19 @@ All scene positions and tile coordinates have been regenerated directly from the
 
 ## 5. Puzzle Cluster & Narrative Invariance
 
-1. **CH1-PZ-001 (Turnstile Gate):**
-   - Conduit prop on W wall at $(0.5, 11.5) \implies (144, 160)$.
-   - Rewind triggers fallen conduit restoration; turnstile gate opens; walking across $x = 10 \implies (352, 208)$ triggers `exit_trigger_concourse` and marks PZ-001 SOLVED.
+1. **CH1-PZ-001 (Turnstile Gate & Fallen Conduit Placement):**
+   - **Fallen Conduit Placement (Sol R3 Fix):** The fallen state conduit starts at floor pivot $(328, 184)$ (PNG top-left $(304, 158)$), directly contacting the turnstile arm at the gate instead of lying disconnected by the distant West wall.
+   - **State-Derived Interaction & Stand Spot:** When fallen, the conduit's interaction Area2D and stand spot are at $(320, 168)$ (north of the gate arm, 17.89 px distance). Upon Rewind, the conduit moves to mounted anchor $(144, 160)$ (PNG top-left $(112, 102)$ on W5/W6) with stand spot $(160, 168)$.
+   - **Lifecycle & History:** Starts fallen and pinning `turnstile_gate`. First Rewind moves it to mounted and unpins the gate. Second Rewind reports `no_history`. Reset (unsolved) returns it to fallen; solved state latches it permanently to mounted.
+   - **Gate Rewind:** Gate requires its own Rewind after conduit is unpinned. Walking across $x = 10 \implies (352, 208)$ triggers `exit_trigger_concourse` and marks PZ-001 SOLVED.
 2. **CH1-PZ-006 (Ticket Validator & History Dials):**
    - Dials shifted rigidly along N wall ($x = 15.5, 17.5, 19.5$).
    - Commuters shifted rigidly as a block by $(+9, +4)$ to stay $\ge 1.5$ tiles south of walking line $y = 8$.
    - Staff door holds shut with 24×24 Blocker until validator is activated with correct dial indices (2, 3, 1).
 3. **TEST-AU-08 (Courier Rewind Unlock):**
    - Verified from both arrival spawn $(224, 144)$ ($80.0\text{ px} \le 96.0\text{ px}$) and entry anchor $(304, 184)$ ($17.89\text{ px} \le 96.0\text{ px}$).
-   - In both cases, courier `n05_courier` at $(288, 192)$ is the closest candidate and Tracing unlocks Rewind with real collision shapes.
+   - In both cases, courier `n05_courier` at $(288, 192)$ is the nearest Trace candidate and Tracing unlocks Rewind with real collision shapes.
+   - At $(312, 188)$, `turnstile_trace_anchor` at $(328, 196)$ is correctly auto-targeted by Trace (17.89 px). Fallen conduit at $(328, 184)$ does not steal targeting because it does not support Trace.
 4. **Negatives & Divider Sweeps Preserved:**
    - PZ-001 closed gate sweeps prove player cannot cross the $x = 8$ divider line when closed (max $x \le 8.2$).
    - PZ-006 staff door holds against 300-tick player walk attempts when closed.
@@ -131,14 +139,14 @@ All frontal prop assets identified in TLF-078 have been replaced with their appr
   2. `flap_dial_platform_n_idle` & `jammed`
   3. `flap_dial_time_n_idle` & `jammed`
   4. `call_box_phone_w_idle` & `ringing`
-  5. `conduit_w_mounted` (mounted state; fallen state preserves `ch01_prop_conduit_fallen.png` on floor)
+  5. `conduit_w_mounted` (mounted state; fallen state preserves `ch01_prop_conduit_fallen.png` on floor at $(328, 184)$)
   6. `ticket_terms_notice_w_idle`
   7. `ticket_validator_n_idle`, `rejecting`, and `accepted`
 - **Presenter Offset Normalization:** Handled `_ready()` offset resets in presenter scripts:
   - `history_dial_presenter.gd`: `offset = Vector2.ZERO`
   - `ticket_validator_presenter.gd`: `offset = Vector2(-16, -42)`
   - `conduit_prop_presenter.gd`: mounted `position = (-32, -35)`, `offset = (0, -23)`; fallen `position = (0, 0)`, `offset = (-24, -26)`.
-  An automated integration test asserts final on-screen PNG top-lefts match `mount_correction.json`.
+- **Integration Test Coverage (Opus P2):** Automated test in `test_ch01_concourse_west_v2.gd` asserts final on-screen PNG top-lefts match `mount_correction.json` AND explicitly asserts wall module transforms for `WallW_5..7`, `WallN_7..9`, and `WallW_1`.
 - **Turnstile Divider Dressing:** Added 8 `ch01_env_wall_partition_low_e_idle.png` Sprite2Ds along $x = 8$ per Sol's visual specification (no new collision bodies).
 
 ---
@@ -163,32 +171,36 @@ All tests executed with a strict 120s timeout in isolated scratch environments w
 
 | Test Suite | Result | Details |
 |---|---|---|
-| `tests/chapters/ch01/test_ch01_concourse_west_v2.gd` | **11 passed, 0 failed** | Door sweep (L/U/D 3s holds), closed staff door guard, 19 stand spots reachable $\le 2.6\text{ px}$, explicit camera bounds Rect2(48,0,736,432) & center (416,216), checkpoint save/load, AU-08 rewind unlock from spawn & entry anchor, 19-line divider sweep test, TLF-081 wall art mount integration, mutation checks for door trigger and dividers. |
+| `tests/chapters/ch01/test_ch01_concourse_west_v2.gd` | **12 passed, 0 failed** | Door sweep (L/U/D 3s holds), closed staff door guard, 19 stand spots reachable $\le 2.6\text{ px}$, explicit camera bounds Rect2(48,0,736,432) & center (416,216), checkpoint save/load, AU-08 rewind unlock from spawn & entry anchor, 19-line divider sweep test, TLF-081 wall art mount integration, wall module transform assertions (WallN_7..9, WallW_1), conduit fallen/mounted lifecycle & positions, mutation checks for door trigger and dividers. |
 | `tests/spatial/test_ch01_graph.gd` | **9 passed, 0 failed** | Graph connectivity, per-room exception for Concourse West E-door at boundary. |
 | `tests/chapters/ch01/test_ch01_playthrough.gd` | **19 passed, 0 failed** | Scripted playthrough across all 10 rooms, doorway coordinates, safe anchors, checkpoints. |
 | `tests/chapters/ch01/test_ch01_sort_order.gd` | **3 passed, 0 failed** | Y-sort order and render manifest validation for Concourse West (including TLF-081 props). |
 | `tests/chapters/ch01/test_ch01_step1_negatives.gd` | **12 passed, 0 failed** | PZ-001 pinned gate, PZ-006 staff door 300-tick hold. |
 | `tests/chapters/ch01/test_ch01_art_integration.gd` | **6 passed, 0 failed** | Collision fingerprint baseline frozen and verified for all 10 rooms (no UTF-8 BOM, clean § symbols). |
-| `tests/chapters/ch01/test_ch01_real_playthrough.gd` | **1 passed, 0 failed** | Complete 10-room real-input chapter playthrough (3862 physics frames, 8 puzzles, 3 abilities). |
+| `tests/audio/test_audio_real_input.gd` | **2 passed, 0 failed** | Real input audio feedback verification for abilities (Trace, Rewind on conduit, Echo). |
+| `tests/chapters/ch01/test_ch01_real_playthrough.gd` | **1 passed, 0 failed** | Complete 10-room real-input chapter playthrough (8 puzzles, 3 abilities, full wrong moves route). |
 | `tools/content/test_build_room_from_shape.py` | **22 passed, 0 failed** | Python builder round-trip, door cutting, and LF line ending tests. |
-| `tools/validate.ps1` (Full Suite) | **514 passed, 0 failed** | Headless import (0 errors), script parse check (clean), full test suite across all subsystems, clean leak check. |
+| `tools/validate.ps1` (Full Suite) | **515 passed, 0 failed** | Headless import (0 errors), script parse check (clean), full test suite across all subsystems, clean leak check. |
 
 ---
 
 ## 9. Visual Evidence Screenshots
 
-Four Forward+ windowed screenshots (960×540) captured from the live game engine via `tools/capture_concourse_v2.gd` using OpenGL3 / Compatibility on NVIDIA GeForce RTX 5060:
+Five Forward+ windowed screenshots (960×540) captured from the live game engine via `tools/capture_concourse_v2.gd` using native D3D12 / Forward+ renderer on NVIDIA GeForce RTX 5060:
 
 1. **Arrival Platform Entry View:**  
    `docs/handoffs/TLF-080/arrival_960x540.png`  
-   *Shows Elias at spawn $(224, 144)$, the 8-tile spacious entrance hall, mounted conduit variant on West wall, and clear corridor to turnstile.*
-2. **Turnstile Dividing Line View:**  
+   *Shows Elias at spawn $(224, 144)$, the 8-tile spacious entrance hall, call box on West wall, and clear corridor to turnstile.*
+2. **Turnstile Gate with Fallen Conduit (Before Rewind):**  
    `docs/handoffs/TLF-080/gate_960x540.png`  
-   *Shows dressed turnstile low partitions on both north and south sides of the gate at $x = 8$, safe anchor east, and unobstructed passage through the 2-tile gate opening.*
-3. **History Dials & Validator View:**  
+   *Shows turnstile gate at $x = 8$, dressed low dividers, courier statue, and fallen conduit at floor pivot $(328, 184)$ visibly pinning the gate arm.*
+3. **Turnstile Gate after Conduit Rewind (Mounted):**  
+   `docs/handoffs/TLF-080/gate_mounted_960x540.png`  
+   *Shows turnstile gate with conduit restored to its mounted position on West wall module W5/W6 at PNG top-left $(112, 102)$, turnstile arm clear for operation.*
+4. **History Dials & Validator View:**  
    `docs/handoffs/TLF-080/dial_960x540.png`  
    *Shows N-face history dial variants along North wall, sheared N-face digital clock flush against wall, ticket validator variant, and bench.*
-4. **East Doorway & Commuter Queue View:**  
+5. **East Doorway & Commuter Queue View:**  
    `docs/handoffs/TLF-080/east_door_960x540.png`  
    *Shows commuter queue statues shifted $\ge 1.5$ tiles south of main walking aisle, relocated evac notice beside pillar, and exit doorway to maintenance bay.*
 
