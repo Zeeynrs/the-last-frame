@@ -1,0 +1,140 @@
+===== fe4bfb1: probe_visit
+PROBE A before | room ch01.waiting_lounge mode iso pos (256.0, 112.0) | dlg active false seq  | heard false | JRN_TWO 0 | frag false | ret <unset> (Nil)
+PROBE at bench: use target ch01.waiting_lounge.trace_bench, watch target ch01.waiting_lounge.trace_bench (ability trace)
+PROBE A watch target is bench: true
+PROBE A watch_used trace ch01.waiting_lounge.trace_bench ok=true reason=
+PROBE A after first Trace | room ch01.waiting_lounge mode iso pos (318.6097, 161.3049) | dlg active false seq  | heard false | JRN_TWO 0 | frag false | ret <unset> (Nil)
+  PASS: test_a_first_trace_real_input
+PROBE at bench: use target ch01.waiting_lounge.trace_bench, watch target ch01.waiting_lounge.trace_bench (ability trace)
+PROBE B use target is bench: true
+PROBE B after first use | room ch01.waiting_lounge mode iso pos (318.6097, 161.3049) | dlg active true seq ch01_b06_bench | heard true | JRN_TWO 1 | frag false | ret <unset> (Nil)
+  PASS: test_b_first_use_real_input
+PROBE C skipped: no memory room on this tree
+  PASS: test_c_visit_and_revisit
+PROBE E skipped
+  PASS: test_e_save_load
+TESTS: 4 passed, 0 failed
+===== fe4bfb1: probe_focus_autosave
+  PASS: test_f_l
+PROBE H setting a StringName flag
+SCRIPT ERROR: Invalid call. Nonexistent 'bool' constructor.
+   at: Chapter01._on_flag_changed (res://scripts/chapters/ch01/chapter01.gd:159)
+   GDScript backtrace (most recent call first):
+PROBE H done
+  PASS: test_h_non_bool_flag
+TESTS: 2 passed, 0 failed
+===== a94aee3: probe_visit
+PROBE A before | room ch01.waiting_lounge mode iso pos (256.0, 112.0) | dlg active false seq  | heard false | JRN_TWO 0 | frag false | ret <unset> (Nil)
+PROBE at bench: use target ch01.waiting_lounge.trace_bench, watch target ch01.waiting_lounge.trace_bench (ability trace)
+PROBE A watch target is bench: true
+PROBE A watch_used trace ch01.waiting_lounge.trace_bench ok=true reason=
+PROBE A after first Trace | room ch01.waiting_lounge mode iso pos (318.6097, 161.3049) | dlg active true seq ch01_b06_bench | heard true | JRN_TWO 1 | frag false | ret <unset> (Nil)
+  PASS: test_a_first_trace_real_input
+PROBE at bench: use target ch01.waiting_lounge.trace_bench, watch target ch01.waiting_lounge.trace_bench (ability trace)
+PROBE B use target is bench: true
+PROBE B after first use | room ch01.waiting_lounge mode iso pos (318.6097, 161.3049) | dlg active true seq ch01_b06_bench | heard true | JRN_TWO 1 | frag false | ret <unset> (Nil)
+PROBE B after second use | room ch01.waiting_lounge mode iso pos (318.6097, 161.3049) | dlg active false seq  | heard true | JRN_TWO 1 | frag false | ret <unset> (Nil)
+  PASS: test_b_first_use_real_input
+PROBE at bench: use target ch01.waiting_lounge.trace_bench, watch target ch01.waiting_lounge.trace_bench (ability freeze)
+PROBE C first Trace | room ch01.waiting_lounge mode iso pos (318.6097, 161.3049) | dlg active true seq ch01_b06_bench | heard true | JRN_TWO 1 | frag false | ret <unset> (Nil)
+PROBE C second Trace | room ch01.side_mira_memory mode side pos (120.0, 394.0) | dlg active true seq ch01_b06_bench | heard true | JRN_TWO 1 | frag false | ret ch01.waiting_lounge.safe_anchor_center (StringName)
+PROBE C watch current_target valid false value <null>; player current_target valid false
+PROBE C checkpoints [[&"ch01.cp.side_mira_memory", 0, &"ch01.side_mira_memory"]], view_mode_changed [&"side"]
+PROBE Z player z 10 rel true, sprite z 0 rel true, parent Chapter01 z 0
+PROBE Z room_container z 0, room root z 0
+PROBE Z   FarWall0 z 1 rel true
+PROBE Z   FarWall1 z 1 rel true
+PROBE Z   NearWall0 z 2 rel true
+PROBE Z   NearWall1 z 2 rel true
+PROBE Z   FloorStrip0 z 3 rel true
+PROBE Z   FloorStrip1 z 3 rel true
+PROBE Z   LetterboxTop z 15 rel true
+PROBE Z   LetterboxBottom z 15 rel true
+PROBE Z   PlatformPillar z 6 rel true
+PROBE Z   station_bench/BenchSprite z 8 rel true
+PROBE Z   voice_recorder_cup/CupSprite z 9 rel true
+PROBE Z   mira_silhouette/MiraSprite z 9 rel true
+PROBE Z   LuggageTrolley z 8 rel true
+PROBE Z   clock_2359/ClockSprite z 7 rel true
+PROBE CAM walk 120->588: x 480.0..588.0, y values [270.0], fractional 0, view [P: (108.0, 0.0), S: (960.0, 540.0)], player (588.0, 394.0)
+PROBE CUP before (600.0, 394.0), watch target with rewind:
+PROBE CUP   target ch01.side_mira_memory.cup
+PROBE CUP after Rewind (540.0, 384.0); feedback 'Rewind' visible true
+PROBE CUP second Rewind: last refusal [&"player", &"ch01.side_mira_memory.cup", &"no_history", 325]; feedback 'No earlier temporal state recorded for this object.'
+PROBE FREEZE target ch01.side_mira_memory.cup
+PROBE FREEZE result unsupported feedback 'The pocket watch cannot affect this object.'
+PROBE MIRA target ch01.side_mira_memory.mira
+PROBE C Mira traced | room ch01.side_mira_memory mode side pos (772.0, 394.0) | dlg active true seq ch01_b06_bench | heard true | JRN_TWO 1 | frag true | ret ch01.waiting_lounge.safe_anchor_center (StringName)
+PROBE MIRA second trace refusal [&"player", &"ch01.side_mira_memory.mira", &"unsupported", 448] feedback 'The pocket watch cannot affect this object.'
+PROBE CAM walk 770->exit: x 772.0..960.0, y [270.0], fractional 0
+PROBE C after exit | room ch01.waiting_lounge mode iso pos (338.0, 152.0) | dlg active true seq ch01_b06_bench | heard true | JRN_TWO 1 | frag true | ret ch01.waiting_lounge.safe_anchor_center (StringName)
+PROBE C after exit: ability trace, camera bounds [P: (0.0, 0.0), S: (640.0, 360.0)] horizontal_only false, checkpoints [[&"ch01.cp.side_mira_memory", 0, &"ch01.side_mira_memory"]], modes [&"side", &"iso"]
+PROBE at bench: use target ch01.waiting_lounge.trace_bench, watch target ch01.waiting_lounge.trace_bench (ability trace)
+PROBE D second visit | room ch01.side_mira_memory mode side pos (120.0, 394.0) | dlg active false seq  | heard true | JRN_TWO 1 | frag true | ret ch01.waiting_lounge.safe_anchor_center (StringName)
+PROBE D cup position on re-entry (540.0, 384.0)
+PROBE D rewind target ch01.side_mira_memory.cup
+PROBE D cup after Rewind (540.0, 384.0) refusal [&"player", &"ch01.side_mira_memory.cup", &"no_history", 1017]
+PROBE D mira trace refusal [&"player", &"ch01.side_mira_memory.mira", &"unsupported", 448]
+PROBE D after Mira | room ch01.side_mira_memory mode side pos (772.0, 394.0) | dlg active false seq  | heard true | JRN_TWO 1 | frag true | ret ch01.waiting_lounge.safe_anchor_center (StringName)
+  PASS: test_c_visit_and_revisit
+PROBE at bench: use target ch01.waiting_lounge.trace_bench, watch target ch01.waiting_lounge.trace_bench (ability trace)
+PROBE E entered | room ch01.side_mira_memory mode side pos (120.0, 394.0) | dlg active false seq  | heard true | JRN_TWO 1 | frag false | ret ch01.waiting_lounge.safe_anchor_center (StringName)
+PROBE E checkpoints after entry [[&"ch01.cp.side_mira_memory", 0, &"ch01.side_mira_memory"]]
+PROBE E autosave ok true
+PROBE E autosave room { "player": "ch01.side_mira_memory" } checkpoint ch01.cp.side_mira_memory ret ["save_version", "chapter", "checkpoint_id", "puzzles", "narrative_flags", "fragments", "temporal", "spatial", "journal", "hints", "settings_ref", "playtest", "unlocked_abilities"]
+PROBE E restore { "ok": true, "reason": &"" }
+PROBE E after Continue | room ch01.side_mira_memory mode side pos (120.0, 394.0) | dlg active true seq ch01_b01_start | heard true | JRN_TWO 1 | frag false | ret ch01.waiting_lounge.safe_anchor_center (StringName)
+PROBE E camera (480.0, 270.0) bounds [P: (0.0, 0.0), S: (1440.0, 540.0)] horizontal_only true sprite frames side true
+PROBE E walked out after Continue | room ch01.waiting_lounge mode iso pos (338.0, 152.0) | dlg active true seq ch01_b01_start | heard true | JRN_TWO 1 | frag false | ret ch01.waiting_lounge.safe_anchor_center (StringName)
+  PASS: test_e_save_load
+TESTS: 4 passed, 0 failed
+===== a94aee3: probe_focus_autosave
+PROBE F room ch01.side_mira_memory
+PROBE F before Rewind x 500: use target ch01.side_mira_memory.bench
+PROBE F before Rewind x 510: use target ch01.side_mira_memory.bench
+PROBE F before Rewind x 520: use target ch01.side_mira_memory.bench
+PROBE F before Rewind x 530: use target ch01.side_mira_memory.bench
+PROBE F before Rewind x 540: use target ch01.side_mira_memory.bench
+PROBE F before Rewind x 550: use target ch01.side_mira_memory.bench
+PROBE F after Rewind x 500: use target ch01.side_mira_memory.bench
+PROBE F after Rewind x 510: use target ch01.side_mira_memory.bench
+PROBE F after Rewind x 520: use target ch01.side_mira_memory.bench
+PROBE F after Rewind x 530: use target ch01.side_mira_memory.bench
+PROBE F after Rewind x 540: use target ch01.side_mira_memory.cup
+PROBE F after Rewind x 550: use target ch01.side_mira_memory.cup
+PROBE F interact at bench x 520 after Rewind: dlg true seq ch01_b06_bench_look feedback 'Rewind' true
+PROBE L in ch01.waiting_lounge after exit; autosave room { "player": "ch01.side_mira_memory" } checkpoint ch01.cp.side_mira_memory
+  PASS: test_f_l
+PROBE H setting a StringName flag
+PROBE H done
+  PASS: test_h_non_bool_flag
+TESTS: 2 passed, 0 failed
+===== a94aee3: test_ch01_mira_memory_side
+  PASS: test_each_object_reachable_from_both_sides
+  PASS: test_freeze_and_echo_safety
+  PASS: test_mode_switch_leaves_no_leaks
+  PASS: test_real_input_full_memory_flow
+  PASS: test_save_and_restore_inside_memory_scene
+  PASS: test_walk_bounds_and_clamping
+TESTS: 6 passed, 0 failed
+SCRIPT ERROR 0 / ERROR 0
+===== a94aee3: test_ch01_narrative_beats
+  PASS: test_all_narrative_text_keys_localized_and_ascii
+  PASS: test_beat01_platform_awakening_and_watch_pickup
+  PASS: test_beat01_player_moves_immediately_and_dialogue_auto_advances
+  PASS: test_beat01_watch_pickup_real_input_interact_advance_and_unblock_wheel
+  PASS: test_beat03_call_box_09
+  PASS: test_beat05_security_crossing_pa_speaker_echo
+  PASS: test_beat06_waiting_lounge_trace_bench_and_mira_audio
+  PASS: test_beat07_signal_control_intercom_warning_once
+  PASS: test_beat08_upper_vestibule_loop_detection
+  PASS: test_beat09_dispatch_terminal_revelation
+  PASS: test_beat10_outro_and_chapter_complete
+  PASS: test_clocks_2359_are_reusable
+  PASS: test_movement_hint_lifecycle
+TESTS: 13 passed, 0 failed
+SCRIPT ERROR 0 / ERROR 0
+===== a94aee3: test_ch01_real_playthrough
+  PASS: test_real_input_new_game_to_chapter_complete
+TESTS: 1 passed, 0 failed
+SCRIPT ERROR 0 / ERROR 0
