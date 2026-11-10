@@ -44,11 +44,13 @@ All ids unchanged. Tiles are (x, y) with x along the N wall, y along the W wall.
 | `ticket_validator` (console + footprint) | (14.5, 1.5) | **(20.5, 1.5)** | freestanding console against the N wall: facing variant (PATTERN rule 9) |
 | `ConcourseBench` | (12, 3) | **(13, 2)** | along the N wall, facing into the room |
 | `support_pillar_01` (collision) | (9.5, 4.5) | **(17, 11)** | south of the walking line y = 8, not on it |
-| `doc_evac_notice` | (8.5, 5.5) | **(16, 10)** | beside the pillar, detour from the line |
+| `doc_evac_notice` | (8.5, 5.5) | **(15, 11)** | beside the pillar, detour from the line; (16, 10) put all 132 paper pixels on the pillar (Sol TLF-080 review), so it moves one tile west-south |
 | `door_exit_east` + `staff_door` + archway | (15.5, 4.5) | **(28, 8)** | E opening at least 1.5 tiles; the staff door keeps its Blocker |
 | `n06_red_coat`, `n07_briefcase`, `n08_father`, `n09_teen` | (13.5, 5.5), (13.5, 7.5), (13.5, 9.5), (11.5, 8.5) | **(22.5, 9.5), (22.5, 11.5), (22.5, 13.5), (20.5, 12.5)** | rigid block shifted (+9, +4): stays 1.5+ tiles south of the walking line y = 8; statue rule P (TEST-CM-05) unchanged |
 
-No new objects, no new text. Beat sheet dressing (kiosks, luggage) is **not** added here; if the owner wants more dressing it is a later task, one prop at a time, with its art.
+**Turnstile line dressing (Lead decision 2026-11-10, after the Opus and Sol reviews of `f44af6e`):** the dividers along x = 8 (y 0..7 and 9..16) were invisible collision across the hall. They get the existing low partition `ch01_env_wall_partition_low_e_idle.png` (no new art, no new collision), placed exactly as in Sol's table in `docs/reviews/TLF-080/TLF-080_f44af6e_SOL_VISUAL.md` (three whole modules and one half per run, halves at the gate). The three old tactile/amber floor cells (3,4), (3,5), (3,6) become plain terrazzo (source 0); they are not moved to x = 8 (Sol: they would suggest a route through the divider).
+
+No other new objects, no new text. Beat sheet dressing (kiosks, luggage) is **not** added here; if the owner wants more dressing it is a later task, one prop at a time, with its art.
 
 ## 3. Space rules (owner rule, measured on this room)
 
@@ -76,6 +78,8 @@ These are PATTERN rules 8-10, checked here:
 8. Full validate 0 failed, no SCRIPT ERROR; python builder tests if `tools/content/` changed; the owner plays the room.
 
 ## 6. Open points for the owner
+
+* The fallen conduit now lies by the W wall, about 5 tiles from the gate it "pins" (PZ-001 hint 2, Opus P2). Mechanically it works; if it reads wrong in play, Sol proposes a mount nearer the gate in a follow-up.
 
 * Size: 28 × 16 (about 2.3× the cells). If it still feels tight in play, widen to 32 × 18 before more dressing.
 * Whether the entry door stays on the W wall (as now) or moves to the N wall later (needs a Sol-reviewed N door).
