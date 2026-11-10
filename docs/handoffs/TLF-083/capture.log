@@ -1,6 +1,9 @@
 VALIDATE []
 PASS layer 1, HUD layer 2, lights 3, visible true
 CHECK spawn: shader vs reference mismatches 0 / 518400 px; off-palette 0; board glyphs kept 234; 24 darkened outside the board 1148; other indices darkened inside the board 1957; setting off == unlit true
-TIMING spawn: viewport GPU 0.066 ms with the pass, 0.028 ms without (setting off), delta 0.038 ms
-CHECK gate: shader vs reference mismatches 0 / 518400 px; off-palette 0; board glyphs kept 234; 24 darkened outside the board 1112; other indices darkened inside the board 1957; setting off == unlit true
-TIMING gate: viewport GPU 0.105 ms with the pass, 0.035 ms without (setting off), delta 0.070 ms
+TIMING spawn: viewport GPU 0.104 ms with the pass, 0.034 ms without (setting off), delta 0.070 ms
+CHECK gate: shader vs reference mismatches 0 / 518400 px; off-palette 0; board glyphs kept 234; 24 darkened outside the board 1148; other indices darkened inside the board 1957; setting off == unlit true
+TIMING gate: viewport GPU 0.104 ms with the pass, 0.033 ms without (setting off), delta 0.071 ms
+CAPTURED elias_motion_lit
+CAPTURED elias_motion_unlit
+CAPTURED elias_motion_lit_greyscale

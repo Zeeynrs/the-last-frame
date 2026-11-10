@@ -206,9 +206,32 @@ func test_room_lighting_ranges() -> void:
 		var bad := RoomLighting.new()
 		bad.set(c[0], c[1])
 		_assert_false(bad.validate().is_empty(), "%s = %s is rejected" % [c[0], c[1]])
-	# The Elias zone's inner band covers his 32 x 48 sprite (centre (0,-20), corners at +-16, +-24).
-	var r := lit.elias_radius * lit.elias_inner
-	_assert_true(pow(16.0 / r.x, 2) + pow(24.0 / r.y, 2) <= 1.0, "default Elias inner band (%s) covers the sprite" % r)
+	# Sol b71c0a9 default for A 2: radius (18,28), inner 0.85, lifts 1/0.
+	_assert_eq(lit.elias_radius, Vector2(18, 28), "default Elias zone radius")
+	_assert_eq([lit.elias_lift_inner, lit.elias_lift_outer], [1, 0], "default Elias zone lifts 1/0")
+	# Every body pixel of every frame (outline 00 and shadow 01 aside) lies inside the inner band.
+	# The sprite is centred on (0,-20) like the zone, so frame pixel (x, y) sits at (x-15.5, y-23.5).
+	for sheet in ["res://assets/characters/ch01/ch01_char_elias_base_sheet.png", "res://assets/characters/ch01/ch01_char_elias_side_sheet.png"]:
+		var img := (load(sheet) as Texture2D).get_image()
+		img.decompress()
+		var worst := 0.0
+		var cache := {}
+		for fy in range(0, img.get_height(), 48):
+			for fx in range(0, img.get_width(), 32):
+				for y in 48:
+					for x in 32:
+						var c := img.get_pixel(fx + x, fy + y)
+						if c.a < 1.0:
+							continue
+						var key := c.to_rgba32()
+						if not cache.has(key):
+							cache[key] = TlfPalette.nearest_index(c)
+						var index: int = cache[key]
+						if index <= 1:
+							continue
+						var d := (Vector2(x - 15.5, y - 23.5) / lit.elias_radius).length()
+						worst = maxf(worst, d)
+		_assert_true(worst < lit.elias_inner, "%s: every body pixel inside the inner band (max %.3f < %.2f)" % [sheet.get_file(), worst, lit.elias_inner])
 
 
 func test_room_light_validation() -> void:

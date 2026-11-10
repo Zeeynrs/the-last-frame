@@ -123,6 +123,48 @@ func _check(unlit: Image, lit: Image, pass_node: LightingPass) -> Array:
 	return [mismatches, off_palette, kept_24_inside, dark_24_outside, dark_other_inside]
 
 
+## Sol b71c0a9: Elias idle / walk / turn under the zone. 8 facings x (idle 0, walk 1, 3, 5), each a
+## 96 x 96 native crop centred on him while he steps 4 px per column across the gate floor; the same
+## sheet unlit, and a greyscale copy of the lit one.
+func _motion_sheets(pass_node: LightingPass) -> void:
+	var dirs := ["s", "se", "e", "ne", "n", "nw", "w", "sw"]
+	var cols := [["idle_", 0], ["walk_", 1], ["walk_", 3], ["walk_", 5]]
+	var lit_sheet := Image.create(96 * cols.size(), 96 * dirs.size(), false, Image.FORMAT_RGBA8)
+	var unlit_sheet := Image.create(96 * cols.size(), 96 * dirs.size(), false, Image.FORMAT_RGBA8)
+	_hud.visible = false
+	for r in dirs.size():
+		for c in cols.size():
+			var anim: String = cols[c][0] + dirs[r]
+			if not _player.sprite.sprite_frames.has_animation(anim):
+				continue
+			_player.global_position = Vector2(600 + c * 4, 250 + r * 2)
+			_router.camera.snap_now()
+			_player.sprite.play(anim)
+			_player.sprite.pause()
+			_player.sprite.frame = cols[c][1]
+			var at := (root.get_canvas_transform() * _player.global_position).round()
+			var rect := Rect2i(int(at.x) - 48, int(at.y) - 72, 96, 96)
+			_router._apply_lighting()
+			var lit := await _grab()
+			lit.convert(Image.FORMAT_RGBA8)
+			lit_sheet.blit_rect(lit, rect, Vector2i(c * 96, r * 96))
+			pass_node.apply_room(null, null, null)
+			var unlit := await _grab()
+			unlit.convert(Image.FORMAT_RGBA8)
+			unlit_sheet.blit_rect(unlit, rect, Vector2i(c * 96, r * 96))
+	_router._apply_lighting()
+	_save(lit_sheet, "elias_motion_lit")
+	_save(unlit_sheet, "elias_motion_unlit")
+	var grey := lit_sheet.duplicate()
+	for y in grey.get_height():
+		for x in grey.get_width():
+			var col: Color = grey.get_pixel(x, y)
+			var l: float = 0.2126 * col.r + 0.7152 * col.g + 0.0722 * col.b
+			grey.set_pixel(x, y, Color(l, l, l, 1.0))
+	_save(grey, "elias_motion_lit_greyscale")
+	_hud.visible = true
+
+
 func _run() -> void:
 	assert(DisplayServer.get_name() != "headless", "windowed Forward+ only")
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT))
@@ -177,5 +219,6 @@ func _run() -> void:
 			row[0], r[0], lit.get_width() * lit.get_height(), r[1], r[2], r[3], r[4], same])
 		print("TIMING %s: viewport GPU %.3f ms with the pass, %.3f ms without (setting off), delta %.3f ms" % [row[0], ms_on, ms_off, ms_on - ms_off])
 		_hud.visible = true
+	await _motion_sheets(pass_node)
 	print("ALL TLF-083 PROOFS CAPTURED")
 	quit(0)

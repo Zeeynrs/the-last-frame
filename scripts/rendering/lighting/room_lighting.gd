@@ -17,18 +17,20 @@ extends Resource
 @export var dither: bool = false
 
 @export_group("Elias zone")
-## A zone that follows Elias so his whole 32 x 48 sprite stays readable (Sol, TLF-082 §3).
+## A small zone that follows Elias so his body stays readable without a spotlight around him
+## (Sol, TLF-083 visual review b71c0a9; default for A 2 rooms).
 @export var elias_zone: bool = true
 ## Zone centre relative to the player origin (his feet).
 @export var elias_offset: Vector2 = Vector2(0, -20)
-## Outer radius of the zone. The inner band (`elias_inner` of it: 24 x 36 px) just covers the
-## 32 x 48 sprite and the outer band is a thin 6-9 px ring, so the zone does not read as a
-## spotlight moving with him (Sol, TLF-082 §4). Index masking cannot replace it: his trousers use
-## 02/03, the floor's terrazzo indices (ART_BIBLE A.2).
-@export var elias_radius: Vector2 = Vector2(30, 45)
-@export_range(0, 3) var elias_lift_inner: int = 2
-@export_range(0, 3) var elias_lift_outer: int = 1
-@export_range(0.05, 1.0) var elias_inner: float = 0.8
+## Outer radius of the zone. With `elias_inner` 0.85 every body pixel of the iso and side sheets
+## (outline 00 and shadow 01 aside) lies inside the inner band (normalized distance <= 0.82), and
+## lifts 1/0 keep the body one ramp step down at A 2 with a small, weak floor footprint. Index
+## masking cannot replace the zone: his trousers use 02/03, the floor's terrazzo (ART_BIBLE A.2).
+## A 1 rooms keep 1/0; A 3 (maintenance) needs lift 2 and its own proof (Sol, TLF-082 §3).
+@export var elias_radius: Vector2 = Vector2(18, 28)
+@export_range(0, 3) var elias_lift_inner: int = 1
+@export_range(0, 3) var elias_lift_outer: int = 0
+@export_range(0.05, 1.0) var elias_inner: float = 0.85
 
 
 ## Empty when the values are inside the ADR-026 ranges; otherwise one message per problem.
