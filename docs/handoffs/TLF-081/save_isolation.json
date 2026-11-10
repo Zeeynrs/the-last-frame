@@ -1,5 +1,6 @@
 {
   "validate_exit": 0,
+  "real_save_files_before": 140,
   "real_save_files_after": 140,
   "real_save_inventory_hash_mtime_unchanged": true
 }

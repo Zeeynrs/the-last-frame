@@ -303,8 +303,8 @@
         ]
       ],
       "png_offset_in_assembly": [
-        8,
-        10
+        16,
+        6
       ],
       "opaque_overflow": 0,
       "wall_depth_min_max": [
@@ -417,5 +417,7 @@
     }
   ],
   "existing_png_pxo_unchanged": 560,
-  "existing_png_pxo_verification": "working file raw bytes match baseline Git blobs (including frontal and conduit_fallen)"
+  "existing_png_pxo_verification": "working file raw bytes match baseline Git blobs (including frontal and conduit_fallen)",
+  "mount_revision_base": "43837254dd272c9762e6720240dcf6938aacf472",
+  "all_existing_png_pxo_unchanged_since_mount_revision_base": 586
 }

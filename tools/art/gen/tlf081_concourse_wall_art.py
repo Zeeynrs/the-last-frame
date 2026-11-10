@@ -484,7 +484,7 @@ def build_ticket_validator_n(state):
 WALL_MOUNTS = {
     'dial': dict(face='n', offset=(0, 6), pivot=(0, 0), modules=((0, 0),)),
     'phone': dict(face='w', offset=(4, 4), pivot=(0, 11), modules=((0, 0),)),
-    'conduit': dict(face='w', offset=(8, 10), pivot=(0, 23), modules=((0, 16), (32, 0))),
+    'conduit': dict(face='w', offset=(16, 6), pivot=(0, 23), modules=((0, 16), (32, 0))),
     'terms': dict(face='w', offset=(8, 18), pivot=(0, 7), modules=((0, 0),)),
 }
 
@@ -595,10 +595,22 @@ def build_module_proof():
     label(352, 362, 'DIAL PRESENTERS REQUIRE NEW MOUNTS', 14)
     label(352, 378, 'HUD OWNS DIAL VALUES; NO ANSWERS BAKED', 14)
     label(352, 410, 'PHONE: (4,4) ON W MODULE', 14)
-    label(352, 426, 'CONDUIT: (8,10) ON TWO W MODULES', 14)
-    label(352, 442, 'NOTICE: (8,18) ON W MODULE', 14)
+    label(352, 426, 'CONDUIT: (16,6) ON W6 + W5', 14)
+    label(352, 442, 'NOTICE: (8,18) ON W7', 14)
     label(352, 474, 'TINY NATIVE GLYPHS ARE FAMILY/STATE CUES', 14)
     label(352, 490, 'FINAL ROOM / HUD / LIGHTING NEED INTEGRATION REVIEW', 14)
+    label(704, 322, 'W5-W7 / CONDUIT + NOTICE')
+    # Lead e3f7b76: world (64,96) -> proof (768,356). This is the
+    # simultaneous mounted conduit / ticket-terms clue, not isolated cells.
+    wall_w = _export('environments', 'ch01_env_wall_subterranean_w_idle')
+    for xy in ((768, 388), (800, 372), (832, 356)):
+        im.alpha_composite(wall_w, xy)
+    dx, dy = WALL_MOUNTS['conduit']['offset']
+    im.alpha_composite(_export('props', 'ch01_prop_conduit_w_mounted'), (800 + dx, 356 + dy))
+    dx, dy = WALL_MOUNTS['terms']['offset']
+    im.alpha_composite(_export('props', 'ch01_prop_ticket_terms_notice_w_idle'), (768 + dx, 388 + dy))
+    label(736, 474, 'PAIR OVERLAP: 0 PX', 14)
+    label(736, 490, 'BUILDER CHECK REQUIRED', 14)
     return im
 
 

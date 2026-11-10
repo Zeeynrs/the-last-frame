@@ -3,11 +3,13 @@ import sys
 import unittest
 import json
 import zipfile
+import re
 from pathlib import Path
 from PIL import Image, ImageChops
 
 sys.path.insert(0, str(Path(__file__).parent / 'gen'))
 import registry
+import tlf081_concourse_wall_art as art
 from lib import REPO
 
 EXPECTED = {
@@ -37,7 +39,7 @@ class Delivery(unittest.TestCase):
         contracts = {
             'flap_dial': ('n', (0, 6), ((0, 0),)),
             'call_box': ('w', (4, 4), ((0, 0),)),
-            'conduit': ('w', (8, 10), ((0, 16), (32, 0))),
+            'conduit': ('w', (16, 6), ((0, 16), (32, 0))),
             'ticket_terms': ('w', (8, 18), ((0, 0),)),
         }
         for stem in sorted(EXPECTED):
@@ -84,6 +86,55 @@ class Delivery(unittest.TestCase):
             hits = [(x, y) for y in range(32, dial.height) for x in range(32)
                     if dial.getpixel((x, y))[3] and validator.getpixel((x, y - 32))[3]]
             self.assertEqual([], hits)
+
+    def test_w_pair_and_door_clearance_at_documented_world_positions(self):
+        # The old individually valid recipes overlap by 76 opaque pixels.
+        # Check the simultaneous mounted-PZ001 / clue-PZ006 source assembly.
+        points = []
+        for name, stem in (('Conduit', 'ch01_prop_conduit_w_mounted'),
+                           ('Notice', 'ch01_prop_ticket_terms_notice_w_idle')):
+            cells = self.recipe_cells(name)
+            dx, dy = self.coords(cells[3])[-1]
+            image = self.png('props', stem)
+            points.append({(x + dx, y + dy) for y in range(image.height)
+                           for x in range(image.width) if image.getpixel((x, y))[3]})
+        self.assertEqual(0, len(points[0] & points[1]), 'conduit hides ticket-terms clue')
+        for occupied in points:
+            wall_y = [(320 - x) / 16 for x, y in occupied]
+            self.assertGreaterEqual(min(wall_y), 10, 'less than one tile from aperture y=7..9')
+            self.assertLessEqual(max(wall_y), 16, 'outside the W wall')
+
+    def test_w_recipes_match_new_lead_targets_and_module_mounts(self):
+        # Lead e3f7b76: conduit (.5,11.5), notice (.5,15). These are the
+        # normative source-module assumptions; TLF-080 must assert its builder.
+        for name, family, tile, anchor, origin, png_tl, local in (
+            ('Conduit', 'conduit', (.5, 11.5), (144, 160), (96, 96), (112, 102), (-32, -35)),
+            ('Notice', 'terms', (.5, 15), (88, 188), (64, 128), (72, 146), (-16, -35)),
+        ):
+            with self.subTest(name=name):
+                cells = self.recipe_cells(name)
+                self.assertEqual([tile, anchor], self.coords(cells[1]))
+                expected_modules = ([(96, 112), (128, 96), (96, 96)] if name == 'Conduit'
+                                    else [(64, 128)])
+                self.assertEqual(expected_modules, self.coords(cells[2]))
+                self.assertEqual([png_tl], self.coords(cells[3]))
+                self.assertEqual([local], self.coords(cells[4]))
+                mount = art.WALL_MOUNTS[family]
+                self.assertEqual(png_tl, tuple(a + b for a, b in zip(origin, mount['offset'])))
+                self.assertEqual(png_tl, tuple(a + b - p for a, b, p
+                                               in zip(anchor, local, mount['pivot'])))
+
+    @staticmethod
+    def recipe_cells(name):
+        text = (Path(REPO) / 'design/art/ASSET_METADATA.md').read_text(encoding='utf-8')
+        section = text.split('### 14.2 Wall mounting contract', 1)[1].split('### 14.3', 1)[0]
+        row = next(line for line in section.splitlines() if line.startswith('| ' + name + ' `'))
+        return row.split('|')
+
+    @staticmethod
+    def coords(text):
+        return [tuple(float(v) for v in pair)
+                for pair in re.findall(r'\((-?[\d.]+),\s*(-?[\d.]+)\)', text)]
 
     @staticmethod
     def png(folder, stem):

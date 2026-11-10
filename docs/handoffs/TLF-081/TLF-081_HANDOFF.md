@@ -1,6 +1,25 @@
-# TLF-081 Part 2 ? Concourse facing art
+# TLF-081 Part 2 - Concourse facing art
 
-Sol, 2026-11-10. Asset author under ADR-017 fallback. **13 new PNG/PXO pairs delivered for independent review; no scene/asset integration or merge.** Branch `adityadaffa522/tlf-081-concourse-wall-art-sol`, based on `origin/main` `f21aef6899d183e5101db9dc369811bd10a18455`. Production specification: accepted Part 1 audit `5096ef8be3d152b0c2d0002e3c237038ffe913b6`; TLF-081 / PATTERN 9 and 12 from `origin/lead/tlf-080-spec` `085b554`.
+Sol, 2026-11-10. Asset author under ADR-017 fallback. **13 new PNG/PXO pairs delivered for independent review; no scene/asset integration or merge.** Branch `adityadaffa522/tlf-081-concourse-wall-art-sol`, based on `origin/main` `f21aef6899d183e5101db9dc369811bd10a18455`. Original production specification: accepted Part 1 audit `5096ef8be3d152b0c2d0002e3c237038ffe913b6`; TLF-081 / PATTERN 9 and 12 from `origin/lead/tlf-080-spec` `085b554`. The mount layout is amended by Lead's `e3f7b76` below.
+
+## Mount re-check - parent `4383725` (2026-11-10)
+
+Opus review `origin/agent/opus-core-review-081-076b` **`c791193621eee2e5831951ff6f81b1dea697cc06`**, `docs/reviews/TLF-081/TLF-081_4383725_OPUS_REVIEW.md`, found a P1 in the simultaneous W-wall recipes: **76 opaque pixels overlapped**. Lead's `concourse_west.md` at `origin/lead/tlf-080-spec` **`e3f7b7661a5326bb250c49ff99707301148014fe`** moves the conduit to `(0.5,11.5)` and the ticket notice to `(0.5,15)`. This revision applies that layout; **no PNG/PXO art is redrawn**.
+
+| Object | Logical anchor (world) | Module image TL / assembly | Required PNG world TL | Presenter local; Sprite offset |
+|---|---|---|---|---|
+| Conduit | `(144,160)` | W6 `(96,112)` + W5 `(128,96)`, assembly `(96,96)` | `(112,102)`; assembly offset `(16,6)` | `(-32,-35)`; `(0,-23)` |
+| Ticket notice | `(88,188)` | W7 `(64,128)` | `(72,146)`; module offset `(8,18)` | `(-16,-35)`; `(0,-7)` |
+
+With `centered=false`, the old pivots remain `(0,23)` and `(0,7)`. The new pair has **0 opaque overlap, 0 opaque wall overflow**. All opaque conduit pixels lie at W-wall y=**10.125..12.875**, including outline/shadow; notice y=**14.5625..15.4375**. Minimum clearance past the door aperture's y=9 end is **1.125 tiles**, meeting the one-tile rule for aperture y=7..9. The conduit canvas is 48px wide (about three wall-axis tiles); use the measured opaque extent, not the spec's approximate y=10.5..12.5 or the anchor alone, for clearance.
+
+The updated four proof sheets show **both fixtures simultaneously on W5/W6/W7** at bottom right. [mount_correction.json](mount_correction.json) reproduces the old 76-pixel failure and the corrected geometry. `test_tlf081.py` now checks this pair, door clearance, new target/recipe arithmetic and module assumptions in addition to the original checks.
+
+**P2:** these are source-module assumptions, not verification of Flash's future TLF-080 builder. Integration must assert actual generated module textures/transforms/image TLs and both final PNG TLs; recompute if builder indexing, trims, endcaps or placement differs. Then test opacity containment, zero pair overlap and aperture clearance in the built room and provide windowed evidence. See ASSET_METADATA 14.2.
+
+**P3:** 14.1 now has `ch01.prop.*` Asset IDs, category and frames/FPS columns. Dials keep **face pivot `(0,0)`**, unlike **TLF-077 N selectors `(16,40)`**; do not copy selector offsets. The validator's intended housing overhang remains documented; its 16x8 collider, reach and occlusion still need integration checks. Earlier section/row-number collisions outside section 14 are unchanged.
+
+Fresh gate evidence for this revision is recorded below. The original delivery and its evidence remain available at `4383725`.
 
 ## Review first
 
@@ -8,7 +27,7 @@ Sol, 2026-11-10. Asset author under ADR-017 fallback. **13 new PNG/PXO pairs del
 - [Native luminance greyscale](tlf081_modules_greyscale_1x.png), [greyscale x2](tlf081_modules_greyscale_x2.png).
 - [Inventory, pivots, mount recipes, sorting, footprint and source attribution](../../../design/art/ASSET_METADATA.md#14-concourse-west-face-variants-tlf-081).
 
-All thirteen states appear **uncropped**, at native scale, on the actual existing N/W wall or floor exports. The bottom N bank uses proposed v2 spacing with the existing clock, bench and Elias for scale. **This is a deterministic source-module assembly, not a windowed screenshot of an integrated TLF-080 room.** No substitute rectangular wall masks, artificial bloom or extra room lighting are used.
+All thirteen states appear **uncropped**, at native scale, on the actual existing N/W wall or floor exports. The bottom N bank uses proposed v2 spacing with the existing clock, bench and Elias for scale; the W5-W7 assembly shows the corrected simultaneous conduit/notice pair. **This is a deterministic source-module assembly, not a windowed screenshot of an integrated TLF-080 room.** No substitute rectangular wall masks, artificial bloom or extra room lighting are used.
 
 ## Delivered scope / authorship
 
@@ -32,8 +51,8 @@ N is down-right (+x); W is down-left (+y). The whole fixture, glyphs and opaque 
 
 - N dials: 32x48, top-left `(0,6)` on each 32x64 N module; face pivot `(0,0)`.
 - W phone: 24x48, top-left `(4,4)` on W module; face pivot `(0,11)`.
-- W conduit: 48x40, top-left `(8,10)` on a **64x80 two-module W assembly**, module images `(0,16)` / `(32,0)`; face pivot `(0,23)`. This is only the mounted replacement; retain the fallen file.
-- W notice: 16x28, top-left `(8,18)` on W module; face pivot `(0,7)`.
+- W conduit: 48x40, top-left `(16,6)` on the **64x80 W6/W5 assembly**, module images `(0,16)` / `(32,0)`; face pivot `(0,23)`. This is only the mounted replacement; retain the fallen file.
+- W notice: 16x28, top-left `(8,18)` on **W7**; face pivot `(0,7)`.
 - Validator: 32x48, **floor-contact pivot `(16,42)`**, `centered=false`, offset `(-16,-42)`, floor-contact sorting. Existing **16x8 centred collision rectangle stays unchanged**. Its upper 24px cabinet overhangs the 16x8 plinth; it is not a flat wall plaque.
 
 At the proposed origin `(320,64)`, dial PNG top-lefts are `(544,134)`, `(576,150)`, `(608,166)`; validator `(608,198)` at logical floor anchor `(624,240)`. TIME and validator opaque pixels do not overlap, including jammed/rejecting states. The proof bank includes exactly one existing `23:59` clock for context; no new clock file is authored.
@@ -58,11 +77,11 @@ python tools/art/gen/verify_pxo.py --task TLF-081 --log docs/handoffs/TLF-081/ve
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/validate.ps1 -Godot D:/Godot/Godot_v4.7.2-stable_win64_console.exe
 ```
 
-Run engine validation in a fresh renamed scratch archive with a custom user directory, as recorded in `validation_environment.json`; never use the live save. The four proof PNGs are deterministic generator outputs checked by `verify_regen.py`, including when `gen_all.py --sheet` is used. Greyscale proofs are QA transforms, not runtime palette additions. The supplemental asset check covers exact 13-state registry membership, PXO authorship, opaque wall-mask fit, preserved W phone details, greyscale state differences and bank overlap.
+Run engine validation in a fresh renamed scratch archive with a custom user directory, as recorded in `validation_environment.json`; never use the live save. The four proof PNGs are deterministic generator outputs checked by `verify_regen.py`, including when `gen_all.py --sheet` is used. Greyscale proofs are QA transforms, not runtime palette additions. The seven asset checks cover exact registry membership, PXO authorship, wall-mask fit, preserved W phone details, greyscale/N-bank checks, W-pair overlap/door clearance and Lead target/module/recipe arithmetic.
 
 ## Gate evidence
 
-All four requested gate tools passed for the delivery: Pixelorama re-export verification is scoped to all **13 new TLF-081 PXOs**, using the explicit registry task filter. Existing PNG/PXO preservation is independently checked against all 560 baseline Git blobs in `asset_manifest.json`; no legacy source is silently regenerated. Full raw engine validation is retained here and in `validate.txt`; negative tests may intentionally log expected errors, so test-runner totals/exit code and the script-error count are reported explicitly.
+All five requested gates passed for this mount re-check: Pixelorama re-export verification is scoped to all **13 new TLF-081 PXOs**, using the explicit registry task filter. All 586 existing PNG/PXO files are byte-identical to `4383725` (including the original 560 from main), as recorded in `asset_manifest.json`; no source/export is regenerated for this mount correction. Full raw engine validation is retained here and in `validate.txt`; negative tests may intentionally log expected errors, so test-runner totals/exit code and the script-error count are reported explicitly.
 
 
 | Check | Scope / exact result | Raw evidence |
@@ -71,24 +90,24 @@ All four requested gate tools passed for the delivery: Pixelorama re-export veri
 | `gen/verify_regen.py` | **ALL REPRODUCIBLE**, all registered generated assets and all four new proofs; older ungenerated batch-1 sources remain explicitly listed as NOT COVERED | [verify_regen.txt](verify_regen.txt) |
 | `gen/verify_pxo.py --task TLF-081` | **13/13**, size/export exits 0, every Pixelorama PNG re-export **BYTE-IDENTICAL** | [verify_pxo_tlf081_final.txt](verify_pxo_tlf081_final.txt) |
 | `tools/validate.ps1` | import **zero errors**; **182 scripts, 0 failed**; **503 tests passed, 0 failed**; **0 SCRIPT ERROR**; both leak checks clean; exit 0 | [validate.txt](validate.txt) and raw output below |
-| Supplemental acceptance | **5 tests passed**: delivery, editable-source authorship, real module alpha, original phone detail projection, greyscale states/bank separation | [acceptance.txt](acceptance.txt) |
-| Legacy preservation | **560/560 existing PNG/PXO** raw bytes match baseline Git blobs, including frontal files and fallen conduit | [asset_manifest.json](asset_manifest.json) |
+| `tools/art/test_tlf081.py` | **7 tests passed**: original five checks plus W-pair overlap/door clearance and new Lead target/module/recipe arithmetic | [acceptance.txt](acceptance.txt) |
+| Legacy preservation | **586/586 existing PNG/PXO** raw bytes match `4383725` Git blobs, including all 13 delivered pairs, frontal files and fallen conduit | [asset_manifest.json](asset_manifest.json) |
 | Save isolation | **140/140 live files unchanged**, size, SHA256 and mtime inventory identical | [save_isolation.json](save_isolation.json), [environment](validation_environment.json) |
 | Validated input equivalence | All tracked engine/test resources and all 13 final runtime PNG hashes match the validated scratch; only scratch project name/custom-user-dir settings differ | [validation_input_equivalence.json](validation_input_equivalence.json) |
 
-The broad legacy PXO scan started during QA was stopped without claiming a result; the completed production PXO gate above covers the exact thirteen new files after final provenance correction. Existing source/export preservation and global generator/metadata checks are separate, completed checks.
+The original `4383725` QA stopped a redundant broad legacy PXO scan without claiming a result. This mount re-check runs the intended task-scoped gate on all thirteen unchanged source files. Global generator/metadata checks and byte preservation of all 586 existing PNG/PXO files are separate checks.
 
 ## Raw engine validation output
 
-The following is unedited stdout/stderr from the renamed scratch `tools/validate.ps1` run. Expected negative-test `ERROR:` messages are retained; they are not script/import failures. Final runner total, process exit, leak checks and SCRIPT ERROR count are reported above.
+The following is unedited stdout/stderr from the fresh renamed scratch mount re-check. Expected negative-test `ERROR:` messages are retained; the run has 0 SCRIPT ERROR, 182 script parses with 0 failed, 503 tests with 0 failed, clean leak checks and exit 0.
 
 <details>
-<summary>Full raw validation log (2,081 lines)</summary>
+<summary>Full raw validation log (2081 lines)</summary>
 
 ```text
 === Validating The Last Frame Project ===
 Using Godot executable: D:\Godot\Godot_v4.7.2-stable_win64_console.exe
-Project root: C:\Users\adity\AppData\Local\Temp\tlf-sol081-validate-59risf73
+Project root: C:\Users\adity\AppData\Local\Temp\tlf-sol081-mount-recheck-3jsxyq8q
 
 [1/3] Running headless import check...
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
@@ -1338,15 +1357,15 @@ Import check passed with zero errors.
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Script check: 182 scripts, 0 failed.
-Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/TLF_Sol081_Validation_Scratch/headless/settings.cfg)
-SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/TLF_Sol081_Validation_Scratch/headless/saves)
+Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/TLF_Sol081_Mount_Recheck_3jsxyq8q/headless/settings.cfg)
+SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/TLF_Sol081_Mount_Recheck_3jsxyq8q/headless/saves)
 Leak check: clean (script check)
 
 [3/3] Running headless automated test suite...
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
-Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/TLF_Sol081_Validation_Scratch/headless/settings.cfg)
-SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/TLF_Sol081_Validation_Scratch/headless/saves)
+Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/TLF_Sol081_Mount_Recheck_3jsxyq8q/headless/settings.cfg)
+SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/TLF_Sol081_Mount_Recheck_3jsxyq8q/headless/saves)
 --- Running Test Suite ---
 Test file: res://tests/audio/test_audio_feedback.gd
   PASS: test_audio_feedback_ability_locked_and_refused
@@ -1445,7 +1464,7 @@ Test file: res://tests/chapters/ch01/test_ch01_pz004_saveload.gd
 Test file: res://tests/chapters/ch01/test_ch01_real_playthrough.gd
   INFO: playthrough | 1 arrival (SO-01)                     955 frames (15.92 s)
   INFO: playthrough | 2a concourse PZ-001                   147 frames (2.45 s)
-  INFO: playthrough | 2b concourse PZ-006                   366 frames (6.10 s)
+  INFO: playthrough | 2b concourse PZ-006                   367 frames (6.12 s)
   INFO: playthrough | 3a bay SO-02                           87 frames (1.45 s)
   INFO: playthrough | 3b bay PZ-002                         138 frames (2.30 s)
   INFO: playthrough | 4 crossing PZ-003                     304 frames (5.07 s)
@@ -1456,14 +1475,14 @@ Test file: res://tests/chapters/ch01/test_ch01_real_playthrough.gd
   INFO: playthrough | 7 vestibule PZ-005 (levers)           357 frames (5.95 s)
   INFO: playthrough | 9 atrium terminal (Beat 09)           133 frames (2.22 s)
   INFO: playthrough | 10 street exit outro (Beat 10)         54 frames (0.90 s)
-  INFO: real-input playthrough took 3348 physics frames (55.8 s game time, 55.84 s wall)
+  INFO: real-input playthrough took 3349 physics frames (55.8 s game time, 55.82 s wall)
   INFO: SOLVED ticks [[&"CH1-SO-01", 939], [&"CH1-PZ-001", 1102], [&"CH1-PZ-006", 1439], [&"CH1-SO-02", 1550], [&"CH1-PZ-002", 1674], [&"CH1-PZ-003", 1975], [&"CH1-PZ-004", 2786], [&"CH1-PZ-005", 3152]]
   INFO: unlock ticks [[&"rewind", 958], [&"freeze", 1486], [&"echo", 1694]]
   INFO: PlaytestLog | Playtest: 0:55 played, 0:01 paused
   INFO: PlaytestLog | PZ-001 0:02   PZ-002 0:04   PZ-003 0:05
   INFO: PlaytestLog | PZ-004 0:12   PZ-005 0:06   PZ-006 0:08
   INFO: PlaytestLog | SO-01 0:16   SO-02 0:01
-  INFO: PlaytestLog | Log: user://headless/playtest/ch01_20261110_113457.json
+  INFO: PlaytestLog | Log: user://headless/playtest/ch01_20261110_181125.json
   PASS: test_real_input_new_game_to_chapter_complete
 Test file: res://tests/chapters/ch01/test_ch01_sort_order.gd
   PASS: test_actionable_sprites_use_the_canonical_pivot
@@ -1519,7 +1538,7 @@ Test file: res://tests/echo/test_echo_service.gd
   PASS: test_triggers_occupied_at_record_start_are_seeded_at_rel_zero
   PASS: test_watch_abilities_and_non_player_actors_are_not_recorded
 Test file: res://tests/interaction/test_interactable_lifecycle.gd
-ERROR: IdRegistry: Duplicate ID 'ch01.test_lever' already registered to OriginalLever:<Area2D#3117609388027>.
+ERROR: IdRegistry: Duplicate ID 'ch01.test_lever' already registered to OriginalLever:<Area2D#3117139626761>.
    at: push_error (core/variant/variant_utility.cpp:1023)
    GDScript backtrace (most recent call first):
        [0] register (res://scripts/session/id_registry.gd:40)
@@ -1852,7 +1871,7 @@ ERROR: Parse JSON failed. Error at line 0: Expected key
   PASS: test_v1_save_migrates_to_v2_with_an_empty_playtest_log
   PASS: test_v2_save_migrates_to_v3_with_all_four_abilities
 Test file: res://tests/session/test_id_registry.gd
-ERROR: IdRegistry: Duplicate ID 'ch01.test_node' already registered to <Node#3774454172188>.
+ERROR: IdRegistry: Duplicate ID 'ch01.test_node' already registered to <Node#3773833415196>.
    at: push_error (core/variant/variant_utility.cpp:1023)
    GDScript backtrace (most recent call first):
        [0] register (res://scripts/session/id_registry.gd:40)

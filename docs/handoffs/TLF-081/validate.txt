@@ -1,6 +1,6 @@
 === Validating The Last Frame Project ===
 Using Godot executable: D:\Godot\Godot_v4.7.2-stable_win64_console.exe
-Project root: C:\Users\adity\AppData\Local\Temp\tlf-sol081-validate-59risf73
+Project root: C:\Users\adity\AppData\Local\Temp\tlf-sol081-mount-recheck-3jsxyq8q
 
 [1/3] Running headless import check...
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
@@ -1250,15 +1250,15 @@ Import check passed with zero errors.
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Script check: 182 scripts, 0 failed.
-Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/TLF_Sol081_Validation_Scratch/headless/settings.cfg)
-SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/TLF_Sol081_Validation_Scratch/headless/saves)
+Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/TLF_Sol081_Mount_Recheck_3jsxyq8q/headless/settings.cfg)
+SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/TLF_Sol081_Mount_Recheck_3jsxyq8q/headless/saves)
 Leak check: clean (script check)
 
 [3/3] Running headless automated test suite...
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
-Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/TLF_Sol081_Validation_Scratch/headless/settings.cfg)
-SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/TLF_Sol081_Validation_Scratch/headless/saves)
+Settings: headless, path = user://headless/settings.cfg (C:/Users/adity/AppData/Roaming/TLF_Sol081_Mount_Recheck_3jsxyq8q/headless/settings.cfg)
+SaveStore: headless, root = user://headless/saves (C:/Users/adity/AppData/Roaming/TLF_Sol081_Mount_Recheck_3jsxyq8q/headless/saves)
 --- Running Test Suite ---
 Test file: res://tests/audio/test_audio_feedback.gd
   PASS: test_audio_feedback_ability_locked_and_refused
@@ -1357,7 +1357,7 @@ Test file: res://tests/chapters/ch01/test_ch01_pz004_saveload.gd
 Test file: res://tests/chapters/ch01/test_ch01_real_playthrough.gd
   INFO: playthrough | 1 arrival (SO-01)                     955 frames (15.92 s)
   INFO: playthrough | 2a concourse PZ-001                   147 frames (2.45 s)
-  INFO: playthrough | 2b concourse PZ-006                   366 frames (6.10 s)
+  INFO: playthrough | 2b concourse PZ-006                   367 frames (6.12 s)
   INFO: playthrough | 3a bay SO-02                           87 frames (1.45 s)
   INFO: playthrough | 3b bay PZ-002                         138 frames (2.30 s)
   INFO: playthrough | 4 crossing PZ-003                     304 frames (5.07 s)
@@ -1368,14 +1368,14 @@ Test file: res://tests/chapters/ch01/test_ch01_real_playthrough.gd
   INFO: playthrough | 7 vestibule PZ-005 (levers)           357 frames (5.95 s)
   INFO: playthrough | 9 atrium terminal (Beat 09)           133 frames (2.22 s)
   INFO: playthrough | 10 street exit outro (Beat 10)         54 frames (0.90 s)
-  INFO: real-input playthrough took 3348 physics frames (55.8 s game time, 55.84 s wall)
+  INFO: real-input playthrough took 3349 physics frames (55.8 s game time, 55.82 s wall)
   INFO: SOLVED ticks [[&"CH1-SO-01", 939], [&"CH1-PZ-001", 1102], [&"CH1-PZ-006", 1439], [&"CH1-SO-02", 1550], [&"CH1-PZ-002", 1674], [&"CH1-PZ-003", 1975], [&"CH1-PZ-004", 2786], [&"CH1-PZ-005", 3152]]
   INFO: unlock ticks [[&"rewind", 958], [&"freeze", 1486], [&"echo", 1694]]
   INFO: PlaytestLog | Playtest: 0:55 played, 0:01 paused
   INFO: PlaytestLog | PZ-001 0:02   PZ-002 0:04   PZ-003 0:05
   INFO: PlaytestLog | PZ-004 0:12   PZ-005 0:06   PZ-006 0:08
   INFO: PlaytestLog | SO-01 0:16   SO-02 0:01
-  INFO: PlaytestLog | Log: user://headless/playtest/ch01_20261110_113457.json
+  INFO: PlaytestLog | Log: user://headless/playtest/ch01_20261110_181125.json
   PASS: test_real_input_new_game_to_chapter_complete
 Test file: res://tests/chapters/ch01/test_ch01_sort_order.gd
   PASS: test_actionable_sprites_use_the_canonical_pivot
@@ -1431,7 +1431,7 @@ Test file: res://tests/echo/test_echo_service.gd
   PASS: test_triggers_occupied_at_record_start_are_seeded_at_rel_zero
   PASS: test_watch_abilities_and_non_player_actors_are_not_recorded
 Test file: res://tests/interaction/test_interactable_lifecycle.gd
-ERROR: IdRegistry: Duplicate ID 'ch01.test_lever' already registered to OriginalLever:<Area2D#3117609388027>.
+ERROR: IdRegistry: Duplicate ID 'ch01.test_lever' already registered to OriginalLever:<Area2D#3117139626761>.
    at: push_error (core/variant/variant_utility.cpp:1023)
    GDScript backtrace (most recent call first):
        [0] register (res://scripts/session/id_registry.gd:40)
@@ -1764,7 +1764,7 @@ ERROR: Parse JSON failed. Error at line 0: Expected key
   PASS: test_v1_save_migrates_to_v2_with_an_empty_playtest_log
   PASS: test_v2_save_migrates_to_v3_with_all_four_abilities
 Test file: res://tests/session/test_id_registry.gd
-ERROR: IdRegistry: Duplicate ID 'ch01.test_node' already registered to <Node#3774454172188>.
+ERROR: IdRegistry: Duplicate ID 'ch01.test_node' already registered to <Node#3773833415196>.
    at: push_error (core/variant/variant_utility.cpp:1023)
    GDScript backtrace (most recent call first):
        [0] register (res://scripts/session/id_registry.gd:40)

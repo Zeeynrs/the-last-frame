@@ -1,5 +1,5 @@
 Pixelorama verification log (raw tool output, nothing paraphrased)
-git HEAD at run time: f21aef6899d183e5101db9dc369811bd10a18455
+git HEAD at run time: 43837254dd272c9762e6720240dcf6938aacf472
 Pixelorama: D:\Pixelorama\Pixelorama-Windows-64bit\Pixelorama.exe
 
 ====================================================================================================
@@ -9,7 +9,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
 (24, 48)
-Time Pixelorama took to open: 2837ms
+Time Pixelorama took to open: 3652ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -23,7 +23,7 @@ $ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_prop_
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
-Time Pixelorama took to open: 2786ms
+Time Pixelorama took to open: 2622ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -43,7 +43,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
 (24, 48)
-Time Pixelorama took to open: 2791ms
+Time Pixelorama took to open: 2686ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -57,7 +57,7 @@ $ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_prop_
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
-Time Pixelorama took to open: 2767ms
+Time Pixelorama took to open: 2610ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -77,7 +77,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
 (48, 40)
-Time Pixelorama took to open: 2763ms
+Time Pixelorama took to open: 2609ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -91,7 +91,7 @@ $ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_prop_
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
-Time Pixelorama took to open: 2765ms
+Time Pixelorama took to open: 2656ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -111,7 +111,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
 (32, 48)
-Time Pixelorama took to open: 2748ms
+Time Pixelorama took to open: 2711ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -125,7 +125,7 @@ $ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_prop_
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
-Time Pixelorama took to open: 2765ms
+Time Pixelorama took to open: 2669ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -145,7 +145,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
 (32, 48)
-Time Pixelorama took to open: 2860ms
+Time Pixelorama took to open: 2652ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -159,7 +159,7 @@ $ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_prop_
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
-Time Pixelorama took to open: 2919ms
+Time Pixelorama took to open: 2674ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -179,7 +179,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
 (32, 48)
-Time Pixelorama took to open: 2796ms
+Time Pixelorama took to open: 2741ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -193,7 +193,7 @@ $ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_prop_
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
-Time Pixelorama took to open: 2781ms
+Time Pixelorama took to open: 3205ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -213,7 +213,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
 (32, 48)
-Time Pixelorama took to open: 3041ms
+Time Pixelorama took to open: 3177ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -227,7 +227,7 @@ $ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_prop_
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
-Time Pixelorama took to open: 2969ms
+Time Pixelorama took to open: 3183ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -247,7 +247,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
 (32, 48)
-Time Pixelorama took to open: 2950ms
+Time Pixelorama took to open: 2865ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -261,7 +261,7 @@ $ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_prop_
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
-Time Pixelorama took to open: 2862ms
+Time Pixelorama took to open: 2930ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -281,7 +281,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
 (32, 48)
-Time Pixelorama took to open: 2786ms
+Time Pixelorama took to open: 2866ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -295,7 +295,7 @@ $ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_prop_
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
-Time Pixelorama took to open: 2845ms
+Time Pixelorama took to open: 4401ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -315,7 +315,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
 (16, 28)
-Time Pixelorama took to open: 3127ms
+Time Pixelorama took to open: 3021ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -329,7 +329,7 @@ $ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_prop_
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
-Time Pixelorama took to open: 2860ms
+Time Pixelorama took to open: 2978ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -349,7 +349,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
 (32, 48)
-Time Pixelorama took to open: 2830ms
+Time Pixelorama took to open: 3041ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -363,7 +363,7 @@ $ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_prop_
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
-Time Pixelorama took to open: 2880ms
+Time Pixelorama took to open: 2814ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -383,7 +383,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
 (32, 48)
-Time Pixelorama took to open: 2953ms
+Time Pixelorama took to open: 2764ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -397,7 +397,7 @@ $ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_prop_
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
-Time Pixelorama took to open: 3025ms
+Time Pixelorama took to open: 2707ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -417,7 +417,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
 (32, 48)
-Time Pixelorama took to open: 2772ms
+Time Pixelorama took to open: 2740ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
@@ -431,7 +431,7 @@ $ Pixelorama.exe --headless --quit -- --export --spritesheet --output ch01_prop_
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 Pixelorama v1.2.3-stable - Windows 10 (build 19045) - Single-window, 0 monitors - is not sandboxed - Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz (12 threads) - 15.90 GiB memory - Dummy
-Time Pixelorama took to open: 2773ms
+Time Pixelorama took to open: 2724ms
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
    at: _dump_node_code (servers/rendering/shader_compiler.cpp:1329)
 ERROR: Condition "!actions.custom_samplers.has(function->arguments[j].tex_builtin)" is true. Continuing.
