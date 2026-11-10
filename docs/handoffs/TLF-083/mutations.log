@@ -1,0 +1,37 @@
+BASELINE | TESTS: 15 passed, 0 failed | SCRIPT ERROR 0
+M1 no darkening (shift is identity) | RED | TESTS: 11 passed, 4 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_ellipse_bands_and_ambient] outer band (d 0.75): lift 1, k 1 (Expected 7, got 8)
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_ellipse_bands_and_ambient] outside: k 2 (Expected 6, got 8)
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_ellipse_bands_and_ambient] the ellipse is 2:1 (y radius 20) (Expected 6, got 8)
+M2 exemption ignored | RED | TESTS: 13 passed, 2 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_information_region_restores_only_its_indices] 25 never shifts (Expected 25, got 23)
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_shift_table_stays_inside_each_ramp] exempt 25: index 25 k 1 unchanged (Expected 25, got 24)
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_shift_table_stays_inside_each_ramp] exempt 25: index 25 k 2 unchanged (Expected 25, got 23)
+M3 router hook removed | RED | TESTS: 14 passed, 1 failed | SCRIPT ERROR 1
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_router_iso_side_iso_without_leaks_or_stale_lights] lit iso room: the pass is created and visible
+M4 stale lights kept between rooms | RED | TESTS: 14 passed, 1 failed | SCRIPT ERROR 1
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_router_iso_side_iso_without_leaks_or_stale_lights] round 0: the side room's one light (Expected 1, got 3)
+M5 HUD back on layer 1 | RED | TESTS: 14 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_every_ui_layer_is_above_the_pass] HUD layer 1 above the pass (1)
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_every_ui_layer_is_above_the_pass] HUD on layer 2 (ADR-026) (Expected 2, got 1)
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_every_ui_layer_is_above_the_pass] res://scenes/ui/HUD.tscn: CanvasLayer HUD layer 1 above the pass
+M6 setting ignored | RED | TESTS: 14 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_setting_hides_the_pass_and_reduced_effects_keeps_it] setting off: the pass is hidden
+M7 index mask ignored | RED | TESTS: 14 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_information_region_restores_only_its_indices] board pixel of another index (23): darkened like the room (below ramp 5 -> 01) (Expected 1, got 23)
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_information_region_restores_only_its_indices] floor index under the region: darkened (k 2) (Expected 0, got 2)
+M8 light limit not enforced | RED | TESTS: 14 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_room_validation_limits_and_bounds] the pass uses at most 8 room lights (Expected 8, got 11)
+M9 camera transform ignored | RED | TESTS: 14 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_screen_positions_follow_the_camera_in_whole_pixels] ellipse centre through the canvas transform, whole pixels (Expected (280.0, 171.0), got (300.0, 201.0))
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_screen_positions_follow_the_camera_in_whole_pixels] quad point through the canvas transform (Expected (80.0, 70.0), got (100.0, 100.0))
+M10 overlapping lights add up | RED | TESTS: 14 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_lights_do_not_add_up] two lift-1 lights overlap: lift 1, not 2 (Expected 1, got 2)
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_lights_do_not_add_up] A 3 - 1 = k 2: 09 -> 07 (Expected 7, got 8)
+M11 lighting_enabled not saved | RED | TESTS: 14 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_lighting_enabled_is_saved_with_the_settings] loaded back off
+M12 RoomLighting validation off | RED | TESTS: 14 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_room_lighting_ranges] ambient_steps = 4 is rejected
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_room_lighting_ranges] ambient_steps = -1 is rejected
+    FAIL: [res://tests/rendering/test_lighting_pass.gd::test_room_lighting_ranges] exempt_from = 24 is rejected
+RESTORED | TESTS: 15 passed, 0 failed | SCRIPT ERROR 0

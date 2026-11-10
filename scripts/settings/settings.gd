@@ -74,6 +74,13 @@ var reduced_effects: bool = false:
 		reduced_effects = bool(val)
 		setting_changed.emit(&"reduced_effects", reduced_effects)
 
+## ADR-026 lighting pass (TLF-083): off hides it and restores the unlit look. Static lighting is
+## not an effect, so `reduced_effects` keeps it.
+var lighting_enabled: bool = true:
+	set(val):
+		lighting_enabled = bool(val)
+		setting_changed.emit(&"lighting_enabled", lighting_enabled)
+
 var assist_extended_timing: bool = false:
 	set(val):
 		assist_extended_timing = bool(val)
@@ -133,6 +140,7 @@ func reset_to_defaults() -> void:
 	text_scale = 1.0
 	subtitles_enabled = true
 	reduced_effects = false
+	lighting_enabled = true
 	assist_extended_timing = false
 	screen_shake = 1.0
 	wheel_toggle_mode = false
@@ -154,6 +162,7 @@ func save_settings() -> Error:
 	config.set_value("accessibility", "text_scale", text_scale)
 	config.set_value("accessibility", "subtitles_enabled", subtitles_enabled)
 	config.set_value("accessibility", "reduced_effects", reduced_effects)
+	config.set_value("accessibility", "lighting_enabled", lighting_enabled)
 	config.set_value("accessibility", "assist_extended_timing", assist_extended_timing)
 	config.set_value("accessibility", "screen_shake", screen_shake)
 	config.set_value("accessibility", "wheel_toggle_mode", wheel_toggle_mode)
@@ -190,6 +199,7 @@ func load_settings() -> Error:
 	text_scale = clampf(float(config.get_value("accessibility", "text_scale", 1.0)), 0.75, 2.0)
 	subtitles_enabled = bool(config.get_value("accessibility", "subtitles_enabled", true))
 	reduced_effects = bool(config.get_value("accessibility", "reduced_effects", false))
+	lighting_enabled = bool(config.get_value("accessibility", "lighting_enabled", true))
 	assist_extended_timing = bool(config.get_value("accessibility", "assist_extended_timing", false))
 	screen_shake = clampf(float(config.get_value("accessibility", "screen_shake", 1.0)), 0.0, 1.0)
 	wheel_toggle_mode = bool(config.get_value("accessibility", "wheel_toggle_mode", false))

@@ -22,6 +22,9 @@ extends Node
 ##   entry the router hands the mode to the player (`set_view_mode`), and in `side` rooms places
 ##   him on the SideView floor line and gives the camera the scene bounds, horizontal-only;
 ##   `view_mode_changed` is emitted when the mode differs from the previous room's.
+## - Lighting (ADR-026, TLF-083): `metadata/lighting` (RoomLighting) on the room root. On every room
+##   entry the router hands the room, its lighting and the player to the LightingPass (created as a
+##   child the first time a lit room is entered); a room without it hides the pass.
 
 signal room_entered(room_id: StringName)
 signal view_mode_changed(mode: StringName)
@@ -39,6 +42,8 @@ const PLAYER_ACTOR: StringName = &"player"
 @export var room_scenes: Dictionary = {}
 ## Follow camera; created as a child on the first placement when not set.
 @export var camera: RoomCamera
+## The ADR-026 lighting pass; created as a child on the first lit room when not set.
+@export var lighting_pass: LightingPass
 
 var save_service: SaveStore = null
 var current_room_id: StringName = &""
@@ -110,6 +115,7 @@ func enter_room(room_id: StringName, door_id: StringName = &"", anchor_id: Strin
 		_restore_cache(current_room)
 		_connect_doorways(current_room)
 		_apply_view_mode()
+		_apply_lighting()
 		room_entered.emit(room_id)
 	if session.spatial_service != null:
 		session.spatial_service.set_actor_room(PLAYER_ACTOR, room_id)
@@ -174,6 +180,13 @@ func current_view_mode() -> StringName:
 	return ViewMode.of(current_room)
 
 
+## The current room's RoomLighting (`metadata/lighting`), or null when the room is unlit.
+func current_room_lighting() -> RoomLighting:
+	if current_room == null or not current_room.has_meta(&"lighting"):
+		return null
+	return current_room.get_meta(&"lighting") as RoomLighting
+
+
 ## The current room's SideView, or null when it is not a `side` room.
 func current_side_view() -> SideView:
 	if current_view_mode() != ViewMode.SIDE:
@@ -211,6 +224,8 @@ func _unload_current() -> void:
 	if session.echo_service != null:
 		session.echo_service.notify_room_changed()
 		session.echo_service.reset_echo()
+	if lighting_pass != null:
+		lighting_pass.clear()
 	room_container.remove_child(current_room)  # _exit_tree unregisters IDs immediately
 	current_room.free()
 	current_room = null
@@ -292,6 +307,17 @@ func _apply_view_mode() -> void:
 	if mode != _view_mode:
 		_view_mode = mode
 		view_mode_changed.emit(mode)
+
+
+## Hands the new room's lighting to the pass (ADR-026); an unlit room hides it.
+func _apply_lighting() -> void:
+	var room_lighting := current_room_lighting()
+	if lighting_pass == null:
+		if room_lighting == null:
+			return
+		lighting_pass = LightingPass.new()
+		add_child(lighting_pass)
+	lighting_pass.apply_room(current_room, room_lighting, player)
 
 
 func _find_checkpoint(room: Node, checkpoint_id: StringName) -> CheckpointZone:
