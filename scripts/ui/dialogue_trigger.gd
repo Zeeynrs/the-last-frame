@@ -53,11 +53,6 @@ func _on_watch(_actor_id: StringName, ability: StringName, _payload: Dictionary)
 		trigger()
 
 
-func _on_traced(_actor_id: StringName) -> void:
-	if traceable:
-		trigger()
-
-
 func trigger() -> bool:
 	var sess := get_session()
 	if sess == null:

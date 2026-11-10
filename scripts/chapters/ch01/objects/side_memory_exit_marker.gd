@@ -24,7 +24,7 @@ func on_trigger_enter(actor_id: StringName) -> void:
 	if sess != null and sess.room_router != null:
 		var target := return_anchor_id
 		if sess.narrative_state != null:
-			var flagged = sess.narrative_state.get_flag(&"mira_memory.return_target", &"")
-			if flagged != &"":
-				target = StringName(flagged)
+			var flagged = sess.narrative_state.get_flag(&"ch01.flag.mira_memory_return", "")
+			if flagged != null and String(flagged) != "":
+				target = StringName(String(flagged))
 		sess.room_router.enter_room.call_deferred(return_room_id, &"", target)

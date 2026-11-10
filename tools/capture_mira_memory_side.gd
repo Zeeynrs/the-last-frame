@@ -10,7 +10,7 @@ extends SceneTree
 const SPOTS: Array = [
 	["doc_mira_side_start.png", Vector2(120, 394)],
 	["doc_mira_side_bench.png", Vector2(520, 394)],
-	["doc_mira_side_mira.png", Vector2(780, 394)],
+	["doc_mira_side_mira.png", Vector2(756, 394)],
 	["doc_mira_side_clock.png", Vector2(1180, 394)],
 	["doc_mira_side_exit.png", Vector2(1380, 394)],
 ]
@@ -68,10 +68,18 @@ func _run() -> void:
 
 		player.global_position = spot
 		player.velocity = Vector2.ZERO
+		if filename == "doc_mira_side_mira.png":
+			var watch = player.get_node_or_null("PocketWatch") as PocketWatch
+			if watch != null:
+				watch.unlocked_abilities = [&"trace", &"rewind", &"freeze", &"echo"]
+				watch.set_selected_ability(&"trace")
+			player.facing_direction = "e"
+			if player.sprite != null:
+				player.sprite.play(&"idle_e")
 		cam.snap_now()
 
-		# Render several frames so animations, shaders, and camera settle
-		for i in range(5):
+		# Render several frames so animations, shaders, target marker, and camera settle
+		for i in range(10):
 			await process_frame
 		await RenderingServer.frame_post_draw
 

@@ -301,17 +301,14 @@ func activate_watch() -> InteractionResult:
 		watch_used.emit(selected_ability, &"", last_result)
 		return last_result
 
-	var target_id := current_target.object_id
 	if sess == null or sess.interaction_service == null:
 		last_result = InteractionResult.failure(&"missing_target")
-		watch_used.emit(selected_ability, target_id, last_result)
+		watch_used.emit(selected_ability, current_target.object_id, last_result)
 		return last_result
 
-	var result = sess.interaction_service.request(&"player", target_id, selected_ability)
+	var result = sess.interaction_service.request(&"player", current_target.object_id, selected_ability)
 	last_result = result
-	if not is_instance_valid(current_target):
-		current_target = null
-	watch_used.emit(selected_ability, target_id, result)
+	watch_used.emit(selected_ability, current_target.object_id, result)
 	return result
 
 
