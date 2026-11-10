@@ -1,0 +1,87 @@
+"""validate.ps1's three steps on a fresh renamed `git archive`, with a hard 120 s cap on EVERY Godot
+call (TLF-083 rule): [1] --import, [2] the script checker embedded in validate.ps1, [3] every test file
+in its own Godot call (a copy of tests/run_tests.gd filtered by file name, added AFTER step 2).
+Counts as validate.ps1 does: exit codes, `ERROR:`/`SCRIPT ERROR:` lines in steps 1-2, leak lines
+everywhere, TESTS totals. Usage: python validate_capped.py <sha>"""
+import os, pathlib, re, subprocess, sys, tarfile, io, time
+
+SHA = sys.argv[1]
+REPO = r"D:/TheLastFrame/wt-opus-core"
+SCRATCH = pathlib.Path(r"C:/Users/adity/AppData/Local/Temp/claude/2ef1ec79f2b69141/582a2292-05b9-4d18-8e5b-fea1d2cfbcc9/scratchpad")
+GODOT = r"D:/Godot/Godot_v4.7.2-stable_win64_console.exe"
+RUN_SOME = pathlib.Path(r"C:/Users/adity/AppData/Local/Temp/claude/D--TheLastFrame-wt-opus-core/582a2292-05b9-4d18-8e5b-fea1d2cfbcc9/scratchpad/dev079/tests/run_some.gd")
+CAP = 120
+LEAK = re.compile(r"leaked at exit|still in use at exit")
+ERR = re.compile(r"^(SCRIPT )?ERROR:")
+
+dest = SCRATCH / ("val_" + SHA)
+log_path = SCRATCH / ("val_" + SHA + ".log")
+if dest.exists():
+    import shutil
+    shutil.rmtree(dest)
+dest.mkdir(parents=True)
+tar_bytes = subprocess.run(["git", "-C", REPO, "archive", SHA], capture_output=True, check=True).stdout
+tarfile.open(fileobj=io.BytesIO(tar_bytes)).extractall(dest)
+proj = dest / "project.godot"
+text = proj.read_text(encoding="utf-8")
+text = re.sub(r'config/name="[^"]*"', 'config/name="TLF Verify %s"' % SHA, text)
+proj.write_bytes(text.encode("utf-8"))   # no BOM
+
+log = log_path.open("w", encoding="utf-8")
+def w(s):
+    print(s); log.write(s + "\n"); log.flush()
+
+def godot(args, env=None):
+    t0 = time.time()
+    try:
+        r = subprocess.run([GODOT, "--path", str(dest)] + args, capture_output=True, text=True, encoding="utf-8",
+                           errors="replace", timeout=CAP, env={**os.environ, **(env or {})})
+        out, code = r.stdout + r.stderr, r.returncode
+    except subprocess.TimeoutExpired as e:
+        out = (e.stdout.decode("utf-8", "replace") if isinstance(e.stdout, bytes) else (e.stdout or "")) + "\nTIMEOUT"
+        code = "TIMEOUT"
+    return code, out.splitlines(), time.time() - t0
+
+w("=== capped validate of %s (fresh archive, config/name 'TLF Verify %s', every Godot call <= %d s) ===" % (SHA, SHA, CAP))
+w("first bytes of project.godot: %s" % list(proj.read_bytes()[:3]))
+code, lines, secs = godot(["--headless", "--import"])
+errs = [l for l in lines if ERR.match(l)]
+w("[1/3] import: exit %s, %d ERROR lines, %.0f s" % (code, len(errs), secs))
+for l in errs[:10]:
+    w("   " + l)
+
+ps = pathlib.Path(REPO, "tools", "validate.ps1").read_text(encoding="utf-8")
+checker = ps.split("$checker = @'", 1)[1].split("'@", 1)[0].lstrip("\r\n")
+checker_path = SCRATCH / ("tlf_validate_check_%s.gd" % SHA)
+checker_path.write_bytes(checker.encode("utf-8"))
+code, lines, secs = godot(["--headless", "-s", str(checker_path)])
+errs = [l for l in lines if ERR.match(l)]
+leaks = [l for l in lines if LEAK.search(l)]
+summary = [l for l in lines if l.startswith("Script check:")]
+w("[2/3] script check: exit %s, %s, %d ERROR lines, leak check: %s, %.0f s" % (code, summary[-1] if summary else "(no summary)", len(errs), "clean" if not leaks else leaks, secs))
+
+(dest / "tests" / "run_some.gd").write_bytes(RUN_SOME.read_bytes())
+files = sorted(p for p in (dest / "tests").rglob("test_*.gd"))
+total_pass = total_fail = 0
+script_errors = 0
+bad = []
+for p in files:
+    name = p.name
+    code, lines, secs = godot(["--headless", "-s", "res://tests/run_some.gd"], {"TLF_ONLY": name})
+    t = [l for l in lines if l.startswith("TESTS:")]
+    m = re.match(r"TESTS: (\d+) passed, (\d+) failed", t[-1]) if t else None
+    passed, failed = (int(m.group(1)), int(m.group(2))) if m else (0, 1)
+    se = sum(1 for l in lines if "SCRIPT ERROR" in l)
+    leaks = [l for l in lines if LEAK.search(l)]
+    files_run = sum(1 for l in lines if l.startswith("Test file:"))
+    total_pass += passed; total_fail += failed; script_errors += se
+    flag = "" if (failed == 0 and code == 0 and not leaks and files_run == 1) else "  <-- CHECK"
+    if flag:
+        bad.append(name)
+    w("[3/3] %-48s exit %-7s %s | files %d | SCRIPT ERROR %d | leaks %s | %.0f s%s" % (
+        p.relative_to(dest).as_posix(), code, t[-1] if t else "TESTS: (none)", files_run, se, "clean" if not leaks else len(leaks), secs, flag))
+    for l in [x for x in lines if "FAIL:" in x][:5]:
+        w("      " + l.strip())
+w("=== TOTAL: %d test files, TESTS: %d passed, %d failed, SCRIPT ERROR lines %d, files needing a look: %s ===" % (
+    len(files), total_pass, total_fail, script_errors, bad or "none"))
+log.close()
