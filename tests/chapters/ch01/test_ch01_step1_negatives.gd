@@ -98,7 +98,7 @@ func test_pz001_gate_pinned_and_turnstile_holds() -> void:
 		stop()
 		return
 	var turnstile := resolve(&"ch01.concourse_west.turnstile_gate") as TurnstileGate
-	for point in [Vector2(144, 144), Vector2(298, 198)]:
+	for point in [Vector2(160, 168), Vector2(298, 198)]:
 		if not await walk_to(player, "concourse -> gate Rewind spot", point):
 			stop()
 			return

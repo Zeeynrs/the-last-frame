@@ -309,7 +309,7 @@ func _play() -> bool:
 	if wrong_moves:
 		# Rewind on the gate while the conduit still pins it (via the conduit spot: the straight line
 		# from the door spawn catches the Blocker's corner).
-		if not await walk_to(_player, "concourse -> conduit spot", Vector2(144, 144)):
+		if not await walk_to(_player, "concourse -> conduit spot", Vector2(160, 168)):
 			return false
 		if not await walk_to(_player, "concourse -> gate Rewind spot", Vector2(298, 198)):
 			return false
@@ -319,7 +319,7 @@ func _play() -> bool:
 		_assert_eq(watch.current_target, turnstile, "Rewind targets the turnstile from the gate spot")
 		await tap(&"watch")
 		await _expect_refusal(turnstile, &"pinned", "PZ001_FB_PINNED", "PZ-001 gate pinned by the conduit")
-	if not await walk_to(_player, "concourse -> conduit spot", Vector2(144, 144)):
+	if not await walk_to(_player, "concourse -> conduit spot", Vector2(160, 168)):
 		return false
 	if not await _use_watch(&"rewind", conduit, func() -> bool: return conduit.get("conduit_state") == &"mounted", "conduit mounted after Rewind"):
 		return false

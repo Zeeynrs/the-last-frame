@@ -31,7 +31,7 @@
 | # | Room ID (`ADR-005`) | Beat(s) | Purpose | Footprint (`W×H` Tiles / Floor Px) | Camera | Doorways (`door_id`, Boundary Side, Tile `(x,y)`) | Puzzle(s) | Checkpoint (`checkpoint_id`) | Safe Anchors (`object_id` @ Tile `(x,y)` / Px) |
 |---|---|---|---|---|---|---|---|---|---|
 | **1** | `ch01.arrival_platform` | Beat 01 | Awakening, movement & inspect tutorial, pocket watch pickup (`global.pocket_watch`) | `30 × 18`<br>(`768 × 368 px`) | Follow `640×360` | • `door_exit_east` (**E**, `(29, 4)`) | — | **Yes**<br>`ch01.cp.arrival` | • `ch01.arrival_platform.safe_anchor_spawn` @ `(5, 15)` `(160, 224)` |
-| **2** | `ch01.concourse_west` | Beat 02,<br>Beat 03 | Pocket-watch tutorial (`Trace` + `Rewind`) at Turnstile threshold; Call Box 09 dialogue with The Operator | `16 × 12`<br>(`448 × 224 px`) | Fixed `640×360` | • `door_entry_west` (**W**, `(0, 5)`)<br>• `door_exit_east` (**E**, `(15, 5)`) | `CH1-PZ-001` | **Yes**<br>`ch01.cp.concourse_west` | • `ch01.concourse_west.safe_anchor_east` @ `(1, 5)` `(256, 112)` *(entry side)*<br>• `ch01.concourse_west.safe_anchor_west` @ `(4, 5)` `(304, 136)` *(concourse side)* |
+| **2** | `ch01.concourse_west` | Beat 02,<br>Beat 03 | Pocket-watch tutorial (`Trace` + `Rewind`) at Turnstile threshold; Call Box 09 dialogue with The Operator | `28 × 16`<br>(`720 × 360 px`) | Follow `640×360` | • `door_entry_west` (**W**, `(0, 8)`)<br>• `door_exit_east` (**E**, `(28, 8)`) | `CH1-PZ-001` | **Yes**<br>`ch01.cp.concourse_west` | • `ch01.concourse_west.safe_anchor_east` @ `(7, 8)` `(304, 184)` *(entry side)*<br>• `ch01.concourse_west.safe_anchor_west` @ `(10, 8)` `(352, 208)` *(concourse side)* |
 | **3** | `ch01.maintenance_bay` | Beat 04 | Teach `Freeze`; test `Rewind` + `Freeze` on dropped fire shutter & counterweight gear | `14 × 10`<br>(`384 × 192 px`) | Fixed `640×360` | • `door_entry_west` (**W**, `(0, 5)`)<br>• `door_exit_east` (**E**, `(13, 4)`) | `CH1-PZ-002` | **Yes**<br>`ch01.cp.maintenance_bay` | • `ch01.maintenance_bay.safe_anchor_west` @ `(5, 4)` `(336, 136)`<br>• `ch01.maintenance_bay.safe_anchor_east` @ `(10, 4)` `(416, 176)` |
 | **4** | `ch01.security_crossing` | Beat 05 | Teach `Echo` record/replay/reset and persistent trigger occupancy on pressure switch | `16 × 12`<br>(`448 × 224 px`) | Fixed `640×360` | • `door_entry_west` (**W**, `(0, 6)`)<br>• `door_exit_east` (**E**, `(15, 6)`) | `CH1-PZ-003` | **Yes**<br>`ch01.cp.security_crossing` | • `ch01.security_crossing.safe_anchor_west` @ `(6, 6)` `(320, 160)`<br>• `ch01.security_crossing.safe_anchor_east` @ `(13, 6)` `(432, 216)` |
 | **5** | `ch01.waiting_lounge` | Beat 06 | Recorded character presence (Mira `Trace` silhouette, audio log, memory fragment `ch01.fragment.mira_departure`) | `12 × 10`<br>(`352 × 176 px`) | Fixed `640×360` | • `door_entry_west` (**W**, `(0, 5)`)<br>• `door_exit_north` (**N**, `(6, 0)`) | — | **Yes**<br>`ch01.cp.waiting_lounge` | • `ch01.waiting_lounge.safe_anchor_center` @ `(6, 5)` `(336, 152)` |
@@ -50,7 +50,7 @@
 ```mermaid
 flowchart TD
     R1["1. ch01.arrival_platform<br/>(Beat 01 · 14x10)"]
-    R2["2. ch01.concourse_west<br/>(Beats 02-03 · CH1-PZ-001 · 16x12)"]
+    R2["2. ch01.concourse_west<br/>(Beats 02-03 · CH1-PZ-001 · 28x16)"]
     R3["3. ch01.maintenance_bay<br/>(Beat 04 · CH1-PZ-002 · 14x10)"]
     R4["4. ch01.security_crossing<br/>(Beat 05 · CH1-PZ-003 · 16x12)"]
     R5["5. ch01.waiting_lounge<br/>(Beat 06 · Mira Trace · 12x10)"]
@@ -80,8 +80,8 @@ Every declared doorway across all 10 rooms sits on its room boundary and is pair
 
 | Edge ID | Kind | Endpoint A (`room_id:door_id`, Side `@ (x,y)`) | Endpoint B (`room_id:door_id`, Side `@ (x,y)`) | Wall Pairing | `traversable` | Gate / Condition |
 |---|---|---|---|---|---|---|
-| **E1** | Static | `ch01.arrival_platform:door_exit_east` (**E** `@ (29,4)`) | `ch01.concourse_west:door_entry_west` (**W** `@ (0,5)`) | **E ↔ W** | `true` | Requires picking up `global.pocket_watch` in Beat 01. |
-| **E2** | Static | `ch01.concourse_west:door_exit_east` (**E** `@ (15,5)`) | `ch01.maintenance_bay:door_entry_west` (**W** `@ (0,5)`) | **E ↔ W** | `true` | Reachable after opening `turnstile_gate` (`CH1-PZ-001`) and answering `call_box_09` + inspecting `doc_evac_notice` (Beat 03). |
+| **E1** | Static | `ch01.arrival_platform:door_exit_east` (**E** `@ (29,4)`) | `ch01.concourse_west:door_entry_west` (**W** `@ (0,8)`) | **E ↔ W** | `true` | Requires picking up `global.pocket_watch` in Beat 01. |
+| **E2** | Static | `ch01.concourse_west:door_exit_east` (**E** `@ (28,8)`) | `ch01.maintenance_bay:door_entry_west` (**W** `@ (0,5)`) | **E ↔ W** | `true` | Reachable after opening `turnstile_gate` (`CH1-PZ-001`) and answering `call_box_09` + inspecting `doc_evac_notice` (Beat 03). |
 | **E3** | Static | `ch01.maintenance_bay:door_exit_east` (**E** `@ (13,4)`) | `ch01.security_crossing:door_entry_west` (**W** `@ (0,6)`) | **E ↔ W** | `true` | Gated inside room by `fire_shutter` (`CH1-PZ-002`). |
 | **E4** | Static | `ch01.security_crossing:door_exit_east` (**E** `@ (15,6)`) | `ch01.waiting_lounge:door_entry_west` (**W** `@ (0,5)`) | **E ↔ W** | `true` | Gated inside room by `security_gate_01` + `bridge_platform_01` (`CH1-PZ-003`). |
 | **E5** | Static | `ch01.waiting_lounge:door_exit_north` (**N** `@ (6,0)`) | `ch01.signal_control:door_entry_south` (**S** `@ (8,11)`) | **N ↔ S** | `true` | Unlocked after inspecting Mira's `Trace` / audio log in Beat 06. |
@@ -205,7 +205,7 @@ Every puzzle room entrance (plus chapter start and outro) has an auto-save check
 | `checkpoint_id` (`StringName`) | Room ID | Trigger Tile `(x, y)` | Spawn Anchor on Load (`object_id`) | Trigger Condition |
 |---|---|---|---|---|
 | `&"ch01.cp.arrival"` | `ch01.arrival_platform` | `(5, 15)` | `&"ch01.arrival_platform.safe_anchor_spawn"` | Initial chapter start (`tick = 0`) and on picking up `global.pocket_watch`. |
-| `&"ch01.cp.concourse_west"` | `ch01.concourse_west` | `(1, 5)` | `&"ch01.concourse_west.safe_anchor_east"` | Entering `ch01.concourse_west` (`CH1-PZ-001` entrance) and again upon `CH1-PZ-001` `SOLVED`. |
+| `&"ch01.cp.concourse_west"` | `ch01.concourse_west` | `(3, 8)` | `&"ch01.concourse_west.safe_anchor_east"` | Entering `ch01.concourse_west` (`CH1-PZ-001` entrance) and again upon `CH1-PZ-001` `SOLVED`. |
 | `&"ch01.cp.maintenance_bay"` | `ch01.maintenance_bay` | `(1, 5)` | `&"ch01.maintenance_bay.safe_anchor_west"` | Entering `ch01.maintenance_bay` (`CH1-PZ-002` entrance) and upon `CH1-PZ-002` `SOLVED`. |
 | `&"ch01.cp.security_crossing"` | `ch01.security_crossing` | `(1, 6)` | `&"ch01.security_crossing.safe_anchor_west"` | Entering `ch01.security_crossing` (`CH1-PZ-003` entrance) and upon `CH1-PZ-003` `SOLVED`. |
 | `&"ch01.cp.waiting_lounge"` | `ch01.waiting_lounge` | `(1, 5)` | `&"ch01.waiting_lounge.safe_anchor_center"` | Entering `ch01.waiting_lounge` and upon collecting `ch01.fragment.mira_departure`. |

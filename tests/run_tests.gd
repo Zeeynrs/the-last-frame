@@ -88,7 +88,12 @@ func _process(_delta: float) -> bool:
 func _run_all() -> void:
 	print("--- Running Test Suite ---")
 	var test_files: Array[String] = []
-	_discover_test_files("res://tests", test_files)
+	var user_args := OS.get_cmdline_user_args()
+	for arg in user_args:
+		if arg.ends_with(".gd"):
+			test_files.append(arg)
+	if test_files.is_empty():
+		_discover_test_files("res://tests", test_files)
 	test_files.sort()
 
 	if test_files.is_empty():

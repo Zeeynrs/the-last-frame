@@ -23,27 +23,27 @@ rooms = [{
 }]
 }, {
 "room_id": "ch01.concourse_west",
-"width": 16,
-"height": 12,
+"width": 28,
+"height": 16,
 "doors": [{
 "door_id": "door_entry_west",
 "side": "W",
 "x": 0,
-"y": 5
+"y": 8
 }, {
 "door_id": "door_exit_east",
 "side": "E",
-"x": 15,
-"y": 5
+"x": 28,
+"y": 8
 }],
 "safe_anchors": [{
 "id": "ch01.concourse_west.safe_anchor_east",
-"x": 1,
-"y": 5
+"x": 7,
+"y": 8
 }, {
 "id": "ch01.concourse_west.safe_anchor_west",
-"x": 4,
-"y": 5
+"x": 10,
+"y": 8
 }]
 }, {
 "room_id": "ch01.maintenance_bay",
