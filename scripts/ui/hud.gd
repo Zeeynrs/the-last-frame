@@ -294,7 +294,12 @@ func _update_target_highlight_position() -> void:
 
 	var target = pocket_watch.current_target
 	if target != null and is_instance_valid(target):
-		target_highlight.global_position = target.get_global_transform_with_canvas().origin + Vector2(0, -28)
+		var offset := Vector2(0, -28)
+		if target.has_node("TargetAnchor"):
+			offset = target.get_node("TargetAnchor").position
+		elif "target_marker_offset" in target:
+			offset = target.target_marker_offset
+		target_highlight.global_position = target.get_global_transform_with_canvas().origin + offset
 		if target_icon != null:
 			target_icon.color = ABILITY_COLORS.get(pocket_watch.selected_ability, Color.WHITE)
 	else:

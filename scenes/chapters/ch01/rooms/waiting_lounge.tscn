@@ -7,6 +7,7 @@
 [ext_resource type="Resource" path="res://data/documents/ch01/audio_mira_01.tres" id="5_doc_mira"]
 [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_digital_clock_2359_idle.png" id="6_clock"]
 [ext_resource type="Script" path="res://scripts/ui/dialogue_trigger.gd" id="7_diag_trigger"]
+[ext_resource type="Script" path="res://scripts/chapters/ch01/objects/trace_bench.gd" id="8_trace_bench"]
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png" id="art_arch_e"]
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_archway_frame_n_idle.png" id="art_arch_n"]
 [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_station_bench_idle.png" id="art_bench"]
@@ -102,7 +103,7 @@ shape = SubResource("CircleShape2D_doc")
 position = Vector2(304, 144)
 collision_layer = 4
 collision_mask = 2
-script = ExtResource("7_diag_trigger")
+script = ExtResource("8_trace_bench")
 sequence_id = &"ch01_b06_bench"
 lines = [["SPK_ELIAS", "EL_B06_01"]]
 journal_key = "JRN_CH1_TWO_SILHOUETTES"
