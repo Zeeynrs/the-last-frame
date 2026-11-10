@@ -32,9 +32,9 @@ All ids unchanged. Tiles are (x, y) with x along the N wall, y along the W wall.
 | `turnstile_trace_anchor` | (3.0, 4.5) | **(8.5, 8)** | cluster offset kept |
 | `n05_courier` (statue, Trace unlocks Rewind) | (1.5, 5.5) | **(7, 9)** | cluster offset (0, +1) from the anchor, entry side of the gate |
 | `reset_anchor_01` | (3.5, 6.5) | **(9, 10)** | cluster offset kept |
-| `conduit_01` (mounted on the W wall, falls) | (2.5, 8.5) | **W wall, (0.5, 12)** | mounted on the W wall face with the W variant; its stand spot and puzzle rules come from `CH1-PZ-001.md`; keep the fall state on the floor |
+| `conduit_01` (mounted on the W wall, falls) | (2.5, 8.5) | **W wall, (0.5, 11.5)** | mounted on the W wall face with the W variant; its stand spot and puzzle rules come from `CH1-PZ-001.md`; keep the fall state on the floor |
 | `call_box_09` (W wall phone) | (1.0, 3.0) | **W wall, (0.5, 3)** | W-face wall fixture, 5 tiles north of the door |
-| `doc_ticket_terms` | (9.5, 8.5) interior | **W wall, (0.5, 14)** | plaque on the W wall face (TLF-078 W target), 6 tiles south of the door |
+| `doc_ticket_terms` | (9.5, 8.5) interior | **W wall, (0.5, 15)** | plaque on the W wall face (TLF-078 W target), last module of the W wall; the conduit (about 2 tiles, y 10.5..12.5) and the plaque (y 14.5..15.5) must not overlap: Opus found a 76 px overlap at the old values (TLF-081 review P1), and nothing may sit within 1 tile of the door aperture (y 7..9) |
 | `safe_anchor_west`, `exit_trigger_concourse` | (4.5, 4.5) | **(10, 8)** | 2 tiles east of the gate, on the line to the east door |
 | Digital clock `digital_clock_2359` + `Clock_3` | (5, −3) | **N wall, (11, 0)** | one clock, N-face variant (`..._n_idle`, same art as the pilot) |
 | `dial_line` | (9.5, 0.5) | **(15.5, 0.5)** | N wall, N-face wall variant (TLF-081) |
