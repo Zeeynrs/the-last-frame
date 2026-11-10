@@ -7,6 +7,9 @@ extends Interactable
 ## No text; no message on Rewind.
 ## Relinquishes interact/watch focus after Rewind so bench at x=520 remains focused.
 
+const BENCH_POSITION := Vector2(540, 384)
+const FLAG_CUP_REWOUND := "ch01.flag.mira_memory_cup_rewound"
+
 @onready var temporal: TemporalComponent = get_node_or_null("TemporalComponent")
 
 var _is_rewound: bool = false
@@ -18,7 +21,7 @@ func _ready() -> void:
 		temporal = get_temporal()
 	if temporal != null and not temporal.rewound.is_connected(_on_rewound):
 		temporal.rewound.connect(_on_rewound)
-	if position.x < 590.0:
+	if _is_cup_rewound():
 		_apply_rewound_state()
 
 
@@ -32,12 +35,25 @@ func capture_state() -> Dictionary:
 func apply_state(state: Dictionary) -> void:
 	if state.has("position_x") and state.has("position_y"):
 		position = Vector2(float(state["position_x"]), float(state["position_y"]))
-	if position.x < 590.0:
+	if _is_cup_rewound():
 		_apply_rewound_state()
 
 
 func _on_rewound(_cursor: int) -> void:
 	_apply_rewound_state()
+	var sess := get_session()
+	if sess != null and sess.narrative_state != null:
+		sess.narrative_state.set_flag(FLAG_CUP_REWOUND, true)
+
+
+func _is_cup_rewound() -> bool:
+	if _is_rewound:
+		return true
+	var sess := get_session()
+	if sess != null and sess.narrative_state != null:
+		if sess.narrative_state.get_flag(FLAG_CUP_REWOUND, false):
+			return true
+	return position.is_equal_approx(BENCH_POSITION)
 
 
 func _apply_rewound_state() -> void:

@@ -69,25 +69,25 @@ The player accesses this historical flashback during Beat 06 in Chapter 1:
 ### 3.1 Dimensions & Viewport
 - **Canvas:** 960 × 540 viewport, full room width 1440 px, floor contact line at $y = 394$.
 - **Camera Configuration:** Attached `RoomCamera` configured with `limit_left = 0`, `limit_right = 1440`, `limit_top = 0`, `limit_bottom = 540`, center-follow framing ($x \in [480, 960]$, $y = 270$).
-- **View Mode Metadata:** Declared with `metadata/view_mode = "side"` and `SideView` resource setting `floor_y = 394.0`, `walk_min_x = 16.0`, `walk_max_x = 1424.0` (16 px margin).
+- **View Mode Metadata:** Declared with `metadata/view_mode = "side"` and `SideView` resource setting `floor_y = 394.0`, `walk_margin = 16.0` (effective bounds $x \in [16, 1424]$).
 - **Cinematic Letterbox:** 90 px top/bottom bars ($y = 0..90$, $y = 450..540$) at `z_index = 15` in `#0A0D14` with 1 px boundary hairlines in `#2E333D`.
 
 ### 3.2 Layers
 - **FarWall:** `ch01_env_side_bg_far_wall_arches_idle.png` ($960 \times 360$ at $y = 90$, repeated at $x = 0, 960$, `z_index = 1`).
 - **NearWall:** `ch01_env_side_bg_near_wall_pillars_idle.png` ($960 \times 360$ at $y = 90$, repeated at $x = 0, 960$, `z_index = 2`).
-- **Pillars:** Standalone `PlatformPillar` at $x = 300, y = 394$ (`z_index = 4`).
+- **Pillars:** Standalone `PlatformPillar` at $x = 300, y = 394$ (`z_index = 6`).
 - **FloorStrip:** `ch01_env_side_platform_floor_strip_idle.png` ($960 \times 72$ at $y = 378$, repeated at $x = 0, 960$, `z_index = 3`).
 
 ### 3.3 Object & Marker Table
 | ID / Node | Type | Position | Facing / Pivot / Notes |
 |:---|:---|:---|:---|
-| `safe_anchor_start` | `Marker2D` | $(120, 394)$ | Spawn point when entering side view. |
-| `PlatformPillar` | `Sprite2D` | $(300, 394)$ | Midground pillar ($z\_index = 4$). |
-| `station_bench` | `Interactable` | $(520, 394)$ | Bench ($z\_index = 5$, pivot $(32, 28)$); look target `doc_side_station_bench`. |
-| `voice_recorder_cup`| `Interactable` | $(600, 394)$ | Floor cup ($z\_index = 5$, pivot $(12, 14)$); Rewind restores to bench top at $(540, 384)$. |
-| `mira_silhouette` | `Interactable` | $(780, 394)$ | Silhouette placeholder ($z\_index = 6$, pivot $(16, 44)$); Trace grants fragment `mira_departure`. TargetAnchor at $(0, -56)$. |
-| `luggage_trolley` | `Sprite2D` | $(1000, 394)$ | Static background prop ($z\_index = 5$, pivot $(24, 36)$). |
-| `clock_2359` | `Interactable` | $(1180, 156)$ | Suspended wall clock mount; interaction floor position $x = 1180, y = 394$. Plays `EL_CLOCK_2359`. |
+| `Anchor` | `Marker2D` | $(120, 394)$ | Spawn point when entering side view. |
+| `PlatformPillar` | `Sprite2D` | $(300, 394)$ | Midground pillar ($z\_index = 6$). |
+| `station_bench` | `Interactable` | $(520, 394)$ | Bench ($z\_index = 8$, pivot $(32, 28)$); DialogueTrigger with `EL_B06_01`. |
+| `voice_recorder_cup`| `Interactable` | $(600, 394)$ | Floor cup ($z\_index = 9$, pivot $(12, 14)$); Rewind restores to bench top at $(540, 384)$. |
+| `mira_silhouette` | `Interactable` | $(780, 394)$ | Silhouette placeholder ($z\_index = 9$, pivot $(16, 44)$); Trace grants fragment `mira_departure`. TargetAnchor at $(0, -56)$. |
+| `luggage_trolley` | `Sprite2D` | $(1000, 394)$ | Static background prop ($z\_index = 8$, pivot $(24, 36)$). |
+| `clock_2359` | `Interactable` | $(1180, 156)$ | Suspended wall clock mount ($z\_index = 7$); interaction floor position $x = 1180, y = 394$. Plays `EL_CLOCK_2359`. |
 | `exit_marker` | `TriggerZone` | $(1380, 394)$ | Walking past $x = 1380$ triggers deferred return to `waiting_lounge`. |
 
 ---
@@ -98,9 +98,9 @@ Six comprehensive automated real-input and regression tests:
 1. `test_real_input_full_memory_flow`: Full real input sequence: first trace silent -> use monologue -> second trace entry -> look bench -> rewind cup -> trace Mira -> walk to exit -> returns to lounge at `(336, 152)`. Asserts autosave slot 0 still points to `ch01.waiting_lounge`.
 2. `test_reentry_memory_flow`: Verifies visiting the memory room again after obtaining the fragment and exiting cleanly.
 3. `test_save_and_continue_from_disk`: Loads save file created in lounge, verifies seamless resume and ViewMode.ISO restoration.
-4. `test_walk_bounds_and_clamping`: Confirms horizontal movement clamping at $x = 16$ and $x = 1424$, vertical clamping at $y = 394$, and camera center-follow clamping between $480$ and $960$.
+4. `test_walk_bounds_and_clamping`: Confirms horizontal movement clamping at $x = 16$ (left) and $x = 1424$ (right) while continuously holding directional input, vertical clamping at $y = 394$, and camera center-follow clamping at 480 (left) and 960 (right).
 5. `test_freeze_and_echo_safety`: Verifies Freeze and Echo abilities are cleanly refused without exceptions.
-6. `test_mode_switch_leaves_no_leaks`: Confirms zero orphaned nodes or memory leaks across repeated mode switches.
+6. `test_mode_switch_leaves_no_leaks`: Confirms zero orphaned nodes via Performance.OBJECT_ORPHAN_NODE_COUNT across repeated mode transitions between isometric and side-view.
 
 ---
 
