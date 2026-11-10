@@ -1,0 +1,421 @@
+{
+  "baseline": "f21aef6899d183e5101db9dc369811bd10a18455",
+  "asset_count": 13,
+  "assets": [
+    {
+      "stem": "ch01_prop_flap_dial_line_n_idle",
+      "canvas": [
+        32,
+        48
+      ],
+      "frames": 1,
+      "fps": 1,
+      "tags": [],
+      "pivot": [
+        0,
+        0
+      ],
+      "opaque_pixels": 805,
+      "colours": 11,
+      "png_sha256": "ff6217e0937fd6efe93973f78598ae889932fe5e4918a70554fec98d9af6223d",
+      "pxo_sha256": "2d6ec950e78c65ba9295443a9ced1e20aa5e003e607611052565dd8c6af6aac3",
+      "face": "n",
+      "module_image_offsets": [
+        [
+          0,
+          0
+        ]
+      ],
+      "png_offset_in_assembly": [
+        0,
+        6
+      ],
+      "opaque_overflow": 0,
+      "wall_depth_min_max": [
+        6,
+        34
+      ]
+    },
+    {
+      "stem": "ch01_prop_flap_dial_line_n_jammed",
+      "canvas": [
+        32,
+        48
+      ],
+      "frames": 1,
+      "fps": 1,
+      "tags": [],
+      "pivot": [
+        0,
+        0
+      ],
+      "opaque_pixels": 805,
+      "colours": 13,
+      "png_sha256": "d15ec6da0b0296747e32966ecf60e4c6a775f10a685545bfeafced683563ea4d",
+      "pxo_sha256": "8322d23bd5c1ce7df49c52c01ffec14a110b90e8f4f3fc4c7340361ab92a6fd2",
+      "face": "n",
+      "module_image_offsets": [
+        [
+          0,
+          0
+        ]
+      ],
+      "png_offset_in_assembly": [
+        0,
+        6
+      ],
+      "opaque_overflow": 0,
+      "wall_depth_min_max": [
+        6,
+        34
+      ]
+    },
+    {
+      "stem": "ch01_prop_flap_dial_platform_n_idle",
+      "canvas": [
+        32,
+        48
+      ],
+      "frames": 1,
+      "fps": 1,
+      "tags": [],
+      "pivot": [
+        0,
+        0
+      ],
+      "opaque_pixels": 805,
+      "colours": 10,
+      "png_sha256": "296b9d95d02dfec051405d313cbaddcf84085960116d1e6fafe744edfb908cc0",
+      "pxo_sha256": "c29dbeaec8d9640e58e8f24a71b9615341fd42e2cc76e330ba498280928da0d8",
+      "face": "n",
+      "module_image_offsets": [
+        [
+          0,
+          0
+        ]
+      ],
+      "png_offset_in_assembly": [
+        0,
+        6
+      ],
+      "opaque_overflow": 0,
+      "wall_depth_min_max": [
+        6,
+        34
+      ]
+    },
+    {
+      "stem": "ch01_prop_flap_dial_platform_n_jammed",
+      "canvas": [
+        32,
+        48
+      ],
+      "frames": 1,
+      "fps": 1,
+      "tags": [],
+      "pivot": [
+        0,
+        0
+      ],
+      "opaque_pixels": 805,
+      "colours": 12,
+      "png_sha256": "bbd29514b7e3c7d553a458853929a3654eb286e5f408b126c61ba0980e9fd088",
+      "pxo_sha256": "c4b91e3b74b73e98e7a3c4ce64b9e607824621d882a7cba569dc7708b9c4cf30",
+      "face": "n",
+      "module_image_offsets": [
+        [
+          0,
+          0
+        ]
+      ],
+      "png_offset_in_assembly": [
+        0,
+        6
+      ],
+      "opaque_overflow": 0,
+      "wall_depth_min_max": [
+        6,
+        34
+      ]
+    },
+    {
+      "stem": "ch01_prop_flap_dial_time_n_idle",
+      "canvas": [
+        32,
+        48
+      ],
+      "frames": 1,
+      "fps": 1,
+      "tags": [],
+      "pivot": [
+        0,
+        0
+      ],
+      "opaque_pixels": 805,
+      "colours": 11,
+      "png_sha256": "d02ac9915123f4e98c4a833e885c38ce2149a2c20c46f9427c82316f313c295b",
+      "pxo_sha256": "f571049c2c1550ae789f55abe5b351d6f6a92ae65df8d6051186ba10fb633f0e",
+      "face": "n",
+      "module_image_offsets": [
+        [
+          0,
+          0
+        ]
+      ],
+      "png_offset_in_assembly": [
+        0,
+        6
+      ],
+      "opaque_overflow": 0,
+      "wall_depth_min_max": [
+        6,
+        34
+      ]
+    },
+    {
+      "stem": "ch01_prop_flap_dial_time_n_jammed",
+      "canvas": [
+        32,
+        48
+      ],
+      "frames": 1,
+      "fps": 1,
+      "tags": [],
+      "pivot": [
+        0,
+        0
+      ],
+      "opaque_pixels": 805,
+      "colours": 13,
+      "png_sha256": "766eea8d13af33bc22e0d185f63e9b348a25afcd31f332c05f6b2bcc0f973d48",
+      "pxo_sha256": "a6a725022109acb3412823ea9e9ea718044688f255fef1c41d93b9d4c0fc218a",
+      "face": "n",
+      "module_image_offsets": [
+        [
+          0,
+          0
+        ]
+      ],
+      "png_offset_in_assembly": [
+        0,
+        6
+      ],
+      "opaque_overflow": 0,
+      "wall_depth_min_max": [
+        6,
+        34
+      ]
+    },
+    {
+      "stem": "ch01_prop_call_box_phone_w_idle",
+      "canvas": [
+        24,
+        48
+      ],
+      "frames": 1,
+      "fps": 1,
+      "tags": [],
+      "pivot": [
+        0,
+        11
+      ],
+      "opaque_pixels": 677,
+      "colours": 8,
+      "png_sha256": "a0e1b0a91d791af53fb3b00c1ffe877b7abb2a5b6329e4f88f0b22465b3a8f92",
+      "pxo_sha256": "e03becdb61b557e43ecee9f9c18f8bdd70bc77af716d9f3b11aff508221a15d4",
+      "face": "w",
+      "module_image_offsets": [
+        [
+          0,
+          0
+        ]
+      ],
+      "png_offset_in_assembly": [
+        4,
+        4
+      ],
+      "opaque_overflow": 0,
+      "wall_depth_min_max": [
+        5,
+        35
+      ]
+    },
+    {
+      "stem": "ch01_prop_call_box_phone_w_ringing",
+      "canvas": [
+        24,
+        48
+      ],
+      "frames": 1,
+      "fps": 1,
+      "tags": [],
+      "pivot": [
+        0,
+        11
+      ],
+      "opaque_pixels": 699,
+      "colours": 9,
+      "png_sha256": "77c29d58a37eb7ce0ff7cef37179be317c6fb69eb8e8e7638e98780168ebaa15",
+      "pxo_sha256": "1374aa2db2dcd0ced0f5f94907fb2e755adbae62c4a4d1e90612c238caffa2c0",
+      "face": "w",
+      "module_image_offsets": [
+        [
+          0,
+          0
+        ]
+      ],
+      "png_offset_in_assembly": [
+        4,
+        4
+      ],
+      "opaque_overflow": 0,
+      "wall_depth_min_max": [
+        2,
+        35
+      ]
+    },
+    {
+      "stem": "ch01_prop_conduit_w_mounted",
+      "canvas": [
+        48,
+        40
+      ],
+      "frames": 1,
+      "fps": 1,
+      "tags": [],
+      "pivot": [
+        0,
+        23
+      ],
+      "opaque_pixels": 536,
+      "colours": 8,
+      "png_sha256": "a7bc0423d73dd7d02935f5a0466be76839cadd936d727c95243e7b497873d631",
+      "pxo_sha256": "f861f131a07094b1f02938210aca0236371a6a9de106230aa3d48448f6581527",
+      "face": "w",
+      "module_image_offsets": [
+        [
+          0,
+          16
+        ],
+        [
+          32,
+          0
+        ]
+      ],
+      "png_offset_in_assembly": [
+        8,
+        10
+      ],
+      "opaque_overflow": 0,
+      "wall_depth_min_max": [
+        6,
+        19
+      ]
+    },
+    {
+      "stem": "ch01_prop_ticket_terms_notice_w_idle",
+      "canvas": [
+        16,
+        28
+      ],
+      "frames": 1,
+      "fps": 1,
+      "tags": [],
+      "pivot": [
+        0,
+        7
+      ],
+      "opaque_pixels": 263,
+      "colours": 10,
+      "png_sha256": "3507a275494d6dc82597966604c1e9fcc148517efce053bf0087a00a53f87d78",
+      "pxo_sha256": "2e788819baef41226dd6d24820756eeff3cd607ddb934faa347a6cfa62d06ea9",
+      "face": "w",
+      "module_image_offsets": [
+        [
+          0,
+          0
+        ]
+      ],
+      "png_offset_in_assembly": [
+        8,
+        18
+      ],
+      "opaque_overflow": 0,
+      "wall_depth_min_max": [
+        14,
+        31
+      ]
+    },
+    {
+      "stem": "ch01_prop_ticket_validator_n_idle",
+      "canvas": [
+        32,
+        48
+      ],
+      "frames": 1,
+      "fps": 1,
+      "tags": [],
+      "pivot": [
+        16,
+        42
+      ],
+      "opaque_pixels": 949,
+      "colours": 8,
+      "png_sha256": "d36ca3f64224aa8f6737702ae35ba3a9ff4139a2182b896e9389d158814dde75",
+      "pxo_sha256": "4843f22881b2336ce21e520e975e4841c8015b2f2068ac60c89421aad50fe2dc",
+      "face": "N-parallel freestanding",
+      "collision_size": [
+        16,
+        8
+      ]
+    },
+    {
+      "stem": "ch01_prop_ticket_validator_n_rejecting",
+      "canvas": [
+        32,
+        48
+      ],
+      "frames": 1,
+      "fps": 1,
+      "tags": [],
+      "pivot": [
+        16,
+        42
+      ],
+      "opaque_pixels": 949,
+      "colours": 11,
+      "png_sha256": "52864bc072498d85748b2c3ea53772bd255b3784df0ad9bc966c7b82112afcbf",
+      "pxo_sha256": "93ff3c50f8665405b39873813d1be6d0bb970befa8ab477063792091ff831145",
+      "face": "N-parallel freestanding",
+      "collision_size": [
+        16,
+        8
+      ]
+    },
+    {
+      "stem": "ch01_prop_ticket_validator_n_accepted",
+      "canvas": [
+        32,
+        48
+      ],
+      "frames": 1,
+      "fps": 1,
+      "tags": [],
+      "pivot": [
+        16,
+        42
+      ],
+      "opaque_pixels": 949,
+      "colours": 10,
+      "png_sha256": "349b4a453ed912e439272b8d2043d574c9274d48e2b31b31d564da7b7c5f9155",
+      "pxo_sha256": "4495e86c875e2ce6104b01ba990bda767f05c21d9659201eff07bcfd6777f9fb",
+      "face": "N-parallel freestanding",
+      "collision_size": [
+        16,
+        8
+      ]
+    }
+  ],
+  "existing_png_pxo_unchanged": 560,
+  "existing_png_pxo_verification": "working file raw bytes match baseline Git blobs (including frontal and conduit_fallen)"
+}

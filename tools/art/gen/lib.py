@@ -166,7 +166,7 @@ def _zwrite(zf, name, data):
     zf.writestr(zi, data)
 
 
-def pxo_bytes(w, h, layer_names, frames, fps=1.0, tags=None, user_data='TLF-039', durations=None):
+def pxo_bytes(w, h, layer_names, frames, fps=1.0, tags=None, user_data='TLF-039', durations=None, author=None):
     """frames: list of list[Layer] (one Layer per layer name, bottom->top). Returns the .pxo file bytes."""
     import io
     d = _template()
@@ -186,6 +186,8 @@ def pxo_bytes(w, h, layer_names, frames, fps=1.0, tags=None, user_data='TLF-039'
     d['fps'] = float(fps)
     d['tags'] = tags or []
     d['user_data'] = user_data
+    if author is not None:
+        d['author_display_name'] = author
     buf = io.BytesIO()
     zf = zipfile.ZipFile(buf, 'w', zipfile.ZIP_DEFLATED)
     _zwrite(zf, 'mimetype', 'application/x-pixelorama')

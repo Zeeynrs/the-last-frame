@@ -1,0 +1,7 @@
+{
+  "tracked_engine_resource_files_matching_final_branch": 580,
+  "new_runtime_pngs_matching_final_manifest": 13,
+  "scene_script_changes": 0,
+  "scratch_project_name_and_custom_user_dir_confirmed": true,
+  "note": "PXO author headers, Python tooling and handoff docs are not loaded as runtime resources. The final runtime PNGs and all tracked engine/test input resources match the validated scratch copy byte-for-byte."
+}

@@ -188,6 +188,17 @@ def main():
                 tag = 'DIFFER'
             ok_all &= same
             print('%s mockup %-44s %s' % ('ok  ' if same else 'FAIL', os.path.basename(c), tag))
+    import tlf081_concourse_wall_art
+    with tempfile.TemporaryDirectory() as td:
+        tlf081_concourse_wall_art.write_mockups(td)
+        for fname in tlf081_concourse_wall_art.MOCKUP_FILES:
+            c = tlf081_concourse_wall_art.mockup_path(fname)
+            t = tlf081_concourse_wall_art.mockup_path(fname, td)
+            same = (os.path.exists(c) and Image.open(c).convert('RGBA').size == Image.open(t).size
+                    and Image.open(c).convert('RGBA').tobytes() == Image.open(t).convert('RGBA').tobytes())
+            ok_all &= same
+            print('%s proof %-44s %s' % ('ok  ' if same else 'FAIL', fname,
+                                        'pixels IDENTICAL' if same else 'DIFFER'))
     cur = open(placement_md.SHEET_PATH, 'rb').read().replace(b'\r\n', b'\n')
     new = placement_md.SHEET_TEXT.encode('utf-8')
     same = cur == new

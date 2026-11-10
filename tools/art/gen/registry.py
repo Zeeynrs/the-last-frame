@@ -2,17 +2,19 @@
 Each entry knows its .pxo stem, runtime PNG folder, canvas, layers and frames."""
 from lib import *
 import tiles, props, t2, t3, elias_build, ui_wheel, step1_statues, step1_props, tlf063_story_props, tlf062_operator_city, tlf068_shape_kit, tlf073_wall_plaques, tlf077_wall_fixtures, tlf075_side_view
+import tlf081_concourse_wall_art
 
 
 class Asset:
-    def __init__(self, stem, cat, w, h, layer_names, frames, fps=1.0, tags=None, user_data='TLF-039', png_dir=None, durations=None):
+    def __init__(self, stem, cat, w, h, layer_names, frames, fps=1.0, tags=None, user_data='TLF-039', png_dir=None, durations=None, author=None):
         self.stem, self.cat, self.w, self.h = stem, cat, w, h
         self.png_dir = png_dir
         self.layer_names, self.frames, self.fps, self.tags, self.user_data = layer_names, frames, fps, tags, user_data
         self.durations = durations
+        self.author = author
 
     def pxo(self):
-        return pxo_bytes(self.w, self.h, self.layer_names, self.frames, self.fps, self.tags, self.user_data, durations=self.durations)
+        return pxo_bytes(self.w, self.h, self.layer_names, self.frames, self.fps, self.tags, self.user_data, durations=self.durations, author=self.author)
 
     def expected_png(self):
         return sheet_image([composite(f) for f in self.frames])
@@ -60,4 +62,7 @@ def all_assets():
         out.append(Asset(stem, cat, w, h, names, frames, fps=fps, tags=tags, user_data='TLF-077'))
     for (stem, cat, w, h, names, frames, fps, tags, _m) in tlf075_side_view.assets():
         out.append(Asset(stem, cat, w, h, names, frames, fps=fps, tags=tags, user_data='TLF-075'))
+    for (stem, cat, w, h, names, frames, fps, tags, _m) in tlf081_concourse_wall_art.assets():
+        out.append(Asset(stem, cat, w, h, names, frames, fps=fps, tags=tags, user_data='TLF-081',
+                         author='Sol (Codex), TLF-081; wall primitives adapted from Argon draft'))
     return out
