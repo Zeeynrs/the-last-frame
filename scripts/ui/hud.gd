@@ -3,6 +3,11 @@ extends CanvasLayer
 
 ## Ability feedback HUD per ADR-015, closing ISSUE-006 (feedback toast) and ISSUE-007 (dynamic prompts).
 ## Shows current ability, watch target indicator, echo state & recording progress, and toast feedback.
+## TLF-079 (Appendix D P0, D-P0-01): while a HistoryDial is the watch or interact target, the
+## readout line above the feedback line shows the dial's current value (its existing label key,
+## re-read on index_changed, so a Rewind updates it at once). It sits above the feedback line and
+## above a non-blocking dialogue line, and hides while a blocking dialogue, document or the journal
+## is open.
 
 @onready var ability_panel: PanelContainer = $AbilityPanel
 @onready var ability_icon: ColorRect = $AbilityPanel/Margin/HBox/AbilityIcon
@@ -19,6 +24,9 @@ extends CanvasLayer
 @onready var feedback_panel: PanelContainer = $FeedbackPanel
 @onready var feedback_label: Label = $FeedbackPanel/Margin/FeedbackLabel
 
+@onready var readout_panel: PanelContainer = get_node_or_null("ReadoutPanel")
+@onready var readout_label: Label = get_node_or_null("ReadoutPanel/Margin/ReadoutLabel")
+
 @onready var target_highlight: Node2D = $TargetHighlight
 @onready var target_icon: ColorRect = $TargetHighlight/AbilityMarker
 
@@ -31,6 +39,14 @@ var journal_screen: JournalScreen = null
 var ability_wheel: AbilityWheel = null
 
 var _toast_timer: float = 0.0
+## The HistoryDial whose value the readout shows (null: readout hidden).
+var _readout_dial: HistoryDial = null
+
+## Readout panel bottom edge, relative to the bottom of the view: 4 px above the feedback line's slot.
+const READOUT_BOTTOM := -64.0
+const READOUT_GAP := 4.0
+## One line; a longer value wraps and the panel grows upwards from its bottom edge.
+const READOUT_MIN_HEIGHT := 32.0
 
 const ABILITY_COLORS: Dictionary = {
 	&"trace": Color(0.3, 0.8, 1.0),
@@ -45,6 +61,8 @@ func _ready() -> void:
 	UIFeedback.init_translations()
 	if feedback_panel != null:
 		feedback_panel.visible = false
+	if readout_panel != null:
+		readout_panel.visible = false
 	if target_highlight != null:
 		target_highlight.visible = false
 	_setup_sub_ui()
@@ -125,6 +143,7 @@ func _process(delta: float) -> void:
 			echo_panel.visible = false
 		if target_highlight != null:
 			target_highlight.visible = false
+		_set_readout_dial(null)
 		return
 	elif ability_panel != null and not ability_panel.visible:
 		ability_panel.visible = true
@@ -136,6 +155,7 @@ func _process(delta: float) -> void:
 
 	_update_echo_progress()
 	_update_target_highlight_position()
+	_update_dial_readout()
 
 
 func bind_pocket_watch(watch: Node) -> void:
@@ -279,6 +299,89 @@ func _update_target_highlight_position() -> void:
 			target_icon.color = ABILITY_COLORS.get(pocket_watch.selected_ability, Color.WHITE)
 	else:
 		target_highlight.visible = false
+
+
+# --- TLF-079: history dial readout -----------------------------------------------------------
+
+## The focused HistoryDial: the watch target (what a Rewind acts on), else the interact target.
+## Null while a blocking dialogue, a document or the journal is open.
+func focused_dial() -> HistoryDial:
+	if pocket_watch == null or not is_instance_valid(pocket_watch) or _blocking_ui_open():
+		return null
+	var watch_target = pocket_watch.get("current_target")
+	if is_instance_valid(watch_target) and watch_target is HistoryDial and watch_target.is_inside_tree():
+		return watch_target
+	var owner_node := pocket_watch.get_parent()
+	if owner_node != null and "current_target" in owner_node:
+		var use_target = owner_node.current_target
+		if is_instance_valid(use_target) and use_target is HistoryDial and use_target.is_inside_tree():
+			return use_target
+	return null
+
+
+func _update_dial_readout() -> void:
+	_set_readout_dial(focused_dial())
+	_layout_readout()
+
+
+func _set_readout_dial(dial: HistoryDial) -> void:
+	if dial != _readout_dial:
+		if _readout_dial != null and is_instance_valid(_readout_dial) \
+				and _readout_dial.index_changed.is_connected(_on_readout_index_changed):
+			_readout_dial.index_changed.disconnect(_on_readout_index_changed)
+		_readout_dial = dial
+		if _readout_dial != null:
+			_readout_dial.index_changed.connect(_on_readout_index_changed)
+	_refresh_readout()
+
+
+func _on_readout_index_changed(_index: int) -> void:
+	_refresh_readout()
+
+
+func _refresh_readout() -> void:
+	if readout_panel == null or readout_label == null:
+		return
+	var key := _readout_dial.label_key() if _readout_dial != null and is_instance_valid(_readout_dial) else ""
+	if key.is_empty():
+		readout_panel.visible = false
+		return
+	var text := tr(key)
+	if readout_label.text != text:
+		readout_label.text = text
+		_place_readout(readout_panel.offset_bottom)   # shrink back to one line before it regrows
+	readout_panel.visible = true
+
+
+## Keeps the readout above the feedback line (also when a long feedback line wraps and grows up)
+## and above a non-blocking dialogue line.
+func _layout_readout() -> void:
+	if readout_panel == null or not readout_panel.visible:
+		return
+	var bottom := READOUT_BOTTOM
+	var view_h := readout_panel.get_parent_area_size().y
+	if feedback_panel != null and feedback_panel.visible:
+		bottom = minf(bottom, feedback_panel.get_global_rect().position.y - view_h - READOUT_GAP)
+	if dialogue_box != null and is_instance_valid(dialogue_box) and dialogue_box.is_active \
+			and dialogue_box.panel != null and dialogue_box.panel.visible:
+		bottom = minf(bottom, dialogue_box.panel.get_global_rect().position.y - view_h - READOUT_GAP)
+	if readout_panel.offset_bottom != bottom:
+		_place_readout(bottom)
+
+
+func _place_readout(bottom: float) -> void:
+	readout_panel.offset_bottom = bottom
+	readout_panel.offset_top = bottom - READOUT_MIN_HEIGHT
+
+
+func _blocking_ui_open() -> bool:
+	if dialogue_box != null and is_instance_valid(dialogue_box) and dialogue_box.is_active and dialogue_box.is_blocking:
+		return true
+	if document_viewer != null and is_instance_valid(document_viewer) and document_viewer.is_open:
+		return true
+	if journal_screen != null and is_instance_valid(journal_screen) and journal_screen.is_open:
+		return true
+	return false
 
 
 func show_message(msg: String, duration: float = 3.5) -> void:
