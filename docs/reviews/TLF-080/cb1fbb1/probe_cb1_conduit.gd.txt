@@ -1,0 +1,80 @@
+extends "res://tests/support/ch01_real_input.gd"
+
+## Opus re-check probe for TLF-080 cb1fbb1 (scratch only): the moving conduit with real input,
+## then save at the concourse checkpoint (disk/JSON) and Continue into a fresh chapter.
+
+const R2 := &"ch01.concourse_west"
+const CONDUIT := &"ch01.concourse_west.conduit_01"
+
+
+func _init() -> void:
+	timeout_frames = 6000
+
+
+func test_conduit_real_input_and_save_load() -> void:
+	if not await start_at(R2, &"door_entry_west", [&"CH1-SO-01"], [FLAG_REWIND]):
+		stop()
+		return
+	var conduit := resolve(CONDUIT) as ConduitProp
+	var gate := resolve(&"ch01.concourse_west.turnstile_gate") as TurnstileGate
+	var w := player.pocket_watch
+	print("PROBE start: conduit %s at %s, gate blocked %s" % [conduit.conduit_state, conduit.global_position, gate.passage_blocked])
+	for spot in [Vector2(304, 184), Vector2(312, 188), Vector2(224, 144)]:
+		var t = PocketWatch.choose_watch_target(spot, _tree().get_nodes_in_group(&"interactable"), &"trace", w.watch_radius, &"player")
+		print("PROBE AU-08 Trace from %s -> %s; conduit at %.1f px, trace anchor at %.1f px" % [spot, t.name if t else "none",
+			spot.distance_to(conduit.global_position), spot.distance_to(resolve(&"ch01.concourse_west.turnstile_trace_anchor").global_position)])
+	# gate Rewind spot first: the pinned refusal
+	await walk_to(player, "west hall", Vector2(280, 168))
+	await walk_to(player, "gate spot", Vector2(298, 198))
+	await select_ability(&"rewind")
+	await physics_frames(1)
+	print("PROBE at gate spot: Rewind target %s" % [w.current_target.name if w.current_target else "-"])
+	await tap(&"watch")
+	await physics_frames(2)
+	print("PROBE gate Rewind while pinned: refusal %s" % [last_refusal(gate)])
+	# conduit spot: Rewind lifts it to the wall
+	await walk_to(player, "west hall", Vector2(280, 168))
+	await walk_to(player, "conduit spot", Vector2(320, 168))
+	await physics_frames(1)
+	print("PROBE at conduit spot: Rewind target %s" % [w.current_target.name if w.current_target else "-"])
+	await tap(&"watch")
+	await until(func() -> bool: return conduit.conduit_state == &"mounted", 20)
+	print("PROBE after conduit Rewind: %s at %s" % [conduit.conduit_state, conduit.global_position])
+	# save at the checkpoint with the conduit mounted and the gate still closed
+	var saved := await save_at_checkpoint(&"ch01.cp.concourse_west", Vector2(240, 152), Vector2(280, 168))
+	var read: Dictionary = store.read_slot(router.autosave_slot)
+	var data: Dictionary = read.get("data", {})
+	print("PROBE autosave ok %s, conduit entry %s" % [saved, data.get("temporal", {}).get(String(CONDUIT), "<none>")])
+	# then the gate
+	await walk_to(player, "west hall", Vector2(280, 168))
+	await walk_to(player, "gate spot", Vector2(298, 198))
+	await physics_frames(1)
+	print("PROBE at gate spot after lifting: Rewind target %s" % [w.current_target.name if w.current_target else "-"])
+	await tap(&"watch")
+	await until(func() -> bool: return not gate.passage_blocked, 20)
+	print("PROBE gate open after Rewind: %s" % [not gate.passage_blocked])
+	# reset (unsolved) drops the conduit back
+	var reset_res := session.interaction_service.request(&"player", &"ch01.concourse_west.reset_anchor_01", &"use")
+	await physics_frames(2)
+	print("PROBE reset_anchor_01 use: ok %s; conduit %s at %s; gate blocked %s" % [reset_res.ok, conduit.conduit_state, conduit.global_position, gate.passage_blocked])
+	stop()
+	# Continue from the saved slot (conduit mounted) into a fresh chapter
+	if not await start_at(&"ch01.arrival_platform", &""):
+		stop()
+		return
+	var res := router.restore_from_save(data)
+	await physics_frames(3)
+	var c2 := resolve(CONDUIT) as ConduitProp
+	print("PROBE Continue (physics frames only): presenter TL %s" % [c2.get_node("Presenter").global_position + c2.get_node("Presenter").offset])
+	await _tree().process_frame
+	await _tree().process_frame
+	print("PROBE Continue: %s room %s; conduit %s at %s; presenter TL %s" % [res, router.current_room_id, c2.conduit_state,
+		c2.global_position, c2.get_node("Presenter").global_position + c2.get_node("Presenter").offset])
+	# leave and come back (temporal cache)
+	router.enter_room(&"ch01.arrival_platform", &"door_exit_east")
+	await physics_frames(3)
+	router.enter_room(R2, &"door_entry_west")
+	await physics_frames(3)
+	var c3 := resolve(CONDUIT) as ConduitProp
+	print("PROBE re-entry: conduit %s at %s" % [c3.conduit_state, c3.global_position])
+	stop()
