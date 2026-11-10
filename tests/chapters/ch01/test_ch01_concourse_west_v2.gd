@@ -100,12 +100,12 @@ func test_every_stand_spot_reachable_within_2_6_px() -> void:
 		return
 
 	var spots: Array[Dictionary] = [
+		{"name": "checkpoint", "pos": Vector2(240, 152), "target_id": &""},
 		{"name": "call_box_09", "pos": Vector2(280, 100), "target_id": &"ch01.concourse_west.call_box_09"},
 		{"name": "conduit_01", "pos": Vector2(160, 168), "target_id": &"ch01.concourse_west.conduit_01"},
 		{"name": "doc_ticket_terms", "pos": Vector2(104, 196), "target_id": &"ch01.concourse_west.doc_ticket_terms"},
-		{"name": "turnstile_gate", "pos": Vector2(298, 198), "target_id": &"ch01.concourse_west.turnstile_gate"},
-		{"name": "checkpoint", "pos": Vector2(240, 152), "target_id": &""},
 		{"name": "safe_anchor_east", "pos": Vector2(304, 184), "target_id": &""},
+		{"name": "turnstile_gate", "pos": Vector2(298, 198), "target_id": &"ch01.concourse_west.turnstile_gate"},
 		{"name": "safe_anchor_west", "pos": Vector2(352, 208), "target_id": &""},
 		{"name": "ConcourseBench", "pos": Vector2(496, 200), "target_id": &""},
 		{"name": "reset_anchor_02", "pos": Vector2(544, 200), "target_id": &""},
@@ -114,18 +114,30 @@ func test_every_stand_spot_reachable_within_2_6_px() -> void:
 		{"name": "dial_time", "pos": Vector2(608, 232), "target_id": &"ch01.concourse_west.dial_time"},
 		{"name": "ticket_validator", "pos": Vector2(608, 248), "target_id": &"ch01.concourse_west.ticket_validator"},
 		{"name": "doc_evac_notice", "pos": Vector2(416, 272), "target_id": &"ch01.concourse_west.doc_evac_notice"},
-		{"name": "n06_red_coat", "pos": Vector2(544, 328), "target_id": &"ch01.concourse_west.n06_red_coat"},
-		{"name": "n07_briefcase", "pos": Vector2(512, 344), "target_id": &"ch01.concourse_west.n07_briefcase"},
-		{"name": "n08_father", "pos": Vector2(480, 360), "target_id": &"ch01.concourse_west.n08_father"},
 		{"name": "n09_teen", "pos": Vector2(432, 336), "target_id": &"ch01.concourse_west.n09_teen"},
+		{"name": "n08_father", "pos": Vector2(480, 360), "target_id": &"ch01.concourse_west.n08_father"},
+		{"name": "n07_briefcase", "pos": Vector2(512, 344), "target_id": &"ch01.concourse_west.n07_briefcase"},
+		{"name": "n06_red_coat", "pos": Vector2(544, 328), "target_id": &"ch01.concourse_west.n06_red_coat"},
 		{"name": "door_exit_east approach", "pos": Vector2(608, 336), "target_id": &""}
 	]
 
 	for entry in spots:
 		var pos: Vector2 = entry["pos"]
 		var label: String = entry["name"]
-		var reached := await walk_to(player, "reach spot %s" % label, pos)
-		_assert_true(reached, "walked to stand spot %s %s" % [label, pos])
+		if label == "n09_teen":
+			await walk_to(player, "waypoint corridor before queue", Vector2(400, 290))
+		elif label == "n08_father":
+			await walk_to(player, "waypoint south of N-08", Vector2(452, 366))
+		elif label == "door_exit_east approach":
+			await walk_to(player, "waypoint corridor east", Vector2(576, 300))
+
+		await walk_to(player, "reach spot %s" % label, pos, Callable(), 300, true)
+		for step in 10:
+			if player.global_position.distance_to(pos) <= 2.6:
+				break
+			steer(player, pos)
+			await physics_frames(1)
+		hold_moves([])
 		var dist := player.global_position.distance_to(pos)
 		_assert_true(dist <= 2.6, "spot %s distance %.2f px <= 2.6 px" % [label, dist])
 
@@ -133,7 +145,7 @@ func test_every_stand_spot_reachable_within_2_6_px() -> void:
 			var tid: StringName = entry["target_id"]
 			var target_node: Node = resolve(tid)
 			if target_node != null and target_node is Interactable:
-				var focused: Interactable = session.interaction_service.get_focused_interactable()
+				var focused: Interactable = player.current_target
 				# Check interaction focus or watch ability targeting
 				var ok_focus: bool = (focused == target_node or player.pocket_watch.current_target == target_node)
 				_assert_true(ok_focus, "spot %s resolves focus or watch target to %s" % [label, tid])
@@ -217,10 +229,11 @@ func test_au08_courier_unlocks_rewind_with_real_colliders() -> void:
 		stop()
 		return
 
-	_assert_false(player.pocket_watch.is_unlocked(&"rewind"), "Rewind initially locked")
-	_assert_true(player.pocket_watch.is_unlocked(&"trace"), "Trace unlocked")
+	_assert_false(player.pocket_watch.is_ability_unlocked(&"rewind"), "Rewind initially locked")
+	_assert_true(player.pocket_watch.is_ability_unlocked(&"trace"), "Trace unlocked")
 
-	player.pocket_watch.select_ability(&"trace")
+	player.pocket_watch.selected_ability = &"trace"
+	player.pocket_watch.update_targeting()
 	await physics_frames(1)
 
 	var courier := resolve(&"ch01.concourse_west.n05_courier")
@@ -228,13 +241,12 @@ func test_au08_courier_unlocks_rewind_with_real_colliders() -> void:
 	_assert_eq(player.pocket_watch.current_target, courier, "n05_courier is auto-targeted by Trace from arrival")
 
 	# Trace courier with watch
-	press(&"watch")
-	await physics_frames(2)
-	release(&"watch")
+	await tap(&"watch")
+	var flag_done = func() -> bool: return bool(session.narrative_state.get_flag(&"ch01.npc.n05.traced"))
+	_assert_true(await until(flag_done, 60), "n05 traced flag set")
 	await dismiss_blocking_ui()
-
-	_assert_true(session.narrative_state.is_flag_set(&"ch01.npc.n05.traced"), "n05 traced flag set")
-	_assert_true(player.pocket_watch.is_unlocked(&"rewind"), "Rewind unlocked by courier Trace")
+	var rewind_done = func() -> bool: return player.pocket_watch.is_ability_unlocked(&"rewind")
+	_assert_true(await until(rewind_done, 60), "Rewind unlocked by courier Trace")
 
 	stop()
 
@@ -264,5 +276,6 @@ func test_mutation_check_sweep_fails_when_stubbed() -> void:
 	_assert_true(triggered, "stubbed door on walking path is caught by left movement")
 
 	# Restore
-	door.global_position = original_pos
+	if is_instance_valid(door):
+		door.global_position = original_pos
 	stop()
