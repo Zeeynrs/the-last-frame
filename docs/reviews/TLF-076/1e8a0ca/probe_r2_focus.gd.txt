@@ -1,0 +1,66 @@
+extends "res://tests/support/ch01_real_input.gd"
+
+const LOUNGE := &"ch01.waiting_lounge"
+const MEMORY := &"ch01.side_mira_memory"
+
+
+func _init() -> void:
+	timeout_frames = 6000
+
+
+## H: a non-bool flag value through Chapter01._on_flag_changed.
+func test_h_non_bool_flag() -> void:
+	if not await start_at(LOUNGE, &"door_entry_west"):
+		stop()
+		return
+	print("PROBE H setting a StringName flag")
+	session.narrative_state.set_flag(&"probe.return_target", &"ch01.waiting_lounge.safe_anchor_center")
+	await physics_frames(1)
+	print("PROBE H done")
+	stop()
+
+
+## F + L: interact focus near the bench after the cup Rewind; autosave after leaving the memory.
+func test_f_l() -> void:
+	if not await start_at(LOUNGE, &"door_entry_west", [], [FLAG_REWIND]):
+		stop()
+		return
+	if not router.has_room(MEMORY):
+		stop()
+		return
+	await physics_frames(2)
+	var diag := ch01.call("get_dialogue_box") as DialogueBox
+	if diag.is_active:
+		diag.finish_sequence()
+	await walk_to(player, "bench", Vector2(320, 160))
+	await select_ability(&"trace")
+	await tap(&"interact")
+	await physics_frames(3)
+	diag.finish_sequence()
+	await tap(&"watch")
+	await physics_frames(5)
+	print("PROBE F room %s" % router.current_room_id)
+	for x in [500.0, 510.0, 520.0, 530.0, 540.0, 550.0]:
+		player.global_position = Vector2(x, 394)
+		await physics_frames(3)
+		print("PROBE F before Rewind x %d: use target %s" % [x, player.current_target.object_id if player.current_target else &"-"])
+	await push_for([Vector2(588, 394)], 400, func() -> bool: return player.global_position.x >= 588.0)
+	await select_ability(&"rewind")
+	await tap(&"watch")
+	await physics_frames(3)
+	for x in [500.0, 510.0, 520.0, 530.0, 540.0, 550.0]:
+		player.global_position = Vector2(x, 394)
+		await physics_frames(3)
+		print("PROBE F after Rewind x %d: use target %s" % [x, player.current_target.object_id if player.current_target else &"-"])
+	player.global_position = Vector2(520, 394)
+	await physics_frames(3)
+	await tap(&"interact")
+	await physics_frames(3)
+	print("PROBE F interact at bench x 520 after Rewind: dlg %s seq %s feedback '%s' %s" % [diag.is_active, diag.current_sequence_id, player.hud.feedback_label.text, player.hud.feedback_panel.visible])
+	diag.finish_sequence()
+	await push_for([Vector2(1430, 394)], 900, func() -> bool: return router.current_room_id == LOUNGE)
+	await physics_frames(5)
+	var read: Dictionary = store.read_slot(router.autosave_slot)
+	print("PROBE L in %s after exit; autosave room %s checkpoint %s" % [router.current_room_id,
+		read["data"]["spatial"]["actor_rooms"], read["data"]["checkpoint_id"]])
+	stop()

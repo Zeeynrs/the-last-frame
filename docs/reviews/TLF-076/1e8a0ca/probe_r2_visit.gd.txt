@@ -1,0 +1,287 @@
+extends "res://tests/support/ch01_real_input.gd"
+
+## Opus review probe for TLF-076 (scratch only, never committed to Flash's branch).
+## Prints PROBE lines; the asserts only guard the setup. Runs on fe4bfb1 (main) and a94aee3.
+
+const LOUNGE := &"ch01.waiting_lounge"
+const MEMORY := &"ch01.side_mira_memory"
+const BENCH := &"ch01.waiting_lounge.trace_bench"
+const STAND := Vector2(320, 160)   # SE of the bench (304,144), N of safe_anchor_center
+
+
+func _init() -> void:
+	timeout_frames = 6000
+
+
+func _has_memory() -> bool:
+	return router.has_room(MEMORY)
+
+
+func _journal_count(key: String) -> int:
+	var n := 0
+	for e in session.narrative_state.get_journal():
+		if e.get("key") == key:
+			n += 1
+	return n
+
+
+func _state(label: String) -> void:
+	var diag := ch01.call("get_dialogue_box") as DialogueBox
+	print("PROBE %s | room %s mode %s pos %s | dlg active %s seq %s | heard %s | JRN_TWO %d | frag %s | ret %s (%s)" % [
+		label, router.current_room_id, router.current_view_mode(), player.global_position,
+		diag.is_active if diag else "-", diag.current_sequence_id if diag else "-",
+		session.narrative_state.get_flag(&"heard.ch01_b06_bench", false), _journal_count("JRN_CH1_TWO_SILHOUETTES"),
+		session.narrative_state.has_fragment(&"ch01.fragment.mira_departure"),
+		session.narrative_state.get_flag(&"ch01.flag.mira_memory_return", "<unset>"),
+		type_string(typeof(session.narrative_state.get_flag(&"ch01.flag.mira_memory_return", null)))])
+
+
+func _to_bench() -> bool:
+	var bench := resolve(BENCH)
+	if not await walk_to(player, "lounge -> bench stand spot", STAND):
+		return false
+	await physics_frames(2)
+	print("PROBE at bench: use target %s, watch target %s (ability %s)" % [
+		player.current_target.object_id if player.current_target else &"-",
+		player.pocket_watch.current_target.object_id if player.pocket_watch.current_target else &"-",
+		player.pocket_watch.selected_ability])
+	return bench != null
+
+
+func _finish_dialogue() -> void:
+	var diag := ch01.call("get_dialogue_box") as DialogueBox
+	if diag != null and diag.is_active:
+		diag.finish_sequence()
+	await physics_frames(2)
+
+
+func _start_lounge() -> bool:
+	return await start_at(LOUNGE, &"door_entry_west")
+
+
+## A: first Trace on the bench by real input (main vs branch).
+func test_a_first_trace_real_input() -> void:
+	if not await _start_lounge():
+		stop()
+		return
+	await _finish_dialogue()
+	_state("A before")
+	if not await _to_bench():
+		stop()
+		return
+	await select_ability(&"trace")
+	await physics_frames(1)
+	var bench := resolve(BENCH)
+	print("PROBE A watch target is bench: %s" % [player.pocket_watch.current_target == bench])
+	var ok := [false]
+	var on_used := func(ab, id, res): print("PROBE A watch_used %s %s ok=%s reason=%s" % [ab, id, res.ok, res.reason])
+	player.pocket_watch.watch_used.connect(on_used)
+	await tap(&"watch")
+	await physics_frames(3)
+	player.pocket_watch.watch_used.disconnect(on_used)
+	_state("A after first Trace")
+	stop()
+
+
+## B: first use (E) on the bench by real input.
+func test_b_first_use_real_input() -> void:
+	if not await _start_lounge():
+		stop()
+		return
+	await _finish_dialogue()
+	if not await _to_bench():
+		stop()
+		return
+	var bench := resolve(BENCH)
+	print("PROBE B use target is bench: %s" % [player.current_target == bench])
+	await tap(&"interact")
+	await physics_frames(3)
+	_state("B after first use")
+	if _has_memory():
+		await _finish_dialogue()
+		await tap(&"interact")
+		await physics_frames(3)
+		_state("B after second use")
+	stop()
+
+
+## C: the whole visit by real input on the branch: second Trace -> memory, checkpoint, z, camera,
+## cup Rewind, Mira Trace, Freeze, walk out; then D: a second visit.
+func test_c_visit_and_revisit() -> void:
+	if not await _start_lounge():
+		stop()
+		return
+	if not _has_memory():
+		print("PROBE C skipped: no memory room on this tree")
+		stop()
+		return
+	session.narrative_state.set_flag(FLAG_REWIND)
+	session.narrative_state.set_flag(FLAG_FREEZE)
+	await physics_frames(2)
+	await _finish_dialogue()
+	var cps: Array = []
+	router.checkpoint_reached.connect(func(id, err): cps.append([id, err, router.current_room_id]))
+	var modes: Array = []
+	router.view_mode_changed.connect(func(m): modes.append(m))
+	if not await _to_bench():
+		stop()
+		return
+	await select_ability(&"trace")
+	await tap(&"interact")
+	await physics_frames(3)
+	_state("C first Use")
+	await tap(&"watch")   # second Trace while EL_B06_01 may still be up
+	await physics_frames(3)
+	_state("C second Trace")
+	var w := player.pocket_watch
+	print("PROBE C watch current_target valid %s value %s; player current_target valid %s" % [
+		is_instance_valid(w.current_target), w.current_target, is_instance_valid(player.current_target)])
+	print("PROBE C checkpoints %s, view_mode_changed %s" % [cps, modes])
+	if router.current_room_id != MEMORY:
+		stop()
+		return
+	# z order
+	var room := router.current_room
+	print("PROBE Z player z %d rel %s, sprite z %d rel %s, parent %s z %d" % [player.z_index, player.z_as_relative,
+		player.sprite.z_index, player.sprite.z_as_relative, player.get_parent().name, (player.get_parent() as CanvasItem).z_index])
+	print("PROBE Z room_container z %d, room root z %d" % [(room.get_parent() as CanvasItem).z_index, (room as CanvasItem).z_index])
+	for n in room.find_children("*", "CanvasItem", true, false):
+		var ci := n as CanvasItem
+		if ci.z_index != 0:
+			print("PROBE Z   %s z %d rel %s" % [room.get_path_to(ci), ci.z_index, ci.z_as_relative])
+	# camera sweep by real input to the cup
+	var cam := router.camera
+	var xs: Array = []
+	var ys := {}
+	var frac := [0]
+	var track := func() -> bool:
+		var c := cam.get_screen_center_position()
+		xs.append(c.x)
+		ys[c.y] = true
+		if c.x != roundf(c.x):
+			frac[0] += 1
+		return false
+	await push_for([Vector2(588, 394)], 400, func() -> bool:
+		track.call()
+		return player.global_position.x >= 588.0)
+	print("PROBE CAM walk 120->588: x %s..%s, y values %s, fractional %d, view %s, player %s" % [
+		xs.min() if xs.size() else -1, xs.max() if xs.size() else -1, ys.keys(), frac[0], cam.view_rect(), player.global_position])
+	var cup := resolve(&"ch01.side_mira_memory.cup") as Node2D
+	print("PROBE CUP before %s, watch target with rewind:" % [cup.position])
+	await select_ability(&"rewind")
+	await physics_frames(1)
+	print("PROBE CUP   target %s" % [w.current_target.object_id if w.current_target else &"-"])
+	await tap(&"watch")
+	await physics_frames(3)
+	print("PROBE CUP after Rewind %s; feedback '%s' visible %s" % [cup.position, player.hud.feedback_label.text, player.hud.feedback_panel.visible])
+	await tap(&"watch")
+	await physics_frames(3)
+	print("PROBE CUP second Rewind: last refusal %s; feedback '%s'" % [last_refusal(cup), player.hud.feedback_label.text])
+	# Freeze with no target
+	await select_ability(&"freeze")
+	await physics_frames(1)
+	print("PROBE FREEZE target %s" % [w.current_target.object_id if w.current_target else &"-"])
+	await tap(&"watch")
+	await physics_frames(3)
+	print("PROBE FREEZE result %s feedback '%s'" % [w.last_result.reason if w.last_result else &"-", player.hud.feedback_label.text])
+	# Mira
+	await push_for([Vector2(770, 394)], 300, func() -> bool: return player.global_position.x >= 770.0)
+	await select_ability(&"trace")
+	await physics_frames(1)
+	var mira := resolve(&"ch01.side_mira_memory.mira")
+	print("PROBE MIRA target %s" % [w.current_target.object_id if w.current_target else &"-"])
+	await tap(&"watch")
+	await physics_frames(3)
+	_state("C Mira traced")
+	await tap(&"watch")
+	await physics_frames(3)
+	print("PROBE MIRA second trace refusal %s feedback '%s'" % [last_refusal(mira), player.hud.feedback_label.text])
+	# full sweep to the exit
+	xs.clear()
+	ys.clear()
+	await push_for([Vector2(1430, 394)], 600, func() -> bool:
+		if router.current_room_id == MEMORY:
+			track.call()
+		return router.current_room_id == LOUNGE)
+	print("PROBE CAM walk 770->exit: x %s..%s, y %s, fractional %d" % [xs.min() if xs.size() else -1, xs.max() if xs.size() else -1, ys.keys(), frac[0]])
+	await physics_frames(3)
+	_state("C after exit")
+	print("PROBE C after exit: ability %s, camera bounds %s horizontal_only %s, checkpoints %s, modes %s" % [
+		w.selected_ability, cam.bounds, cam.horizontal_only, cps, modes])
+
+	# D: second visit
+	await _finish_dialogue()
+	if not await _to_bench():
+		stop()
+		return
+	await select_ability(&"trace")
+	await tap(&"watch")
+	await physics_frames(3)
+	_state("D second visit")
+	if router.current_room_id == MEMORY:
+		cup = resolve(&"ch01.side_mira_memory.cup") as Node2D
+		print("PROBE D cup position on re-entry %s" % [cup.position])
+		await push_for([Vector2(588, 394)], 400, func() -> bool: return player.global_position.x >= 588.0)
+		await select_ability(&"rewind")
+		await physics_frames(1)
+		print("PROBE D rewind target %s" % [w.current_target.object_id if w.current_target else &"-"])
+		await tap(&"watch")
+		await physics_frames(3)
+		print("PROBE D cup after Rewind %s refusal %s" % [cup.position, last_refusal(cup)])
+		await push_for([Vector2(770, 394)], 300, func() -> bool: return player.global_position.x >= 770.0)
+		await select_ability(&"trace")
+		await tap(&"watch")
+		await physics_frames(3)
+		mira = resolve(&"ch01.side_mira_memory.mira")
+		print("PROBE D mira trace refusal %s" % [last_refusal(mira)])
+		_state("D after Mira")
+	stop()
+
+
+## E: save inside the memory by the game's own path and Continue (JSON on disk), then walk out.
+func test_e_save_load() -> void:
+	if not await _start_lounge():
+		stop()
+		return
+	if not _has_memory():
+		print("PROBE E skipped")
+		stop()
+		return
+	await _finish_dialogue()
+	var cps: Array = []
+	router.checkpoint_reached.connect(func(id, err): cps.append([id, err, router.current_room_id]))
+	if not await _to_bench():
+		stop()
+		return
+	await select_ability(&"trace")
+	await tap(&"interact")
+	await physics_frames(3)
+	await _finish_dialogue()
+	await tap(&"watch")
+	await physics_frames(5)
+	_state("E entered")
+	print("PROBE E checkpoints after entry %s" % [cps])
+	await push_for([Vector2(400, 394)], 200, func() -> bool: return player.global_position.x >= 400.0)
+	var read: Dictionary = store.read_slot(router.autosave_slot)
+	print("PROBE E autosave ok %s" % [read.get("ok", false)])
+	if read.get("ok", false):
+		var d: Dictionary = read["data"]
+		print("PROBE E autosave room %s checkpoint %s ret %s" % [d.get("spatial", {}).get("actor_rooms", {}), d.get("checkpoint_id"),
+			d.get("narrative", {}).get("flags", {}).get("ch01.flag.mira_memory_return", "<none>") if d.has("narrative") else d.keys()])
+		# Continue into a fresh chapter (a new game process would do the same).
+		var data := d
+		var old_root := save_root
+		stop()
+		if not await start_at(&"ch01.arrival_platform", &""):
+			stop()
+			return
+		var res := router.restore_from_save(data)
+		await physics_frames(3)
+		print("PROBE E restore %s" % [res])
+		_state("E after Continue")
+		print("PROBE E camera %s bounds %s horizontal_only %s sprite frames side %s" % [router.camera.get_screen_center_position(),
+			router.camera.bounds, router.camera.horizontal_only, player.sprite.sprite_frames == Player.SIDE_FRAMES])
+		await push_for([Vector2(1430, 394)], 800, func() -> bool: return router.current_room_id == LOUNGE)
+		await physics_frames(3)
+		_state("E walked out after Continue")
+	stop()

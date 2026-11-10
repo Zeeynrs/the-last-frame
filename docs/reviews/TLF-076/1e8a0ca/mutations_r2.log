@@ -1,0 +1,40 @@
+BASELINE | TESTS: 6 passed, 0 failed | SCRIPT ERROR 0
+M1 bench Trace never enters the memory | RED | TESTS: 4 passed, 2 failed | SCRIPT ERROR 1
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] second trace loaded side memory scene (Expected ch01.side_mira_memory, got ch01.waiting_lounge)
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] side view mode active (Expected side, got iso)
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] player in side view mode (Expected side, got iso)
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] player has side SpriteFrames (Expected (res://scenes/player/elias_side_sprite_frames.tres):<SpriteFrames#-9223371992328042607>, got (res://scenes/player/elias_sprite_frames.tres):<SpriteFrames#-9223371988771272719>)
+M2 entry does not close EL_B06_01 | RED | TESTS: 5 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] dialogue closed on entry so EL_B06_01 does not linger
+M3 CheckpointZone back at the memory spawn | RED | TESTS: 4 passed, 2 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] autosave does NOT point to side memory room
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] autosave points to waiting lounge (Expected ch01.waiting_lounge, got ch01.side_mira_memory)
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_save_and_continue_from_disk] restored in waiting lounge from disk (Expected ch01.waiting_lounge, got ch01.side_mira_memory)
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_save_and_continue_from_disk] iso view mode active after load (Expected iso, got side)
+M4 Trace before Beat 06 plays it (round-1 behaviour) | RED | TESTS: 5 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] first trace does NOT open dialogue (stays silent like main)
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] heard flag not set yet
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] Use on bench triggers EL_B06_01 dialogue
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] sequence is ch01_b06_bench (Expected ch01_b06_bench, got )
+M5 cup keeps its focus after Rewind | RED | TESTS: 5 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] player at x=540 targets bench for interact (cup does not steal focus) (Expected station_bench:<Area2D#196209544019>, got voice_recorder_cup:<Area2D#196259875668>)
+M6 cup Rewind shows the round-1 message | RED | TESTS: 5 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] Rewind cup shows no message on refusal line
+M7 Mira Trace collects nothing | RED | TESTS: 5 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] ch01.fragment.mira_departure collected
+M8 side walk not clamped | RED | TESTS: 5 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_walk_bounds_and_clamping] left walk clamped at x >= 16 (got 6.0)
+M9 exit marker does nothing | RED | TESTS: 4 passed, 2 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] returned to waiting lounge (Expected ch01.waiting_lounge, got ch01.side_mira_memory)
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] back in iso mode (Expected iso, got side)
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] player back in iso mode (Expected iso, got side)
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] camera restored to iso follow
+M10 HUD ignores TargetAnchor | GREEN (not caught) | TESTS: 6 passed, 0 failed | SCRIPT ERROR 0
+M11 room swap leaks the old room (orphans) | GREEN (not caught) | TESTS: 6 passed, 0 failed | SCRIPT ERROR 0
+M12 cup resets to the floor on re-entry | GREEN (not caught) | TESTS: 6 passed, 0 failed | SCRIPT ERROR 0
+M13 Mira fragment collected again on every Trace | GREEN (not caught) | TESTS: 6 passed, 0 failed | SCRIPT ERROR 0
+M14 camera not clamped (x follows Elias) | RED | TESTS: 5 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] camera clamped at left clamp 480 at spawn x=120 (Expected 480.0, got 120.0)
+RESTORED | TESTS: 6 passed, 0 failed | SCRIPT ERROR 0
+M10b HUD offset always (0, -28) (anchor and export both ignored) | RED | TESTS: 5 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_mira_memory_side.gd::test_real_input_full_memory_flow] target highlight marker y (366.0) is <= 342 (leaves >= 6px clear space above Mira)
