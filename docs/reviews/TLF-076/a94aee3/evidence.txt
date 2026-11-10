@@ -1,0 +1,48 @@
+Reviewed exact SHA: a94aee3ff79c07e1ee51d4caa319bb7ece55f27a
+Immediate parent: 323992cdba73a5074e9e36b2126ea3e46acb7ebc (build); branch base main fe4bfb1053167da1218013ec6f5de0a5d15542df.
+Fresh git archive. All 1783 original tracked blobs except intentionally renamed scratch project.godot still match a94aee3 after import/walk.
+Only scratch application name/custom user directory and inspection harness added outside repository.
+Commands (both exit 0):
+Godot_v4.7.2-stable_win64_console.exe --headless --editor --path <scratch> --import --quit
+Godot_v4.7.2-stable_win64_console.exe --path <scratch> --windowed --resolution 960x540 --position 100,100 --script res://sol076_walk.gd
+Separate user dir asserted before chapter load. SaveService redirected inside it. Real save/settings inventory/hashes/sizes/mtime unchanged (139 files).
+Harness: actual Chapter01, Player, RoomRouter, RoomCamera. Finish initial dialogue, enable existing four abilities in scratch, enter side room directly through RoomRouter at actual anchor (120,394). Walk via Input.action_press/release(move_right), not position assignments. Bench/clock inspected through interact input; cup Rewind and Mira Trace through real PocketWatch.activate_watch API. No player teleport along the route. Source room and actor data unmodified. Entry via the lounge's two-Trace flow, complete ability safety and save/load were not independently tested here.
+At each side-walk physics sample assert feet y394, horizontal_only, camera y270, whole-pixel x, view left >=0 and right <=1440. 633 samples passed. Exit returns to waiting_lounge at (336,152), iso mode.
+Five supplied screenshots exact-SHA blobs inspected first; all remain unchanged. Own captures preserve the HUD and use legal separate actor/target positions.
+Mira: actual stand (756,394), target (780,394), delta24. Camera view origin276, so Mira texture top-left (488,350). Existing 10x10 AbilityMarker occupies x499..508/y361..370, overpainting 95 opaque pixels of the approved Mira placeholder. Marker centre uses target canvas position + (0,-28), HUD.gd line277. Mira's first opaque y is353. Native screenshot and x2 primary proof; x8 crop is diagnostic only, exact nearest pixels from box (454,337)-(530,404). Greyscale is derived from the native frame.
+Letterbox clear samples in start/Mira/east views match RGB(10,13,20). Source bars y0..89/y450..539 with boundary hairlines. Far/near sources 960x360 at y90; floor 960x72 at y378; two repeats at x0/960.
+PASS source Mira and Elias sheet PNG bytes equal approved TLF-075 76e63bf.
+No engine/script errors in import/walk logs. No full validation rerun; Lead/Flash handoff's 500/0 claim is not independently repeated here.
+
+Raw windowed walk log:
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+SOL076 WINDOWED display=Windows user_dir=C:/Users/adity/AppData/Roaming/TLF Sol 076 a94aee3
+SPRITE FarWall0 p=(0.0, 90.0) offset=(0.0, 0.0) size=(960.0, 360.0) z=1
+SPRITE FarWall1 p=(960.0, 90.0) offset=(0.0, 0.0) size=(960.0, 360.0) z=1
+SPRITE NearWall0 p=(0.0, 90.0) offset=(0.0, 0.0) size=(960.0, 360.0) z=2
+SPRITE NearWall1 p=(960.0, 90.0) offset=(0.0, 0.0) size=(960.0, 360.0) z=2
+SPRITE FloorStrip0 p=(0.0, 378.0) offset=(0.0, 0.0) size=(960.0, 72.0) z=3
+SPRITE FloorStrip1 p=(960.0, 378.0) offset=(0.0, 0.0) size=(960.0, 72.0) z=3
+SPRITE PlatformPillar p=(300.0, 394.0) offset=(-16.0, -260.0) size=(32.0, 264.0) z=6
+SPRITE LuggageTrolley p=(1000.0, 394.0) offset=(-24.0, -36.0) size=(48.0, 40.0) z=8
+HUD ability rect=[P: (12.0, 12.0), S: (270.0, 32.0)]
+SHOT start room=ch01.side_mira_memory player=(120.0, 394.0) view=[P: (0.0, 0.0), S: (960.0, 540.0)]
+SHOT bench_approach room=ch01.side_mira_memory player=(496.0, 394.0) view=[P: (16.0, 0.0), S: (960.0, 540.0)]
+BENCH dialogue=true
+SHOT bench_dialogue room=ch01.side_mira_memory player=(496.0, 394.0) view=[P: (16.0, 0.0), S: (960.0, 540.0)]
+CUP REWIND ok=true reason=
+SHOT cup_on_bench room=ch01.side_mira_memory player=(576.0, 394.0) view=[P: (96.0, 0.0), S: (960.0, 540.0)]
+MIRA stand delta=(24.0, 0.0) watch_target=mira_silhouette:<Area2D#168124484227>
+SHOT mira_approach room=ch01.side_mira_memory player=(756.0, 394.0) view=[P: (276.0, 0.0), S: (960.0, 540.0)]
+MIRA TRACE ok=true reason=
+SHOT mira_traced room=ch01.side_mira_memory player=(756.0, 394.0) view=[P: (276.0, 0.0), S: (960.0, 540.0)]
+SHOT mira_reduced room=ch01.side_mira_memory player=(756.0, 394.0) view=[P: (276.0, 0.0), S: (960.0, 540.0)]
+SHOT clock_approach room=ch01.side_mira_memory player=(1156.0, 394.0) view=[P: (480.0, 0.0), S: (960.0, 540.0)]
+CLOCK dialogue=true
+SHOT clock_dialogue room=ch01.side_mira_memory player=(1156.0, 394.0) view=[P: (480.0, 0.0), S: (960.0, 540.0)]
+SHOT east_before_exit room=ch01.side_mira_memory player=(1348.0, 394.0) view=[P: (480.0, 0.0), S: (960.0, 540.0)]
+RETURN player=(336.0, 152.0) mode=iso
+SHOT returned_lounge room=ch01.waiting_lounge player=(336.0, 152.0) view=[P: (-160.0, -90.0), S: (960.0, 540.0)]
+SOL076 COMPLETE bounded horizontal camera samples=633 views=11
