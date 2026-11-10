@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/ability_wheel.tscn" id="2_wheel"]
 
 [node name="HUD" type="CanvasLayer"]
+layer = 2
 script = ExtResource("1_hud")
 
 [node name="AbilityPanel" type="PanelContainer" parent="."]
