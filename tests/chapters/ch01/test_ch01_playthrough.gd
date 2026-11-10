@@ -487,21 +487,21 @@ func test_gate_blockers_cover_door_triggers_from_all_approach_vectors() -> void:
 	cw_door.body_entered.connect(func(b): if b == player: cw_door_entered = true)
 
 	var cw_probes := [
-		["spawn", Vector2(256, 112)],
-		["north", Vector2(480, 180)],
-		["west", Vector2(440, 224)],
-		["south-west", Vector2(440, 250)]
+		["spawn", Vector2(224, 144)],
+		["north", Vector2(640, 308)],
+		["west", Vector2(600, 352)],
+		["south-west", Vector2(600, 378)]
 	]
 
 	for probe in cw_probes:
 		cw_door_entered = false
 		player.global_position = probe[1]
 		await physics_frames(2)
-		var reached := await walk_to(player, "concourse_door_closed_" + probe[0], Vector2(480, 224), Callable(), 60, true)
+		var reached := await walk_to(player, "concourse_door_closed_" + probe[0], Vector2(640, 352), Callable(), 60, true)
 		_assert_false(reached, "concourse staff door closed: probe %s blocked before door target" % probe[0])
 		_assert_false(cw_door_entered, "concourse staff door closed: probe %s never entered door_exit_east trigger" % probe[0])
 		if probe[0] != "north":
-			_assert_true(player.global_position.distance_to(Vector2(480, 224)) > 16.0, "concourse staff door closed: probe %s stayed outside door trigger radius" % probe[0])
+			_assert_true(player.global_position.distance_to(Vector2(640, 352)) > 16.0, "concourse staff door closed: probe %s stayed outside door trigger radius" % probe[0])
 
 	s.remove_child(concourse)
 	concourse.free()
@@ -862,9 +862,9 @@ func test_scripted_playthrough_rooms_1_to_4() -> void:
 	session.interaction_service.trigger_enter(&"player", &"ch01.arrival_platform.door_exit_east")
 	router.process_pending()
 
-	# 2. Concourse West: arrived at door_entry_west spawn (256, 112)
+	# 2. Concourse West: arrived at door_entry_west spawn (224, 144)
 	_assert_eq(router.current_room_id, &"ch01.concourse_west", "transitioned to concourse_west")
-	_assert_true((player.global_position - Vector2(256, 112)).length() < 2.0, "spawned at concourse door_entry_west")
+	_assert_true((player.global_position - Vector2(224, 144)).length() < 2.0, "spawned at concourse door_entry_west")
 
 	# Trace N-05 courier to unlock Rewind
 	session.interaction_service.request(&"player", &"ch01.concourse_west.n05_courier", &"trace")
