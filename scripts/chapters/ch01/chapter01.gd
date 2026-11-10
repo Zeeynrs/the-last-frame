@@ -54,6 +54,7 @@ func _ready() -> void:
 		room_router.register_room(&"ch01.vestibule_niche", preload("res://scenes/chapters/ch01/rooms/vestibule_niche.tscn"))
 		room_router.register_room(&"ch01.station_atrium", preload("res://scenes/chapters/ch01/rooms/station_atrium.tscn"))
 		room_router.register_room(&"ch01.street_exit", preload("res://scenes/chapters/ch01/rooms/street_exit.tscn"))
+		room_router.register_room(&"ch01.side_mira_memory", preload("res://scenes/chapters/ch01/rooms/side_mira_memory.tscn"))
 
 		room_router.room_entered.connect(_on_room_entered)
 
@@ -156,7 +157,7 @@ func _on_interaction_failed(_tick: int, actor_id: StringName, target_id: StringN
 
 
 func _on_flag_changed(flag: StringName, value: Variant) -> void:
-	if not bool(value):
+	if not value:
 		return
 	if flag == &"ch01.flag.pocket_watch_acquired":
 		var hud := _find_hud()
