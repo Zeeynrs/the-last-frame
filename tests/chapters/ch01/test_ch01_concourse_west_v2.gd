@@ -196,10 +196,13 @@ func test_every_stand_spot_reachable_within_2_6_px() -> void:
 		stop()
 		return
 
+	var conduit := resolve(&"ch01.concourse_west.conduit_01") as ConduitProp
+	var conduit_spot: Vector2 = Vector2(160, 168) if (conduit != null and conduit.conduit_state == &"mounted") else Vector2(320, 168)
+
 	var spots: Array[Dictionary] = [
 		{"name": "checkpoint", "pos": Vector2(240, 152), "target_id": &""},
 		{"name": "call_box_09", "pos": Vector2(280, 100), "target_id": &"ch01.concourse_west.call_box_09"},
-		{"name": "conduit_01", "pos": Vector2(160, 168), "target_id": &"ch01.concourse_west.conduit_01"},
+		{"name": "conduit_01", "pos": conduit_spot, "target_id": &"ch01.concourse_west.conduit_01"},
 		{"name": "doc_ticket_terms", "pos": Vector2(104, 196), "target_id": &"ch01.concourse_west.doc_ticket_terms"},
 		{"name": "safe_anchor_east", "pos": Vector2(304, 184), "target_id": &""},
 		{"name": "turnstile_gate", "pos": Vector2(298, 198), "target_id": &"ch01.concourse_west.turnstile_gate"},
@@ -345,6 +348,14 @@ func test_au08_courier_unlocks_rewind_with_real_colliders() -> void:
 	_assert_eq(player.pocket_watch.current_target, courier, "from entry anchor (304, 184), n05_courier is auto-targeted by Trace")
 	_assert_true(abs(player.global_position.distance_to(courier.global_position) - 17.89) < 0.5, "courier distance from entry anchor is ~17.9 px")
 
+	# Clause 2 (TEST-AU-08 spec): From (312, 188), turnstile_trace_anchor is auto-targeted by Trace
+	player.global_position = Vector2(312, 188)
+	player.pocket_watch.update_targeting()
+	var trace_anchor := resolve(&"ch01.concourse_west.turnstile_trace_anchor")
+	_assert_true(trace_anchor != null, "turnstile_trace_anchor exists")
+	_assert_eq(player.pocket_watch.current_target, trace_anchor, "from (312, 188), turnstile_trace_anchor is auto-targeted by Trace")
+	_assert_true(abs(player.global_position.distance_to(trace_anchor.global_position) - 17.89) < 0.5, "trace anchor distance from (312, 188) is ~17.9 px")
+
 	# Also verify targeting from arrival spawn (224, 144)
 	player.global_position = ARRIVAL_SPAWN
 	player.pocket_watch.update_targeting()
@@ -374,7 +385,12 @@ func test_tlf081_wall_art_integration_and_transforms() -> void:
 	var w5 := room.get_node_or_null("YSort_Walls/WallW_5") as Sprite2D
 	var w6 := room.get_node_or_null("YSort_Walls/WallW_6") as Sprite2D
 	var w7 := room.get_node_or_null("YSort_Walls/WallW_7") as Sprite2D
+	var wn7 := room.get_node_or_null("YSort_Walls/WallN_7") as Sprite2D
+	var wn8 := room.get_node_or_null("YSort_Walls/WallN_8") as Sprite2D
+	var wn9 := room.get_node_or_null("YSort_Walls/WallN_9") as Sprite2D
+	var ww1 := room.get_node_or_null("YSort_Walls/WallW_1") as Sprite2D
 	_assert_true(w5 != null and w6 != null and w7 != null, "WallW_5, WallW_6, WallW_7 found")
+	_assert_true(wn7 != null and wn8 != null and wn9 != null and ww1 != null, "WallN_7..9 and WallW_1 found")
 
 	var w5_tl := w5.global_position + w5.offset
 	var w6_tl := w6.global_position + w6.offset
@@ -382,16 +398,36 @@ func test_tlf081_wall_art_integration_and_transforms() -> void:
 	_assert_eq(w5_tl, Vector2(128, 96), "WallW_5 image top-left is (128, 96)")
 	_assert_eq(w6_tl, Vector2(96, 112), "WallW_6 image top-left is (96, 112)")
 	_assert_eq(w7_tl, Vector2(64, 128), "WallW_7 image top-left is (64, 128)")
+	_assert_eq(wn7.global_position + wn7.offset, Vector2(544, 128), "WallN_7 image top-left is (544, 128)")
+	_assert_eq(wn8.global_position + wn8.offset, Vector2(576, 144), "WallN_8 image top-left is (576, 144)")
+	_assert_eq(wn9.global_position + wn9.offset, Vector2(608, 160), "WallN_9 image top-left is (608, 160)")
+	_assert_eq(ww1.global_position + ww1.offset, Vector2(256, 32), "WallW_1 image top-left is (256, 32)")
 
 	# 2. Assert final PNG top-lefts of TLF-081 variants
-	# Mounted conduit: (112, 102)
+	# Fallen conduit: floor pivot (328, 184), PNG top-left (304, 158)
 	var conduit := resolve(&"ch01.concourse_west.conduit_01") as ConduitProp
 	_assert_true(conduit != null, "conduit_01 found")
-	conduit.conduit_state = &"mounted"
+	_assert_eq(conduit.conduit_state, &"fallen", "conduit starts fallen")
+	_assert_eq(conduit.global_position, Vector2(328, 184), "fallen conduit floor pivot is (328, 184)")
 	var conduit_pres := conduit.get_node("Presenter") as ConduitPropPresenter
 	conduit_pres._refresh()
+	var fallen_tl := conduit_pres.global_position + conduit_pres.offset
+	_assert_eq(fallen_tl, Vector2(304, 158), "fallen conduit final PNG top-left is (304, 158)")
+	_assert_eq(conduit_pres.texture, conduit_pres.tex_fallen, "fallen conduit uses tex_fallen")
+
+	# Mounted conduit: anchor (144, 160), PNG top-left (112, 102)
+	conduit.conduit_state = &"mounted"
+	conduit._update_position()
+	conduit_pres._refresh()
+	_assert_eq(conduit.global_position, Vector2(144, 160), "mounted conduit anchor is (144, 160)")
 	var conduit_tl := conduit_pres.global_position + conduit_pres.offset
 	_assert_eq(conduit_tl, Vector2(112, 102), "mounted conduit final PNG top-left is (112, 102)")
+	_assert_eq(conduit_pres.texture, conduit_pres.tex_mounted, "mounted conduit uses tex_mounted")
+
+	# Restore fallen for remainder of test
+	conduit.conduit_state = &"fallen"
+	conduit._update_position()
+	conduit_pres._refresh()
 
 	# Notice (ticket terms): (72, 146)
 	var terms := resolve(&"ch01.concourse_west.doc_ticket_terms") as Area2D
@@ -470,4 +506,56 @@ func test_mutation_check_sweep_fails_when_stubbed() -> void:
 	# Restore
 	if is_instance_valid(door):
 		door.global_position = original_pos
+	stop()
+
+
+func test_conduit_fallen_and_mounted_state_and_rewind_lifecycle() -> void:
+	if not await start_at(CONCOURSE, &"door_entry_west", [&"CH1-SO-01"], []):
+		stop()
+		return
+
+	var conduit := resolve(&"ch01.concourse_west.conduit_01") as ConduitProp
+	_assert_true(conduit != null, "conduit_01 found")
+	var pres := conduit.get_node("Presenter") as ConduitPropPresenter
+	_assert_true(pres != null, "Presenter found")
+
+	# 1. Initial fallen state: pivot (328, 184), PNG TL (304, 158), pins the gate
+	_assert_eq(conduit.conduit_state, &"fallen", "starts fallen")
+	_assert_true(conduit.is_pinning(), "is_pinning is true when fallen")
+	_assert_eq(conduit.global_position, Vector2(328, 184), "fallen floor pivot is (328, 184)")
+	pres._refresh()
+	_assert_eq(pres.global_position + pres.offset, Vector2(304, 158), "fallen PNG TL is (304, 158)")
+	_assert_eq(pres.texture, pres.tex_fallen, "uses tex_fallen")
+
+	# 2. Rewind: moves to mounted (144, 160), PNG TL (112, 102), unpins gate
+	var res := session.interaction_service.request(&"player", &"ch01.concourse_west.conduit_01", &"rewind")
+	_assert_true(res.ok, "rewind request succeeded")
+	_assert_eq(conduit.conduit_state, &"mounted", "rewound to mounted")
+	_assert_false(conduit.is_pinning(), "is_pinning is false when mounted")
+	_assert_eq(conduit.global_position, Vector2(144, 160), "mounted floor pivot is (144, 160)")
+	pres._refresh()
+	_assert_eq(pres.global_position + pres.offset, Vector2(112, 102), "mounted PNG TL is (112, 102)")
+	_assert_eq(pres.texture, pres.tex_mounted, "uses tex_mounted")
+
+	# Second rewind should report no_history
+	var res2 := session.interaction_service.request(&"player", &"ch01.concourse_west.conduit_01", &"rewind")
+	_assert_false(res2.ok, "second rewind fails")
+	_assert_eq(res2.reason, &"no_history", "second rewind returns no_history")
+
+	# 3. Reset (unsolved): returns to fallen
+	conduit.reset_for_puzzle(&"CH1-PZ-001", false)
+	_assert_eq(conduit.conduit_state, &"fallen", "reset returns to fallen")
+	_assert_true(conduit.is_pinning(), "is_pinning true after reset")
+	_assert_eq(conduit.global_position, Vector2(328, 184), "fallen floor pivot is (328, 184)")
+	pres._refresh()
+	_assert_eq(pres.global_position + pres.offset, Vector2(304, 158), "fallen PNG TL is (304, 158)")
+
+	# 4. Solved latch: latches to mounted
+	conduit._apply_solved_state()
+	_assert_eq(conduit.conduit_state, &"mounted", "latches to mounted on solved")
+	_assert_false(conduit.is_pinning(), "unpinned on solved")
+	_assert_eq(conduit.global_position, Vector2(144, 160), "mounted floor pivot is (144, 160)")
+	pres._refresh()
+	_assert_eq(pres.global_position + pres.offset, Vector2(112, 102), "mounted PNG TL is (112, 102)")
+
 	stop()

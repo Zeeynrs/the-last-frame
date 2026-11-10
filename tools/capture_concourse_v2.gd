@@ -76,5 +76,27 @@ func _run() -> void:
 		assert(err == OK, "Failed to save " + out_path)
 		print("CAPTURED: %s at %s -> %s" % [filename, str(spot), out_path])
 
-	print("ALL 4 SCREENSHOTS CAPTURED SUCCESSFULLY")
+		if filename == "gate_960x540.png":
+			var conduit := router.current_room.get_node_or_null("conduit_01") as ConduitProp
+			if conduit != null:
+				conduit.apply_state({"conduit_state": &"mounted"})
+				var pres := conduit.get_node_or_null("Presenter") as ConduitPropPresenter
+				if pres != null:
+					pres._refresh()
+			for i in range(10):
+				await process_frame
+			await RenderingServer.frame_post_draw
+			var img_m := root.get_texture().get_image()
+			assert(img_m.get_size() == Vector2i(960, 540), "Screenshot size must be 960x540")
+			var m_path := out_dir.path_join("gate_mounted_960x540.png")
+			var err_m := img_m.save_png(m_path)
+			assert(err_m == OK, "Failed to save " + m_path)
+			print("CAPTURED: gate_mounted_960x540.png at %s -> %s" % [str(spot), m_path])
+			if conduit != null:
+				conduit.apply_state({"conduit_state": &"fallen"})
+				var pres := conduit.get_node_or_null("Presenter") as ConduitPropPresenter
+				if pres != null:
+					pres._refresh()
+
+	print("ALL 5 SCREENSHOTS CAPTURED SUCCESSFULLY")
 	quit(0)

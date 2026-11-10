@@ -307,9 +307,11 @@ func _play() -> bool:
 	if not await _expect_unlock(&"rewind"):
 		return false
 	if wrong_moves:
-		# Rewind on the gate while the conduit still pins it (via the conduit spot: the straight line
-		# from the door spawn catches the Blocker's corner).
-		if not await walk_to(_player, "concourse -> conduit spot", Vector2(160, 168)):
+		# Rewind on the gate while the conduit still pins it (via the west hall waypoint: the straight line
+		# from the conduit spot catches the Blocker's corner).
+		if not await walk_to(_player, "concourse -> conduit spot", Vector2(320, 168)):
+			return false
+		if not await walk_to(_player, "concourse -> west hall waypoint", Vector2(280, 168)):
 			return false
 		if not await walk_to(_player, "concourse -> gate Rewind spot", Vector2(298, 198)):
 			return false
@@ -319,12 +321,16 @@ func _play() -> bool:
 		_assert_eq(watch.current_target, turnstile, "Rewind targets the turnstile from the gate spot")
 		await tap(&"watch")
 		await _expect_refusal(turnstile, &"pinned", "PZ001_FB_PINNED", "PZ-001 gate pinned by the conduit")
-	if not await walk_to(_player, "concourse -> conduit spot", Vector2(160, 168)):
+		if not await walk_to(_player, "concourse -> west hall waypoint", Vector2(280, 168)):
+			return false
+	if not await walk_to(_player, "concourse -> conduit spot", Vector2(320, 168)):
 		return false
 	if not await _use_watch(&"rewind", conduit, func() -> bool: return conduit.get("conduit_state") == &"mounted", "conduit mounted after Rewind"):
 		return false
 	# Gate Rewind spot in the entry strip (TLF-055 review): the gate is nearer than the conduit (by 26.6 px)
 	# and the capsule stays 3.7 px clear of door_entry_west and 1.2 px clear of the walls.
+	if not await walk_to(_player, "concourse -> west hall waypoint", Vector2(280, 168)):
+		return false
 	if not await walk_to(_player, "concourse -> gate Rewind spot", Vector2(298, 198)):
 		return false
 	if not await _use_watch(&"rewind", turnstile, func() -> bool: return not turnstile.passage_blocked, "turnstile opens after Rewind"):
@@ -346,10 +352,16 @@ func _play() -> bool:
 		# The terms and the four commuters by the staff door (CH1-PZ-006 clues), then the validator
 		# with the dials untouched.
 		var terms := _resolve(&"ch01.concourse_west.doc_ticket_terms")
+		if not await walk_to(_player, "concourse -> gate aperture west", Vector2(320, 192)):
+			return false
 		if not await _use_at(Vector2(104, 196), terms, "concourse -> doc_ticket_terms"):
 			return false
 		_assert_true(blocking_ui_open(), "the ticket terms open the document viewer")
 		await dismiss_blocking_ui()
+		if not await walk_to(_player, "concourse -> gate aperture east", Vector2(320, 192)):
+			return false
+		if not await walk_to(_player, "concourse -> east corridor", Vector2(352, 208)):
+			return false
 		for row in [[&"n09_teen", Vector2(432, 336)], [&"n08_father", Vector2(480, 360)],
 				[&"n07_briefcase", Vector2(512, 344)], [&"n06_red_coat", Vector2(544, 328)]]:
 			var id := StringName("ch01.concourse_west." + String(row[0]))

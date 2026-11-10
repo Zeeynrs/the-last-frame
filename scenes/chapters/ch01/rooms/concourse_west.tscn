@@ -568,7 +568,7 @@ z_as_relative = false
 script = ExtResource("art_turnstile_pres")
 
 [node name="conduit_01" type="Area2D" parent="."]
-position = Vector2(144, 160)
+position = Vector2(328, 184)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("cw_conduit")
