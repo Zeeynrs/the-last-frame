@@ -34,6 +34,16 @@ Sol's verdict on `f1545bd` was CHANGES REQUIRED with one P1. The 30×45, 2/1 Eli
   | Board glyphs kept | 234 / 234 | 234 / 234 |
   | Pass cost | +0.07 ms | +0.07 ms |
 
+**Validate of `c49b9c9`:** fresh renamed archive; same capped procedure as below. The log is `validate_capped_c49b9c9.log`, sha256 `8de417d41d2871f962d7dd546fcb541a26d3266556cd04c864ee0bdcc717d953`:
+
+```
+[1/3] import: exit 0, 0 ERROR lines
+[2/3] script check: exit 0, Script check: 189 scripts, 0 failed., 0 ERROR lines, leak check: clean
+=== TOTAL: 64 test files, TESTS: 518 passed, 0 failed, SCRIPT ERROR lines 0, files needing a look: ['test_operator_sighting.gd'] ===
+```
+
+The flagged file is the same pre-existing leak that appears when it runs on its own (see Validate).
+
 **For Sol:** the sheets are the requested proof of "no conspicuous oval during idle/walk/turn" and of the body read at native size and in greyscale. If it still reads as a spotlight or the darker body fails, Sol's fallback is an actor/silhouette receiver (lift only Elias's own visible pixels). That is a pass extension (e.g. a mask from the player sprite), not a bigger ellipse.
 
 ## What was built
