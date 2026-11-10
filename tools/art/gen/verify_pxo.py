@@ -39,7 +39,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--log')
     ap.add_argument('--only', help='substring filter on the .pxo stem (e.g. ch01_ui_)')
+    ap.add_argument('--task', help='exact registry user_data filter (e.g. TLF-081)')
     a = ap.parse_args()
+    task_stems = None
+    if a.task:
+        import registry
+        task_stems = {asset.stem for asset in registry.all_assets() if asset.user_data == a.task}
+        if not task_stems:
+            ap.error('no registered assets for task ' + a.task)
     out = []
     w = out.append
     head = subprocess.run(['git', '-C', REPO, 'rev-parse', 'HEAD'], capture_output=True, text=True).stdout.strip()
@@ -51,6 +58,8 @@ def main():
     for pxo in sorted(glob.glob(os.path.join(REPO, 'assets', 'source', 'ch01', '*.pxo'))):
         stem = os.path.basename(pxo)[:-4]
         if a.only and a.only not in stem:
+            continue
+        if task_stems is not None and stem not in task_stems:
             continue
         with tempfile.TemporaryDirectory() as td:
             tmp = os.path.join(td, stem + '.pxo')

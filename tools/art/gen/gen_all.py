@@ -37,10 +37,13 @@ def main():
     ap.add_argument('--export', action='store_true')
     ap.add_argument('--sheet', action='store_true')
     ap.add_argument('--only', help='substring filter on the asset stem')
+    ap.add_argument('--task', help='exact registry user_data filter (e.g. TLF-081)')
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     for asset in registry.all_assets():
         if a.only and a.only not in asset.stem:
+            continue
+        if a.task and a.task != asset.user_data:
             continue
         path = os.path.join(a.out, asset.stem + '.pxo')
         open(path, 'wb').write(asset.pxo())
@@ -73,6 +76,8 @@ def main():
         tlf077_wall_fixtures.write_mockups()
         import tlf075_side_view
         tlf075_side_view.write_mockups()
+        import tlf081_concourse_wall_art
+        tlf081_concourse_wall_art.write_mockups()
         with open(placement_md.SHEET_PATH, 'w', encoding='utf-8', newline='\n') as fh:
             fh.write(placement_md.SHEET_TEXT)
         print('wrote sheet + mockups (incl. the ability wheel and Step 1 mockups and greyscale proofs)')

@@ -1,0 +1,20 @@
+{
+  "baseline": "43837254dd272c9762e6720240dcf6938aacf472",
+  "scratch": "C:\\Users\\adity\\AppData\\Local\\Temp\\tlf-sol081-mount-recheck-3jsxyq8q",
+  "scratch_config_name": "TLF_Sol081_Mount_Recheck_3jsxyq8q",
+  "custom_user_dir": "TLF_Sol081_Mount_Recheck_3jsxyq8q",
+  "real_save_files_before": 140,
+  "copied_changed_files": [
+    "design/art/ASSET_METADATA.md",
+    "docs/handoffs/TLF-081/acceptance.txt",
+    "docs/handoffs/TLF-081/asset_manifest.json",
+    "docs/handoffs/TLF-081/mount_correction.json",
+    "docs/handoffs/TLF-081/tlf081_modules_1x.png",
+    "docs/handoffs/TLF-081/tlf081_modules_greyscale_1x.png",
+    "docs/handoffs/TLF-081/tlf081_modules_greyscale_x2.png",
+    "docs/handoffs/TLF-081/tlf081_modules_x2.png",
+    "tools/art/gen/tlf081_concourse_wall_art.py",
+    "tools/art/test_tlf081.py"
+  ],
+  "timeout_seconds": 900
+}
