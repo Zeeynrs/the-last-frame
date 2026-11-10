@@ -4,14 +4,13 @@ extends Sprite2D
 ## Visual presenter for ConduitProp (conduit_01, CH1-PZ-001).
 
 @export var tex_fallen: Texture2D = preload("res://assets/props/ch01/ch01_prop_conduit_fallen.png")
-@export var tex_mounted: Texture2D = preload("res://assets/props/ch01/ch01_prop_conduit_mounted.png")
+@export var tex_mounted: Texture2D = preload("res://assets/props/ch01/ch01_prop_conduit_w_mounted.png")
 
 var _target: ConduitProp
 
 
 func _ready() -> void:
 	centered = false
-	offset = Vector2(-24, -26)
 	_target = get_parent() as ConduitProp
 	_refresh()
 
@@ -29,3 +28,9 @@ func _refresh() -> void:
 	var next_tex: Texture2D = tex_mounted if is_mounted else tex_fallen
 	if texture != next_tex:
 		texture = next_tex
+	if is_mounted:
+		position = Vector2(-32, -35)
+		offset = Vector2(0, -23)
+	else:
+		position = Vector2.ZERO
+		offset = Vector2(-24, -26)

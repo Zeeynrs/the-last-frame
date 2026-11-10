@@ -3,15 +3,16 @@ extends Sprite2D
 
 ## Visual presenter for TicketValidator (ticket_validator, CH1-PZ-006).
 
-@export var tex_idle: Texture2D = preload("res://assets/props/ch01/ch01_prop_ticket_validator_idle.png")
-@export var tex_accepted: Texture2D = preload("res://assets/props/ch01/ch01_prop_ticket_validator_accepted.png")
+@export var tex_idle: Texture2D = preload("res://assets/props/ch01/ch01_prop_ticket_validator_n_idle.png")
+@export var tex_accepted: Texture2D = preload("res://assets/props/ch01/ch01_prop_ticket_validator_n_accepted.png")
+@export var tex_rejecting: Texture2D = preload("res://assets/props/ch01/ch01_prop_ticket_validator_n_rejecting.png")
 
 var _target: TicketValidator
 
 
 func _ready() -> void:
 	centered = false
-	offset = Vector2(-12, -30)
+	offset = Vector2(-16, -42)
 	_target = get_parent() as TicketValidator
 	_refresh()
 
