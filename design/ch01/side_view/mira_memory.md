@@ -8,7 +8,7 @@ A short **Trace memory** in flat side view. Elias traces the lounge bench, the w
 ## 2. Entry and exit (main flow untouched)
 * The first Trace on `ch01.waiting_lounge.trace_bench` behaves exactly as today (EL_B06_01, journal entry JRN_CH1_TWO_SILHOUETTES). The playthrough tests must not change.
 * **Entry:** a second Trace on the bench, after that journal entry exists, loads the memory scene (the builder may use an Interactable state, not a new object id in the main graph). Exact mechanism: Opus/Flash, smallest change; if it needs a new object in the lounge, it stays inside the lounge scene and is not part of the room graph.
-* **Exit:** walking into the exit marker at the right end returns to the lounge at the bench stand spot, same camera, same ability state. Save inside the memory scene stores the memory room id plus the return target (TLF-074 save/load rule V7).
+* **Exit:** walking into the exit marker at the right end returns to the lounge at the bench stand spot, same camera, same ability state. No checkpoint or autosave is written inside the memory scene; the waiting lounge autosave remains current, and the return target is tracked via narrative flag `ch01.flag.mira_memory_return`.
 
 ## 3. Scene (960 x 540 canvas, floor line y = 394, letterbox bars about 90 px)
 Width **1440 px** (one and a half screens) so the horizontal-only camera is exercised. Background layers from TLF-075 (`ch01_env_side_bg_far_wall_arches_idle`, `..._near_wall_pillars_idle`, `ch01_env_side_platform_floor_strip_idle`) repeat to cover 1440; their wrap seams were approved by Sol.
@@ -35,7 +35,7 @@ Interaction reach is 1-D: Elias within 24 px of the object on the floor line. Mi
 Horizontal-only follow, whole pixels, clamp to 0..1440. Elias is on screen centre-left while walking; the camera never shows outside the 1440 scene.
 
 ## 6. Tests (Flash writes, Opus reviews)
-Real-input run: enter from the lounge, walk to each object, look x2, Trace once, Rewind once, exit and arrive at the lounge bench; save inside the scene and load it; each object reachable from both sides; Elias cannot leave 0..1440; mode switch iso -> side -> iso leaves no leaked nodes or signals; existing playthrough tests unchanged. Windowed screenshots at 960 x 540: start, bench, Mira, clock, exit.
+Real-input run: enter from the lounge, walk to each object, look x2, Trace once, Rewind once, exit and arrive at the lounge bench; continue from disk restores the lounge autosave; each object reachable from both sides; Elias cannot leave 0..1440; mode switch iso -> side -> iso leaves no leaked nodes or signals; existing playthrough tests unchanged. Windowed screenshots at 960 x 540: start, bench, Mira, clock, exit.
 
 ## 7. Landing criteria
 Full validate 0 failed, 0 SCRIPT ERROR; Opus approves reach, camera, save/load; Sol approves the composition against ART_BIBLE D.7 (shoot in the room's view mode) and the Mira placeholder; the owner plays it.

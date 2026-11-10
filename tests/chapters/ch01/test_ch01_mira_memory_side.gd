@@ -295,37 +295,73 @@ func test_reentry_memory_flow() -> void:
 	var watch: PocketWatch = player.pocket_watch
 	watch.unlocked_abilities = [&"trace", &"rewind", &"freeze", &"echo"]
 
-	# Set up narrative state as having already visited once
+	# Set up narrative state: Beat 06 heard so Trace on bench enters memory
 	ch01.session.narrative_state.set_flag(&"heard.ch01_b06_bench", true)
 	ch01.session.narrative_state.add_journal_entry("JRN_CH1_TWO_SILHOUETTES", "observation")
-	ch01.session.narrative_state.collect_fragment(&"ch01.fragment.mira_departure")
 
 	# Start in waiting lounge
 	router.enter_room(LOUNGE_ROOM, &"", &"ch01.waiting_lounge.safe_anchor_center")
 	await physics_frames(2)
 
-	# Find trace_bench and trace it
-	var trace_bench: Interactable = null
-	for child in router.current_room.get_children():
-		if child is Interactable and child.object_id == &"ch01.waiting_lounge.trace_bench":
-			trace_bench = child
-			break
-	_assert_true(trace_bench != null, "trace_bench found")
-
+	# --- Visit 1: Enter memory room, Rewind cup to bench, exit ---
 	player.global_position = Vector2(320, 160)
 	watch.set_selected_ability(&"trace")
 	await physics_frames(1)
 	await tap(&"watch")
 	await physics_frames(3)
-	_assert_eq(router.current_room_id, MEMORY_ROOM, "entered memory room on re-entry")
+	_assert_eq(router.current_room_id, MEMORY_ROOM, "visit 1: entered memory room")
+
+	# Walk to cup and rewind it onto bench
+	await _walk_to_x(player, 590.0, 350)
+	var cup1: VoiceRecorderCup = router.current_room.get_node("voice_recorder_cup") as VoiceRecorderCup
+	_assert_true(cup1 != null, "cup found in visit 1")
+	_assert_eq(cup1.position, Vector2(600, FLOOR_Y), "cup starts at (600, 394)")
+
+	watch.set_selected_ability(&"rewind")
+	await physics_frames(2)
+	_assert_eq(watch.current_target, cup1, "cup is rewind target")
+	await tap(&"watch")
+	await physics_frames(2)
+	_assert_eq(cup1.position, Vector2(540, 384), "cup rewound to bench top at (540, 384)")
 
 	# Exit back to lounge
-	await _walk_to_x(player, 1360.0, 750)
+	await _walk_to_x(player, 1360.0, 600)
 	press(&"move_right")
 	await until(func() -> bool: return router.current_room_id == LOUNGE_ROOM, 150)
 	release(&"move_right")
 	await physics_frames(2)
-	_assert_eq(router.current_room_id, LOUNGE_ROOM, "returned cleanly to lounge after re-entry")
+	_assert_eq(router.current_room_id, LOUNGE_ROOM, "visit 1: returned cleanly to lounge")
+
+	# --- Visit 2 (Re-entry): Trace bench again, assert cup still on bench & rewind returns no_history ---
+	player.global_position = Vector2(320, 160)
+	watch.set_selected_ability(&"trace")
+	await physics_frames(1)
+	await tap(&"watch")
+	await physics_frames(3)
+	_assert_eq(router.current_room_id, MEMORY_ROOM, "visit 2: re-entered memory room")
+
+	var cup2: VoiceRecorderCup = router.current_room.get_node("voice_recorder_cup") as VoiceRecorderCup
+	_assert_true(cup2 != null, "cup found in visit 2")
+	_assert_eq(cup2.position, Vector2(540, 384), "re-entry: cup remains on bench at (540, 384)")
+
+	# Assert temporal history rewind returns no_history
+	var cup_temporal: TemporalComponent = cup2.get_temporal()
+	_assert_true(cup_temporal != null, "cup temporal component exists")
+	_assert_eq(cup_temporal.rewind(), &"no_history", "re-entry: rewinding cup again returns no_history")
+
+	# Elias near cup cannot target cup for watch
+	await _walk_to_x(player, 540.0, 300)
+	watch.set_selected_ability(&"rewind")
+	await physics_frames(2)
+	_assert_false(watch.current_target == cup2, "re-entry: cup is not targetable for watch")
+
+	# Exit back to lounge
+	await _walk_to_x(player, 1360.0, 600)
+	press(&"move_right")
+	await until(func() -> bool: return router.current_room_id == LOUNGE_ROOM, 150)
+	release(&"move_right")
+	await physics_frames(2)
+	_assert_eq(router.current_room_id, LOUNGE_ROOM, "visit 2: returned cleanly to lounge")
 
 	_cleanup_ch01(ch01)
 	_assert_real_save_unchanged(real_save_before, "test_reentry_memory_flow")
@@ -349,7 +385,7 @@ func test_save_and_continue_from_disk() -> void:
 	# Save in lounge at lounge checkpoint
 	router.enter_room(LOUNGE_ROOM, &"", &"ch01.waiting_lounge.safe_anchor_center")
 	await physics_frames(2)
-	var lounge_snap: Dictionary = router.capture_save("ch01.cp.lounge")
+	var lounge_snap: Dictionary = router.capture_save("ch01.cp.waiting_lounge")
 	var save_res: Error = store.write_slot(0, lounge_snap)
 	_assert_eq(save_res, OK, "manual save to slot 0 ok")
 
@@ -387,23 +423,35 @@ func test_walk_bounds_and_clamping() -> void:
 	router.enter_room(MEMORY_ROOM, &"", &"ch01.side_mira_memory.anchor")
 	await physics_frames(2)
 
-	# Walk hard left past 0
+	var cam: RoomCamera = router.camera as RoomCamera
+	_assert_true(cam != null, "camera exists")
+
+	# Walk hard left past 0, check bounds while holding input
 	press(&"move_left")
-	await physics_frames(60)
+	await physics_frames(70)
+	_assert_true(player.global_position.x >= 16.0, "left walk clamped at x >= 16 (got %.1f)" % player.global_position.x)
+	_assert_eq(player.global_position.x, 16.0, "left walk hits clamp limit exactly at x=16")
+	_assert_eq(player.global_position.y, FLOOR_Y, "y clamped at floor line 394")
+	_assert_eq(cam.global_position.x, 480.0, "camera clamped at left clamp 480 when player is at x=16")
 	release(&"move_left")
 	await physics_frames(2)
 
-	_assert_true(player.global_position.x >= 16.0, "left walk clamped at x >= 16 (got %.1f)" % player.global_position.x)
-	_assert_eq(player.global_position.y, FLOOR_Y, "y clamped at floor line 394")
+	# Disable exit marker trigger so player can walk past 1380 to the true right bound 1424
+	var exit_marker: Area2D = router.current_room.get_node_or_null("exit_marker") as Area2D
+	if exit_marker != null:
+		exit_marker.monitoring = false
 
-	# Walk hard right towards exit limit
+	# Walk hard right towards exit limit, check bounds while holding input
+	player.global_position.x = 1350.0
+	await physics_frames(1)
 	press(&"move_right")
-	await until(func() -> bool: return player.global_position.x >= 1350.0, 500)
+	await physics_frames(60)
+	_assert_true(player.global_position.x <= 1424.0, "right walk clamped at x <= 1424 (got %.1f)" % player.global_position.x)
+	_assert_eq(player.global_position.x, 1424.0, "right walk hits clamp limit exactly at x=1424")
+	_assert_eq(player.global_position.y, FLOOR_Y, "y clamped at floor line 394")
+	_assert_eq(cam.global_position.x, 960.0, "camera clamped at right clamp 960 when player is at x=1424 (bounds 0..1440)")
 	release(&"move_right")
 	await physics_frames(2)
-
-	_assert_true(player.global_position.x <= 1424.0, "right walk clamped at x <= 1424 (got %.1f)" % player.global_position.x)
-	_assert_eq(player.global_position.y, FLOOR_Y, "y clamped at floor line 394")
 
 	_cleanup_ch01(ch01)
 	_assert_real_save_unchanged(real_save_before, "test_walk_bounds_and_clamping")
@@ -460,7 +508,10 @@ func test_mode_switch_leaves_no_leaks() -> void:
 	_advance_dialogue(ch01.get_dialogue_box())
 
 	var router: RoomRouter = ch01.room_router
-	var initial_children := ch01.get_child_count()
+	router.enter_room(LOUNGE_ROOM, &"", &"ch01.waiting_lounge.safe_anchor_center")
+	await physics_frames(2)
+
+	var orphans_before := Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
 
 	# Round trip 3 times between Iso and Side
 	for i in range(3):
@@ -472,7 +523,8 @@ func test_mode_switch_leaves_no_leaks() -> void:
 		await physics_frames(2)
 		_assert_eq(router.current_view_mode(), ViewMode.ISO, "iteration %d: iso mode" % i)
 
-	_assert_eq(ch01.get_child_count(), initial_children, "child count under Chapter01 unchanged after 3 round trips")
+	_assert_eq(Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT), orphans_before,
+		"no orphan nodes leaked after 3 mode-switch round trips")
 
 	_cleanup_ch01(ch01)
 	_assert_real_save_unchanged(real_save_before, "test_mode_switch_leaves_no_leaks")

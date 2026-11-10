@@ -8,8 +8,6 @@ extends Interactable
 
 const FRAGMENT_ID := &"ch01.fragment.mira_departure"
 
-@export var target_marker_offset: Vector2 = Vector2(0, -56)
-
 var _traced_used: bool = false
 
 
