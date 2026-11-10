@@ -171,7 +171,7 @@ All tests executed with a strict 120s timeout in isolated scratch environments w
 | `tests/chapters/ch01/test_ch01_art_integration.gd` | **6 passed, 0 failed** | Collision fingerprint baseline frozen and verified for all 10 rooms (no UTF-8 BOM, clean § symbols). |
 | `tests/chapters/ch01/test_ch01_real_playthrough.gd` | **1 passed, 0 failed** | Complete 10-room real-input chapter playthrough (3862 physics frames, 8 puzzles, 3 abilities). |
 | `tools/content/test_build_room_from_shape.py` | **22 passed, 0 failed** | Python builder round-trip, door cutting, and LF line ending tests. |
-| `tools/validate.ps1` (Full Suite) | **Target 0 failed, 0 SCRIPT ERROR** | Full validation run in fresh scratch archive. |
+| `tools/validate.ps1` (Full Suite) | **514 passed, 0 failed** | Headless import (0 errors), script parse check (clean), full test suite across all subsystems, clean leak check. |
 
 ---
 
