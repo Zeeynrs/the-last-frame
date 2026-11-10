@@ -1,0 +1,150 @@
+extends "res://tests/support/ch01_real_input.gd"
+
+## Opus review probes for TLF-080 (scratch copy only). Real input after setup; PROBE lines are the
+## evidence, the asserts only guard the setup.
+
+const R2 := &"ch01.concourse_west"
+const R1 := &"ch01.arrival_platform"
+
+
+func _init() -> void:
+	timeout_frames = 7000
+
+
+static func tile_px(x: float, y: float) -> Vector2:
+	return Vector2(320 + 16 * (x - y), 64 + 8 * (x + y))
+
+
+static func px_tile(p: Vector2) -> Vector2:
+	var a := (p.x - 320.0) / 16.0
+	var b := (p.y - 64.0) / 8.0
+	return Vector2((a + b) / 2.0, (b - a) / 2.0)
+
+
+func _place(p: Vector2, frames: int = 15) -> void:
+	hold_moves([])
+	if router.current_room_id != R2:
+		router.enter_room(R2, &"door_entry_west")
+		await physics_frames(3)
+	player.global_position = p
+	player.velocity = Vector2.ZERO
+	await physics_frames(frames)
+
+
+## West door from the inside: push into the W wall at tile (−1, y) from (1, y); which y reach the
+## arrival platform? Also a straight walk at the archway from the spawn.
+
+func test_b2_left() -> void:
+	if not await start_at(R2, &"door_entry_west", [&"CH1-SO-01"]):
+		stop()
+		return
+	await physics_frames(15)
+	var trail: Array = []
+	var start := player.global_position
+	var acts: Array[StringName] = [&"move_left"]
+	hold_moves(acts)
+	var hit := -1
+	for i in 180:
+		trail.append(player.global_position)
+		await physics_frames(1)
+		if router.current_room_id != R2:
+			hit = i
+			break
+	hold_moves([])
+	if hit >= 0:
+		print("PROBE B2 left: from %s DOOR at frame %d, last positions %s" % [start, hit, trail.slice(maxi(0, trail.size() - 4))])
+	else:
+		print("PROBE B2 left: from %s stayed 180 frames, end %s, min y %.1f" % [start, player.global_position, trail.map(func(p): return p.y).min()])
+	stop()
+
+func test_b2_left_up() -> void:
+	if not await start_at(R2, &"door_entry_west", [&"CH1-SO-01"]):
+		stop()
+		return
+	await physics_frames(15)
+	var trail: Array = []
+	var start := player.global_position
+	var acts: Array[StringName] = [&"move_left", &"move_up"]
+	hold_moves(acts)
+	var hit := -1
+	for i in 180:
+		trail.append(player.global_position)
+		await physics_frames(1)
+		if router.current_room_id != R2:
+			hit = i
+			break
+	hold_moves([])
+	if hit >= 0:
+		print("PROBE B2 left_up: from %s DOOR at frame %d, last positions %s" % [start, hit, trail.slice(maxi(0, trail.size() - 4))])
+	else:
+		print("PROBE B2 left_up: from %s stayed 180 frames, end %s, min y %.1f" % [start, player.global_position, trail.map(func(p): return p.y).min()])
+	stop()
+
+func test_b2_left_down() -> void:
+	if not await start_at(R2, &"door_entry_west", [&"CH1-SO-01"]):
+		stop()
+		return
+	await physics_frames(15)
+	var trail: Array = []
+	var start := player.global_position
+	var acts: Array[StringName] = [&"move_left", &"move_down"]
+	hold_moves(acts)
+	var hit := -1
+	for i in 180:
+		trail.append(player.global_position)
+		await physics_frames(1)
+		if router.current_room_id != R2:
+			hit = i
+			break
+	hold_moves([])
+	if hit >= 0:
+		print("PROBE B2 left_down: from %s DOOR at frame %d, last positions %s" % [start, hit, trail.slice(maxi(0, trail.size() - 4))])
+	else:
+		print("PROBE B2 left_down: from %s stayed 180 frames, end %s, min y %.1f" % [start, player.global_position, trail.map(func(p): return p.y).min()])
+	stop()
+
+func test_b2_up() -> void:
+	if not await start_at(R2, &"door_entry_west", [&"CH1-SO-01"]):
+		stop()
+		return
+	await physics_frames(15)
+	var trail: Array = []
+	var start := player.global_position
+	var acts: Array[StringName] = [&"move_up"]
+	hold_moves(acts)
+	var hit := -1
+	for i in 180:
+		trail.append(player.global_position)
+		await physics_frames(1)
+		if router.current_room_id != R2:
+			hit = i
+			break
+	hold_moves([])
+	if hit >= 0:
+		print("PROBE B2 up: from %s DOOR at frame %d, last positions %s" % [start, hit, trail.slice(maxi(0, trail.size() - 4))])
+	else:
+		print("PROBE B2 up: from %s stayed 180 frames, end %s, min y %.1f" % [start, player.global_position, trail.map(func(p): return p.y).min()])
+	stop()
+
+func test_b2_down() -> void:
+	if not await start_at(R2, &"door_entry_west", [&"CH1-SO-01"]):
+		stop()
+		return
+	await physics_frames(15)
+	var trail: Array = []
+	var start := player.global_position
+	var acts: Array[StringName] = [&"move_down"]
+	hold_moves(acts)
+	var hit := -1
+	for i in 180:
+		trail.append(player.global_position)
+		await physics_frames(1)
+		if router.current_room_id != R2:
+			hit = i
+			break
+	hold_moves([])
+	if hit >= 0:
+		print("PROBE B2 down: from %s DOOR at frame %d, last positions %s" % [start, hit, trail.slice(maxi(0, trail.size() - 4))])
+	else:
+		print("PROBE B2 down: from %s stayed 180 frames, end %s, min y %.1f" % [start, player.global_position, trail.map(func(p): return p.y).min()])
+	stop()

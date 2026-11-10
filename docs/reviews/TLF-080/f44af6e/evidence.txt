@@ -1,0 +1,76 @@
+== probes (f44af6e scratch copy, 120 s cap each)
+NOTE: probe_ab's test_b ran after a door traversal in the same test and its 'left' result is contaminated by that earlier traversal; probe_b2 repeats every direction from a fresh start_at and is the valid result.
+--- probe_ab
+PROBE A push into W wall at tile y 6.50 (from (232.0, 124.0)): wall, stopped at (0.486415, 7.361978)
+PROBE A push into W wall at tile y 6.75 (from (228.0, 126.0)): wall, stopped at (0.486418, 7.561792)
+PROBE A push into W wall at tile y 7.00 (from (224.0, 128.0)): DOOR, stopped at (0.0, 0.0)
+PROBE A push into W wall at tile y 7.25 (from (220.0, 130.0)): DOOR, stopped at (0.0, 0.0)
+PROBE A push into W wall at tile y 7.50 (from (216.0, 132.0)): DOOR, stopped at (0.0, 0.0)
+PROBE A push into W wall at tile y 7.75 (from (212.0, 134.0)): DOOR, stopped at (0.0, 0.0)
+PROBE A push into W wall at tile y 8.00 (from (208.0, 136.0)): DOOR, stopped at (0.0, 0.0)
+PROBE A push into W wall at tile y 8.25 (from (204.0, 138.0)): DOOR, stopped at (0.0, 0.0)
+PROBE A push into W wall at tile y 8.50 (from (200.0, 140.0)): DOOR, stopped at (0.0, 0.0)
+PROBE A push into W wall at tile y 8.75 (from (196.0, 142.0)): DOOR, stopped at (0.0, 0.0)
+PROBE A push into W wall at tile y 9.00 (from (192.0, 144.0)): DOOR, stopped at (0.0, 0.0)
+PROBE A push into W wall at tile y 9.25 (from (188.0, 146.0)): wall, stopped at (0.486415, 10.11184)
+PROBE A push into W wall at tile y 9.50 (from (184.0, 148.0)): wall, stopped at (0.486411, 10.31173)
+PROBE A door triggered for y in [7.0, 7.25, 7.5, 7.75, 8.0, 8.25, 8.5, 8.75, 9.0]
+PROBE A walk from the spawn at the archway centre (192,128): room ch01.arrival_platform
+PROBE B hold [&"move_left", &"move_up"] for 3 s from (224,144): DOOR TRIGGERED (end (704.0, 320.0))
+PROBE B hold [&"move_left", &"move_down"] for 3 s from (224,144): stayed (end (71.4807, 195.9699))
+PROBE B hold [&"move_up"] for 3 s from (224,144): stayed (end (320.3043, 71.93462))
+PROBE B hold [&"move_left"] for 3 s from (224,144): DOOR TRIGGERED (end (704.0, 320.0))
+PROBE B hold [&"move_down"] for 3 s from (224,144): stayed (end (224.0, 236.2891))
+TESTS: 2 passed, 0 failed
+--- probe_b2
+PROBE B2 down: from (224.0, 144.0) stayed 180 frames, end (224.0, 236.2891), min y 144.0
+PROBE B2 left: from (224.0, 144.0) stayed 180 frames, end (71.46214, 196.0202), min y 144.0
+PROBE B2 left_down: from (224.0, 144.0) stayed 180 frames, end (71.4807, 195.9699), min y 144.0
+PROBE B2 left_up: from (224.0, 144.0) DOOR at frame 15, last positions [(204.3227, 134.1613), (202.5338, 133.2669), (200.745, 132.3725), (199.2867, 132.1392)]
+PROBE B2 up: from (224.0, 144.0) stayed 180 frames, end (320.3043, 71.93497), min y 71.8
+TESTS: 5 passed, 0 failed
+--- probe_c
+PROBE C gate passage_blocked true
+PROBE C closed gate: furthest tile x reached from the west 7.77; crossings []
+PROBE C after SOLVED: passage_blocked false
+PROBE C open gate: passable for start y [7.6, 7.7, 7.8, 7.9, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 9.0, 9.1, 9.2]
+TESTS: 1 passed, 0 failed
+--- probe_d
+PROBE D staff door closed: 10 approaches from inside the room, entered the bay 0 times []
+TESTS: 1 passed, 0 failed
+--- probe_ef
+PROBE E bounds [P: (48.0, 0.0), S: (736.0, 432.0)], view size (960.0, 540.0), room_shape true
+PROBE E arrival: centre (416.0, 216.0) view [P: (-64.0, -54.0), S: (960.0, 540.0)]; room inside view true; player on screen true
+PROBE E gate: centre (416.0, 216.0) view [P: (-64.0, -54.0), S: (960.0, 540.0)]; room inside view true; player on screen true
+PROBE E dials: centre (416.0, 216.0) view [P: (-64.0, -54.0), S: (960.0, 540.0)]; room inside view true; player on screen true
+PROBE E east door: centre (416.0, 216.0) view [P: (-64.0, -54.0), S: (960.0, 540.0)]; room inside view true; player on screen true
+PROBE F Trace from (224.0, 144.0) -> n05_courier (80.0 px); traceable in range: ["n05_courier 80.0"]
+PROBE F Trace from (304.0, 184.0) -> n05_courier (17.9 px); traceable in range: ["turnstile_trace_anchor 26.8", "n05_courier 17.9"]
+PROBE F Trace from (312.0, 188.0) -> turnstile_trace_anchor (17.9 px); traceable in range: ["turnstile_trace_anchor 17.9", "n05_courier 24.3"]
+PROBE F walk (gate closed) to (304.0, 184.0): end (302.7094, 183.3547), distance 1.44
+PROBE F walk (gate closed) to (312.0, 188.0): end (311.3217, 183.9252), distance 4.13
+PROBE F walk (gate closed) to (298.0, 198.0): end (297.3428, 196.6714), distance 1.48
+TESTS: 2 passed, 0 failed
+
+== affected test files (run_tests.gd -- <file>, 120 s cap each)
+test_ch01_concourse_west_v2 | TESTS: 7 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_sort_order | TESTS: 3 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_art_integration | TESTS: 6 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_graph | TESTS: 9 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_dial_readout | TESTS: 3 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_playthrough | TESTS: 19 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_step1_negatives | TESTS: 12 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_real_playthrough | TESTS: 1 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_audio_real_input | TESTS: 2 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+test_ch01_unlock_guards | TESTS: 4 passed, 0 failed | SCRIPT ERROR 0 | ERROR 0
+
+== python -m unittest discover -s tools/content
+Ran 22 tests in 0.481s
+
+OK
+
+== runner argument behaviour
+nonexistent .gd arg:
+  ERROR: Failed to load script res://tests/does_not_exist.gd
+TESTS: 0 passed, 1 failed
+non-.gd user arg: falls back to full discovery (10 files started before the 120 s cap)

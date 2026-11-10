@@ -1,0 +1,54 @@
+extends "res://tests/support/ch01_real_input.gd"
+
+## Opus review probes for TLF-080 (scratch copy only). Real input after setup; PROBE lines are the
+## evidence, the asserts only guard the setup.
+
+const R2 := &"ch01.concourse_west"
+const R1 := &"ch01.arrival_platform"
+
+
+func _init() -> void:
+	timeout_frames = 7000
+
+
+static func tile_px(x: float, y: float) -> Vector2:
+	return Vector2(320 + 16 * (x - y), 64 + 8 * (x + y))
+
+
+static func px_tile(p: Vector2) -> Vector2:
+	var a := (p.x - 320.0) / 16.0
+	var b := (p.y - 64.0) / 8.0
+	return Vector2((a + b) / 2.0, (b - a) / 2.0)
+
+
+func _place(p: Vector2, frames: int = 15) -> void:
+	hold_moves([])
+	if router.current_room_id != R2:
+		router.enter_room(R2, &"door_entry_west")
+		await physics_frames(3)
+	player.global_position = p
+	player.velocity = Vector2.ZERO
+	await physics_frames(frames)
+
+
+## Staff door closed: start on a ring around the door and push at its centre for 2 s.
+func test_d_staff_door_ring() -> void:
+	if not await start_at(R2, &"door_entry_west", [&"CH1-SO-01", &"CH1-PZ-001"], [FLAG_REWIND]):
+		stop()
+		return
+	var door := Vector2(640, 352)
+	var entered: Array = []
+	var tried := 0
+	for r in [34.0, 60.0]:
+		for deg in range(0, 360, 30):
+			var p: Vector2 = door + Vector2(cos(deg_to_rad(deg)), sin(deg_to_rad(deg))) * r
+			var t: Vector2 = px_tile(p)
+			if t.x < 0.3 or t.y < 0.3 or t.x > 27.7 or t.y > 15.7:
+				continue
+			tried += 1
+			await _place(p, 4)
+			await push_for([door, door + Vector2(12, 6)], 100, in_room(&"ch01.maintenance_bay"))
+			if router.current_room_id != R2:
+				entered.append([r, deg, p])
+	print("PROBE D staff door closed: %d approaches from inside the room, entered the bay %d times %s" % [tried, entered.size(), entered])
+	stop()
