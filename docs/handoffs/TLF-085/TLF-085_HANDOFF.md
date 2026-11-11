@@ -40,7 +40,7 @@ This handoff delivers the revised Maintenance Bay v2 room (`scenes/chapters/ch01
 8. **Placement Table Corrected:**
    - Fully regenerated placement table directly from scene nodes, correcting all 10 discrepancies identified in Opus section 2.6.
 9. **Visual Screenshots:**
-   - Captured 7 Forward+ windowed 960×540 screenshots using native D3D12 / Forward+ renderer on NVIDIA GeForce RTX 5060, including dedicated shots of Elias at the gear stand spot $(496, 184)$ and in the pocket at `safe_anchor_east` $(544, 240)$.
+   - Captured 6 Forward+ windowed 960×540 screenshots using native D3D12 / Forward+ renderer on NVIDIA GeForce RTX 5060, including dedicated shots of Elias at the gear stand spot $(496, 184)$ and in the pocket at `safe_anchor_east` $(544, 240)$.
 
 ---
 
@@ -201,7 +201,7 @@ All tests executed with a strict 120s timeout in isolated scratch environments w
 
 ## 9. Visual Evidence Screenshots
 
-Seven Forward+ windowed screenshots (960×540) captured from the live game engine via `tools/capture_maintenance_bay.gd` using native D3D12 / Forward+ renderer on NVIDIA GeForce RTX 5060:
+Six Forward+ windowed screenshots (960×540) captured from the live game engine via `tools/capture_maintenance_bay.gd` using native D3D12 / Forward+ renderer on NVIDIA GeForce RTX 5060:
 
 1. **Arrival Platform Entry View:**  
    `docs/handoffs/TLF-085/arrival_960x540.png`  
@@ -215,13 +215,10 @@ Seven Forward+ windowed screenshots (960×540) captured from the live game engin
 4. **Gear Stand Spot View:**  
    `docs/handoffs/TLF-085/gear_stand_spot_960x540.png`  
    *Shows Elias standing at the canonical gear interaction spot $(496, 184)$, clearly visible without being obscured by the shutter.*
-5. **Pocket Airlock View:**  
-   `docs/handoffs/TLF-085/pocket_960x540.png`  
-   *Shows Elias standing in the 3-tile airlock pocket between fire shutter $(512, 224)$ and inner shutter $(560, 248)$ with W-face shutters cleanly standing along divider lines.*
-6. **Pocket Safe Anchor East View:**  
+5. **Pocket Safe Anchor East View:**  
    `docs/handoffs/TLF-085/pocket_safe_anchor_east_960x540.png`  
    *Shows Elias at `safe_anchor_east` $(544, 240)$, fully visible and unobstructed inside the pocket airlock (resolving Fable P1-b).*
-7. **East Doorway & Exit Hall View:**  
+6. **East Doorway & Exit Hall View:**  
    `docs/handoffs/TLF-085/east_door_960x540.png`  
    *Shows the eastern exit hall past the inner shutter, `doc_inner_shutter_plate` on North wall, and doorway `door_exit_east` at $(672, 304)$ with spawn at $(640, 288)$.*
 
