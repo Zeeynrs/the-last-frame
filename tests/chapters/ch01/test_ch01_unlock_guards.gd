@@ -117,7 +117,7 @@ func test_load_in_bay_before_the_technician_keeps_freeze_locked() -> void:
 	var refused := [0]
 	var seen := await _try_every_selection(refused)
 	_assert_false(seen.has(&"freeze") or seen.has(&"echo"), "R3 after the load: Freeze and Echo never selectable (%s)" % [seen])
-	if not await walk_to(player, "bay -> technician spot", Vector2(288, 112)):
+	if not await walk_to(player, "bay -> technician spot", Vector2(352, 128)):
 		stop()
 		return
 	var tech := resolve(&"ch01.maintenance_bay.n11_hatch_tech")
