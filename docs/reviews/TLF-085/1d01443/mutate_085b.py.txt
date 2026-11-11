@@ -1,0 +1,78 @@
+"""Opus TLF-085 round 2 re-review (1d01443): my own mutations in the scratch copy (not Flash's in-suite
+ones). Each mutation edits one file, runs the named test files (one Godot call each, hard 120 s cap)
+and restores the file byte for byte. Usage: python mutate_085b.py <copy dir> [name prefixes...]"""
+import re, subprocess, sys, pathlib
+
+COPY = pathlib.Path(sys.argv[1])
+GODOT = r"D:\Godot\Godot_v4.7.2-stable_win64_console.exe"
+SCENE = "scenes/chapters/ch01/rooms/maintenance_bay.tscn"
+ROUTER = "scripts/rooms/room_router.gd"
+BAY = "res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd"
+
+
+def disable(node_header):
+    return (node_header, node_header + "\ndisabled = true")
+
+
+def block(name, pos):
+    anchor = '[node name="TileMapLayer_Floor"'
+    return (anchor, '[node name="%s" type="StaticBody2D" parent="."]\nposition = Vector2%s\n\n'
+            '[node name="CollisionShape2D" type="CollisionShape2D" parent="%s"]\nshape = SubResource("CircleShape2D_door")\n\n%s'
+            % (name, pos, name, anchor))
+
+
+MUTATIONS = [
+    ("MV1 bulkhead north segment disabled", SCENE, *disable('[node name="CollisionShape2D_1" type="CollisionShape2D" parent="Bulkhead"]'), [BAY]),
+    ("MV2 bulkhead south segment disabled", SCENE, *disable('[node name="CollisionShape2D_2" type="CollisionShape2D" parent="Bulkhead"]'), [BAY]),
+    ("MV3 shutter divider north disabled", SCENE, *disable('[node name="DividerNorth" type="CollisionShape2D" parent="ShutterDividers"]'), [BAY]),
+    ("MV4 shutter divider south disabled", SCENE, *disable('[node name="DividerSouth" type="CollisionShape2D" parent="ShutterDividers"]'), [BAY]),
+    ("MV5 inner divider north disabled", SCENE, *disable('[node name="CollisionShape2D_1" type="CollisionShape2D" parent="InnerDivider"]'), [BAY]),
+    ("MV6 inner divider south disabled", SCENE, *disable('[node name="CollisionShape2D_2" type="CollisionShape2D" parent="InnerDivider"]'), [BAY]),
+    ("MD1 west door trigger radius 6 -> 40", SCENE, '[sub_resource type="CircleShape2D" id="CircleShape2D_door_entry"]\nradius = 6.0',
+     '[sub_resource type="CircleShape2D" id="CircleShape2D_door_entry"]\nradius = 40.0', [BAY]),
+    ("MD2 arrival Spawn 1 tile from the door", SCENE, '[node name="Spawn" type="Marker2D" parent="door_entry_west"]\nposition = Vector2(32, 16)',
+     '[node name="Spawn" type="Marker2D" parent="door_entry_west"]\nposition = Vector2(16, 8)', [BAY]),
+    ("MC3 room bounds ignore metadata/room_shape", ROUTER, "\tif shape != null and shape.is_valid():\n\t\treturn shape.bounds_px()\n",
+     "\tif false and shape != null and shape.is_valid():\n\t\treturn shape.bounds_px()\n", [BAY]),
+    ("MK1 checkpoint spawn anchor removed", SCENE, 'spawn_anchor_id = &"ch01.maintenance_bay.safe_anchor_entry"\n', "", [BAY]),
+    ("MK2 checkpoint back on the arrival spawn (2,5)", SCENE,
+     '[node name="checkpoint" type="Area2D" parent="."]\nposition = Vector2(320, 144)',
+     '[node name="checkpoint" type="Area2D" parent="."]\nposition = Vector2(272, 120)', [BAY]),
+    ("MR1 counterweight gear drifts +16 px (cluster)", SCENE,
+     '[node name="counterweight_gear" type="Area2D" parent="."]\nposition = Vector2(512, 176)',
+     '[node name="counterweight_gear" type="Area2D" parent="."]\nposition = Vector2(528, 176)', [BAY]),
+    ("MS1 casting spot (480,208) blocked by a 10 px post", SCENE, *block("MutBlockCast", "(480, 208)"), [BAY]),
+    ("MS2 pocket spot (544,240) blocked by a 10 px post", SCENE, *block("MutBlockPocket", "(544, 240)"), [BAY]),
+]
+
+
+def run(test):
+    try:
+        out = subprocess.run([GODOT, "--headless", "--path", str(COPY), "-s", "res://tests/run_tests.gd", "--", test],
+                             capture_output=True, text=True, timeout=120, encoding="utf-8", errors="replace")
+        text = out.stdout + out.stderr
+    except subprocess.TimeoutExpired:
+        return "TIMEOUT (120 s cap)", []
+    m = re.search(r"TESTS: (\d+) passed, (\d+) failed", text)
+    fails = [l.strip()[:220] for l in text.splitlines() if l.strip().startswith("FAIL")]
+    return (m.group(0) if m else "no summary") + ", SCRIPT ERROR lines %d" % text.count("SCRIPT ERROR"), fails
+
+
+only = sys.argv[2:]
+for name, rel, a, b, tests in MUTATIONS:
+    if only and not any(name.startswith(o) for o in only):
+        continue
+    path = COPY / rel
+    orig = path.read_bytes()
+    text = orig.decode("utf-8")
+    assert text.count(a) == 1, (name, text.count(a))
+    path.write_bytes(text.replace(a, b, 1).encode("utf-8"))
+    try:
+        results = [(t,) + run(t) for t in tests]
+    finally:
+        path.write_bytes(orig)
+    print("MUTATION", name, flush=True)
+    for t, summary, fails in results:
+        print("  %s: %s" % (t.rsplit("/", 1)[1], summary), flush=True)
+        for f in fails[:8]:
+            print("    " + f, flush=True)

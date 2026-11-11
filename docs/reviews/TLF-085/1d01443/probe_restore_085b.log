@@ -1,0 +1,8 @@
+PROBE R round 0: restored at (337.7888, 136.8944), velocity (0.0, 0.0), held moves []; drift from the restore point: f1 0.00, f5 0.00, f10 0.00, f30 0.00, f60 0.00, f120 0.00, f179 0.00
+PROBE R round 0: dialogue active true
+PROBE R round 1: restored at (336.0, 136.0), velocity (0.0, 0.0), held moves []; drift from the restore point: f1 0.00, f5 0.00, f10 0.00, f30 0.00, f60 0.00, f120 0.00, f179 0.00
+PROBE R round 1: dialogue active false
+PROBE R round 2: restored at (336.0, 136.0), velocity (0.0, 0.0), held moves []; drift from the restore point: f1 0.00, f5 0.00, f10 0.00, f30 0.00, f60 0.00, f120 0.00, f179 0.00
+PROBE R round 2: dialogue active false
+  PASS: test_drift_after_continue
+TESTS: 1 passed, 0 failed

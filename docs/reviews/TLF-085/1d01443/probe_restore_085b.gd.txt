@@ -1,0 +1,34 @@
+extends "res://tests/support/ch01_real_input.gd"
+
+## Opus TLF-085 r2 re-review probe (scratch only): after the checkpoint save at (320,144) and Continue,
+## does Elias drift with no input held (the intermittent "aiming the wheel does not walk the player")?
+
+const R3 := &"ch01.maintenance_bay"
+
+
+func _init() -> void:
+	timeout_frames = 6000
+
+
+func test_drift_after_continue() -> void:
+	if not await start_at(R3, &"door_entry_west", [&"CH1-SO-01", &"CH1-PZ-001", &"CH1-PZ-006"], [FLAG_REWIND]):
+		stop()
+		return
+	if not await save_at_checkpoint(&"ch01.cp.maintenance_bay", Vector2(320, 144), Vector2(272, 120)):
+		stop()
+		return
+	for round in 3:
+		if not await continue_from_autosave():
+			stop()
+			return
+		var p0 := player.global_position
+		var marks: Array[String] = []
+		for f in 180:
+			await physics_frames(1)
+			if f in [1, 5, 10, 30, 60, 120, 179]:
+				marks.append("f%d %.2f" % [f, player.global_position.distance_to(p0)])
+		print("PROBE R round %d: restored at %s, velocity %s, held moves %s; drift from the restore point: %s" % [round, p0,
+			player.velocity, _held_moves, ", ".join(marks)])
+		var diag = ch01.get_dialogue_box()
+		print("PROBE R round %d: dialogue active %s" % [round, diag.is_active])
+	stop()

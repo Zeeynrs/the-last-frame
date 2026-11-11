@@ -1,0 +1,16 @@
+tests/chapters/ch01/test_ch01_step1_negatives.gd           exit 0  TESTS: 12 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 106 s
+tests/chapters/ch01/test_ch01_pz002_negative.gd            exit 0  TESTS: 2 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 38 s
+tests/chapters/ch01/test_ch01_unlock_guards.gd             exit 1  TESTS: 3 passed, 1 failed | SCRIPT ERROR 0 | leak lines 0 | 33 s
+    FAIL: [res://tests/chapters/ch01/test_ch01_unlock_guards.gd::test_load_in_bay_before_the_technician_keeps_freeze_locked] aiming the wheel does not walk the player
+tests/chapters/ch01/test_ch01_real_playthrough.gd          exit 0  TESTS: 1 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 66 s
+tests/chapters/ch01/test_ch01_playthrough.gd               exit 0  TESTS: 19 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 14 s
+tests/chapters/ch01/test_ch01_sort_order.gd                exit 0  TESTS: 3 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 5 s
+tests/chapters/ch01/test_ch01_art_integration.gd           exit 0  TESTS: 6 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 2 s
+tests/rooms/test_room_shape.gd                             exit 0  TESTS: 7 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 9 s
+tests/spatial/test_ch01_graph.gd                           exit 0  TESTS: 9 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 1 s
+tests/chapters/ch01/test_ch01_concourse_west_v2.gd         exit 0  TESTS: 12 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 55 s
+tests/audio/test_audio_real_input.gd                       exit 0  TESTS: 2 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 4 s
+tests/rendering/test_shadows.gd                            exit 0  TESTS: 14 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 3 s
+tests/rendering/test_lighting_pass.gd                      exit 0  TESTS: 15 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 2 s
+re-run (same copy, alone): tests/chapters/ch01/test_ch01_unlock_guards.gd exit 0  TESTS: 4 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 32 s
+with ArchwayEast moved to (672,304) in scratch: tests/chapters/ch01/test_ch01_sort_order.gd TESTS: 3 passed, 0 failed; tests/chapters/ch01/test_ch01_art_integration.gd TESTS: 6 passed, 0 failed (scene then restored byte-identical)

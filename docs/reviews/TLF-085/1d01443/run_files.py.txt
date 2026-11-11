@@ -1,0 +1,19 @@
+"""Runs each named test file in its own Godot call (hard 120 s cap) in the r085b scratch copy."""
+import re, subprocess, sys, time, pathlib
+
+COPY = pathlib.Path(sys.argv[1])
+GODOT = r"D:\Godot\Godot_v4.7.2-stable_win64_console.exe"
+for test in sys.argv[2:]:
+    t0 = time.time()
+    try:
+        r = subprocess.run([GODOT, "--headless", "--path", str(COPY), "-s", "res://tests/run_tests.gd", "--", test],
+                           capture_output=True, text=True, timeout=120, encoding="utf-8", errors="replace")
+        text, code = r.stdout + r.stderr, r.returncode
+    except subprocess.TimeoutExpired:
+        text, code = "TIMEOUT", -1
+    m = re.search(r"TESTS: (\d+) passed, (\d+) failed", text)
+    leaks = len(re.findall(r"leaked at exit|still in use at exit", text))
+    print("%-58s exit %s  %s | SCRIPT ERROR %d | leak lines %d | %.0f s" % (test.replace("res://", ""), code,
+          m.group(0) if m else "no summary", text.count("SCRIPT ERROR"), leaks, time.time() - t0), flush=True)
+    for l in [x for x in text.splitlines() if x.strip().startswith("FAIL")][:6]:
+        print("    " + l.strip()[:200], flush=True)

@@ -1,0 +1,46 @@
+PROBE A y=3.00 -> stayed, stopped at tile (0.49, 3.98)
+PROBE A y=3.25 -> stayed, stopped at tile (0.49, 4.23)
+PROBE A y=3.50 -> stayed, stopped at tile (0.49, 4.48)
+PROBE A y=3.75 -> door triggered after 26 ticks
+PROBE A y=4.00 -> door triggered after 23 ticks
+PROBE A y=4.25 -> door triggered after 19 ticks
+PROBE A y=4.50 -> door triggered after 15 ticks
+PROBE A y=4.75 -> door triggered after 12 ticks
+PROBE A y=5.00 -> door triggered after 9 ticks
+PROBE A y=5.25 -> door triggered after 7 ticks
+PROBE A y=5.50 -> door triggered after 6 ticks
+PROBE A y=5.75 -> door triggered after 6 ticks
+PROBE A y=6.00 -> door triggered after 8 ticks
+PROBE A y=6.25 -> stayed, stopped at tile (0.49, 7.23)
+PROBE A y=6.50 -> stayed, stopped at tile (0.49, 7.48)
+PROBE A y=6.75 -> stayed, stopped at tile (0.49, 7.73)
+PROBE A y=7.00 -> stayed, stopped at tile (0.49, 7.98)
+PROBE A door triggers for start y in [3.75, 4.0, 4.25, 4.5, 4.75, 5.0, 5.25, 5.5, 5.75, 6.0] (aperture ~2.50 tiles)
+PROBE A arrival spawn (199.0932, 132.2355) tile (0.486379, 8.043054)
+  PASS: test_a_west_door_aperture_from_inside
+PROBE B hold [&"move_left"] from (272.0, 120.0): stayed, end tile (0.484456, 16.01807)
+PROBE B hold [&"move_up"] from (270.0, 120.0): stayed, end tile (0.505422, 0.486402)
+PROBE B hold [&"move_down"] from (272.0, 118.0): stayed, end tile (6.768066, 9.768066)
+PROBE B hold [&"move_left", &"move_down"] from (272.0, 122.0): stayed, end tile (0.481893, 16.01435)
+PROBE B hold [&"move_left", &"move_up"] from (270.2112, 120.8944): door after 14 ticks, end tile (26.0, 8.0)
+  PASS: test_b_holds_from_arrival
+PROBE C SO-02 technician trace (288,112)+H            spot (352.0, 144.0) from (272.0, 120.0): reached 2.00 px; trace target n11_hatch_tech (16.2 px) OK
+PROBE C SO-02 chart use (224,128)+H                   spot (288.0, 160.0) from (272.0, 120.0): reached 2.05 px; use target doc_hatch_chart (17.0 px) OK
+PROBE C SO-02 plate Freeze (256,128)+H                spot (320.0, 160.0) from (272.0, 120.0): reached 2.44 px; freeze target hatch_01 (64.3 px) OK
+PROBE C SO-02 bell decoy (208,136)+H: no Freeze       spot (272.0, 168.0) from (272.0, 120.0): reached 2.00 px; freeze target none (-1.0 px) OK
+PROBE C PZ-002 casting spot Rewind (352,144)+BC       spot (480.0, 208.0) from (432.0, 216.0): reached 2.10 px; rewind target fire_shutter (33.9 px) OK
+PROBE C PZ-002 casting spot Freeze                    spot (480.0, 208.0) from (432.0, 216.0): reached 2.10 px; freeze target counterweight_gear (43.8 px) OK
+PROBE C PZ-002 casting spot Trace                     spot (480.0, 208.0) from (432.0, 216.0): reached 2.10 px; trace target gear_residue (27.7 px) OK
+PROBE C PZ-002 R03 Rewind spot (340,128)+BC           spot (468.0, 192.0) from (432.0, 216.0): reached 1.75 px; rewind target fire_shutter (53.6 px) OK
+PROBE C PZ-002 (400,168)+BC Rewind (pocket side)      spot (528.0, 232.0) from (504.0, 252.0): reached 9.10 px; rewind target fire_shutter (19.8 px) <-- CHECK
+PROBE C reset_anchor_01 use (272,152)+BC              spot (400.0, 216.0) from (464.0, 200.0): reached 2.20 px; use target reset_anchor_01 (19.9 px) OK
+PROBE C pocket (416,176)+BC Rewind, anchor (17.5,6) 42 px spot (544.0, 240.0) from (504.0, 252.0): reached 1.10 px; rewind target inner_shutter (16.9 px) OK
+PROBE C pocket Freeze, anchor (17.5,6)                spot (544.0, 240.0) from (504.0, 252.0): reached 1.10 px; freeze target counterweight_gear (72.1 px) OK
+PROBE C checkpoint (5,5) from the arrival             spot (320.0, 144.0) from (272.0, 120.0): reached 2.33 px; use target hatch_residue (15.1 px) <-- CHECK
+PROBE C plaque use (464,168)+BC from the pocket       spot (592.0, 232.0) from (544.0, 240.0): reached 3.89 px; use target doc_inner_shutter_plate (16.3 px) <-- CHECK
+  PASS: test_c_spec_stand_spots
+PROBE D bay -> east door: room ch01.security_crossing after 32 ticks; player (241.7888, 120.8944), security door_entry_west/Spawn (240.0, 120.0)
+PROBE D security -> west door: room ch01.maintenance_bay after 4 ticks; player (638.2111, 287.1056) (bay door_exit_east/Spawn (640,288))
+PROBE D walked west from the east spawn: room ch01.maintenance_bay, player (561.2893, 248.6448)
+  PASS: test_d_east_door_round_trip
+TESTS: 4 passed, 0 failed

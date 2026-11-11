@@ -1,0 +1,100 @@
+MUTATION MV1 bulkhead north segment disabled
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=0.8: player stopped at tile_x=7.88 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=1.6: player stopped at tile_x=8.21 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=2.4: player stopped at tile_x=7.88 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=3.2: player stopped at tile_x=7.86 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] maximum x reached during bulkhead sweep is 8.21 < 7.0
+MUTATION MV2 bulkhead south segment disabled
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=4.8: player stopped at tile_x=8.11 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=5.6: player stopped at tile_x=7.99 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=6.4: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=7.2: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=8.0: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=8.8: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=9.6: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=10.4: player stopped at tile_x=8.02 <= 7.2
+MUTATION MV3 shutter divider north disabled
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=0.8: player stopped at tile_x=16.88 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=1.6: player stopped at tile_x=17.21 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=2.4: player stopped at tile_x=16.99 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=3.2: player stopped at tile_x=17.08 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] maximum x reached during shutter sweep is 17.21 < 16.0
+MUTATION MV4 shutter divider south disabled
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=5.6: player stopped at tile_x=17.11 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=6.4: player stopped at tile_x=16.99 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=7.2: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=8.0: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=8.8: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=9.6: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=10.4: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=11.2: player stopped at tile_x=17.02 <= 16.2
+MUTATION MV5 inner divider north disabled
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=0.8: player stopped at tile_x=19.88 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=1.6: player stopped at tile_x=20.21 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=2.4: player stopped at tile_x=19.99 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=3.2: player stopped at tile_x=20.08 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=4.0: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=4.8: player stopped at tile_x=19.99 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] maximum x reached during inner divider sweep is 20.21 < 19.0
+MUTATION MV6 inner divider south disabled
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=5.6: player stopped at tile_x=20.11 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=6.4: player stopped at tile_x=19.99 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=7.2: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=8.0: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=8.8: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=9.6: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=10.4: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=11.2: player stopped at tile_x=20.02 <= 19.2
+MUTATION MD1 west door trigger radius 6 -> 40
+  test_ch01_maintenance_bay_v2.gd: TESTS: 12 passed, 3 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_checkpoint_saveload_restores_player_and_camera] continue restored maintenance_bay (Expected ch01.maintenance_bay, got ch01.concourse_west)
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_checkpoint_saveload_restores_player_and_camera] player restored to safe anchor entry (336.0, 136.0) (got (513.7889, 176.8944))
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] holding up for 3s never leaves maintenance_bay (Expected ch01.maintenance_bay, got ch01.concourse_
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] holding down for 3s never leaves maintenance_bay (Expected ch01.maintenance_bay, got ch01.concours
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_every_stand_spot_reachable_within_2_6_px] spot SO-02 chart use (224,128)+H current_target is ch01.maintenance_bay.doc_hatch_chart (Expected <null>, g
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_every_stand_spot_reachable_within_2_6_px] spot SO-02 plate Freeze (256,128)+H watch target is ch01.maintenance_bay.hatch_01 (Expected <null>, got tur
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_every_stand_spot_reachable_within_2_6_px] spot PZ-002 casting spot Rewind watch target is ch01.maintenance_bay.fire_shutter (Expected <null>, got dia
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_every_stand_spot_reachable_within_2_6_px] spot PZ-002 casting spot Freeze watch target is ch01.maintenance_bay.counterweight_gear (Expected <null>, g
+MUTATION MD2 arrival Spawn 1 tile from the door
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] player spawned at arrival (272, 120) (Expected (272.0, 120.0), got (256.0, 112.0))
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] holding left for 3s never leaves maintenance_bay (Expected ch01.maintenance_bay, got ch01.concours
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] player moved left against west boundary
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] holding up for 3s never leaves maintenance_bay (Expected ch01.maintenance_bay, got ch01.concourse_
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] holding down for 3s never leaves maintenance_bay (Expected ch01.maintenance_bay, got ch01.concours
+MUTATION MC3 room bounds ignore metadata/room_shape
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_camera_view_bounds_clamped] explicit maintenance_bay v2 room bounds Rect2(48, 0, 704, 416) (Expected [P: (48.0, 0.0), S: (704.0, 416.0)], got [P: (0.
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_camera_view_bounds_clamped] explicit maintenance_bay v2 room bounds center (400, 208) (Expected (400.0, 208.0), got (320.0, 180.0))
+MUTATION MK1 checkpoint spawn anchor removed
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_checkpoint_saveload_restores_player_and_camera] player restored to safe anchor entry (336.0, 136.0) (got (320.0, 144.0))
+MUTATION MK2 checkpoint back on the arrival spawn (2,5)
+  test_ch01_maintenance_bay_v2.gd: TESTS: 13 passed, 2 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_checkpoint_saveload_restores_player_and_camera] save: into the checkpoint: reached (320.0, 144.0) but the stop condition did not hold in ch01.mainten
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_checkpoint_saveload_restores_player_and_camera] autosave written at ch01.cp.maintenance_bay
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_rigid_cluster_shifts_and_relative_distances] Cluster H node checkpoint moved exactly (+64, +32) (Expected (320.0, 144.0), got (272.0, 120.0))
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_rigid_cluster_shifts_and_relative_distances] Cluster H shift invariant for checkpoint (Expected (64.0, 32.0), got (16.0, 8.0))
+MUTATION MR1 counterweight gear drifts +16 px (cluster)
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_rigid_cluster_shifts_and_relative_distances] Cluster BC node counterweight_gear moved exactly (+128, +64) (Expected (512.0, 176.0), got (528.0, 176.0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_rigid_cluster_shifts_and_relative_distances] Cluster BC shift invariant for counterweight_gear (Expected (128.0, 64.0), got (144.0, 64.0))
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_rigid_cluster_shifts_and_relative_distances] internal distance between counterweight_gear and fire_shutter strictly invariant (Expected 48.0, got 50.
+MUTATION MS1 casting spot (480,208) blocked by a 10 px post
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_every_stand_spot_reachable_within_2_6_px] spot PZ-002 casting spot Rewind distance 18.13 px <= 2.60 px
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_every_stand_spot_reachable_within_2_6_px] spot PZ-002 casting spot Freeze distance 18.13 px <= 2.60 px
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_every_stand_spot_reachable_within_2_6_px] spot PZ-002 casting spot Trace distance 18.13 px <= 2.60 px
+MUTATION MS2 pocket spot (544,240) blocked by a 10 px post
+  test_ch01_maintenance_bay_v2.gd: TESTS: 13 passed, 2 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_every_stand_spot_reachable_within_2_6_px] spot pocket Rewind distance 16.75 px <= 2.60 px
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_every_stand_spot_reachable_within_2_6_px] spot pocket Freeze distance 16.75 px <= 2.60 px
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_real_input_so02_and_pz002_lifecycle] walk to safe_anchor_east: player blocked at (526.3629, 240.6216) while walking to (544.0, 240.0) in ch01.mainten
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_real_input_so02_and_pz002_lifecycle] reached safe_anchor_east
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_real_input_so02_and_pz002_lifecycle] rewind auto-targets inner_shutter (Expected inner_shutter:<Area2D#661827619746>, got fire_shutter:<Area2D#660116

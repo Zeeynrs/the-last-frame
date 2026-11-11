@@ -1,0 +1,16 @@
+  PASS: test_bulkhead_sweep_mutation_fails_when_shape1_disabled
+  PASS: test_bulkhead_sweep_mutation_fails_when_shape2_disabled
+  PASS: test_camera_view_bounds_clamped
+  PASS: test_checkpoint_saveload_restores_player_and_camera
+  PASS: test_divider_sweep_bulkhead_never_passes_x_7_2
+  PASS: test_divider_sweep_fire_shutter_never_passes_x_16_2
+  PASS: test_divider_sweep_inner_divider_never_passes_x_19_2
+  PASS: test_door_sweep_arrival_never_triggers_door_entry_west
+  PASS: test_every_stand_spot_reachable_within_2_6_px
+  PASS: test_inner_sweep_mutation_fails_when_shape1_disabled
+  PASS: test_inner_sweep_mutation_fails_when_shape2_disabled
+  PASS: test_real_input_so02_and_pz002_lifecycle
+  PASS: test_rigid_cluster_shifts_and_relative_distances
+  PASS: test_shutter_sweep_mutation_fails_when_divider_north_disabled
+  PASS: test_shutter_sweep_mutation_fails_when_divider_south_disabled
+TESTS: 15 passed, 0 failed
