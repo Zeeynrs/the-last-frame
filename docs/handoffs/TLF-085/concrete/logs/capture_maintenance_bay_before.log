@@ -1,0 +1,19 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+CAPTURED maintenance_bay_before_unlit (lighting off, setting false)
+BOX fire_shutter/Presenter: (576, 230, 32, 64)
+PROP before fire_shutter/Presenter: base 41 px grey 36.3 vs floor 189 px grey 47.8 (contrast -11.5); base->floor below: mean RGB distance 83.0, same colour 7 of 41
+BOX hatch_01/Presenter: (448, 150, 32, 64)
+PROP before hatch_01/Presenter: base 41 px grey 35.3 vs floor 189 px grey 51.3 (contrast -16.0); base->floor below: mean RGB distance 60.9, same colour 4 of 41
+BOX n11_hatch_tech/Presenter: (440, 162, 16, 40)
+PROP before n11_hatch_tech/Presenter: base 72 px grey 50.2 vs floor 221 px grey 71.0 (contrast -20.8); base->floor below: mean RGB distance 46.3, same colour 35 of 72
+BOX inner_shutter/Presenter: (624, 254, 32, 64)
+PROP before inner_shutter/Presenter: base 41 px grey 36.3 vs floor 189 px grey 51.6 (contrast -15.3); base->floor below: mean RGB distance 60.7, same colour 4 of 41
+BOX counterweight_gear/Presenter: (560, 182, 64, 64)
+PROP before counterweight_gear/Presenter: base 88 px grey 44.7 vs floor 255 px grey 59.3 (contrast -14.7); base->floor below: mean RGB distance 60.6, same colour 32 of 88
+BOX reset_anchor_01/ConsoleSprite: (480, 240, 32, 36)
+PROP before reset_anchor_01/ConsoleSprite: base 102 px grey 34.0 vs floor 280 px grey 51.6 (contrast -17.6); base->floor below: mean RGB distance 21.4, same colour 56 of 102
+TLF-085 CONCRETE DONE ch01.maintenance_bay before
+
+--- stderr ---

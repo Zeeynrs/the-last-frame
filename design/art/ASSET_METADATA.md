@@ -294,7 +294,7 @@ Common to all entries: **License / Attribution:** original production art by the
 ### `ch01.env.tile.concrete_service`
 - **Filename:** `ch01_env_tile_concrete_service_idle.pxo` / `ch01_env_tile_concrete_service_idle.png` · **Category / use:** Environment (Floor Tile) · Rooms 3, 4, 6
 - **Pixel dimensions:** `32 × 16 px` (`1.0×`) · **Pivot / sorting:** `(16, 8)` · `TileMapLayer_Floor` (`z_index = 0`)
-- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `11,12,13`
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `01,03,04` (floor ramp; was steel `11,12,13` until TLF-085, Lead 2026-11-12: ADR-027 floor receivers are 00-05)
 - **Source / export:** `assets/source/ch01/ch01_env_tile_concrete_service_idle.pxo` → `assets/environments/ch01/ch01_env_tile_concrete_service_idle.png`
 
 ### `ch01.env.tile.cable_conduit_off`

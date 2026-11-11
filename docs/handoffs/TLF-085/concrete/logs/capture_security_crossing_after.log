@@ -1,0 +1,39 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+CAPTURED security_crossing_after_unlit (lighting off, setting false)
+BOX security_gate_01/Presenter: (556, 224, 40, 52)
+PROP after security_gate_01/Presenter: base 41 px grey 29.8 vs floor 180 px grey 62.9 (contrast -33.1); base->floor below: mean RGB distance 81.7, same colour 7 of 41
+BOX bridge_platform_01/Presenter: (504, 264, 48, 32)
+PROP after bridge_platform_01/Presenter: base 61 px grey 34.8 vs floor 221 px grey 53.4 (contrast -18.6); base->floor below: mean RGB distance 74.7, same colour 2 of 61
+BOX n13_guard/Presenter: (488, 174, 16, 40)
+PROP after n13_guard/Presenter: base 65 px grey 29.9 vs floor 213 px grey 53.4 (contrast -23.5); base->floor below: mean RGB distance 57.2, same colour 0 of 65
+BOX staff_barrier_01/Presenter: (576, 234, 32, 64)
+PROP after staff_barrier_01/Presenter: base 37 px grey 36.8 vs floor 188 px grey 55.4 (contrast -18.6); base->floor below: mean RGB distance 68.6, same colour 0 of 37
+BOX reset_anchor_01/ConsoleSprite: (480, 228, 32, 36)
+PROP after reset_anchor_01/ConsoleSprite: base 102 px grey 34.0 vs floor 280 px grey 57.5 (contrast -23.5); base->floor below: mean RGB distance 34.4, same colour 0 of 102
+BOX YSort_Props/Railing_0: (592, 194, 32, 48)
+PROP after YSort_Props/Railing_0: base 47 px grey 23.1 vs floor 205 px grey 42.2 (contrast -19.1); base->floor below: mean RGB distance 24.6, same colour 26 of 47
+BOX YSort_Props/Railing_1: (560, 210, 32, 48)
+PROP after YSort_Props/Railing_1: base 47 px grey 74.0 vs floor 205 px grey 47.0 (contrast +27.0); base->floor below: mean RGB distance 60.5, same colour 19 of 47
+BOX YSort_Props/Railing_2: (528, 226, 32, 48)
+PROP after YSort_Props/Railing_2: base 47 px grey 23.1 vs floor 205 px grey 38.7 (contrast -15.6); base->floor below: mean RGB distance 24.6, same colour 26 of 47
+BOX YSort_Props/Railing_3: (464, 258, 32, 48)
+PROP after YSort_Props/Railing_3: base 47 px grey 23.1 vs floor 205 px grey 41.9 (contrast -18.8); base->floor below: mean RGB distance 24.6, same colour 26 of 47
+BOX YSort_Props/Railing_4: (432, 274, 32, 48)
+PROP after YSort_Props/Railing_4: base 47 px grey 23.0 vs floor 205 px grey 39.4 (contrast -16.4); base->floor below: mean RGB distance 25.3, same colour 23 of 47
+BOX YSort_Props/Railing_5: (608, 202, 32, 48)
+PROP after YSort_Props/Railing_5: base 47 px grey 79.0 vs floor 205 px grey 74.1 (contrast +4.9); base->floor below: mean RGB distance 52.1, same colour 25 of 47
+BOX YSort_Props/Railing_6: (576, 218, 32, 48)
+PROP after YSort_Props/Railing_6: base 47 px grey 78.3 vs floor 205 px grey 64.1 (contrast +14.1); base->floor below: mean RGB distance 47.9, same colour 30 of 47
+BOX YSort_Props/Railing_7: (544, 234, 32, 48)
+PROP after YSort_Props/Railing_7: base 47 px grey 79.0 vs floor 205 px grey 73.5 (contrast +5.5); base->floor below: mean RGB distance 52.1, same colour 25 of 47
+BOX YSort_Props/Railing_8: (480, 266, 32, 48)
+PROP after YSort_Props/Railing_8: base 47 px grey 79.0 vs floor 205 px grey 74.1 (contrast +4.9); base->floor below: mean RGB distance 52.1, same colour 25 of 47
+BOX YSort_Props/Railing_9: (448, 282, 32, 48)
+PROP after YSort_Props/Railing_9: base 47 px grey 79.0 vs floor 205 px grey 74.1 (contrast +4.9); base->floor below: mean RGB distance 52.1, same colour 25 of 47
+BOX echo_recorder_pedestal/Presenter: (404, 220, 24, 36)
+PROP after echo_recorder_pedestal/Presenter: base 114 px grey 36.0 vs floor 260 px grey 54.1 (contrast -18.1); base->floor below: mean RGB distance 62.2, same colour 24 of 114
+TLF-085 CONCRETE DONE ch01.security_crossing after
+
+--- stderr ---
