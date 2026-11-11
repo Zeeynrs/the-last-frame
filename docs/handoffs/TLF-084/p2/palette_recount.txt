@@ -1,0 +1,25 @@
+arrival_unlit.png: off-palette 0 of 518400
+arrival_lit_adr026.png: off-palette 0 of 518400
+arrival_lit_shadows.png: off-palette 0 of 518400
+arrival_x2_adr026_vs_shadows.png: crop (168, 98, 408, 233) around Elias' feet (288, 198), left ADR-026 lit, right ADR-027
+gate_unlit.png: off-palette 0 of 518400
+gate_lit_adr026.png: off-palette 0 of 518400
+gate_lit_shadows.png: off-palette 0 of 518400
+gate_x2_adr026_vs_shadows.png: crop (242, 152, 482, 287) around Elias' feet (362, 252), left ADR-026 lit, right ADR-027
+dials_unlit.png: off-palette 0 of 518400
+dials_lit_adr026.png: off-palette 0 of 518400
+dials_lit_shadows.png: off-palette 0 of 518400
+dials_x2_adr026_vs_shadows.png: crop (520, 170, 760, 305) around Elias' feet (640, 270), left ADR-026 lit, right ADR-027
+east_unlit.png: off-palette 0 of 518400
+east_lit_adr026.png: off-palette 0 of 518400
+east_lit_shadows.png: off-palette 0 of 518400
+east_x2_adr026_vs_shadows.png: crop (552, 290, 792, 425) around Elias' feet (672, 390), left ADR-026 lit, right ADR-027
+side_unlit.png: off-palette 0 of 518400
+side_lit_adr026.png: off-palette 0 of 518400
+side_lit_shadows.png: off-palette 0 of 518400
+side_x2_adr026_vs_shadows.png: crop (300, 294, 540, 429) around Elias' feet (420, 394), left ADR-026 lit, right ADR-027
+gate_clear15_lit_shadows.png: off-palette 0 of 518400
+east_clear15_lit_shadows.png: off-palette 0 of 518400
+gate_clear10_lit_shadows.png: off-palette 0 of 518400
+east_clear10_lit_shadows.png: off-palette 0 of 518400
+fill_modes_gate_east.png: rows gate, east; columns ADR-026 lit | ADD (shipped) | CLEAR 1.5 | CLEAR 1.0 (native)

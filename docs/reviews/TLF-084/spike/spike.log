@@ -1,0 +1,56 @@
+BAKE arrival: 17 polygons, 12 ellipses, 32.8 ms (GDScript rasterizer), map 736x432
+CHECK arrival: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE arrival: pixels darker than lit 2119; information pixels changed 0 of 488; exempt (>=25) pixels changed 0
+TIMING arrival: viewport GPU lit 0.113 ms, lit+shadows 0.118 ms, delta 0.005 ms
+BAKE gate: 17 polygons, 12 ellipses, 30.6 ms (GDScript rasterizer), map 736x432
+CHECK gate: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE gate: pixels darker than lit 2022; information pixels changed 0 of 488; exempt (>=25) pixels changed 0
+TIMING gate: viewport GPU lit 0.113 ms, lit+shadows 0.116 ms, delta 0.003 ms
+BAKE dials: 17 polygons, 12 ellipses, 32.8 ms (GDScript rasterizer), map 736x432
+CHECK dials: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE dials: pixels darker than lit 2105; information pixels changed 0 of 487; exempt (>=25) pixels changed 0
+TIMING dials: viewport GPU lit 0.113 ms, lit+shadows 0.118 ms, delta 0.005 ms
+BAKE east: 17 polygons, 12 ellipses, 36.3 ms (GDScript rasterizer), map 736x432
+CHECK east: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE east: pixels darker than lit 2052; information pixels changed 0 of 488; exempt (>=25) pixels changed 0
+TIMING east: viewport GPU lit 0.113 ms, lit+shadows 0.116 ms, delta 0.004 ms
+BAKE sprites: 17 polygons, 12 ellipses, 31.8 ms (GDScript rasterizer), map 736x432
+CHECK sprites: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE sprites: pixels darker than lit 0; information pixels changed 0 of 488; exempt (>=25) pixels changed 0
+TIMING sprites: viewport GPU lit 0.113 ms, lit+shadows 0.113 ms, delta -0.000 ms
+BAKE side: 6 polygons, 6 ellipses, 1.8 ms (GDScript rasterizer), map 1440x540
+CHECK side: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE side: pixels darker than lit 2861; information pixels changed 0 of 0; exempt (>=25) pixels changed 0
+TIMING side: viewport GPU lit 0.099 ms, lit+shadows 0.102 ms, delta 0.003 ms
+BAKE arrival_fill: 17 polygons, 12 ellipses, 30.7 ms (GDScript rasterizer), map 736x432
+CHECK arrival_fill: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE arrival_fill: pixels darker than lit 10494; information pixels changed 0 of 488; exempt (>=25) pixels changed 0
+TIMING arrival_fill: viewport GPU lit 0.116 ms, lit+shadows 0.122 ms, delta 0.006 ms
+BAKE gate_fill: 17 polygons, 12 ellipses, 30.5 ms (GDScript rasterizer), map 736x432
+CHECK gate_fill: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE gate_fill: pixels darker than lit 10561; information pixels changed 0 of 488; exempt (>=25) pixels changed 0
+TIMING gate_fill: viewport GPU lit 0.116 ms, lit+shadows 0.120 ms, delta 0.004 ms
+BAKE dials_fill: 17 polygons, 12 ellipses, 30.3 ms (GDScript rasterizer), map 736x432
+CHECK dials_fill: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE dials_fill: pixels darker than lit 10476; information pixels changed 0 of 487; exempt (>=25) pixels changed 0
+TIMING dials_fill: viewport GPU lit 0.116 ms, lit+shadows 0.120 ms, delta 0.004 ms
+BAKE east_fill: 17 polygons, 12 ellipses, 30.5 ms (GDScript rasterizer), map 736x432
+CHECK east_fill: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE east_fill: pixels darker than lit 10591; information pixels changed 0 of 488; exempt (>=25) pixels changed 0
+TIMING east_fill: viewport GPU lit 0.116 ms, lit+shadows 0.120 ms, delta 0.004 ms
+BAKE arrival_fill_key315: 17 polygons, 12 ellipses, 40.4 ms (GDScript rasterizer), map 736x432
+CHECK arrival_fill_key315: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE arrival_fill_key315: pixels darker than lit 10335; information pixels changed 0 of 488; exempt (>=25) pixels changed 0
+TIMING arrival_fill_key315: viewport GPU lit 0.116 ms, lit+shadows 0.120 ms, delta 0.004 ms
+BAKE gate_fill_key315: 17 polygons, 12 ellipses, 30.9 ms (GDScript rasterizer), map 736x432
+CHECK gate_fill_key315: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE gate_fill_key315: pixels darker than lit 10407; information pixels changed 0 of 488; exempt (>=25) pixels changed 0
+TIMING gate_fill_key315: viewport GPU lit 0.116 ms, lit+shadows 0.120 ms, delta 0.004 ms
+BAKE dials_fill_key315: 17 polygons, 12 ellipses, 30.2 ms (GDScript rasterizer), map 736x432
+CHECK dials_fill_key315: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE dials_fill_key315: pixels darker than lit 10317; information pixels changed 0 of 487; exempt (>=25) pixels changed 0
+TIMING dials_fill_key315: viewport GPU lit 0.116 ms, lit+shadows 0.120 ms, delta 0.004 ms
+BAKE east_fill_key315: 17 polygons, 12 ellipses, 30.5 ms (GDScript rasterizer), map 736x432
+CHECK east_fill_key315: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE east_fill_key315: pixels darker than lit 10432; information pixels changed 0 of 488; exempt (>=25) pixels changed 0
+TIMING east_fill_key315: viewport GPU lit 0.116 ms, lit+shadows 0.120 ms, delta 0.004 ms

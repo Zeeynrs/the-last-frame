@@ -1,0 +1,79 @@
+MUTATION shade stubbed to 0
+  test_shadows: TESTS: 11 passed, 3 failed, SCRIPT ERROR lines 0
+    fails: test_information_regions_and_exempt_indices_take_nothing
+    fails: test_only_floor_receivers_take_shade_and_fill
+    fails: test_shade_is_added_after_the_lift
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION receiver mask: every index
+  test_shadows: TESTS: 11 passed, 3 failed, SCRIPT ERROR lines 0
+    fails: test_fill_adds_to_room_pools_but_not_to_the_elias_zone
+    fails: test_fill_is_cleared_around_room_pools_only
+    fails: test_only_floor_receivers_take_shade_and_fill
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION information regions ignored by shade
+  test_shadows: TESTS: 13 passed, 1 failed, SCRIPT ERROR lines 0
+    fails: test_information_regions_and_exempt_indices_take_nothing
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION ADD: pools do not add the fill
+  test_shadows: TESTS: 13 passed, 1 failed, SCRIPT ERROR lines 0
+    fails: test_fill_adds_to_room_pools_but_not_to_the_elias_zone
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION ADD: the Elias zone adds the fill
+  test_shadows: TESTS: 13 passed, 1 failed, SCRIPT ERROR lines 0
+    fails: test_fill_adds_to_room_pools_but_not_to_the_elias_zone
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION exempt ignored
+  test_shadows: TESTS: 13 passed, 1 failed, SCRIPT ERROR lines 0
+    fails: test_information_regions_and_exempt_indices_take_nothing
+  test_lighting_pass: TESTS: 13 passed, 2 failed, SCRIPT ERROR lines 0
+    fails: test_information_region_restores_only_its_indices
+    fails: test_shift_table_stays_inside_each_ramp
+MUTATION shade added after the clamp
+  test_shadows: TESTS: 13 passed, 1 failed, SCRIPT ERROR lines 0
+    fails: test_shade_is_added_after_the_lift
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION fill never cleared
+  test_shadows: TESTS: 13 passed, 1 failed, SCRIPT ERROR lines 0
+    fails: test_fill_is_cleared_around_room_pools_only
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION Elias zone clears the fill
+  test_shadows: TESTS: 13 passed, 1 failed, SCRIPT ERROR lines 0
+    fails: test_fill_is_cleared_around_room_pools_only
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION map not rebuilt on room change
+  test_shadows: TESTS: 13 passed, 1 failed, SCRIPT ERROR lines 0
+    fails: test_setting_off_skips_the_bake_and_hides_the_pass
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION bake while the setting is off
+  test_shadows: TESTS: 13 passed, 1 failed, SCRIPT ERROR lines 0
+    fails: test_setting_off_skips_the_bake_and_hides_the_pass
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION maps leak
+  test_shadows: TESTS: 13 passed, 1 failed, SCRIPT ERROR lines 0
+    fails: test_map_rebuilt_on_every_room_change_without_leaks
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION Elias contact at his feet
+  test_shadows: TESTS: 13 passed, 1 failed, SCRIPT ERROR lines 0
+    fails: test_elias_contact_sits_below_his_body
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION rasterizer stubbed (empty map)
+  test_shadows: TESTS: 10 passed, 4 failed, SCRIPT ERROR lines 0
+    fails: test_concourse_west_casters_ao_and_the_315_key
+    fails: test_map_rebuilt_on_every_room_change_without_leaks
+    fails: test_rasterizer_matches_a_brute_force_reference
+    fails: test_side_view_band_contacts_and_casts
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION cast toward the key (up-left)
+  test_shadows: TESTS: 13 passed, 1 failed, SCRIPT ERROR lines 0
+    fails: test_concourse_west_casters_ao_and_the_315_key
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION no AO strips
+  test_shadows: TESTS: 12 passed, 2 failed, SCRIPT ERROR lines 0
+    fails: test_concourse_west_casters_ao_and_the_315_key
+    fails: test_rasterizer_matches_a_brute_force_reference
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION no edge rule (door in the wall casts)
+  test_shadows: TESTS: 12 passed, 2 failed, SCRIPT ERROR lines 0
+    fails: test_concourse_west_casters_ao_and_the_315_key
+    fails: test_skip_meta_and_footprints_on_the_floor_edge
+  test_lighting_pass: TESTS: 15 passed, 0 failed, SCRIPT ERROR lines 0

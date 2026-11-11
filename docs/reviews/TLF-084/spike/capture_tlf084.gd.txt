@@ -1,0 +1,410 @@
+extends SceneTree
+
+## TLF-084 Part 1 spike (scratch copy only, renamed config/name; never in a worktree):
+##   TLF_OUT=<dir> TLF_SHOT=<arrival|gate|dials|east|sprites|side> godot --path . --resolution 960x540 -s <this>
+## Concourse West is lit by its scene (ADR-026). The spike bakes a world-space SHADE MAP at room
+## entry from what the room already has (no authoring):
+##  - AO strips on the floor along the tall N/W wall bases, the low S/E edges and both sides of the
+##    turnstile dividers (RoomShape.wall_segments + the dividers' SegmentShape2D);
+##  - contact shadows (2:1 ellipses, core 2 / rim 1) under every grounded body: StaticBody2D
+##    footprints (statues, validator, gate, pillar) and z-10 prop/actor sprites without a body
+##    (courier, reset console, bench);
+##  - cast shadows (shade 1) from every tall grounded body (sprite >= 28 px), a tapered quad on the
+##    floor away from the room's key light (the focal RoomLight `GateFloor`), length = height / 32 tiles;
+## plus one dynamic contact ellipse under Elias (shader uniform). The pass then uses
+## k = clamp(A - lift + shade, 0, 3), on floor receivers (indices 00-05) only, never inside an
+## information region; indices >= exempt never move (shift table). Checks per shot: shader vs the
+## GDScript reference (every pixel), off-palette, lighting off == unlit (bytes), information and
+## exempt pixels identical lit vs lit+shadows, GPU time, bake time.
+
+const ROOM := &"ch01.concourse_west"
+const SHOTS := {
+	"arrival": [Vector2(224, 144), "idle_se"],
+	"gate": [Vector2(298, 198), "idle_e"],
+	"dials": [Vector2(576, 216), "idle_ne"],
+	"east": [Vector2(608, 336), "idle_se"],
+	"sprites": [Vector2(298, 198), "idle_e"],
+	"side": [Vector2(420, 394), "idle_e"],
+}
+const AO_TALL := 0.5
+const AO_LOW := 0.3
+
+var _ch01: Node2D
+var _router: RoomRouter
+var _player: Player
+var _hud: CanvasLayer
+var _settings: Node
+var _palette := {}
+var _out := ""
+var _shapes: Array = []   # [kind, data, value] for the overlay
+var shot_tag := ""
+
+
+func _initialize() -> void:
+	create_timer(110.0).timeout.connect(func():
+		printerr("TIMEOUT: capture_tlf084 exceeded 110 s")
+		quit(1))
+	call_deferred("_run")
+
+
+func _frames(n: int) -> void:
+	for i in n:
+		await process_frame
+
+
+func _grab() -> Image:
+	await _frames(3)
+	await RenderingServer.frame_post_draw
+	var img := root.get_texture().get_image()
+	img.convert(Image.FORMAT_RGBA8)
+	return img
+
+
+func _save(img: Image, name: String) -> void:
+	img.save_png(_out.path_join(name + ".png"))
+
+
+func _grey(img: Image) -> Image:
+	var g := img.duplicate() as Image
+	for y in g.get_height():
+		for x in g.get_width():
+			var c: Color = g.get_pixel(x, y)
+			var l: float = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b
+			g.set_pixel(x, y, Color(l, l, l, 1.0))
+	return g
+
+
+func _key(c: Color) -> int:
+	return (c.r8 << 16) | (c.g8 << 8) | c.b8
+
+
+func _index(c: Color) -> int:
+	return _palette.get(_key(c), -1) as int
+
+
+func _gpu_ms(frames: int = 90) -> float:
+	var rid := root.get_viewport_rid()
+	RenderingServer.viewport_set_measure_render_time(rid, true)
+	await _frames(10)
+	var total := 0.0
+	for i in frames:
+		await process_frame
+		total += RenderingServer.viewport_get_measured_render_time_gpu(rid)
+	return total / frames
+
+
+# --- baking ------------------------------------------------------------------------------------
+
+func _t2p(t: Vector2) -> Vector2:
+	return RoomShape.tile_to_px(t)
+
+
+func _strip(a_t: Vector2, b_t: Vector2, n_t: Vector2, d0: float, d1: float) -> PackedVector2Array:
+	return PackedVector2Array([_t2p(a_t + n_t * d0), _t2p(b_t + n_t * d0), _t2p(b_t + n_t * d1), _t2p(a_t + n_t * d1)])
+
+
+func _sprite_height_near(room: Node, at: Vector2) -> float:
+	var best := 0.0
+	for node in room.find_children("*", "Sprite2D", true, false):
+		var s := node as Sprite2D
+		if s.texture == null or s.global_position.distance_to(at) > 14.0:
+			continue
+		best = maxf(best, s.texture.get_height())
+	return best
+
+
+func _grounded(room: Node) -> Array:
+	var out: Array = []   # [centre, rx, height]
+	var with_body := {}
+	for node in room.find_children("*", "StaticBody2D", true, false):
+		var body := node as StaticBody2D
+		if body.name in ["PerimeterWalls", "TurnstileDividers"] or body.get_parent().name == "staff_door":
+			continue
+		with_body[body.get_parent()] = true
+		for cs in body.find_children("*", "CollisionShape2D", true, false):
+			var shp := (cs as CollisionShape2D).shape
+			var half := 6.0
+			if shp is RectangleShape2D:
+				half = (shp as RectangleShape2D).size.x * 0.5
+			elif shp is CircleShape2D:
+				half = (shp as CircleShape2D).radius
+			var c := (cs as Node2D).global_position
+			out.append([c, maxf(half * 1.25, 6.0), _sprite_height_near(room, c)])
+	for node in room.find_children("*", "Sprite2D", true, false):
+		var s := node as Sprite2D
+		var actor_layer := s.z_index == 10 or s.get_parent().name == "YSort_Actors"
+		if not actor_layer or s.texture == null or with_body.has(s.get_parent()):
+			continue
+		var c := (s.get_parent() as Node2D).global_position if s.get_parent() is Area2D else s.global_position
+		out.append([c, maxf(s.texture.get_width() * 0.35, 6.0), s.texture.get_height()])
+	return out
+
+
+func _bake_iso(room: Node2D, shape: RoomShape, key: Vector2) -> Dictionary:
+	var bounds := shape.bounds_px()
+	var polys: Array = []   # [PackedVector2Array, value]
+	for seg in shape.wall_segments():
+		if seg["kind"] != &"straight":
+			continue
+		var a := Vector2(seg["from"])
+		var b := Vector2(seg["to"])
+		match seg["face"]:
+			&"N": polys.append([_strip(a, b, Vector2(0, 1), 0.0, AO_TALL), 1])
+			&"W": polys.append([_strip(a, b, Vector2(1, 0), 0.0, AO_TALL), 1])
+			&"low_S": polys.append([_strip(a, b, Vector2(0, -1), 0.0, AO_LOW), 1])
+			&"low_E": polys.append([_strip(a, b, Vector2(-1, 0), 0.0, AO_LOW), 1])
+	var dividers := room.get_node_or_null("TurnstileDividers")
+	if dividers != null:
+		for cs in dividers.find_children("*", "CollisionShape2D", true, false):
+			var seg := (cs as CollisionShape2D).shape as SegmentShape2D
+			if seg == null:
+				continue
+			var xf := (cs as Node2D).global_transform
+			var a_t := RoomShape.px_to_tile(xf * seg.a)
+			var b_t := RoomShape.px_to_tile(xf * seg.b)
+			var dir := (b_t - a_t).normalized()
+			var n := Vector2(-dir.y, dir.x)
+			polys.append([_strip(a_t, b_t, n, -AO_LOW, AO_LOW), 1])
+	var ellipses: Array = []   # [centre, radius, value_core, value_rim]
+	var key_t := RoomShape.px_to_tile(key)
+	for g in _grounded(room):
+		var c: Vector2 = g[0]
+		var rx: float = g[1]
+		ellipses.append([c, Vector2(rx, rx * 0.5)])
+		var h: float = g[2]
+		var foot_t := RoomShape.px_to_tile(c)
+		if h >= 28.0 and foot_t.distance_to(key_t) > 0.5:
+			var dir := (foot_t - key_t).normalized()
+			if OS.get_environment("TLF_KEY") == "global":
+				# ART_BIBLE key light 315 deg (top-left of the screen): shadows fall to screen
+				# bottom-right, i.e. along +x in tile space, for every object in every room.
+				dir = Vector2(1, 0)
+			var perp := Vector2(-dir.y, dir.x)
+			var w := clampf(rx / 16.0, 0.3, 0.6)
+			var tip := foot_t + dir * (h / 32.0)
+			polys.append([PackedVector2Array([_t2p(foot_t + perp * w), _t2p(tip + perp * w * 0.4),
+				_t2p(tip - perp * w * 0.4), _t2p(foot_t - perp * w)]), 1])
+	return _rasterize(bounds, polys, ellipses)
+
+
+func _bake_side(room: Node2D, side: SideView, key_x: float) -> Dictionary:
+	var bounds := side.bounds_px()
+	var fy := side.floor_y
+	var polys: Array = []
+	# AO band where the far wall meets the platform deck (deck top = floor strip y + 4).
+	polys.append([PackedVector2Array([Vector2(bounds.position.x, fy - 12), Vector2(bounds.end.x, fy - 12),
+		Vector2(bounds.end.x, fy - 9), Vector2(bounds.position.x, fy - 9)]), 1])
+	var ellipses: Array = []
+	for node in room.get_children():
+		if not (node is Node2D) or node is Marker2D or absf((node as Node2D).global_position.y - fy) > 0.5:
+			continue
+		var w := 0.0
+		var h := 0.0
+		for s in [node] + node.find_children("*", "Sprite2D", true, false):
+			if s is Sprite2D and (s as Sprite2D).texture != null and (s as Sprite2D).visible:
+				w = maxf(w, (s as Sprite2D).texture.get_width())
+				h = maxf(h, (s as Sprite2D).texture.get_height())
+		if w < 12.0:
+			continue
+		var c := (node as Node2D).global_position
+		ellipses.append([c, Vector2(w * 0.45, 3.0)])
+		if h >= 28.0:
+			var dir := signf(c.x - key_x)
+			var len := h * 0.35
+			polys.append([PackedVector2Array([c + Vector2(0, -1), c + Vector2(dir * len, -1), c + Vector2(dir * len, 1),
+				c + Vector2(0, 1)]), 1])
+	return _rasterize(bounds, polys, ellipses)
+
+
+func _rasterize(bounds: Rect2, polys: Array, ellipses: Array) -> Dictionary:
+	var t0 := Time.get_ticks_usec()
+	var w := int(bounds.size.x)
+	var h := int(bounds.size.y)
+	var img := Image.create(w, h, false, Image.FORMAT_L8)
+	var data := PackedByteArray()
+	data.resize(w * h)
+	var o := bounds.position
+	for pv in polys:
+		var poly: PackedVector2Array = pv[0]
+		var v: int = pv[1]
+		var box := Rect2(poly[0], Vector2.ZERO)
+		for q in poly:
+			box = box.expand(q)
+		for y in range(maxi(int(box.position.y - o.y), 0), mini(int(box.end.y - o.y) + 1, h)):
+			for x in range(maxi(int(box.position.x - o.x), 0), mini(int(box.end.x - o.x) + 1, w)):
+				if Geometry2D.is_point_in_polygon(o + Vector2(x + 0.5, y + 0.5), poly):
+					data[y * w + x] = maxi(data[y * w + x], v)
+	for e in ellipses:
+		var c: Vector2 = e[0]
+		var r: Vector2 = e[1]
+		for y in range(maxi(int(c.y - r.y - o.y), 0), mini(int(c.y + r.y - o.y) + 1, h)):
+			for x in range(maxi(int(c.x - r.x - o.x), 0), mini(int(c.x + r.x - o.x) + 1, w)):
+				var d := ((o + Vector2(x + 0.5, y + 0.5) - c) / r).length()
+				if d < 1.0:
+					data[y * w + x] = maxi(data[y * w + x], 2 if d < 0.55 else 1)
+	img.set_data(w, h, false, Image.FORMAT_L8, data)
+	_shapes = [polys, ellipses]
+	return {"image": img, "origin": o, "ms": (Time.get_ticks_usec() - t0) / 1000.0, "polys": polys.size(), "ellipses": ellipses.size()}
+
+
+# --- checks --------------------------------------------------------------------------------------
+
+func _check(unlit: Image, lit: Image, shaded: Image, pass_node: LightingPass) -> Dictionary:
+	var entries := pass_node.screen_lights()
+	var r := {"mismatch": 0, "off_palette": 0, "info_changed": 0, "exempt_changed": 0, "shaded_px": 0, "info_px": 0}
+	for y in unlit.get_height():
+		for x in unlit.get_width():
+			var src := _index(unlit.get_pixel(x, y))
+			if src < 0:
+				src = TlfPalette.nearest_index(unlit.get_pixel(x, y))
+			var got := _index(shaded.get_pixel(x, y))
+			if got < 0:
+				r["off_palette"] += 1
+			var p := Vector2(x, y)
+			if got != pass_node.output_index_shaded(p, src, entries):
+				r["mismatch"] += 1
+			var before := _index(lit.get_pixel(x, y))
+			if got != before:
+				r["shaded_px"] += 1
+				if src >= pass_node.lighting.exempt_from:
+					r["exempt_changed"] += 1
+			var centre := p + Vector2(0.5, 0.5)
+			for e in entries:
+				var mask: int = e["mask"]
+				if e["kind"] == 1 and mask != 0 and ((mask >> src) & 1) == 1 and LightingPass._in_quad(centre, e["a"], e["b"]):
+					r["info_px"] += 1
+					if got != before:
+						r["info_changed"] += 1
+					break
+	return r
+
+
+func _blobs(room: Node) -> void:
+	for g in _grounded(room):
+		var c: Vector2 = g[0]
+		var rx: float = g[1]
+		var poly := Polygon2D.new()
+		var pts := PackedVector2Array()
+		for i in 16:
+			var a := TAU * i / 16.0
+			pts.append(Vector2(cos(a) * rx, sin(a) * rx * 0.5))
+		poly.polygon = pts
+		poly.color = TlfPalette.COLORS[1]
+		poly.position = c
+		poly.z_index = 1
+		room.add_child(poly)
+
+
+func _run() -> void:
+	assert(DisplayServer.get_name() != "headless", "windowed Forward+ only")
+	_out = OS.get_environment("TLF_OUT")
+	var shot := OS.get_environment("TLF_SHOT")
+	if _out.is_empty() or not SHOTS.has(shot):
+		printerr("set TLF_OUT and TLF_SHOT")
+		quit(2)
+		return
+	for i in TlfPalette.SIZE:
+		_palette[_key(TlfPalette.COLORS[i])] = i
+	var save = root.get_node_or_null("SaveService")
+	if save != null:
+		save.save_root = "user://tlf084_spike_saves"
+	_settings = root.get_node_or_null("Settings")
+	_settings.lighting_enabled = true
+	_ch01 = (load("res://scenes/chapters/ch01/Chapter01.tscn") as PackedScene).instantiate() as Node2D
+	root.add_child(_ch01)
+	await _frames(30)
+	_router = _ch01.get_node("RoomRouter") as RoomRouter
+	_player = _ch01.get_node("Player") as Player
+	_hud = _player.hud
+	var diag := _ch01.call("get_dialogue_box") as DialogueBox
+	if diag != null and diag.is_active:
+		diag.finish_sequence()
+	var bake := {}
+	shot_tag = shot
+	if shot == "side":
+		_router.enter_room(&"ch01.side_mira_memory")
+		await _frames(10)
+		var side_lit := RoomLighting.new()
+		side_lit.ambient_steps = 1
+		_router.current_room.set_meta(&"lighting", side_lit)
+		var mira := RoomLight.new()
+		mira.name = "MiraFocal"
+		mira.position = Vector2(780, 360)
+		mira.radius = Vector2(56, 48)
+		mira.lift_inner = 1
+		mira.lift_outer = 0
+		_router.current_room.add_child(mira)
+		_router._apply_lighting()
+		bake = _bake_side(_router.current_room, _router.current_side_view(), 780.0)
+	else:
+		_router.enter_room(ROOM, &"door_entry_west")
+		await _frames(10)
+		var room := _router.current_room as Node2D
+		var key := (room.get_node("Lighting/GateFloor") as Node2D).global_position
+		if OS.get_environment("TLF_FILL") == "1":
+			# Variant: a broad floor fill (lift 1/1 on terrazzo 00-05 over the whole floor), so the
+			# open floor keeps one ramp step of value and shade can read outside the pools.
+			var fill := RoomLight.new()
+			fill.name = "FloorFill"
+			fill.position = Vector2(416, 240)
+			fill.radius = Vector2(520, 260)
+			fill.lift_inner = 1
+			fill.lift_outer = 1
+			fill.inner = 1.0
+			fill.only_indices = PackedInt32Array([0, 1, 2, 3, 4, 5])
+			room.get_node("Lighting").add_child(fill)
+			_router._apply_lighting()
+			shot_tag = shot + "_fill" + ("_key315" if OS.get_environment("TLF_KEY") == "global" else "")
+		bake = _bake_iso(room, room.get_meta(&"room_shape") as RoomShape, key)
+		if shot == "sprites":
+			_blobs(room)
+	if diag != null and diag.is_active:
+		diag.finish_sequence()
+	var pass_node := _router.lighting_pass
+	pass_node.set_shade(bake["image"], bake["origin"])
+	print("BAKE %s: %d polygons, %d ellipses, %.1f ms (GDScript rasterizer), map %dx%d" % [shot_tag, bake["polys"], bake["ellipses"],
+		bake["ms"], bake["image"].get_width(), bake["image"].get_height()])
+	var row: Array = SHOTS[shot]
+	_player.set_physics_process(false)
+	_player.global_position = row[0]
+	_router.camera.snap_now()
+	_player.sprite.play(row[1])
+	_player.sprite.pause()
+	_player.sprite.frame = 0
+	_hud.hide_feedback()
+	_hud.visible = false
+	await _frames(5)
+	pass_node.shade_enabled = false
+	var lit := await _grab()
+	_save(lit, "%s_lit" % shot_tag)
+	var ms_lit := await _gpu_ms()
+	pass_node.shade_enabled = shot != "sprites"
+	var shaded := await _grab()
+	_save(shaded, "%s_lit_shadows" % shot_tag)
+	var ms_shaded := await _gpu_ms()
+	_settings.lighting_enabled = false
+	var setting_off := await _grab()
+	_settings.lighting_enabled = true
+	pass_node.apply_room(null, null, null)
+	var unlit := await _grab()
+	_save(unlit, "%s_unlit" % shot_tag)
+	_router._apply_lighting()
+	await _frames(2)
+	for pair in [[lit, "lit"], [shaded, "lit_shadows"], [unlit, "unlit"]]:
+		_save(_grey(pair[0]), "%s_%s_greyscale" % [shot_tag, pair[1]])
+	var at := (root.get_canvas_transform() * _player.global_position).round()
+	var crop := Rect2i(clampi(int(at.x) - 120, 0, 720), clampi(int(at.y) - 100, 0, 405), 240, 135)
+	var x2 := Image.create(480, 270 * 2 + 4, false, Image.FORMAT_RGBA8)
+	for i in 2:
+		var part := ([lit, shaded][i] as Image).get_region(crop)
+		part.resize(480, 270, Image.INTERPOLATE_NEAREST)
+		x2.blit_rect(part, Rect2i(0, 0, 480, 270), Vector2i(0, i * 274))
+	_save(x2, "%s_x2_lit_vs_shadows" % shot_tag)
+	var r := _check(unlit, lit, shaded, pass_node)
+	print("CHECK %s: shader vs reference (shaded) mismatches %d / %d px; off-palette %d; lighting off == unlit %s" % [shot_tag, r["mismatch"],
+		lit.get_width() * lit.get_height(), r["off_palette"], setting_off.get_data() == unlit.get_data()])
+	print("SHADE %s: pixels darker than lit %d; information pixels changed %d of %d; exempt (>=25) pixels changed %d" % [shot_tag,
+		r["shaded_px"], r["info_changed"], r["info_px"], r["exempt_changed"]])
+	print("TIMING %s: viewport GPU lit %.3f ms, lit+shadows %.3f ms, delta %.3f ms" % [shot_tag, ms_lit, ms_shaded, ms_shaded - ms_lit])
+	print("TLF-084 SPIKE SHOT DONE %s" % shot_tag)
+	quit(0)

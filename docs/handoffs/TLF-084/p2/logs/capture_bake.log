@@ -1,0 +1,17 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+BAKE ch01.arrival_platform: first 2.66 ms, median 2.38 ms, max 2.93 ms of 20 more; 14 polygons, 8 ellipses, map 800x384
+BAKE ch01.concourse_west: first 2.80 ms, median 2.62 ms, max 2.96 ms of 20 more; 16 polygons, 10 ellipses, map 736x432
+BAKE ch01.maintenance_bay: first 1.27 ms, median 1.11 ms, max 1.47 ms of 20 more; 12 polygons, 6 ellipses, map 640x360
+BAKE ch01.security_crossing: first 1.52 ms, median 1.45 ms, max 1.77 ms of 20 more; 19 polygons, 15 ellipses, map 640x360
+BAKE ch01.waiting_lounge: first 0.28 ms, median 0.20 ms, max 0.34 ms of 20 more; 1 polygons, 1 ellipses, map 640x360
+BAKE ch01.signal_control: first 1.52 ms, median 1.43 ms, max 1.71 ms of 20 more; 19 polygons, 17 ellipses, map 640x360
+BAKE ch01.upper_vestibule: first 0.59 ms, median 0.53 ms, max 0.56 ms of 20 more; 6 polygons, 6 ellipses, map 640x360
+BAKE ch01.vestibule_niche: first 0.24 ms, median 0.18 ms, max 0.20 ms of 20 more; 1 polygons, 1 ellipses, map 640x360
+BAKE ch01.station_atrium: first 0.41 ms, median 0.32 ms, max 0.35 ms of 20 more; 3 polygons, 3 ellipses, map 640x360
+BAKE ch01.street_exit: first 0.16 ms, median 0.12 ms, max 0.13 ms of 20 more; 0 polygons, 0 ellipses, map 640x360
+BAKE ch01.side_mira_memory: first 0.41 ms, median 0.14 ms, max 0.38 ms of 20 more; 6 polygons, 6 ellipses, map 1440x540
+TLF-084 P2 SHOT DONE bake
+
+--- stderr ---
