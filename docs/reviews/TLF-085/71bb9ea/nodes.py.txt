@@ -1,0 +1,77 @@
+"""Parse two .tscn files; list every node with its position (and the key props), compute the
+global position from parent chain (positions only), and print old -> new deltas per node path."""
+import re, sys
+
+def parse(path):
+    nodes = {}  # path -> dict
+    order = []
+    sub = {}
+    cur = None
+    for line in open(path, encoding='utf-8'):
+        line = line.rstrip('\n')
+        m = re.match(r'\[node name="([^"]+)" type="([^"]+)"(?: parent="([^"]*)")?', line) or \
+            re.match(r'\[node name="([^"]+)"(?: type="([^"]+)")?(?: parent="([^"]*)")?', line)
+        if line.startswith('[node'):
+            name = re.search(r'name="([^"]+)"', line).group(1)
+            typ = (re.search(r'type="([^"]+)"', line) or [None, None])[1] if re.search(r'type="([^"]+)"', line) else None
+            par = re.search(r'parent="([^"]*)"', line)
+            par = par.group(1) if par else None
+            if par is None:
+                p = '.'
+            elif par == '.':
+                p = name
+            else:
+                p = par + '/' + name
+            cur = {'name': name, 'type': typ, 'parent': par, 'props': {}}
+            nodes[p] = cur
+            order.append(p)
+            continue
+        if line.startswith('['):
+            cur = None
+            continue
+        if cur is not None and '=' in line:
+            k, v = line.split(' = ', 1) if ' = ' in line else (None, None)
+            if k:
+                cur['props'][k] = v
+    return nodes, order
+
+def vec(s):
+    m = re.match(r'Vector2\(([-\d.e]+), ([-\d.e]+)\)', s or '')
+    return (float(m.group(1)), float(m.group(2))) if m else None
+
+def glob(nodes, p):
+    x = y = 0.0
+    while p and p != '.':
+        n = nodes.get(p)
+        if n is None:
+            break
+        v = vec(n['props'].get('position')) or (0.0, 0.0)
+        x += v[0]; y += v[1]
+        par = n['parent']
+        p = None if par in (None, '.') else par
+    return (x, y)
+
+def tile(px):
+    x, y = px
+    a = (x - 320) / 16.0
+    b = (y - 64) / 8.0
+    return ((a + b) / 2, (b - a) / 2)
+
+old, oo = parse(sys.argv[1])
+new, no = parse(sys.argv[2])
+print('%-55s %-22s %-22s %-14s %s' % ('node', 'old global', 'new global', 'delta', 'new tile'))
+for p in no:
+    n = new[p]
+    g = glob(new, p)
+    if p in old:
+        go = glob(old, p)
+        d = (g[0] - go[0], g[1] - go[1])
+        ds = '(%g,%g)' % d
+        gos = '(%g,%g)' % go
+    else:
+        ds = 'NEW'; gos = '-'
+    t = tile(g)
+    print('%-55s %-22s %-22s %-14s (%g,%g)' % (p, gos, '(%g,%g)' % g, ds, round(t[0], 3), round(t[1], 3)))
+for p in oo:
+    if p not in new:
+        print('REMOVED', p, glob(old, p))
