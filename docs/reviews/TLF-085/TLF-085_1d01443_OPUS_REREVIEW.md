@@ -21,7 +21,7 @@
 | P2 gear behind the shutter, Elias half hidden at the gear spot | **Elias closed, gear deferred.** With the W-face shutter pair, Elias is fully visible at the gear stand spot (496,184) and in the pocket (`gear_spot_x3.png`, `pocket_x3.png`). The closed fire shutter's top still covers the gear's lower right; the Lead leaves this to TLF-085b (§7.6) | crops of Flash's shots |
 | P2 NE 1-tile N-wall gap | **Closed.** Width 26, `WallN_12` (720,264), 13 N modules; builder dry run 0 changed lines; Python 22 OK | — |
 | P2 stand-spot test teleports to spot + (2,2) | **Closed.** It now walks with real input (`walk_to` + `steer`) from an anchor and asserts ≤ 2.6 px. A blocked spot goes RED (MS1, MS2). See P3-3 for two weak rows | §2c |
-| P2 handoff numbers | **Closed.** I spot-checked 14 rows of the placement table against the scene and the tile formula; all match (door E (26,4) = (672,304), Spawn (24,4) = (640,288), checkpoint, anchors, shutters, plaque). Bounds `Rect2(48,0,704,416)`, centre (400,208) | — |
+| P2 handoff numbers | **Closed.** Every placement-table row I checked against the scene and the tile formula matches (door E (26,4) = (672,304), Spawn (24,4) = (640,288), checkpoint, anchors, shutters, plaque). Bounds `Rect2(48,0,704,416)`, centre (400,208) | — |
 | P3 unlock-guards spot (352,128) | **Closed.** (352,144) | — |
 | P3 "follow framing" comment | **Closed.** ROOM_GRAPH "Fixed 960×540"; graph test comment fixed | — |
 | P3 `step1_negatives` near the cap | **Open.** 106 s; the bay file now takes 91 s too (P3-4) | `test_files.log` |
@@ -75,7 +75,7 @@ Both draw the same pixels when they share a position. Round 1 moved both east ar
 - **MS1:** a 10 px post on the casting spot (480,208) turns the three casting rows RED (stopped at 18.13 px).
 - **MS2:** a post on the pocket spot (544,240) turns the two pocket rows RED (16.75 px), and the real-input lifecycle test too.
 - **My probe:** it walks every spec spot from an anchor at least one tile away, with real input and the real capsule (`probe_085b.log` C).
-  - **Reached within 2.6 px with the right target:** 11 of 13 rows, including the pocket from an anchor 42 px away.
+  - **Reached within 2.6 px with the right target:** 11 of 13 spec rows, including the pocket from an anchor 42 px away. The log has a 14th row, "checkpoint (5,5)", which is informational: the zone is reached at 2.33 px, and its "CHECK" mark only reflects my placeholder target.
   - **The other two, as in round 1:**
     - PZ-002 (400,168)+BC from the pocket side is reached at 9.1 px against the closed shutter, but still targets `fire_shutter`.
     - The plaque is reached at 3.89 px on the x = 19 line.
