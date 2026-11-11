@@ -37,9 +37,6 @@ A production-ready **planning, documentation, multi-agent workflow and toolchain
 | 3 | Gemini 4 Argon | Primary creative asset specialist: narrative, puzzle/level design, Pixelorama source art (follows Sol) |
 | 4 | GPT-6.1 Sol | Art Director (visual direction authority) and full Argon fallback |
 
-Claude Sonnet 5.5 is not part of the team.
-
-Model availability and exact model labels depend on the provider account and CLI version. Orca provides isolated worktrees and agent terminals; it does not guarantee a particular model alias or automatically share one MCP configuration across every CLI.
 
 ## Toolchain
 
