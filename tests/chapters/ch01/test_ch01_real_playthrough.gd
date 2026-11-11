@@ -407,22 +407,22 @@ func _play() -> bool:
 
 	# 3. Maintenance bay: the technician (Freeze unlocks), SO-02 plate + Freeze the hatch, PZ-002
 	var hatch := _resolve(&"ch01.maintenance_bay.hatch_01") as PlateLinkedGate
-	if not await walk_to(_player, "bay -> technician spot", Vector2(288, 112)):
+	if not await walk_to(_player, "bay -> technician spot", Vector2(352, 144)):
 		return false
 	if not await _use_watch(&"trace", _resolve(&"ch01.maintenance_bay.n11_hatch_tech"), _flag(&"ch01.npc.n11.traced"), "technician traced"):
 		return false
 	await dismiss_blocking_ui()
 	if not await _expect_unlock(&"freeze"):
 		return false
-	if not await walk_to(_player, "bay -> hatch plate", Vector2(256, 128), func() -> bool: return not hatch.passage_blocked):
+	if not await walk_to(_player, "bay -> hatch plate", Vector2(320, 160), func() -> bool: return not hatch.passage_blocked):
 		return false
 	if not await _use_watch(&"freeze", hatch, func() -> bool: return hatch.is_frozen(), "hatch frozen open"):
 		return false
-	# Through the hatch straight down at x = 320, clear of the technician's footprint (304,104).
-	for point in [Vector2(288, 92), Vector2(320, 92)]:
+	# Through the hatch straight down at x = 384, clear of the technician's footprint (368,136).
+	for point in [Vector2(352, 124), Vector2(384, 124)]:
 		if not await walk_to(_player, "bay -> above the hatch", point):
 			return false
-	if not await walk_to(_player, "bay -> through the hatch", Vector2(320, 140), _solved(&"CH1-SO-02")):
+	if not await walk_to(_player, "bay -> through the hatch", Vector2(384, 172), _solved(&"CH1-SO-02")):
 		return false
 	_assert_true(_session.puzzle_service.is_solved(&"CH1-SO-02"), "SO-02 SOLVED by walking through the hatch")
 	_segment("3a bay SO-02")
@@ -431,26 +431,26 @@ func _play() -> bool:
 	var gear := _resolve(&"ch01.maintenance_bay.counterweight_gear") as CounterweightGear
 	var inner := _resolve(&"ch01.maintenance_bay.inner_shutter") as FireShutter
 	_assert_true(shutter.passage_blocked, "shutter starts blocked")
-	# (360,124): the gear (26.8 px) is nearer than the latched hatch (41.8 px) for Freeze.
-	if not await walk_to(_player, "bay -> within watch range", Vector2(360, 124)):
+	# (488,188): the gear (26.8 px) is nearer than the latched hatch (112 px) for Freeze.
+	if not await walk_to(_player, "bay -> within watch range", Vector2(488, 188)):
 		return false
 	if not await _use_watch(&"rewind", shutter, func() -> bool: return not shutter.passage_blocked, "shutter raised after Rewind"):
 		return false
 	if not await _use_watch(&"freeze", gear, func() -> bool: return gear.is_frozen(), "gear frozen"):
 		return false
-	# Straight down through the middle of the shutter gap (dividers end at (396,154) and (372,166)).
-	if not await walk_to(_player, "bay -> above the shutter gap", Vector2(384, 146)):
+	# Straight down through the middle of the shutter gap (dividers end at (524,218) and (500,230)).
+	if not await walk_to(_player, "bay -> above the shutter gap", Vector2(512, 210)):
 		return false
-	if not await walk_to(_player, "bay -> through the shutter gap", Vector2(384, 176)):
+	if not await walk_to(_player, "bay -> through the shutter gap", Vector2(512, 240)):
 		return false
-	if not await walk_to(_player, "bay -> pocket", Vector2(432, 170)):
+	if not await walk_to(_player, "bay -> pocket", Vector2(560, 234)):
 		return false
 	if not await _use_watch(&"rewind", inner, func() -> bool: return not inner.passage_blocked, "inner shutter raised after Rewind"):
 		return false
-	if not await walk_to(_player, "bay -> exit_trigger_east_02", Vector2(432, 200), _solved(&"CH1-PZ-002")):
+	if not await walk_to(_player, "bay -> exit_trigger_east_02", Vector2(560, 264), _solved(&"CH1-PZ-002")):
 		return false
 	_assert_true(_session.puzzle_service.is_solved(&"CH1-PZ-002"), "PZ-002 SOLVED behind the inner shutter")
-	if not await walk_to(_player, "bay -> door_exit_east", Vector2(464, 200), _in_room(&"ch01.security_crossing")):
+	if not await walk_to(_player, "bay -> door_exit_east", Vector2(656, 296), _in_room(&"ch01.security_crossing")):
 		return false
 	await physics_frames(2)
 	_segment("3b bay PZ-002")

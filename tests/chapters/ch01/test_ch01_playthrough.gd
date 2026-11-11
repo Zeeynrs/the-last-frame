@@ -215,9 +215,9 @@ func test_safe_anchors_and_checkpoints_match_specs() -> void:
 				var anchor := node as SafeAnchor
 				var sid := String(anchor.object_id)
 				if sid == "ch01.maintenance_bay.safe_anchor_entry":
-					var expected_px := ChapterGraphDef.tile_to_px(1, 4)
+					var expected_px := ChapterGraphDef.tile_to_px(5, 4)
 					_assert_true((anchor.position - expected_px).length() < 1.0,
-						"Anchor %s position %s matches tile (1,4)" % [sid, anchor.position])
+						"Anchor %s position %s matches tile (5,4)" % [sid, anchor.position])
 					continue
 				_assert_true(declared_anchors.has(sid), "SafeAnchor '%s' declared in graph def" % sid)
 				if declared_anchors.has(sid):

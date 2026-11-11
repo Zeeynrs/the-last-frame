@@ -27,7 +27,7 @@ FIXTURES = os.path.join(REPO, "tests", "rooms", "fixtures")
 ROOMS = {
     "arrival_platform": (14, 10, {"strip": (2, ("S", "E")), "doors": [("E", (13, 5))]}),
     "concourse_west": (28, 16, {}),
-    "maintenance_bay": (14, 10, {}),
+    "maintenance_bay": (25, 16, {}),
     "security_crossing": (16, 12, {"holes": B.parse_cells("9,0..11")}),
     "waiting_lounge": (12, 10, {}),
     "signal_control": (16, 12, {}),
@@ -92,6 +92,14 @@ class TenRoomsRoundTrip(unittest.TestCase):
                         spec = json.load(fh)
                     poly = B.canonical(spec["outline"])
                     path = os.path.join(ROOMS_DIR, "concourse_west.tscn")
+                    old = read(path)
+                    new, _ = B.build(old, poly, outset=0.25, room_path=path)
+                elif name == "maintenance_bay":
+                    shape_path = os.path.join(REPO, "design", "ch01", "rooms_v2", "maintenance_bay.json")
+                    with open(shape_path, encoding="utf-8") as fh:
+                        spec = json.load(fh)
+                    poly = B.canonical(spec["outline"])
+                    path = os.path.join(ROOMS_DIR, "maintenance_bay.tscn")
                     old = read(path)
                     new, _ = B.build(old, poly, outset=0.25, room_path=path)
                 else:

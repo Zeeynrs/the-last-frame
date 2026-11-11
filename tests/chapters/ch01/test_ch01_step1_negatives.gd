@@ -149,11 +149,11 @@ func test_so02_hatch_closes_without_freeze() -> void:
 		stop()
 		return
 	var hatch := resolve(&"ch01.maintenance_bay.hatch_01") as PlateLinkedGate
-	if not await walk_to(player, "bay -> hatch plate", Vector2(256, 128), func() -> bool: return not hatch.passage_blocked):
+	if not await walk_to(player, "bay -> hatch plate", Vector2(320, 160), func() -> bool: return not hatch.passage_blocked):
 		stop()
 		return
 	_assert_false(hatch.passage_blocked, "the plate opens the hatch")
-	await push_for([Vector2(288, 92), Vector2(320, 92), Vector2(321, 140), Vector2(336, 128)], 300,
+	await push_for([Vector2(352, 124), Vector2(384, 124), Vector2(385, 172), Vector2(400, 160)], 300,
 		func() -> bool: return is_solved(&"CH1-SO-02"))
 	_assert_true(hatch.passage_blocked, "the hatch closed when the plate was left")
 	_assert_false(is_solved(&"CH1-SO-02"), "300 ticks without Freeze: SO-02 still UNSOLVED (player at %s)" % player.global_position)
@@ -167,14 +167,14 @@ func test_so02_bulkhead_sealed() -> void:
 	if not await start_at(R3, &"door_entry_west", BEFORE_R3, [FLAG_REWIND, FLAG_FREEZE]):
 		stop()
 		return
-	# Bulkhead (368,88)-(332,106) and (308,118)-(224,160) lie on x + 2y = 544; "east" = the capsule
+	# Bulkhead (432,120)-(396,138) and (372,150)-(176,248) lie on x + 2y = 672; "east" = the capsule
 	# centre (y - 4) past it.
-	var east := func() -> bool: return player.global_position.x + 2.0 * (player.global_position.y - 4.0) > 552.0
+	var east := func() -> bool: return player.global_position.x + 2.0 * (player.global_position.y - 4.0) > 680.0
 	# [approach waypoints, push target]; the north spots are reached through the corridor above N-11.
-	for row in [[[Vector2(250, 140)], Vector2(262, 162)], [[Vector2(274, 124)], Vector2(290, 146)],
-			[[Vector2(288, 92), Vector2(320, 92)], Vector2(326, 120)],
-			[[Vector2(288, 92), Vector2(332, 90)], Vector2(348, 112)],
-			[[Vector2(288, 92), Vector2(344, 86)], Vector2(362, 106)]]:
+	for row in [[[Vector2(314, 172)], Vector2(326, 194)], [[Vector2(338, 156)], Vector2(354, 178)],
+			[[Vector2(352, 124), Vector2(384, 124)], Vector2(390, 152)],
+			[[Vector2(352, 124), Vector2(396, 122)], Vector2(412, 144)],
+			[[Vector2(352, 124), Vector2(408, 118)], Vector2(426, 138)]]:
 		for point in row[0]:
 			if not await walk_to(player, "bay -> west of the bulkhead %s" % point, point):
 				stop()
@@ -194,7 +194,7 @@ func test_so02_bell_decoy_and_checkpoint_spawn() -> void:
 		stop()
 		return
 	var hatch := resolve(&"ch01.maintenance_bay.hatch_01") as PlateLinkedGate
-	if not await walk_to(player, "bay -> bell plate", Vector2(208, 136)):
+	if not await walk_to(player, "bay -> bell plate", Vector2(272, 168)):
 		stop()
 		return
 	await physics_frames(2)
@@ -207,8 +207,8 @@ func test_so02_bell_decoy_and_checkpoint_spawn() -> void:
 		stop()
 		return
 	_assert_eq(router.current_room_id, R3, "Continue loads the bay")
-	_assert_true(player.global_position.distance_to(Vector2(272, 104)) < 1.0,
-		"Continue respawns at safe_anchor_entry (272,104), west of the bulkhead (at %s)" % player.global_position)
+	_assert_true(player.global_position.distance_to(Vector2(336, 136)) < 1.0,
+		"Continue respawns at safe_anchor_entry (336,136), west of the bulkhead (at %s)" % player.global_position)
 	stop()
 
 
@@ -224,14 +224,14 @@ func test_pz002_inner_shutter_needs_the_gear_frozen() -> void:
 	var shutter := resolve(&"ch01.maintenance_bay.fire_shutter") as FireShutter
 	var gear := resolve(&"ch01.maintenance_bay.counterweight_gear") as CounterweightGear
 	var inner := resolve(&"ch01.maintenance_bay.inner_shutter") as FireShutter
-	for point in [Vector2(288, 92), Vector2(320, 92), Vector2(320, 140), Vector2(360, 124)]:
+	for point in [Vector2(352, 124), Vector2(384, 124), Vector2(384, 172), Vector2(488, 188)]:
 		if not await walk_to(player, "bay -> fire shutter Rewind spot", point):
 			stop()
 			return
 	if not await use_watch(&"rewind", shutter, func() -> bool: return not shutter.passage_blocked, "fire shutter raised"):
 		stop()
 		return
-	for point in [Vector2(384, 146), Vector2(384, 176), Vector2(416, 176)]:
+	for point in [Vector2(512, 210), Vector2(512, 240), Vector2(544, 240)]:
 		if not await walk_to(player, "bay -> pocket (no Freeze)", point):
 			stop()
 			return
@@ -245,11 +245,11 @@ func test_pz002_inner_shutter_needs_the_gear_frozen() -> void:
 	var refusal := last_refusal(inner)
 	_assert_true(not refusal.is_empty() and refusal[2] == &"unanchored", "R03: inner shutter refused: unanchored (%s)" % [refusal])
 	_assert_true(inner.passage_blocked, "R03: inner shutter still closed")
-	await push_for([Vector2(432, 186), Vector2(448, 192)], 600, func() -> bool: return is_solved(&"CH1-PZ-002"))
+	await push_for([Vector2(560, 250), Vector2(576, 256)], 600, func() -> bool: return is_solved(&"CH1-PZ-002"))
 	_assert_false(is_solved(&"CH1-PZ-002"), "R03: 600 ticks without Freeze: PZ-002 still UNSOLVED")
 	_assert_true(shutter.passage_blocked, "R04 start: the fire shutter has closed again")
-	# R04: late Freeze from (416,176), Rewind the inner shutter, walk to (448,192).
-	if not await walk_to(player, "pocket -> (416,176)", Vector2(416, 176)):
+	# R04: late Freeze from (544,240), Rewind the inner shutter, walk to (576,256).
+	if not await walk_to(player, "pocket -> (544,240)", Vector2(544, 240)):
 		stop()
 		return
 	if not await use_watch(&"freeze", gear, func() -> bool: return gear.is_frozen(), "R04: gear frozen from the pocket"):
@@ -258,7 +258,7 @@ func test_pz002_inner_shutter_needs_the_gear_frozen() -> void:
 	if not await use_watch(&"rewind", inner, func() -> bool: return not inner.passage_blocked, "R04: inner shutter raised"):
 		stop()
 		return
-	if not await walk_to(player, "pocket -> exit_trigger_east_02", Vector2(448, 192), func() -> bool: return is_solved(&"CH1-PZ-002")):
+	if not await walk_to(player, "pocket -> exit_trigger_east_02", Vector2(576, 256), func() -> bool: return is_solved(&"CH1-PZ-002")):
 		stop()
 		return
 	_assert_true(is_solved(&"CH1-PZ-002"), "R04: late Freeze solves PZ-002")

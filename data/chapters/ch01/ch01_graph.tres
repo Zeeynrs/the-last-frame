@@ -47,8 +47,8 @@ rooms = [{
 }]
 }, {
 "room_id": "ch01.maintenance_bay",
-"width": 14,
-"height": 10,
+"width": 25,
+"height": 16,
 "doors": [{
 "door_id": "door_entry_west",
 "side": "W",
@@ -57,16 +57,20 @@ rooms = [{
 }, {
 "door_id": "door_exit_east",
 "side": "E",
-"x": 13,
+"x": 25,
 "y": 4
 }],
 "safe_anchors": [{
 "id": "ch01.maintenance_bay.safe_anchor_west",
-"x": 5,
+"x": 13,
 "y": 4
 }, {
 "id": "ch01.maintenance_bay.safe_anchor_east",
-"x": 10,
+"x": 18,
+"y": 4
+}, {
+"id": "ch01.maintenance_bay.safe_anchor_entry",
+"x": 5,
 "y": 4
 }]
 }, {
