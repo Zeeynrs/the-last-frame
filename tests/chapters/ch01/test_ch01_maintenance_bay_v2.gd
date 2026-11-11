@@ -583,8 +583,15 @@ func test_real_input_so02_and_pz002_lifecycle() -> void:
 	await walk_to(player, "walk to safe_anchor_east", Vector2(544, 240))
 	_assert_true(player.global_position.distance_to(Vector2(544, 240)) <= 3.0, "reached safe_anchor_east")
 
-	# Step 7: Walk towards east door approach (624, 280)
-	await walk_to(player, "walk towards east door", EAST_DOOR_APPROACH)
+	# Step 7: Rewind inner_shutter from pocket (544, 240)
+	var inner := resolve(&"ch01.maintenance_bay.inner_shutter") as FireShutter
+	if not await use_watch(&"rewind", inner, func() -> bool: return not inner.passage_blocked, "inner shutter raised after Rewind"):
+		stop()
+		return
+
+	# Step 8: Walk through inner shutter aperture towards east door approach (624, 280)
+	for point in [Vector2(560, 248), EAST_DOOR_APPROACH]:
+		await walk_to(player, "walk through inner shutter to east door", point)
 	_assert_true(player.global_position.distance_to(EAST_DOOR_APPROACH) <= 3.0, "reached east door approach")
 
 	stop()
