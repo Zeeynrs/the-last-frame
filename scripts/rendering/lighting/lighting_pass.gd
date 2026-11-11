@@ -10,6 +10,13 @@ extends CanvasLayer
 ##
 ## The rules live here as pure functions (`shifted_index`, `shift_table`, `lift_at`,
 ## `output_index`); the shader indexes the same table and mirrors `lift_at`.
+##
+## ADR-027 (TLF-084): a room with `shadows` gets a shade map baked when it is applied (ShadeBaker,
+## world space, rebuilt on every room change, only while the pass is shown) and a contact ellipse
+## under Elias that sits below his body. Floor receivers (RECEIVERS, indices 00-05) take the
+## room's floor fill (cleared around its light pools) and the shade; the rule is
+## k = clamp(A - max(lights, fill) + shade, 0, 3) (`output_index`). Information regions and indices
+## from `exempt_from` up never take either.
 
 const LAYER := 1
 const MAX_LIGHTS := 8
@@ -17,13 +24,27 @@ const MAX_LIGHTS := 8
 const SLOTS := MAX_LIGHTS + 1
 const SETTING := &"lighting_enabled"
 const SHADER := preload("res://scripts/rendering/lighting/palette_lighting.gdshader")
+## Indices that take the floor fill and the shade: the terrazzo/void ramp 00-05 (ADR-027).
+const RECEIVERS := 0b111111
+## Elias's contact shadow (shade 1): an ellipse centred this far from his feet (player origin),
+## low enough that no pixel of his iso or side frames lies inside it (ADR-027, readability first).
+const ELIAS_CONTACT_OFFSET := Vector2(0, 4)
+const ELIAS_CONTACT_RADIUS := Vector2(8, 4)
 
 var lighting: RoomLighting = null
 var room: Node = null
 var player: Node2D = null
 ## The room's lights in use (the first MAX_LIGHTS found).
 var lights: Array[RoomLight] = []
+## The current room's shade map (L8, one texel per world pixel) or null; its world origin.
+var shade_image: Image = null
+var shade_origin := Vector2.ZERO
+## The last bake: time in ms, and how many maps this pass has baked.
+var bake_ms := 0.0
+var bake_count := 0
 
+var _shade_tex: ImageTexture = null
+var _shade_room_id := 0
 var _rect: ColorRect
 var _material: ShaderMaterial
 var _table_exempt := -1
@@ -133,6 +154,7 @@ func apply_room(p_room: Node, p_lighting: RoomLighting, p_player: Node2D) -> voi
 		for light in found:
 			if lights.size() < MAX_LIGHTS:
 				lights.append(light)
+	_drop_shade()
 	_update_visibility()
 	if visible:
 		_refresh()
@@ -154,7 +176,31 @@ func settings_enabled() -> bool:
 	return true
 
 
-## The lights in view pixels, in shader order (room lights, then the Elias zone).
+## True when the current room's shade map is in use.
+func shadows_active() -> bool:
+	return is_active() and lighting.shadows and shade_image != null
+
+
+## The shade map's texel (0,0) in view pixels and the view pixels per texel.
+func shade_screen_rect() -> Vector4:
+	var xf := get_viewport().get_canvas_transform() if is_inside_tree() else Transform2D.IDENTITY
+	var o := (xf * shade_origin).round()
+	var s := xf.get_scale()
+	return Vector4(o.x, o.y, s.x, s.y)
+
+
+## Elias's contact ellipse in view pixels (centre, radius); far off screen when there is none.
+func elias_contact() -> Vector4:
+	if not shadows_active() or player == null or not is_instance_valid(player):
+		return Vector4(-9999, -9999, 1, 1)
+	var xf := get_viewport().get_canvas_transform() if is_inside_tree() else Transform2D.IDENTITY
+	var c := (xf * (player.global_position + ELIAS_CONTACT_OFFSET)).round()
+	var s := xf.get_scale()
+	return Vector4(c.x, c.y, ELIAS_CONTACT_RADIUS.x * s.x, ELIAS_CONTACT_RADIUS.y * s.y)
+
+
+## The lights in view pixels, in shader order (room lights, then the Elias zone). Room lights carry
+## "room": true (their pools clear the floor fill); the Elias zone does not.
 func screen_lights() -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	if not is_active():
@@ -165,7 +211,7 @@ func screen_lights() -> Array[Dictionary]:
 		if not is_instance_valid(light) or not light.is_inside_tree():
 			continue
 		var entry := {"lift_in": light.lift_inner, "lift_out": light.lift_outer, "inner": light.inner,
-			"mask": light.index_mask()}
+			"mask": light.index_mask(), "room": true}
 		if light.shape == RoomLight.Shape.QUAD:
 			var pts: Array[Vector2] = []
 			for q in light.quad:
@@ -183,16 +229,26 @@ func screen_lights() -> Array[Dictionary]:
 		var c := (xf * (player.global_position + lighting.elias_offset)).round()
 		out.append({"kind": 0, "a": Vector4(c.x, c.y, lighting.elias_radius.x * scale.x, lighting.elias_radius.y * scale.y),
 			"b": Vector4.ZERO, "lift_in": lighting.elias_lift_inner, "lift_out": lighting.elias_lift_outer,
-			"inner": lighting.elias_inner, "mask": 0})
+			"inner": lighting.elias_inner, "mask": 0, "room": false})
 	return out
 
 
-## The strongest lift at view pixel `p` for a pixel of palette `index` (the shader's rule).
+## The strongest light lift at view pixel `p` for a pixel of palette `index` (the shader's rule,
+## without the floor fill).
 func lift_at(p: Vector2, index: int, entries: Array[Dictionary] = []) -> int:
+	return light_terms(p, index, entries)["lift"]
+
+
+## The light loop of the shader at view pixel `p` for palette `index`: {lift (strongest light),
+## info (an information region restores this pixel), clear (inside a room pool's fill-clear area)}.
+func light_terms(p: Vector2, index: int, entries: Array[Dictionary] = []) -> Dictionary:
 	if entries.is_empty():
 		entries = screen_lights()
 	var centre := p.floor() + Vector2(0.5, 0.5)
+	var clear_at := lighting.fill_clear if lighting != null else 1.0
 	var lift := 0
+	var info := false
+	var clear := false
 	for e in entries:
 		var mask: int = e["mask"]
 		if mask != 0 and ((mask >> index) & 1) == 0:
@@ -202,18 +258,61 @@ func lift_at(p: Vector2, index: int, entries: Array[Dictionary] = []) -> int:
 		if e["kind"] == 0:
 			var d := ((centre - Vector2(a.x, a.y)) / Vector2(a.z, a.w)).length()
 			v = e["lift_in"] if d < e["inner"] else (e["lift_out"] if d < 1.0 else 0)
+			clear = clear or (e.get("room", true) and d < clear_at)
 		elif _in_quad(centre, a, e["b"]):
 			v = e["lift_in"]
+			info = info or mask != 0
 		lift = maxi(lift, v)
-	return lift
+	return {"lift": lift, "info": info, "clear": clear}
 
 
-## The palette index the pass outputs at view pixel `p` for an input pixel of palette `index`.
+## The floor fill at view pixel `p` for palette `index`: the room's fill_lift on a receiver outside
+## every information region and every pool's clear area, else 0.
+func fill_at(p: Vector2, index: int, entries: Array[Dictionary] = []) -> int:
+	if not is_active():
+		return 0
+	return _fill(light_terms(p, index, entries), index)
+
+
+## The shade (extra ramp steps) at view pixel `p` for palette `index`: the shade map texel under it,
+## at least 1 inside Elias's contact ellipse; 0 off the receivers or inside an information region.
+func shade_at(p: Vector2, index: int, entries: Array[Dictionary] = []) -> int:
+	if not shadows_active():
+		return 0
+	return _shade(p, index, light_terms(p, index, entries))
+
+
+## The palette index the pass outputs at view pixel `p` for an input pixel of palette `index`:
+## k = clamp(A - max(light lift, fill) + shade, 0, 3) steps down its ramp.
 func output_index(p: Vector2, index: int, entries: Array[Dictionary] = []) -> int:
 	if not is_active():
 		return index
-	var k := clampi(lighting.ambient_steps - lift_at(p, index, entries), 0, 3)
+	var terms := light_terms(p, index, entries)
+	var lift := maxi(terms["lift"], _fill(terms, index))
+	var shade := _shade(p, index, terms) if shadows_active() else 0
+	var k := clampi(lighting.ambient_steps - lift + shade, 0, 3)
 	return shifted_index(index, k, lighting.exempt_from)
+
+
+func _fill(terms: Dictionary, index: int) -> int:
+	if lighting.fill_lift <= 0 or ((RECEIVERS >> index) & 1) == 0 or terms["info"] or terms["clear"]:
+		return 0
+	return lighting.fill_lift
+
+
+func _shade(p: Vector2, index: int, terms: Dictionary) -> int:
+	if ((RECEIVERS >> index) & 1) == 0 or terms["info"]:
+		return 0
+	var centre := p.floor() + Vector2(0.5, 0.5)
+	var r := shade_screen_rect()
+	var t := ((centre - Vector2(r.x, r.y)) / Vector2(r.z, r.w)).floor()
+	var s := 0
+	if t.x >= 0 and t.y >= 0 and t.x < shade_image.get_width() and t.y < shade_image.get_height():
+		s = shade_image.get_pixel(int(t.x), int(t.y)).r8
+	var c := elias_contact()
+	if ((centre - Vector2(c.x, c.y)) / Vector2(c.z, c.w)).length() < 1.0:
+		s = maxi(s, 1)
+	return s
 
 
 # --- internals -----------------------------------------------------------------------------
@@ -250,12 +349,51 @@ func _refresh() -> void:
 	_material.set_shader_parameter("light_lift_out", lift_out)
 	_material.set_shader_parameter("light_inner", inners)
 	_material.set_shader_parameter("light_mask", masks)
+	var room_count := 0
+	for e in entries:
+		if e.get("room", true):
+			room_count += 1
+	_material.set_shader_parameter("room_light_count", room_count)
+	_material.set_shader_parameter("receivers", RECEIVERS)
+	_material.set_shader_parameter("fill_lift", lighting.fill_lift)
+	_material.set_shader_parameter("fill_clear", lighting.fill_clear)
+	_material.set_shader_parameter("shade_on", 1 if shadows_active() else 0)
+	if shadows_active():
+		_material.set_shader_parameter("shade_rect", shade_screen_rect())
+		_material.set_shader_parameter("shade_size", Vector2i(shade_image.get_width(), shade_image.get_height()))
+		_material.set_shader_parameter("actor_shade", elias_contact())
 	if is_inside_tree():
 		_material.set_shader_parameter("view_size", get_viewport().get_visible_rect().size)
 
 
+## Bakes the current room's shade map once per room, only while the pass is shown (a hidden pass,
+## e.g. the setting off, costs nothing at room entry).
+func _ensure_shade() -> void:
+	if not visible or not is_active() or not lighting.shadows:
+		return
+	if shade_image != null and _shade_room_id == room.get_instance_id():
+		return
+	var r := ShadeBaker.bake(room as Node2D)
+	shade_image = r["image"]
+	shade_origin = r["origin"]
+	bake_ms = r["ms"]
+	bake_count += 1
+	_shade_room_id = room.get_instance_id()
+	_shade_tex = ImageTexture.create_from_image(shade_image)
+	_material.set_shader_parameter("shade_map", _shade_tex)
+
+
+func _drop_shade() -> void:
+	shade_image = null
+	_shade_tex = null
+	_shade_room_id = 0
+	_material.set_shader_parameter("shade_map", null)
+	_material.set_shader_parameter("shade_on", 0)
+
+
 func _update_visibility() -> void:
 	visible = is_active() and settings_enabled()
+	_ensure_shade()
 
 
 func _on_setting_changed(key: StringName, _value: Variant) -> void:
