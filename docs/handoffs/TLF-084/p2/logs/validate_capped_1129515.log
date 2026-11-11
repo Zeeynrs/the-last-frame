@@ -1,0 +1,71 @@
+=== capped validate of 1129515 (fresh archive, config/name 'TLF Verify 1129515', every Godot call <= 120 s) ===
+first bytes of project.godot: [59, 32, 69]
+[1/3] import: exit 0, 0 ERROR lines, 13 s
+[2/3] script check: exit 0, Script check: 194 scripts, 0 failed., 0 ERROR lines, leak check: clean, 6 s
+[3/3] tests/audio/test_audio_feedback.gd               exit 0       TESTS: 8 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/audio/test_audio_real_input.gd             exit 0       TESTS: 2 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 4 s
+[3/3] tests/chapters/ch01/test_ch01_arrival_platform_v2.gd exit 0       TESTS: 5 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 22 s
+[3/3] tests/chapters/ch01/test_ch01_art_integration.gd exit 0       TESTS: 6 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 2 s
+[3/3] tests/chapters/ch01/test_ch01_concourse_west_v2.gd exit 0       TESTS: 12 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 55 s
+[3/3] tests/chapters/ch01/test_ch01_mira_memory_side.gd exit 0       TESTS: 6 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 39 s
+[3/3] tests/chapters/ch01/test_ch01_narrative_beats.gd exit 0       TESTS: 13 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 11 s
+[3/3] tests/chapters/ch01/test_ch01_outro_cinematic.gd exit 0       TESTS: 11 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 2 s
+[3/3] tests/chapters/ch01/test_ch01_playthrough.gd     exit 0       TESTS: 19 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 14 s
+[3/3] tests/chapters/ch01/test_ch01_pz002_negative.gd  exit 0       TESTS: 2 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 36 s
+[3/3] tests/chapters/ch01/test_ch01_pz004_layout.gd    exit 0       TESTS: 5 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/chapters/ch01/test_ch01_pz004_saveload.gd  exit 0       TESTS: 4 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 64 s
+[3/3] tests/chapters/ch01/test_ch01_real_playthrough.gd exit 0       TESTS: 1 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 64 s
+[3/3] tests/chapters/ch01/test_ch01_sort_order.gd      exit 0       TESTS: 3 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 5 s
+[3/3] tests/chapters/ch01/test_ch01_step1_negatives.gd exit 0       TESTS: 12 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 103 s
+[3/3] tests/chapters/ch01/test_ch01_unlock_guards.gd   exit 0       TESTS: 4 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 32 s
+[3/3] tests/chapters/ch01/test_operator_sighting.gd    exit 0       TESTS: 7 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks 2 | 3 s  <-- CHECK
+[3/3] tests/core/test_scene_router.gd                  exit 0       TESTS: 4 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 2 s
+[3/3] tests/echo/test_echo_service.gd                  exit 0       TESTS: 16 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/interaction/test_interactable_lifecycle.gd exit 0       TESTS: 3 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/interaction/test_targeting.gd              exit 0       TESTS: 2 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/narrative/test_ch01_text.gd                exit 0       TESTS: 5 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/narrative/test_documents_journal.gd        exit 0       TESTS: 5 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/narrative/test_trace_memory.gd             exit 0       TESTS: 3 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 3 s
+[3/3] tests/player/test_ability_unlocks.gd             exit 0       TESTS: 5 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 3 s
+[3/3] tests/player/test_player_movement.gd             exit 0       TESTS: 3 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/player/test_pocket_watch.gd                exit 0       TESTS: 10 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/player/test_spawn_targeting.gd             exit 0       TESTS: 1 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 2 s
+[3/3] tests/player/test_targeting_selection.gd         exit 0       TESTS: 5 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/puzzle/test_ch01_puzzles.gd                exit 0       TESTS: 37 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/puzzle/test_hint_service.gd                exit 0       TESTS: 7 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/puzzle/test_puzzle_service.gd              exit 0       TESTS: 6 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/puzzle/test_step1_r1_deltas.gd             exit 0       TESTS: 39 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/puzzle/test_step1_solo_and_ticket.gd       exit 0       TESTS: 35 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/rendering/test_lighting_pass.gd            exit 0       TESTS: 15 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 2 s
+[3/3] tests/rendering/test_shadows.gd                  exit 0       TESTS: 14 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 3 s
+[3/3] tests/rooms/test_room_builder_output.gd          exit 0       TESTS: 5 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/rooms/test_room_camera.gd                  exit 0       TESTS: 5 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 10 s
+[3/3] tests/rooms/test_room_router.gd                  exit 0       TESTS: 13 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/rooms/test_room_shape.gd                   exit 0       TESTS: 7 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 9 s
+[3/3] tests/rooms/test_view_mode_side.gd               exit 0       TESTS: 8 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 5 s
+[3/3] tests/save/test_headless_save_root.gd            exit 0       TESTS: 5 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/save/test_save_service.gd                  exit 0       TESTS: 12 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/session/test_id_registry.gd                exit 0       TESTS: 6 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/session/test_interaction_service.gd        exit 0       TESTS: 5 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/session/test_sim_clock.gd                  exit 0       TESTS: 2 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/settings/test_headless_settings_path.gd    exit 0       TESTS: 5 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/settings/test_settings.gd                  exit 0       TESTS: 15 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/spatial/test_ch01_graph.gd                 exit 0       TESTS: 9 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/spatial/test_spatial_graph.gd              exit 0       TESTS: 12 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/support/test_test_runner_async.gd          exit 0       TESTS: 6 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/telemetry/test_playtest_log.gd             exit 0       TESTS: 8 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 27 s
+[3/3] tests/temporal/test_temporal_abilities.gd        exit 0       TESTS: 13 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/temporal/test_temporal_component.gd        exit 0       TESTS: 12 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/test_project_settings.gd                   exit 0       TESTS: 7 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/ui/test_ability_wheel.gd                   exit 0       TESTS: 10 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 3 s
+[3/3] tests/ui/test_chapter_complete_overlay.gd        exit 0       TESTS: 4 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/ui/test_dial_readout.gd                    exit 0       TESTS: 3 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 12 s
+[3/3] tests/ui/test_dialogue_box.gd                    exit 0       TESTS: 7 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/ui/test_document_viewer.gd                 exit 0       TESTS: 3 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/ui/test_hint_ui.gd                         exit 0       TESTS: 2 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/ui/test_hud_feedback.gd                    exit 0       TESTS: 6 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/ui/test_journal_screen.gd                  exit 0       TESTS: 2 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/ui/test_title_screen.gd                    exit 0       TESTS: 7 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 4 s
+[3/3] tests/ui/test_ui_layout_960.gd                   exit 0       TESTS: 5 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/ui/test_ui_theme.gd                        exit 0       TESTS: 5 passed, 0 failed | files 1 | SCRIPT ERROR 0 | leaks clean | 2 s
+=== TOTAL: 66 test files, TESTS: 544 passed, 0 failed, SCRIPT ERROR lines 0, files needing a look: ['test_operator_sighting.gd'] ===
