@@ -88,7 +88,7 @@ def corner_pillar():
     for z in (14, 15):
         a = iso.P(-0.375, 0.375, z); b = iso.P(0.375, 0.375, z); c = iso.P(0.375, -0.375, z)
         T.line(int(a[0]), int(a[1]), int(b[0]), int(b[1]) - 1, 24)
-        T.line(int(b[0]), int(b[1]), int(c[0]), int(c[1]) - 1, 25)
+        T.line(int(b[0]), int(b[1]), int(c[0]), int(c[1]) - 1, 24)  # was 25 (TLF-083 P2: dado 24 on every face)
     # kick plate at base
     for z in (0, 1, 2):
         a = iso.P(-0.375, 0.375, z); b = iso.P(0.375, 0.375, z); c = iso.P(0.375, -0.375, z)

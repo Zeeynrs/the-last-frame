@@ -78,6 +78,12 @@ FONT5X7 = {
 }
 
 
+# Dado/trim index on the W-facing (and every other) wall face. It was 25 on W faces and 24 on N faces;
+# TLF-083 Part 2 (owner decision 2026-11-11, ADR-026): 25 is reserved for emissive cores (clock, watch,
+# tactile, lamps) and never darkens under the lighting pass, so the dado is 24 on every face.
+DADO_W = 24
+
+
 def _draw_text_img(im, x, y, text, rgba, scale=1):
     cx = x
     w, h = im.size
@@ -140,7 +146,7 @@ def _paint_tall_n_col(l0, l1, l2, x, y_top):
 
 
 def _paint_tall_w_col(l0, l1, l2, x, y_top):
-    """Paint one column of a tall W wall face (Step 0 Mid-Light: 08 body, 07 grout, 25 amber dado)."""
+    """Paint one column of a tall W wall face (Step 0 Mid-Light: 08 body, 07 grout, 24 amber dado, DADO_W)."""
     for z_down in range(0, 49):
         y = y_top + z_down
         if not (0 <= y < l0.h):
@@ -170,7 +176,7 @@ def _paint_tall_w_col(l0, l1, l2, x, y_top):
         if z_down == 35:
             l2.put(x, y, 13)
         elif z_down == 36:
-            l2.put(x, y, 25)
+            l2.put(x, y, DADO_W)
         elif z_down == 37:
             l2.put(x, y, 7)
         elif z_down in (46, 47):
@@ -257,7 +263,7 @@ def _paint_low_e_col(l0, l1, l2, x, y_top):
         if z_down == 4:
             l2.put(x, y, 13)
         elif z_down == 5:
-            l2.put(x, y, 25)
+            l2.put(x, y, DADO_W)
         elif z_down == 6:
             l2.put(x, y, 7)
         elif z_down in (14, 15):
@@ -306,7 +312,7 @@ def gen_wall_corner_nw_outer():
             elif z_down in (35, 37):
                 l2.put(x, y, 13 if x <= 15 else 12)
             elif z_down == 36:
-                l2.put(x, y, 25 if x <= 15 else 24)
+                l2.put(x, y, DADO_W if x <= 15 else 24)
             elif z_down in (46, 47):
                 l2.put(x, y, 12 if x <= 15 else 11)
             elif z_down == 48:
@@ -352,7 +358,7 @@ def gen_wall_corner_nw_inner():
             elif z_down == 35:
                 l2.put(x, y, 14 if x in (15, 16) else 13)
             elif z_down == 36:
-                l2.put(x, y, 26 if x in (15, 16) else (24 if x < 15 else 25))
+                l2.put(x, y, 26 if x in (15, 16) else (24 if x < 15 else DADO_W))
             elif z_down == 37:
                 l2.put(x, y, 6)
             elif z_down in (46, 47):
@@ -434,7 +440,7 @@ def gen_wall_corner_n_turn_outer():
             elif z == 4:
                 l2.put(x, y, 13)
             elif z == 5:
-                l2.put(x, y, 25 if x <= 16 else 24)
+                l2.put(x, y, DADO_W if x <= 16 else 24)
             elif z in (14, 15):
                 l2.put(x, y, 12 if x <= 15 else 11)
             elif z == 16:
@@ -503,7 +509,7 @@ def gen_wall_corner_n_turn_inner():
             elif z == 1:
                 l2.put(x, y, 14 if x in (15, 16) else 9)
             elif z == 5:
-                l2.put(x, y, 25 if x >= 16 else 24)
+                l2.put(x, y, DADO_W if x >= 16 else 24)
             elif z in (15, 16):
                 l2.put(x, y, 12)
             elif z == 17:
@@ -547,7 +553,7 @@ def gen_wall_corner_w_turn_outer():
             if z_down == 35:
                 l2.put(x, y, 14)
             elif z_down == 36:
-                l2.put(x, y, 25 if dx < 4 else 24)
+                l2.put(x, y, DADO_W if dx < 4 else 24)
             elif z_down == 37:
                 l2.put(x, y, 7)
             elif z_down in (46, 47):
@@ -572,7 +578,7 @@ def gen_wall_corner_w_turn_outer():
             elif z == 4:
                 l2.put(x, y, 13)
             elif z == 5:
-                l2.put(x, y, 25 if x <= 15 else 24)
+                l2.put(x, y, DADO_W if x <= 15 else 24)
             elif z in (14, 15):
                 l2.put(x, y, 12 if x <= 15 else 11)
             elif z == 16:
@@ -617,7 +623,7 @@ def gen_wall_corner_w_turn_inner():
                 if z_down == 35:
                     l2.put(x, y, 13)
                 elif z_down == 36:
-                    l2.put(x, y, 25)
+                    l2.put(x, y, DADO_W)
                 elif z_down == 37:
                     l2.put(x, y, 7)
                 elif z_down in (46, 47):
@@ -641,7 +647,7 @@ def gen_wall_corner_w_turn_inner():
             elif z == 1:
                 l2.put(x, y, 14 if x in (15, 16) else 9)
             elif z == 5:
-                l2.put(x, y, 25 if x <= 15 else 24)
+                l2.put(x, y, DADO_W if x <= 15 else 24)
             elif z in (15, 16):
                 l2.put(x, y, 12)
             elif z == 17:
@@ -704,7 +710,7 @@ def gen_wall_partition_low_corner_inner():
             elif z == 4:
                 l2.put(x, y, 13 if x <= 15 else 12)
             elif z == 5:
-                l2.put(x, y, 25 if x <= 15 else 24)
+                l2.put(x, y, DADO_W if x <= 15 else 24)
             elif z == 6:
                 l2.put(x, y, 6)
             elif z in (14, 15):
@@ -748,7 +754,7 @@ def gen_wall_partition_low_corner_outer():
             elif z == 4:
                 l2.put(x, y, 14 if x in (15, 16) else 13)
             elif z == 5:
-                l2.put(x, y, 26 if x in (15, 16) else (24 if x < 15 else 25))
+                l2.put(x, y, 26 if x in (15, 16) else (24 if x < 15 else DADO_W))
             elif z == 6:
                 l2.put(x, y, 6)
             elif z in (14, 15):
@@ -864,7 +870,7 @@ def gen_wall_w_endcap_low():
             if z_down == 35:
                 l2.put(x, y, 13)
             elif z_down == 36:
-                l2.put(x, y, 25)
+                l2.put(x, y, DADO_W)
             elif z_down == 37:
                 l2.put(x, y, 7)
             elif z_down in (46, 47):
