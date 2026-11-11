@@ -345,19 +345,19 @@ func test_every_stand_spot_reachable_within_2_6_px() -> void:
 	var spots: Array[Dictionary] = [
 		{"name": "checkpoint", "pos": Vector2(320, 144), "target_id": &""},
 		{"name": "safe_anchor_entry", "pos": Vector2(336, 136), "target_id": &""},
-		{"name": "bell_plate_01", "pos": Vector2(272, 168), "target_id": &"ch01.maintenance_bay.bell_plate_01"},
-		{"name": "hatch_plate_01", "pos": Vector2(320, 160), "target_id": &"ch01.maintenance_bay.hatch_plate_01"},
+		{"name": "bell_plate_01", "pos": Vector2(272, 168), "target_id": &""},
+		{"name": "hatch_plate_01", "pos": Vector2(320, 160), "target_id": &""},
 		{"name": "doc_hatch_chart", "pos": Vector2(304, 168), "target_id": &"ch01.maintenance_bay.doc_hatch_chart"},
-		{"name": "n11_hatch_tech", "pos": Vector2(368, 136), "target_id": &"ch01.maintenance_bay.n11_hatch_tech"},
-		{"name": "hatch_01", "pos": Vector2(384, 144), "target_id": &"ch01.maintenance_bay.hatch_01"},
+		{"name": "n11_hatch_tech", "pos": Vector2(352, 144), "target_id": &"ch01.maintenance_bay.n11_hatch_tech"},
+		{"name": "hatch_01 approach", "pos": Vector2(384, 124), "target_id": &""},
 		{"name": "safe_anchor_west", "pos": Vector2(464, 200), "target_id": &""},
-		{"name": "counterweight_gear", "pos": Vector2(512, 176), "target_id": &"ch01.maintenance_bay.counterweight_gear"},
-		{"name": "fire_shutter", "pos": Vector2(476, 208), "target_id": &"ch01.maintenance_bay.fire_shutter"},
+		{"name": "counterweight_gear", "pos": Vector2(488, 188), "target_id": &""},
+		{"name": "fire_shutter", "pos": Vector2(488, 188), "target_id": &""},
 		{"name": "safe_anchor_east", "pos": Vector2(544, 240), "target_id": &""},
 		{"name": "reset_anchor_01", "pos": Vector2(416, 208), "target_id": &"ch01.maintenance_bay.reset_anchor_01"},
 		{"name": "doc_tech_log", "pos": Vector2(416, 256), "target_id": &"ch01.maintenance_bay.doc_tech_log"},
-		{"name": "inner_shutter", "pos": Vector2(560, 248), "target_id": &"ch01.maintenance_bay.inner_shutter"},
-		{"name": "doc_inner_shutter_plate", "pos": Vector2(608, 224), "target_id": &"ch01.maintenance_bay.doc_inner_shutter_plate"},
+		{"name": "inner_shutter approach", "pos": Vector2(544, 240), "target_id": &""},
+		{"name": "doc_inner_shutter_plate", "pos": Vector2(592, 232), "target_id": &"ch01.maintenance_bay.doc_inner_shutter_plate"},
 		{"name": "door_exit_east approach", "pos": EAST_DOOR_APPROACH, "target_id": &""}
 	]
 
@@ -536,17 +536,26 @@ func test_rigid_cluster_shifts_and_relative_distances() -> void:
 # 9. Real-input playthrough lifecycle for SO-02 and PZ-002
 # -------------------------------------------------------------------------------------------------
 func test_real_input_so02_and_pz002_lifecycle() -> void:
-	if not await start_at(MAINTENANCE_BAY, &"door_entry_west", [&"CH1-SO-01", &"CH1-PZ-001"], []):
+	if not await start_at(MAINTENANCE_BAY, &"door_entry_west", [&"CH1-SO-01", &"CH1-PZ-001", &"CH1-PZ-006"], [FLAG_REWIND]):
 		stop()
 		return
 
+	var tech := resolve(&"ch01.maintenance_bay.n11_hatch_tech")
 	var hatch := resolve(&"ch01.maintenance_bay.hatch_01") as PlateLinkedGate
 	var shutter := resolve(&"ch01.maintenance_bay.fire_shutter") as FireShutter
 	var gear := resolve(&"ch01.maintenance_bay.counterweight_gear") as CounterweightGear
 	_assert_true(hatch.passage_blocked, "hatch initially closed")
 	_assert_true(shutter.passage_blocked, "fire shutter initially closed")
 
-	# Step 1: Walk to hatch_plate_01 at (320, 160)
+	# Step 1: Trace technician to unlock Freeze
+	await walk_to(player, "approach technician", Vector2(352, 144))
+	if not await use_watch(&"trace", tech, func() -> bool: return session.narrative_state.has_flag(FLAG_FREEZE), "technician traced"):
+		stop()
+		return
+	await dismiss_blocking_ui()
+	_assert_true(session.ability_unlocks.is_unlocked(&"freeze"), "Freeze unlocked")
+
+	# Step 2: Walk to hatch_plate_01 at (320, 160)
 	await walk_to(player, "walk to hatch_plate_01", Vector2(320, 160), func() -> bool: return not hatch.passage_blocked)
 	await physics_frames(10)
 	_assert_false(hatch.passage_blocked, "stepping on hatch_plate_01 opened hatch_01")
@@ -556,29 +565,29 @@ func test_real_input_so02_and_pz002_lifecycle() -> void:
 		stop()
 		return
 
-	# Step 2: Walk through hatch aperture (384, 144) to safe_anchor_west (464, 200)
+	# Step 3: Walk through hatch aperture (384, 144) to safe_anchor_west (464, 200)
 	await walk_to(player, "walk to hatch aperture", Vector2(384, 144))
 	await walk_to(player, "walk to safe_anchor_west", Vector2(464, 200))
 	_assert_true(player.global_position.distance_to(Vector2(464, 200)) <= 3.0, "reached safe_anchor_west")
 
-	# Step 3: Rewind fire_shutter from within range (488, 188)
+	# Step 4: Rewind fire_shutter from within range (488, 188)
 	await walk_to(player, "approach shutter rewinder", Vector2(488, 188))
 	if not await use_watch(&"rewind", shutter, func() -> bool: return not shutter.passage_blocked, "shutter raised after Rewind"):
 		stop()
 		return
 
-	# Step 4: Freeze counterweight_gear at (512, 176)
+	# Step 5: Freeze counterweight_gear at (512, 176)
 	if not await use_watch(&"freeze", gear, func() -> bool: return gear.is_frozen(), "gear frozen"):
 		stop()
 		return
 	_assert_false(shutter.passage_blocked, "fire shutter held open by frozen gear")
 
-	# Step 5: Walk through fire shutter aperture (512, 224) to safe_anchor_east (544, 240)
+	# Step 6: Walk through fire shutter aperture (512, 224) to safe_anchor_east (544, 240)
 	await walk_to(player, "walk through shutter aperture", Vector2(512, 224))
 	await walk_to(player, "walk to safe_anchor_east", Vector2(544, 240))
 	_assert_true(player.global_position.distance_to(Vector2(544, 240)) <= 3.0, "reached safe_anchor_east")
 
-	# Step 6: Walk towards east door approach (624, 280)
+	# Step 7: Walk towards east door approach (624, 280)
 	await walk_to(player, "walk towards east door", EAST_DOOR_APPROACH)
 	_assert_true(player.global_position.distance_to(EAST_DOOR_APPROACH) <= 3.0, "reached east door approach")
 

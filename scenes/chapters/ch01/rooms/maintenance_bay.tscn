@@ -45,6 +45,9 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_door"]
 radius = 10.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_door_entry"]
+radius = 6.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cp"]
 size = Vector2(28, 16)
 
@@ -154,7 +157,8 @@ door_id = &"door_entry_west"
 object_id = &"ch01.maintenance_bay.door_entry_west"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="door_entry_west"]
-shape = SubResource("CircleShape2D_door")
+position = Vector2(-4, -2)
+shape = SubResource("CircleShape2D_door_entry")
 
 [node name="Spawn" type="Marker2D" parent="door_entry_west"]
 position = Vector2(32, 16)
