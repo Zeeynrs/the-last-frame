@@ -1,0 +1,85 @@
+"""TLF-085 concrete recolour proof pack from capture_tlf085_concrete.gd shots: per room the unlit frame
+before | after (colour and greyscale), x2 crops of the props standing on concrete, the tile itself x8
+before | after, and an independent palette count (no Godot).
+python make_pack_concrete.py <shots dir> <out dir> <palette .gpl> <old tile png> <new tile png>"""
+import re, sys, pathlib, shutil
+from PIL import Image
+
+shots, out, gpl, old_tile, new_tile = map(pathlib.Path, sys.argv[1:6])
+out.mkdir(parents=True, exist_ok=True)
+palette = []
+for line in gpl.read_text(encoding="utf-8").splitlines():
+    m = re.match(r"\s*(\d+)\s+(\d+)\s+(\d+)\s", line)
+    if m:
+        palette.append(tuple(int(v) for v in m.groups()))
+assert len(palette) == 32
+pset = set(palette)
+
+
+def grey(im):
+    im = im.convert("RGB")
+    g = Image.new("RGB", im.size)
+    src, dst = im.load(), g.load()
+    for y in range(im.height):
+        for x in range(im.width):
+            r, gg, b = src[x, y]
+            l = round(0.2126 * r + 0.7152 * gg + 0.0722 * b)
+            dst[x, y] = (l, l, l)
+    return g
+
+
+def off_palette(im):
+    return sum(1 for c in im.convert("RGB").getdata() if c not in pset)
+
+
+def pair(a, b, gap=6, vertical=False):
+    if vertical:
+        s = Image.new("RGB", (a.width, a.height + b.height + gap), (255, 255, 255))
+        s.paste(a, (0, 0)); s.paste(b, (0, a.height + gap))
+    else:
+        s = Image.new("RGB", (a.width + b.width + gap, a.height), (255, 255, 255))
+        s.paste(a, (0, 0)); s.paste(b, (a.width + gap, 0))
+    return s
+
+
+report = []
+# the tile itself, x8, colour and greyscale
+t0, t1 = Image.open(old_tile).convert("RGBA"), Image.open(new_tile).convert("RGBA")
+def x8(im):
+    bg = Image.new("RGBA", im.size, (255, 255, 255, 255)); bg.alpha_composite(im)
+    return bg.convert("RGB").resize((im.width * 8, im.height * 8), Image.NEAREST)
+pair(pair(x8(t0), x8(t1)), pair(grey(x8(t0)), grey(x8(t1))), vertical=True).save(out / "tile_concrete_service_x8_before_after.png")
+idx = {c: i for i, c in enumerate(palette)}
+for name, im in (("before", t0), ("after", t1)):
+    used = sorted({idx.get(p[:3], -1) for p in im.getdata() if p[3] > 127})
+    report.append("tile %s: indices %s, off-palette %d" % (name, used, sum(1 for p in im.getdata() if p[3] > 127 and p[:3] not in pset)))
+
+crops = {}
+for log in sorted(shots.glob("*_after.log")):
+    room = log.name[:-len("_after.log")]
+    before = Image.open(shots / f"{room}_before_unlit.png").convert("RGB")
+    after = Image.open(shots / f"{room}_after_unlit.png").convert("RGB")
+    for tag, im in (("before", before), ("after", after)):
+        shutil.copyfile(shots / f"{room}_{tag}_unlit.png", out / f"{room}_{tag}_unlit.png")
+        grey(im).save(out / f"{room}_{tag}_unlit_greyscale.png")
+        report.append(f"{room}_{tag}_unlit.png: off-palette {off_palette(im)} of {im.width * im.height}")
+    pair(before, after, vertical=True).save(out / f"{room}_before_over_after.png")
+    pair(grey(before), grey(after), vertical=True).save(out / f"{room}_before_over_after_greyscale.png")
+    # x2 crops around every measured prop (boxes printed by the capture tool)
+    text = log.read_text(encoding="utf-8")
+    boxes = [tuple(int(float(v)) for v in m.groups()) for m in re.finditer(r"BOX \S+: \(([-\d.]+), ([-\d.]+), ([-\d.]+), ([-\d.]+)\)", text)]
+    tiles = []
+    for (x, y, w, h) in boxes:
+        bx = (max(0, x - 12), max(0, y + h - 40), min(960, x + w + 12), min(540, y + h + 12))
+        a, b = before.crop(bx), after.crop(bx)
+        a, b = a.resize((a.width * 2, a.height * 2), Image.NEAREST), b.resize((b.width * 2, b.height * 2), Image.NEAREST)
+        tiles.append(pair(pair(a, b), pair(grey(a), grey(b))))
+    if tiles:
+        w = max(t.width for t in tiles); h = sum(t.height + 6 for t in tiles)
+        sheet = Image.new("RGB", (w, h), (255, 255, 255)); yy = 0
+        for t in tiles:
+            sheet.paste(t, (0, yy)); yy += t.height + 6
+        sheet.save(out / f"{room}_prop_bases_x2.png")
+        report.append(f"{room}_prop_bases_x2.png: {len(tiles)} props; each row: before | after (colour), before | after (greyscale)")
+(out / "palette_recount.txt").write_text("\n".join(report) + "\n", encoding="utf-8", newline="\n")
+print("\n".join(report))

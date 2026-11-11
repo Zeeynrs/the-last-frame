@@ -55,7 +55,15 @@ def grating():
 
 
 # ---- 2. concrete service (rooms 3, 4, 6)
+# TLF-085 (Lead, 2026-11-12): the concrete is drawn in the floor ramp 00-05, so the ADR-027 floor fill and
+# shade reach it (receivers are floor indices 00-05; props standing on it keep the steel ramp 11-15).
+# Each original steel index maps to the 00-05 step of nearest Rec.709 luminance, which keeps the
+# texture's three value levels in order: 11 (29.4) -> 01 (25.6), 12 (50.8) -> 03 (56.0), 13 (77.9) -> 04 (78.6).
+CONCRETE_STEEL_TO_FLOOR = {11: 1, 12: 3, 13: 4}
+
+
 def concrete():
+    m = CONCRETE_STEEL_TO_FLOOR
     def fill(x, y, u, v):
         h = hash2(x, y, 3) % 23
         c = 12
@@ -66,8 +74,8 @@ def concrete():
         if abs(u - 0.5) < 0.035: c = 11
         # faded floor stencil: dashed hazard line along u axis near v=0.78
         if abs(v - 0.78) < 0.04 and int(u * 8) % 2 == 0: c = 13
-        return c
-    L = base_tile('Concrete_Slab', fill, rim=(13, 12, 11, 11))
+        return m[c]
+    L = base_tile('Concrete_Slab', fill, rim=(m[13], m[12], m[11], m[11]))
     return [L]
 
 

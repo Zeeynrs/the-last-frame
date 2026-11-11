@@ -1,0 +1,4 @@
+ok   ch01_env_tile_concrete_service_idle              pxo BYTE-IDENTICAL (a842a60c9235); png pixels IDENTICAL
+NOT COVERED (authored by Argon in batch 1, no generator in this repo): ch01_env_archway_frame_e_idle, ch01_env_arrival_platform_target_sheet, ch01_env_tile_tactile_amber_idle, ch01_env_tile_terrazzo_cracked_idle, ch01_env_tile_terrazzo_dark_idle, ch01_env_wall_subterranean_n_idle, ch01_env_wall_subterranean_w_idle, ch01_palette_elysium09, ch01_prop_digital_clock_2359_idle
+RESULT: ALL REPRODUCIBLE
+321
