@@ -272,35 +272,41 @@ func test_all_stand_spots_reachable_within_2_6_px() -> void:
 		stop()
 		return
 
-	var spots := [
-		{"name": "door_entry_west arrival", "pos": ARRIVAL_SPAWN, "target_id": &""},
-		{"name": "checkpoint", "pos": Vector2(288, 144), "target_id": &""},
-		{"name": "doc_guard_log", "pos": Vector2(352, 144), "target_id": &"ch01.security_crossing.doc_guard_log"},
-		{"name": "n13_guard", "pos": Vector2(384, 160), "target_id": &"ch01.security_crossing.n13_guard"},
-		{"name": "transit_pass_pickup", "pos": Vector2(412, 132), "target_id": &"ch01.security_crossing.transit_pass_pickup"},
-		{"name": "alarm_plate_01", "pos": Vector2(416, 160), "target_id": &""},
-		{"name": "echo_recorder_pedestal", "pos": Vector2(320, 176), "target_id": &"ch01.security_crossing.echo_recorder_pedestal"},
-		{"name": "pressure_switch_01", "pos": Vector2(320, 208), "target_id": &""},
-		{"name": "reset_anchor_01", "pos": Vector2(400, 200), "target_id": &"ch01.security_crossing.reset_anchor_01"},
-		{"name": "safe_anchor_west", "pos": Vector2(384, 192), "target_id": &""},
-		{"name": "card_reader_01", "pos": Vector2(464, 232), "target_id": &"ch01.security_crossing.card_reader_01"},
-		{"name": "exit_trigger_lounge", "pos": Vector2(496, 248), "target_id": &""},
-		{"name": "safe_anchor_east", "pos": Vector2(496, 248), "target_id": &""},
-		{"name": "door_exit_east approach", "pos": EAST_DOOR_APPROACH, "target_id": &""}
+	session.ability_unlocks.unlock(&"trace")
+	session.ability_unlocks.unlock(&"rewind")
+	session.ability_unlocks.unlock(&"echo")
+
+	# Canonical stand spots in Security Crossing v2 walked with real input from safe anchors >= 1 tile away
+	var spots: Array[Dictionary] = [
+		{"name": "door_entry_west arrival", "pos": ARRIVAL_SPAWN, "anchor": Vector2(288, 144), "target_id": &""},
+		{"name": "checkpoint (4,6)", "pos": Vector2(288, 144), "anchor": ARRIVAL_SPAWN, "target_id": &""},
+		{"name": "doc_guard_log (6,4)", "pos": Vector2(352, 144), "anchor": Vector2(288, 144), "target_id": &"ch01.security_crossing.doc_guard_log"},
+		{"name": "n13_guard (7,3)", "pos": Vector2(384, 160), "anchor": Vector2(352, 144), "target_id": &"ch01.security_crossing.n13_guard"},
+		{"name": "transit_pass_pickup (7,2)", "pos": Vector2(412, 132), "anchor": Vector2(384, 160), "target_id": &"ch01.security_crossing.transit_pass_pickup"},
+		{"name": "alarm_plate_01 (9,3)", "pos": Vector2(416, 160), "anchor": Vector2(384, 192), "target_id": &""},
+		{"name": "echo_recorder_pedestal (7,7)", "pos": Vector2(320, 176), "anchor": Vector2(384, 192), "target_id": &"ch01.security_crossing.echo_recorder_pedestal"},
+		{"name": "pressure_switch_01 (9,9)", "pos": Vector2(320, 208), "anchor": Vector2(384, 192), "target_id": &""},
+		{"name": "reset_anchor_01 (11,6)", "pos": Vector2(400, 200), "anchor": Vector2(352, 176), "target_id": &"ch01.security_crossing.reset_anchor_01"},
+		{"name": "safe_anchor_west (10,6)", "pos": Vector2(384, 192), "anchor": Vector2(352, 144), "target_id": &""},
+		{"name": "card_reader_01 (15,8)", "pos": Vector2(464, 232), "anchor": Vector2(448, 224), "target_id": &"ch01.security_crossing.card_reader_01"},
+		{"name": "exit_trigger_lounge", "pos": Vector2(496, 248), "anchor": Vector2(576, 288), "target_id": &""},
+		{"name": "safe_anchor_east (17,6)", "pos": Vector2(496, 248), "anchor": Vector2(576, 288), "target_id": &""},
+		{"name": "door_exit_east approach (22,6)", "pos": EAST_DOOR_APPROACH, "anchor": Vector2(496, 248), "target_id": &""}
 	]
 
 	for entry in spots:
 		var pos: Vector2 = entry["pos"]
+		var anchor: Vector2 = entry["anchor"]
 		var label: String = entry["name"]
 
-		# Set player directly near spot to test local reachability with capsule
-		player.global_position = pos + Vector2(2, 2)
+		# Set player to safe anchor >= 1 tile away and walk with real input
+		player.global_position = anchor
 		player.velocity = Vector2.ZERO
-		await physics_frames(1)
+		await physics_frames(3)
 
-		await walk_to(player, "reach spot %s" % label, pos, Callable(), 60, true)
-		for step in 5:
-			if player.global_position.distance_to(pos) <= 2.6:
+		await walk_to(player, "reach spot %s" % label, pos, Callable(), 240, true)
+		for step in 8:
+			if player.global_position.distance_to(pos) <= 1.0:
 				break
 			steer(player, pos)
 			await physics_frames(1)
@@ -463,13 +469,18 @@ func test_inter_room_transitions() -> void:
 	player.velocity = Vector2.ZERO
 	await physics_frames(35)
 
-	# Walk player through east door of maintenance bay
-	await walk_to(player, "maintenance_bay -> exit east", Vector2(656, 296), in_room(SECURITY_CROSSING))
+	# Walk player through east door of maintenance bay at (672, 304)
+	await walk_to(player, "maintenance_bay -> exit east", Vector2(672, 304), in_room(SECURITY_CROSSING))
 	_assert_eq(router.current_room_id, SECURITY_CROSSING, "entered security_crossing from maintenance_bay")
 	_assert_eq(player.global_position, ARRIVAL_SPAWN, "spawned at arrival spawn (256, 128)")
+
+	# Transition 2: Walk back through west door into maintenance_bay lands at door_exit_east Spawn (640, 288)
+	await walk_to(player, "security_crossing -> exit west", Vector2(224, 112), in_room(MAINTENANCE_BAY))
+	_assert_eq(router.current_room_id, MAINTENANCE_BAY, "entered maintenance_bay from security_crossing")
+	_assert_eq(player.global_position, Vector2(640, 288), "spawned at maintenance_bay east door spawn (640, 288)")
 	stop()
 
-	# Transition 2: Arrival from waiting_lounge lands at door_exit_east Spawn (576, 288)
+	# Transition 3: Arrival from waiting_lounge lands at door_exit_east Spawn (576, 288)
 	if not await start_at(WAITING_LOUNGE, &"door_entry_west", [&"CH1-SO-01", &"CH1-PZ-001", &"CH1-SO-02", &"CH1-PZ-002", &"CH1-PZ-003"], []):
 		stop()
 		return
