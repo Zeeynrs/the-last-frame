@@ -383,33 +383,33 @@ func test_interior_apertures_walkable_with_real_player_capsule() -> void:
 	var hatch_blocker := hatch.get_node("Blocker/CollisionShape2D") as CollisionShape2D
 
 	# Hatch closed: Blocker stops the player capsule
-	player.global_position = Vector2(320, 90)
+	player.global_position = Vector2(384, 122)
 	await physics_frames(2)
-	var hatch_closed_blocked := not (await walk_to(player, "hatch_closed", Vector2(320, 140), Callable(), 60, true))
+	var hatch_closed_blocked := not (await walk_to(player, "hatch_closed", Vector2(384, 172), Callable(), 60, true))
 	_assert_true(hatch_closed_blocked, "hatch closed: 24x12 blocker stops real player capsule")
 
 	# Hatch open: player capsule walks straight through the 26.8 px widened gap
 	hatch_blocker.disabled = true
-	player.global_position = Vector2(320, 90)
+	player.global_position = Vector2(384, 122)
 	await physics_frames(2)
-	var hatch_open_walked := await walk_to(player, "hatch_open", Vector2(320, 140), Callable(), 120, false)
-	_assert_true(hatch_open_walked, "hatch open: real player capsule walks through widened aperture (332,106)-(308,118)")
+	var hatch_open_walked := await walk_to(player, "hatch_open", Vector2(384, 172), Callable(), 120, false)
+	_assert_true(hatch_open_walked, "hatch open: real player capsule walks through widened aperture (396,138)-(372,150)")
 
 	var inner := bay.get_node("inner_shutter") as Area2D
 	var inner_blocker := inner.get_node("Blocker/CollisionShape2D") as CollisionShape2D
 
 	# Inner shutter closed: Blocker stops the player capsule
-	player.global_position = Vector2(432, 160)
+	player.global_position = Vector2(560, 224)
 	await physics_frames(2)
-	var inner_closed_blocked := not (await walk_to(player, "inner_closed", Vector2(432, 210), Callable(), 60, true))
+	var inner_closed_blocked := not (await walk_to(player, "inner_closed", Vector2(560, 274), Callable(), 60, true))
 	_assert_true(inner_closed_blocked, "inner shutter closed: 24x12 blocker stops real player capsule")
 
 	# Inner shutter open: player capsule walks straight through the 26.8 px widened gap
 	inner_blocker.disabled = true
-	player.global_position = Vector2(432, 160)
+	player.global_position = Vector2(560, 224)
 	await physics_frames(2)
-	var inner_open_walked := await walk_to(player, "inner_open", Vector2(432, 210), Callable(), 120, false)
-	_assert_true(inner_open_walked, "inner shutter open: real player capsule walks through widened aperture (444,178)-(420,190)")
+	var inner_open_walked := await walk_to(player, "inner_open", Vector2(560, 274), Callable(), 120, false)
+	_assert_true(inner_open_walked, "inner shutter open: real player capsule walks through widened aperture (572,242)-(548,254)")
 
 	s.remove_child(bay)
 	bay.free()
@@ -902,9 +902,9 @@ func test_scripted_playthrough_rooms_1_to_4() -> void:
 	session.interaction_service.trigger_enter(&"player", &"ch01.concourse_west.door_exit_east")
 	router.process_pending()
 
-	# 3. Maintenance Bay: arrived at door_entry_west spawn (256, 112)
+	# 3. Maintenance Bay: arrived at door_entry_west spawn (272, 120)
 	_assert_eq(router.current_room_id, &"ch01.maintenance_bay", "transitioned to maintenance_bay")
-	_assert_true((player.global_position - Vector2(256, 112)).length() < 2.0, "spawned at bay door_entry_west")
+	_assert_true((player.global_position - Vector2(272, 120)).length() < 2.0, "spawned at bay door_entry_west")
 
 	# Trace N-11 hatch tech to unlock Freeze
 	session.interaction_service.request(&"player", &"ch01.maintenance_bay.n11_hatch_tech", &"trace")

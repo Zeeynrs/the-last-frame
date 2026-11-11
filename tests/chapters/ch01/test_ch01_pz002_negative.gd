@@ -19,10 +19,10 @@ const BAY := &"ch01.maintenance_bay"
 const CROSSING := &"ch01.security_crossing"
 const PZ002 := &"CH1-PZ-002"
 
-## Rewind spot: above the gap, inside watch range of the shutter (384,160).
-const REWIND_SPOT := Vector2(384, 146)
-## TLF-030 line: through the gap (dividers end at (396,154) and (372,166)), exit trigger, east door.
-const ROUTE: Array[Vector2] = [Vector2(384, 176), Vector2(416, 176), Vector2(464, 200)]
+## Rewind spot: above the gap, inside watch range of the shutter (512,224).
+const REWIND_SPOT := Vector2(512, 210)
+## TLF-030 line: through the gap (dividers end at (524,218) and (500,230)), exit trigger, east door.
+const ROUTE: Array[Vector2] = [Vector2(512, 240), Vector2(544, 240), Vector2(640, 288)]
 
 var _ch01: Node2D = null
 var _session: GameSession = null
@@ -92,9 +92,9 @@ func _start(assist: bool) -> bool:
 	if not (_assert_true(_session.ability_unlocks.is_unlocked(&"rewind"), "setup: Rewind unlocked")
 			and _assert_true(_session.ability_unlocks.is_unlocked(&"freeze"), "setup: Freeze unlocked")):
 		return false
-	# Through the 1.5-tile hatch aperture straight down at x = 320-321, above N-11's footprint
-	# (304,104) (checked against the TLF-055 colliders in TLF-056).
-	var hatch_walk: Array[Vector2] = [Vector2(288, 92), Vector2(320, 92), Vector2(321, 140)]
+	# Through the 1.5-tile hatch aperture straight down at x = 384, above N-11's footprint
+	# (368,136) (checked against the TLF-085 colliders).
+	var hatch_walk: Array[Vector2] = [Vector2(352, 124), Vector2(384, 124), Vector2(384, 172), Vector2(488, 188)]
 	for point in hatch_walk:
 		if not await walk_to(_player, "setup: bay -> through the hatch", point):
 			return false
@@ -171,7 +171,7 @@ func _run_without_freeze(assist: bool) -> void:
 		if _router.current_room_id != BAY or not is_instance_valid(shutter):
 			left_tick = clock.tick   # the bay was unloaded: the player went through the east door
 			break
-		if through_tick < 0 and _player.global_position.y > 166.0:
+		if through_tick < 0 and _player.global_position.y > 230.0:
 			through_tick = clock.tick
 			through_pos = _player.global_position
 		if solved_tick < 0 and _session.puzzle_service.is_solved(PZ002):
