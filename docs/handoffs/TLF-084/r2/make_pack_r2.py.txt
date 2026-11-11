@@ -1,0 +1,125 @@
+"""TLF-084 round 2 proof pack from the capture_tlf084r2.gd shots: copies, greyscale copies, x2 crops
+around Elias (round 1 as merged | round 2), change maps (where round 2 differs from round 1), the
+side sheets, the gate-open crop, and an independent palette count of every saved frame (no Godot).
+python make_pack_r2.py <shots dir> <P2 pack dir> <out dir> <palette .gpl>"""
+import re, shutil, sys, pathlib
+from PIL import Image, ImageChops
+
+shots, p2, out, gpl = map(pathlib.Path, sys.argv[1:5])
+out.mkdir(parents=True, exist_ok=True)
+palette = set()
+for line in gpl.read_text(encoding="utf-8").splitlines():
+    m = re.match(r"\s*(\d+)\s+(\d+)\s+(\d+)\s", line)
+    if m:
+        palette.add(tuple(int(v) for v in m.groups()))
+assert len(palette) == 32, len(palette)
+
+
+def grey(im):
+    g = Image.new("RGB", im.size)
+    px = im.convert("RGB").load()
+    gp = g.load()
+    for y in range(im.height):
+        for x in range(im.width):
+            r, gg, b = px[x, y]
+            l = round(0.2126 * r + 0.7152 * gg + 0.0722 * b)
+            gp[x, y] = (l, l, l)
+    return g
+
+
+def off_palette(im):
+    return sum(1 for c in im.convert("RGB").getdata() if c not in palette)
+
+
+def feet(tag):
+    m = re.search(r"ELIAS %s: feet at screen \(([\d.]+), ([\d.]+)\)" % re.escape(tag), (shots / (tag + ".log")).read_text(encoding="utf-8"))
+    return int(float(m.group(1))), int(float(m.group(2)))
+
+
+def box_around(x, y, w=240, h=135):
+    b = (max(0, min(960 - w, x - w // 2)), max(0, min(540 - h, y - 100)))
+    return b + (b[0] + w, b[1] + h)
+
+
+def pair(a, b, box, scale=2, gap=4):
+    ca = a.crop(box)
+    cb = b.crop(box)
+    w, h = ca.width * scale, ca.height * scale
+    sheet = Image.new("RGB", (w * 2 + gap, h), (255, 255, 255))
+    sheet.paste(ca.resize((w, h), Image.NEAREST), (0, 0))
+    sheet.paste(cb.resize((w, h), Image.NEAREST), (w + gap, 0))
+    return sheet
+
+
+def change_map(r1, r2):
+    """Round 2 over a dimmed round 1: magenta where round 2 is darker (a shadow now shows), green
+    where it is brighter, nothing else."""
+    a = r1.convert("RGB")
+    b = r2.convert("RGB")
+    base = Image.blend(a, Image.new("RGB", a.size, (0, 0, 0)), 0.5)
+    pa, pb, pm = a.load(), b.load(), base.load()
+    darker = brighter = 0
+    for y in range(a.height):
+        for x in range(a.width):
+            if pa[x, y] != pb[x, y]:
+                if sum(pb[x, y]) < sum(pa[x, y]):
+                    pm[x, y] = (255, 0, 255)
+                    darker += 1
+                else:
+                    pm[x, y] = (0, 255, 0)
+                    brighter += 1
+    return base, darker, brighter
+
+
+report = []
+for tag in ["arrival", "gate", "dials", "east", "side", "side_a2", "gate_open"]:
+    for k in ["unlit", "lit_shadows", "lit_shadows_hud", "lit_r1_cpu"]:
+        src = shots / f"{tag}_{k}.png"
+        im = Image.open(src)
+        if k == "lit_r1_cpu" and tag in ("side_a2", "gate_open"):
+            pass
+        elif k == "lit_r1_cpu":
+            continue  # identical to the P2 pack's lit_shadows (checked in the handoff); not copied
+        shutil.copyfile(src, out / src.name)
+        if k != "lit_shadows_hud":
+            report.append(f"{src.name}: off-palette {off_palette(im)} of {im.width * im.height}")
+        if k in ("unlit", "lit_shadows"):
+            grey(im).save(out / f"{tag}_{k}_greyscale.png")
+    r2 = Image.open(shots / f"{tag}_lit_shadows.png")
+    r1 = Image.open(shots / f"{tag}_lit_r1_cpu.png")
+    if tag in ("arrival", "gate", "dials", "east", "side"):
+        p2img = Image.open(p2 / f"{tag}_lit_shadows.png")
+        same = ImageChops.difference(r1.convert("RGB"), p2img.convert("RGB")).getbbox() is None
+        report.append(f"{tag}: the round 1 CPU rebuild equals P2 {tag}_lit_shadows.png pixel for pixel: {same}")
+    x, y = feet(tag)
+    bx = box_around(x, y)
+    pair(r1, r2, bx).save(out / f"{tag}_x2_r1_vs_r2.png")
+    report.append(f"{tag}_x2_r1_vs_r2.png: crop {bx} around Elias' feet ({x}, {y}), x2; left round 1 (8f7cb2d), right round 2")
+    cm, darker, brighter = change_map(r1, r2)
+    cm.save(out / f"{tag}_change_r1_to_r2.png")
+    report.append(f"{tag}_change_r1_to_r2.png: over a dimmed round 1, {darker} px darker in round 2 (magenta: shade that now shows in a pool, or fill removed off the floor / at A 1), {brighter} px brighter (green: shade removed off the floor)")
+
+# gate: closed vs opened in the room (P3), x2 around the gate post
+g_closed = Image.open(shots / "gate_lit_shadows.png")
+g_open = Image.open(shots / "gate_open_lit_shadows.png")
+x, y = feet("gate")
+gx, gy = x + 22, y - 6  # the gate post: world (320, 192), Elias at (298, 198)
+bx = (gx - 70, gy - 50, gx + 70, gy + 30)
+pair(g_closed, g_open, bx, scale=3).save(out / "gate_closed_vs_open_x3.png")
+core = (gx - 64, gy - 40, gx + 56, gy + 28)
+pair(Image.open(shots / "gate_lit_r1_cpu.png"), g_closed, core, scale=4).save(out / "gate_core_x4_r1_vs_r2.png")
+report.append(f"gate_core_x4_r1_vs_r2.png: crop {core} (the GateFloor core around the post and Elias), x4; left round 1, right round 2")
+report.append(f"gate_closed_vs_open_x3.png: crop {bx}, x3; left the gate closed (Blocker contact), right opened in the room (rebaked)")
+
+# side: full frames, round 1 | round 2 at A 1, and round 1 | round 2 at A 2 (fill applied, deck mask)
+for tag in ("side", "side_a2"):
+    a = Image.open(shots / f"{tag}_lit_r1_cpu.png").convert("RGB")
+    b = Image.open(shots / f"{tag}_lit_shadows.png").convert("RGB")
+    sheet = Image.new("RGB", (960, 540 * 2 + 4), (255, 255, 255))
+    sheet.paste(a, (0, 0))
+    sheet.paste(b, (0, 544))
+    sheet.save(out / f"{tag}_r1_over_r2.png")
+    report.append(f"{tag}_r1_over_r2.png: top round 1, bottom round 2 (full frame)")
+
+(out / "palette_recount.txt").write_text("\n".join(report) + "\n", encoding="utf-8", newline="\n")
+print("\n".join(report))
