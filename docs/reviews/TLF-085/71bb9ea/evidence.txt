@@ -1,0 +1,195 @@
+TLF-085 review evidence (Opus), scratch copy 'TLF Verify rev085-71bb9ea' of 71bb9ea
+
+== affected test files (one capped Godot call each) ==
+test_audio_real_input: TESTS: 2 passed, 0 failed | SCRIPT ERROR 0
+test_ch01_art_integration: TESTS: 6 passed, 0 failed | SCRIPT ERROR 0
+test_ch01_graph: TESTS: 9 passed, 0 failed | SCRIPT ERROR 0
+test_ch01_maintenance_bay_v2: TESTS: 15 passed, 0 failed | SCRIPT ERROR 0
+test_ch01_playthrough: TESTS: 19 passed, 0 failed | SCRIPT ERROR 0
+test_ch01_pz002_negative: TESTS: 2 passed, 0 failed | SCRIPT ERROR 0
+test_ch01_real_playthrough: TESTS: 1 passed, 0 failed | SCRIPT ERROR 0
+test_ch01_sort_order: TESTS: 3 passed, 0 failed | SCRIPT ERROR 0
+test_ch01_step1_negatives: TESTS: 12 passed, 0 failed | SCRIPT ERROR 0
+test_ch01_unlock_guards: TESTS: 4 passed, 0 failed | SCRIPT ERROR 0
+test_room_shape: TESTS: 7 passed, 0 failed | SCRIPT ERROR 0
+
+== real playthrough segments ==
+  INFO: playthrough | 1 arrival (SO-01)                     956 frames (15.93 s)
+  INFO: playthrough | 2a concourse PZ-001                   227 frames (3.78 s)
+  INFO: playthrough | 2b concourse PZ-006                   692 frames (11.53 s)
+  INFO: playthrough | 3a bay SO-02                          116 frames (1.93 s)
+  INFO: playthrough | 3b bay PZ-002                         210 frames (3.50 s)
+  INFO: playthrough | 4 crossing PZ-003                     302 frames (5.03 s)
+  INFO: playthrough | 5 lounge (audio log, exit)             93 frames (1.55 s)
+  INFO: playthrough | 6a PZ-004 step 1 (Rewind+Freeze)      214 frames (3.57 s)
+  INFO: playthrough | 6b PZ-004 step 2 (Echo + Z-route)     440 frames (7.33 s)
+  INFO: playthrough | 6c PZ-004 exit                         62 frames (1.03 s)
+  INFO: playthrough | 7 vestibule PZ-005 (levers)           358 frames (5.97 s)
+  INFO: playthrough | 9 atrium terminal (Beat 09)           137 frames (2.28 s)
+  INFO: playthrough | 10 street exit outro (Beat 10)         55 frames (0.92 s)
+  INFO: real-input playthrough took 3862 physics frames (64.4 s game time, 65.90 s wall)
+
+== probe_085 ==
+Note: the line 'PROBE A arrival spawn ...' is not the arrival: _back_to_bay() does not re-place Elias when he is already in the bay, so it prints the last push's end point. The arrival spawn is checked in probe B (starts at (272,120)) and in Flash's door sweep.
+PROBE A y=3.00 -> stayed, stopped at tile (0.49, 3.98)
+PROBE A y=3.25 -> stayed, stopped at tile (0.49, 4.23)
+PROBE A y=3.50 -> stayed, stopped at tile (0.49, 4.48)
+PROBE A y=3.75 -> door triggered after 26 ticks
+PROBE A y=4.00 -> door triggered after 23 ticks
+PROBE A y=4.25 -> door triggered after 19 ticks
+PROBE A y=4.50 -> door triggered after 15 ticks
+PROBE A y=4.75 -> door triggered after 12 ticks
+PROBE A y=5.00 -> door triggered after 9 ticks
+PROBE A y=5.25 -> door triggered after 7 ticks
+PROBE A y=5.50 -> door triggered after 6 ticks
+PROBE A y=5.75 -> door triggered after 6 ticks
+PROBE A y=6.00 -> door triggered after 8 ticks
+PROBE A y=6.25 -> stayed, stopped at tile (0.49, 7.23)
+PROBE A y=6.50 -> stayed, stopped at tile (0.49, 7.48)
+PROBE A y=6.75 -> stayed, stopped at tile (0.49, 7.73)
+PROBE A y=7.00 -> stayed, stopped at tile (0.49, 7.98)
+PROBE A door triggers for start y in [3.75, 4.0, 4.25, 4.5, 4.75, 5.0, 5.25, 5.5, 5.75, 6.0] (aperture ~2.50 tiles)
+PROBE A arrival spawn (199.0932, 132.2355) tile (0.486379, 8.043054)
+  PASS: test_a_west_door_aperture_from_inside
+PROBE B hold [&"move_left"] from (272.0, 120.0): stayed, end tile (0.484455, 16.01807)
+PROBE B hold [&"move_up"] from (270.0, 120.0): stayed, end tile (0.505422, 0.486402)
+PROBE B hold [&"move_down"] from (272.0, 118.0): stayed, end tile (6.768066, 9.768066)
+PROBE B hold [&"move_left", &"move_down"] from (272.0, 122.0): stayed, end tile (0.481893, 16.01435)
+PROBE B hold [&"move_left", &"move_up"] from (270.2112, 120.8944): door after 14 ticks, end tile (26.0, 8.0)
+  PASS: test_b_holds_from_arrival
+PROBE C SO-02 technician trace (288,112)+H            spot (352.0, 144.0) from (272.0, 120.0): reached 2.00 px; trace target n11_hatch_tech (16.2 px) OK
+PROBE C unlock-guards spot (352,128)                  spot (352.0, 128.0) from (272.0, 120.0): reached 2.10 px; trace target n11_hatch_tech (16.0 px) OK
+PROBE C SO-02 chart use (224,128)+H                   spot (288.0, 160.0) from (272.0, 120.0): reached 2.05 px; use target doc_hatch_chart (17.0 px) OK
+PROBE C SO-02 plate Freeze (256,128)+H                spot (320.0, 160.0) from (272.0, 120.0): reached 2.44 px; freeze target hatch_01 (64.3 px) OK
+PROBE C SO-02 bell decoy (208,136)+H: no Freeze       spot (272.0, 168.0) from (272.0, 120.0): reached 2.00 px; freeze target none (-1.0 px) OK
+PROBE C PZ-002 casting spot Rewind (352,144)+BC       spot (480.0, 208.0) from (432.0, 216.0): reached 2.10 px; rewind target fire_shutter (33.9 px) OK
+PROBE C PZ-002 casting spot Freeze                    spot (480.0, 208.0) from (432.0, 216.0): reached 2.10 px; freeze target counterweight_gear (43.8 px) OK
+PROBE C PZ-002 casting spot Trace                     spot (480.0, 208.0) from (432.0, 216.0): reached 2.10 px; trace target gear_residue (27.7 px) OK
+PROBE C PZ-002 R03 Rewind spot (340,128)+BC           spot (468.0, 192.0) from (432.0, 216.0): reached 1.75 px; rewind target fire_shutter (53.6 px) OK
+PROBE C PZ-002 (400,168)+BC Rewind (pocket side)      spot (528.0, 232.0) from (560.0, 236.0): reached 4.03 px; rewind target fire_shutter (21.4 px) <-- CHECK
+PROBE C reset_anchor_01 use (272,152)+BC              spot (400.0, 216.0) from (464.0, 200.0): reached 2.20 px; use target reset_anchor_01 (19.9 px) OK
+PROBE C pocket (416,176)+BC Rewind                    spot (544.0, 240.0) from (560.0, 236.0): reached 1.51 px; rewind target inner_shutter (18.6 px) OK
+PROBE C pocket Freeze                                 spot (544.0, 240.0) from (560.0, 236.0): reached 1.51 px; freeze target counterweight_gear (71.9 px) OK
+PROBE C plaque use (464,168)+BC from the pocket       spot (592.0, 232.0) from (544.0, 240.3398): reached 3.81 px; use target doc_inner_shutter_plate (16.5 px) <-- CHECK
+PROBE C Flash plaque spot (608,240)                   spot (608.0, 240.0) from (544.0, 240.3398): reached 17.69 px; use target doc_inner_shutter_plate (7.9 px) <-- CHECK
+  PASS: test_c_spec_stand_spots
+PROBE D bay -> east door: room ch01.security_crossing after 23 ticks; player (241.7888, 120.8944), security door_entry_west/Spawn (240.0, 120.0)
+PROBE D security -> west door: room ch01.maintenance_bay after 4 ticks; player (638.2111, 287.1056) (bay door_exit_east/Spawn (640,288))
+PROBE D walked west from the east spawn: room ch01.maintenance_bay, player (561.2893, 248.6448)
+  PASS: test_d_east_door_round_trip
+TESTS: 4 passed, 0 failed
+
+== python builder ==
+python -m unittest discover -s tools/content -p test_*.py: Ran 22 tests, OK
+build_room_from_shape.py --outset 0.25 --tile-source 4 (dry run): diff 0 changed line(s); NOT DRAWN: 1-tile N wall end at tile edge (24, 0)
+
+== my mutations ==
+MUTATION MV1 bulkhead north segment disabled
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=0.8: player stopped at tile_x=7.88 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=1.6: player stopped at tile_x=8.21 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=2.4: player stopped at tile_x=7.88 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=3.2: player stopped at tile_x=7.86 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] maximum x reached during bulkhead sweep is 8.21 < 7.0
+  test_ch01_step1_negatives.gd: TESTS: 11 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_step1_negatives.gd::test_so02_bulkhead_sealed] the bulkhead holds from (394.0148, 123.1339) towards (412.0, 144.0) (player at (408.3256, 140.5004))
+MUTATION MV2 bulkhead south segment disabled
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=4.8: player stopped at tile_x=8.11 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=5.6: player stopped at tile_x=7.99 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=6.4: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=7.2: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=8.0: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=8.8: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=9.6: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=10.4: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=11.2: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=12.0: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=12.8: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=13.6: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=14.4: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] bulkhead sweep at y=15.2: player stopped at tile_x=8.02 <= 7.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_bulkhead_never_passes_x_7_2] maximum x reached during bulkhead sweep is 8.11 < 7.0
+  test_ch01_step1_negatives.gd: TESTS: 11 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_step1_negatives.gd::test_so02_bulkhead_sealed] the bulkhead holds from (313.1435, 170.5718) towards (326.0, 194.0) (player at (320.2989, 184.1495))
+MUTATION MV3 shutter divider north disabled
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=0.8: player stopped at tile_x=16.88 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=1.6: player stopped at tile_x=17.21 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=2.4: player stopped at tile_x=16.99 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=3.2: player stopped at tile_x=17.08 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] maximum x reached during shutter sweep is 17.21 < 16.0
+  test_ch01_pz002_negative.gd: TESTS: 2 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION MV4 shutter divider south disabled
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=5.6: player stopped at tile_x=17.11 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=6.4: player stopped at tile_x=16.99 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=7.2: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=8.0: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=8.8: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=9.6: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=10.4: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=11.2: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=12.0: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=12.8: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=13.6: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=14.4: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] shutter sweep at y=15.2: player stopped at tile_x=17.02 <= 16.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_fire_shutter_never_passes_x_16_2] maximum x reached during shutter sweep is 17.11 < 16.0
+  test_ch01_pz002_negative.gd: TESTS: 2 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION MV5 inner divider north disabled
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=0.8: player stopped at tile_x=19.88 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=1.6: player stopped at tile_x=20.21 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=2.4: player stopped at tile_x=19.99 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=3.2: player stopped at tile_x=20.08 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=4.0: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=4.8: player stopped at tile_x=19.99 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] maximum x reached during inner divider sweep is 20.21 < 19.0
+  test_ch01_step1_negatives.gd: no summary, SCRIPT ERROR lines 0
+MUTATION MV6 inner divider south disabled
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=5.6: player stopped at tile_x=20.11 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=6.4: player stopped at tile_x=19.99 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=7.2: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=8.0: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=8.8: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=9.6: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=10.4: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=11.2: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=12.0: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=12.8: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=13.6: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=14.4: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] inner divider sweep at y=15.2: player stopped at tile_x=20.02 <= 19.2
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_divider_sweep_inner_divider_never_passes_x_19_2] maximum x reached during inner divider sweep is 20.11 < 19.0
+  test_ch01_step1_negatives.gd: TESTS: 12 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION MD1 west door trigger radius 6 -> 40
+  test_ch01_maintenance_bay_v2.gd: TESTS: 13 passed, 2 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_checkpoint_saveload_restores_player_and_camera] continue restored maintenance_bay (Expected ch01.maintenance_bay, got ch01.concourse_west)
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_checkpoint_saveload_restores_player_and_camera] player restored to safe anchor entry (336.0, 136.0) (got (510.2112, 175.1056))
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] holding up for 3s never leaves maintenance_bay (Expected ch01.maintenance_bay, got ch01.concourse_
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] holding down for 3s never leaves maintenance_bay (Expected ch01.maintenance_bay, got ch01.concours
+MUTATION MD2 arrival Spawn 1 tile from the door
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] player spawned at arrival (272, 120) (Expected (272.0, 120.0), got (256.0, 112.0))
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] holding left for 3s never leaves maintenance_bay (Expected ch01.maintenance_bay, got ch01.concours
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] player moved left against west boundary
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] holding up for 3s never leaves maintenance_bay (Expected ch01.maintenance_bay, got ch01.concourse_
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_door_sweep_arrival_never_triggers_door_entry_west] holding down for 3s never leaves maintenance_bay (Expected ch01.maintenance_bay, got ch01.concours
+MUTATION MC3 room bounds ignore metadata/room_shape
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_camera_view_bounds_clamped] explicit maintenance_bay v2 room bounds Rect2(48, 0, 688, 408) (Expected [P: (48.0, 0.0), S: (688.0, 408.0)], got [P: (0.
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_camera_view_bounds_clamped] explicit maintenance_bay v2 room bounds center (392, 204) (Expected (392.0, 204.0), got (320.0, 180.0))
+MUTATION MK1 checkpoint spawn anchor removed
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_checkpoint_saveload_restores_player_and_camera] player restored to safe anchor entry (336.0, 136.0) (got (272.0, 120.0))
+MUTATION MR1 counterweight gear drifts +16 px (cluster)
+  test_ch01_maintenance_bay_v2.gd: TESTS: 14 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_rigid_cluster_shifts_and_relative_distances] Cluster BC node counterweight_gear moved exactly (+128, +64) (Expected (512.0, 176.0), got (528.0, 176.0
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_rigid_cluster_shifts_and_relative_distances] Cluster BC shift invariant for counterweight_gear (Expected (128.0, 64.0), got (144.0, 64.0))
+    FAIL: [res://tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd::test_rigid_cluster_shifts_and_relative_distances] internal distance between counterweight_gear and fire_shutter strictly invariant (Expected 48.0, got 50.
+/c/Users/adity/AppData/Local/Temp/claude/2ef1ec79f2b69141/65a1f1df-eb35-4b36-87f3-d392830c0aed/scratchpad/r085/copy/scenes/chapters/ch01/rooms/maintenance_bay.tscn: OK
+/c/Users/adity/AppData/Local/Temp/claude/2ef1ec79f2b69141/65a1f1df-eb35-4b36-87f3-d392830c0aed/scratchpad/r085/copy/scripts/rooms/room_router.gd: OK
+
+MV5 re-run of test_ch01_step1_negatives.gd alone (the first run printed no TESTS line): exit 0, 107.6 s, TESTS: 12 passed, 0 failed; files restored, sha256 OK

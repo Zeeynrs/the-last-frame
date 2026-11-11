@@ -12,13 +12,13 @@ Author: Lead · Status: READY (2026-11-11) · ADR-023, ADR-025, ADR-026, `PATTER
 
 ## 1. Shape and size
 
-* Grid **25 × 16**, rectangle: outline `[[0,0],[25,0],[25,16],[0,16]]`. 400 cells (2.9× today), W+H = 41.
+* Grid **26 × 16**, rectangle: outline `[[0,0],[26,0],[26,16],[0,16]]`. 416 cells (3.0× today), W+H = 42. (Round 2: was 25 wide; an odd width leaves the last N-wall tile without a module, Opus review item 4.)
 * N wall y = 0 and W wall x = 0 stay straight and tall; S and E edges are low/open (rule R2). The room grows **east** (slack between the clusters) and **south** (y 10..16); nothing that is mounted on the N wall moves in y.
 * Bands after the rebuild (the three gate lines keep their order):
   * **A, entry hall** x 0..7 (7 wide): arrival, checkpoint, SO-02 hatch side.
   * **B, gear bay** x 7..16 (9 wide): counterweight gear (N wall), reset valve, tech log, fire shutter.
   * **C, pocket** x 16..19 (3 wide, unchanged on purpose: the airlock between the shutters, PZ-002 R1 geometry).
-  * **D, exit hall** x 19..25 (6 wide): inner-shutter exit, east door.
+  * **D, exit hall** x 19..26 (7 wide): inner-shutter exit, east door.
 * Builder: `build_room_from_shape.py --outset 0.25 design/ch01/rooms_v2/maintenance_bay.json` (dry run first, diff in the handoff).
 
 ## 2. Rigid clusters (every distance inside a cluster is unchanged)
@@ -64,7 +64,7 @@ Every stand spot and casting spot in `CH1-PZ-002.md` R1.5 and `CH1-SO-02.md` mov
 |---|---|---|---|
 | `door_entry_west` + archway | (0,5) | **(0,5)** | W wall, unchanged; trigger = the thin aperture only |
 | door `Spawn` (arrival) | (1,5) area | **(2,5)** | 2 tiles inside, free floor on every side (rule 10) |
-| `door_exit_east` + archway | (13,4) | **(25,4)** | on the E edge (x = w, as concourse v2); 5 tiles past `exit_trigger_east_02` |
+| `door_exit_east` + archway | (13,4) | **(26,4)** | on the E edge (x = w, as concourse v2); 6 tiles past `exit_trigger_east_02`; its `Spawn` (arrival from security) at (24,4), 2 tiles inside |
 
 ## 3. Dividers must be visible (lesson from TLF-080)
 
@@ -74,7 +74,7 @@ Every stand spot and casting spot in `CH1-PZ-002.md` R1.5 and `CH1-SO-02.md` mov
 
 ## 4. Space rules check (PATTERN 8-10)
 
-* W+H 41 (40..52 ✓). 400 cells / 22 objects = 18.2 (✓ ≥ 18).
+* W+H 42 (40..52 ✓). 416 cells / 22 objects = 18.9 (✓ ≥ 18).
 * Arrival (2,5): free floor x 0..4, y 3..7 (✓ 2 tiles each side); the door is the spawn's own door (thin aperture + 3 s sweep left/up/down).
 * Routes: the walking line y ≈ 4..5 crosses three 1.5-tile openings (hatch, fire shutter, inner shutter). Band C stays 3 wide by design.
 * No prop within 1 tile of a doorway.
@@ -92,3 +92,12 @@ Every stand spot and casting spot in `CH1-PZ-002.md` R1.5 and `CH1-SO-02.md` mov
 4. Stand spots within 2.6 px; apertures ≥ 1.5 tiles; camera bounds at arrival, hatch, gear, pocket, east door (real 960×540 view; explicit bounds asserted).
 5. `test_ch01_sort_order.gd` and `render_manifest.json` rows for this room only (edit in place); collision baseline for this room only; graph data + `ROOM_GRAPH.md` rows.
 6. Windowed Forward+ 960×540 screenshots at arrival, hatch, gear bay, pocket, east door; full validate 0 failed / 0 SCRIPT ERROR; python builder tests.
+
+## 7. Round 2 decisions (Lead, 2026-11-11, after Opus `895f012` and Fable `docs/reviews/TLF-085/TLF-085_71bb9ea_FABLE_VISUAL.md`)
+
+1. **Checkpoint stays at (5,5)** (320,144) as in §2 (cluster H). The arrival is no longer inside a save zone; walking 3 tiles in saves.
+2. **Width 26** (above). Door E (26,4), Spawn (24,4).
+3. **Bulkhead height:** `Wall_bulkhead_s0..s5` use the low partition art (`ch01_env_wall_partition_low_e_idle.png` geometry, as the shutter lines); only `Wall_bulkhead_n0` beside the hatch stays tall. Collision unchanged. Reason: the tall run hid the SO-02 plates and chart (Fable P1-a).
+4. **Shutters:** both `fire_shutter` and `inner_shutter` use the existing 32 × 64 W-face doorway pair `ch01_prop_inner_shutter_closed/raised.png` (pivot (16,56), ASSET_METADATA row 209), standing along their divider line. The frontal 64 × 64 fire-shutter sprites are retired from this room. If the W-face pair does not fit the openings, report it; Sol/Argon draw a variant in TLF-085b.
+5. **Floor decor moves with its cluster:** the grating cells (source 3) x 7..9 → x 15..17 (BC, + 8), the cable-conduit cells (source 5) (2..6,4) → (6..10,4) (H, + 4).
+6. **Open for art (TLF-085b):** `doc_inner_shutter_plate` needs an N-face plaque mounted on the N wall (today it draws on the x = 19 rail); `counterweight_gear` N-wall variant; re-check the gear/shutter stack and the half-hidden `n11_hatch_tech` with the new art.

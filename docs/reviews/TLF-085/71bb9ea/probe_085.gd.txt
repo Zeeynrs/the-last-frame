@@ -1,0 +1,171 @@
+extends "res://tests/support/ch01_real_input.gd"
+
+## Opus TLF-085 review probes (scratch copy only). Real capsule, real input after setup.
+## A: west door aperture from inside; B: 3 s holds from the arrival (incl. diagonals);
+## C: spec stand spots walked from a safe anchor >= 1 tile away, distance + chosen targets;
+## D: east door -> security_crossing -> back, arrival spawns; E: band B floor around the gear stand.
+
+const BAY := &"ch01.maintenance_bay"
+const SEC := &"ch01.security_crossing"
+
+
+func _init() -> void:
+	timeout_frames = 7000
+
+
+func _t(tx: float, ty: float) -> Vector2:
+	return Vector2(320.0 + 16.0 * (tx - ty), 64.0 + 8.0 * (tx + ty))
+
+
+func _tile(p: Vector2) -> Vector2:
+	var u := p.x - 320.0
+	var v := p.y - 64.0
+	return Vector2(u / 32.0 + v / 16.0, v / 16.0 - u / 32.0)
+
+
+func _back_to_bay() -> void:
+	if router.current_room_id != BAY:
+		router.enter_room(BAY, &"door_entry_west")
+	player.velocity = Vector2.ZERO
+	await physics_frames(25)   # past the arrival grace
+
+
+func _interactables() -> Array:
+	return router.current_room.find_children("*", "Interactable", true, false)
+
+
+func test_a_west_door_aperture_from_inside() -> void:
+	if not await start_at(BAY, &"door_entry_west", [&"CH1-SO-01", &"CH1-PZ-001"], []):
+		stop()
+		return
+	var hits: Array[float] = []
+	var y := 3.0
+	while y <= 7.01:
+		await _back_to_bay()
+		player.global_position = _t(1.2, y)
+		player.velocity = Vector2.ZERO
+		await physics_frames(25)
+		var left_at := await push_for([_t(-1.5, y)], 90, in_room(&"ch01.concourse_west"))
+		var t := _tile(player.global_position)
+		if router.current_room_id != BAY:
+			hits.append(y)
+			print("PROBE A y=%.2f -> door triggered after %d ticks" % [y, left_at])
+		else:
+			print("PROBE A y=%.2f -> stayed, stopped at tile (%.2f, %.2f)" % [y, t.x, t.y])
+		y += 0.25
+	print("PROBE A door triggers for start y in %s (aperture ~%.2f tiles)" % [hits, (hits.back() - hits.front() + 0.25) if not hits.is_empty() else 0.0])
+	_assert_true(not hits.is_empty(), "the west door can be used from inside")
+	# arriving from the concourse lands in the bay at the Spawn; walking back out works
+	await _back_to_bay()
+	var spawn := player.global_position
+	print("PROBE A arrival spawn %s tile %s" % [spawn, _tile(spawn)])
+	stop()
+
+
+func test_b_holds_from_arrival() -> void:
+	if not await start_at(BAY, &"door_entry_west", [&"CH1-SO-01", &"CH1-PZ-001"], []):
+		stop()
+		return
+	var combos: Array = [[&"move_left"], [&"move_up"], [&"move_down"], [&"move_left", &"move_down"], [&"move_left", &"move_up"]]
+	for c in combos:
+		var combo: Array[StringName] = []
+		combo.assign(c)
+		router.enter_room(BAY, &"door_entry_west")
+		player.velocity = Vector2.ZERO
+		await physics_frames(25)
+		var start := player.global_position
+		hold_moves(combo)
+		var left := -1
+		for f in 180:
+			await physics_frames(1)
+			if router.current_room_id != BAY:
+				left = f
+				break
+		var none: Array[StringName] = []
+		hold_moves(none)
+		print("PROBE B hold %s from %s: %s, end tile %s" % [combo, start, ("door after %d ticks" % left) if left >= 0 else "stayed", _tile(player.global_position)])
+	stop()
+
+
+func test_c_spec_stand_spots() -> void:
+	if not await start_at(BAY, &"door_entry_west", [&"CH1-SO-01", &"CH1-PZ-001"], []):
+		stop()
+		return
+	session.ability_unlocks.unlock(&"rewind")
+	session.ability_unlocks.unlock(&"freeze")
+	# [label, spot, start anchor, ability or "", expected object (short id)]
+	var rows := [
+		["SO-02 technician trace (288,112)+H", Vector2(352, 144), Vector2(272, 120), &"trace", "n11_hatch_tech"],
+		["unlock-guards spot (352,128)", Vector2(352, 128), Vector2(272, 120), &"trace", "n11_hatch_tech"],
+		["SO-02 chart use (224,128)+H", Vector2(288, 160), Vector2(272, 120), &"use", "doc_hatch_chart"],
+		["SO-02 plate Freeze (256,128)+H", Vector2(320, 160), Vector2(272, 120), &"freeze", "hatch_01"],
+		["SO-02 bell decoy (208,136)+H: no Freeze", Vector2(272, 168), Vector2(272, 120), &"freeze", ""],
+		["PZ-002 casting spot Rewind (352,144)+BC", Vector2(480, 208), Vector2(464, 200) + Vector2(-32, 16), &"rewind", "fire_shutter"],
+		["PZ-002 casting spot Freeze", Vector2(480, 208), Vector2(464, 200) + Vector2(-32, 16), &"freeze", "counterweight_gear"],
+		["PZ-002 casting spot Trace", Vector2(480, 208), Vector2(464, 200) + Vector2(-32, 16), &"trace", "gear_residue"],
+		["PZ-002 R03 Rewind spot (340,128)+BC", Vector2(468, 192), Vector2(432, 216), &"rewind", "fire_shutter"],
+		["PZ-002 (400,168)+BC Rewind (pocket side)", Vector2(528, 232), Vector2(560, 236), &"rewind", "fire_shutter"],
+		["reset_anchor_01 use (272,152)+BC", Vector2(400, 216), Vector2(464, 200), &"use", "reset_anchor_01"],
+		["pocket (416,176)+BC Rewind", Vector2(544, 240), Vector2(560, 236), &"rewind", "inner_shutter"],
+		["pocket Freeze", Vector2(544, 240), Vector2(560, 236), &"freeze", "counterweight_gear"],
+		["plaque use (464,168)+BC from the pocket", Vector2(592, 232), Vector2(544, 240), &"use", "doc_inner_shutter_plate"],
+		["Flash plaque spot (608,240)", Vector2(608, 240), Vector2(544, 240), &"use", "doc_inner_shutter_plate"],
+	]
+	for row in rows:
+		await _back_to_bay()
+		player.global_position = row[2]
+		player.velocity = Vector2.ZERO
+		await physics_frames(3)
+		var start: Vector2 = player.global_position
+		await walk_to(player, "probe C %s" % row[0], row[1], Callable(), 240, true)
+		for k in 8:
+			if player.global_position.distance_to(row[1]) <= 1.0:
+				break
+			steer(player, row[1])
+			await physics_frames(1)
+		hold_moves([])
+		await physics_frames(2)
+		var d := player.global_position.distance_to(row[1])
+		var got := ""
+		var gd := -1.0
+		if row[3] == &"use":
+			var t: Interactable = player.current_target
+			if t != null:
+				got = String(t.object_id).get_slice(".", 2)
+				gd = player.global_position.distance_to(t.global_position)
+		else:
+			var t2 := PocketWatch.choose_watch_target(player.global_position, _interactables(), row[3])
+			if t2 != null and t2.supports_ability(row[3]):
+				got = String(t2.object_id).get_slice(".", 2)
+				gd = player.global_position.distance_to(t2.global_position)
+		var ok: bool = d <= 2.6 and got == row[4]
+		print("PROBE C %-45s spot %s from %s: reached %.2f px; %s target %s (%.1f px) %s" % [row[0], row[1], start, d, row[3],
+			got if not got.is_empty() else "none", gd, "OK" if ok else "<-- CHECK"])
+	stop()
+
+
+func test_d_east_door_round_trip() -> void:
+	if not await start_at(BAY, &"door_entry_west", [&"CH1-SO-01", &"CH1-PZ-001", &"CH1-SO-02", &"CH1-PZ-002"], []):
+		stop()
+		return
+	player.global_position = Vector2(608, 272)
+	player.velocity = Vector2.ZERO
+	await physics_frames(25)
+	var t := await push_for([Vector2(672, 304)], 120, in_room(SEC))
+	await physics_frames(3)
+	var sec_spawn := (router.current_room.get_node("door_entry_west/Spawn") as Node2D).global_position if router.current_room_id == SEC else Vector2(-1, -1)
+	print("PROBE D bay -> east door: room %s after %d ticks; player %s, security door_entry_west/Spawn %s" % [router.current_room_id, t, player.global_position, sec_spawn])
+	_assert_eq(router.current_room_id, SEC, "the east door leads to security_crossing")
+	_assert_true(player.global_position.distance_to(sec_spawn) < 2.0, "arrives at security's west spawn")
+	await physics_frames(25)
+	var door_w := (router.current_room.get_node("door_entry_west") as Node2D).global_position
+	var t2 := await push_for([door_w + Vector2(-24, -12)], 180, in_room(BAY))
+	await physics_frames(3)
+	print("PROBE D security -> west door: room %s after %d ticks; player %s (bay door_exit_east/Spawn (640,288))" % [router.current_room_id, t2, player.global_position])
+	_assert_eq(router.current_room_id, BAY, "back in the bay")
+	_assert_true(player.global_position.distance_to(Vector2(640, 288)) < 3.0, "arrives at the bay's east spawn")
+	await physics_frames(25)
+	await push_for([Vector2(560, 248)], 90)
+	print("PROBE D walked west from the east spawn: room %s, player %s" % [router.current_room_id, player.global_position])
+	_assert_eq(router.current_room_id, BAY, "walking away from the east spawn stays in the bay")
+	stop()
