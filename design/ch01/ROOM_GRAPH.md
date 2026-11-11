@@ -206,7 +206,7 @@ Every puzzle room entrance (plus chapter start and outro) has an auto-save check
 |---|---|---|---|---|
 | `&"ch01.cp.arrival"` | `ch01.arrival_platform` | `(5, 15)` | `&"ch01.arrival_platform.safe_anchor_spawn"` | Initial chapter start (`tick = 0`) and on picking up `global.pocket_watch`. |
 | `&"ch01.cp.concourse_west"` | `ch01.concourse_west` | `(3, 8)` | `&"ch01.concourse_west.safe_anchor_east"` | Entering `ch01.concourse_west` (`CH1-PZ-001` entrance) and again upon `CH1-PZ-001` `SOLVED`. |
-| `&"ch01.cp.maintenance_bay"` | `ch01.maintenance_bay` | `(5, 5)` | `&"ch01.maintenance_bay.safe_anchor_entry"` | Entering `ch01.maintenance_bay` (`CH1-PZ-002` entrance) and upon `CH1-PZ-002` `SOLVED`. |
+| `&"ch01.cp.maintenance_bay"` | `ch01.maintenance_bay` | `(2, 5)` | `&"ch01.maintenance_bay.safe_anchor_entry"` | Entering `ch01.maintenance_bay` (`CH1-PZ-002` entrance) and upon `CH1-PZ-002` `SOLVED`. |
 | `&"ch01.cp.security_crossing"` | `ch01.security_crossing` | `(1, 6)` | `&"ch01.security_crossing.safe_anchor_west"` | Entering `ch01.security_crossing` (`CH1-PZ-003` entrance) and upon `CH1-PZ-003` `SOLVED`. |
 | `&"ch01.cp.waiting_lounge"` | `ch01.waiting_lounge` | `(1, 5)` | `&"ch01.waiting_lounge.safe_anchor_center"` | Entering `ch01.waiting_lounge` and upon collecting `ch01.fragment.mira_departure`. |
 | `&"ch01.cp.signal_control"` | `ch01.signal_control` | `(8, 10)` | `&"ch01.signal_control.safe_anchor_center"` | Entering `ch01.signal_control` (`CH1-PZ-004` entrance) and upon `CH1-PZ-004` `SOLVED`. |

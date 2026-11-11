@@ -343,7 +343,7 @@ func test_every_stand_spot_reachable_within_2_6_px() -> void:
 
 	# Canonical stand spots in Maintenance Bay v2
 	var spots: Array[Dictionary] = [
-		{"name": "checkpoint", "pos": Vector2(320, 144), "target_id": &""},
+		{"name": "checkpoint", "pos": Vector2(272, 120), "target_id": &""},
 		{"name": "safe_anchor_entry", "pos": Vector2(336, 136), "target_id": &""},
 		{"name": "bell_plate_01", "pos": Vector2(272, 168), "target_id": &""},
 		{"name": "hatch_plate_01", "pos": Vector2(320, 160), "target_id": &""},
@@ -440,8 +440,8 @@ func test_checkpoint_saveload_restores_player_and_camera() -> void:
 		stop()
 		return
 
-	var cp_zone := Vector2(320, 144)
-	var outside := Vector2(272, 120)
+	var cp_zone := Vector2(272, 120)
+	var outside := Vector2(320, 144)
 	if not await save_at_checkpoint(&"ch01.cp.maintenance_bay", cp_zone, outside):
 		stop()
 		return
