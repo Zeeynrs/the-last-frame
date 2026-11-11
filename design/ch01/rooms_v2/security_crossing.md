@@ -13,7 +13,7 @@ Author: Lead · Status: READY (2026-11-11) · ADR-023, ADR-025, ADR-026, ADR-027
 
 ## 1. Shape and size
 
-* Grid **24 × 16**, rectangle: outline `[[0,0],[24,0],[24,16],[0,16]]`. 384 cells (2.0× today), W+H = 40.
+* Grid **24 × 16**, rectangle: outline `[[0,0],[24,0],[24,16],[0,16]]`. 384 cells, 368 floor cells after the trench hole (1.9× today), W+H = 40.
 * N wall y = 0 and W wall x = 0 straight and tall; S and E open/low (R2). The room grows **west** (a new entry hall in front of the deck), **east** (an exit hall behind the barrier) and **south** (y 12..16). Nothing moves in y.
 * Bands after the rebuild:
   * **A, entry hall** x 0..4 (4 wide): arrival, checkpoint.
@@ -21,7 +21,7 @@ Author: Lead · Status: READY (2026-11-11) · ADR-023, ADR-025, ADR-026, ADR-027
   * **Trench** x 13..14, bridge at y ≈ 6.
   * **C, landing** x 14..16 (2 wide, unchanged on purpose: card reader in front of the barrier, PZ-003 R1 geometry).
   * **D, exit hall** x 16..24 (8 wide): `exit_trigger_lounge`, east door.
-* Builder: `build_room_from_shape.py --outset 0.25 --tile-source 4 design/ch01/rooms_v2/security_crossing.json` (dry run first, diff in the handoff). The trench stays as today (`TrenchVisual` polygon + collision line + railings), not `--holes`.
+* Builder: `build_room_from_shape.py --outset 0.25 --tile-source 4 design/ch01/rooms_v2/security_crossing.json` (dry run first, diff in the handoff). The trench column x = 13 is a hole (`holes` in the `.json`, PATTERN rule 2), as the trench column on main has no floor cells; `TrenchVisual` (z −1), the collision lines and the railings stay. (Round 2: the first build paved the trench.)
 
 ## 2. One rigid cluster (every distance inside it is unchanged)
 
@@ -66,7 +66,7 @@ Every stand spot in `CH1-PZ-003.md` R1.4 and `ROOM_GRAPH.md` §5.3 moves by (64,
 
 ## 4. Space rules check (PATTERN 8-10)
 
-* W+H 40 (✓). 384 cells / 19 objects = 20.2 (✓ ≥ 18).
+* W+H 40 (✓). 368 floor cells / 19 objects = 19.4 (✓ ≥ 18).
 * Arrival (2,6): free floor x 0..4, y 4..8 (✓). Checkpoint (4,6) has 2 free tiles round it except the deck props at x ≥ 6 (doc log (6,4) is 2 tiles away: ✓).
 * Door sweep from (2,6): left/up/down 3 s never triggers `door_entry_west`.
 * Routes: entry hall → deck ≥ 3 tiles everywhere; the bridge and the barrier aperture are the puzzle's 1.5-tile gates (allowed).
@@ -85,3 +85,12 @@ Every stand spot in `CH1-PZ-003.md` R1.4 and `ROOM_GRAPH.md` §5.3 moves by (64,
 4. Stand spots within 2.6 px; apertures ≥ 1.5 tiles; camera: the room is 640 × 320 px, fixed camera, explicit bounds asserted at arrival, deck, bridge, landing, east door (real 960×540 view).
 5. `test_ch01_sort_order.gd` and `render_manifest.json` rows for this room only (edit in place); collision baseline for this room only; graph data + `ROOM_GRAPH.md` rows (doors (0,6)/(24,6), anchors, checkpoint (4,6), §5.3 table); the maintenance_bay → security_crossing and lounge → security_crossing arrivals land on the new spawns.
 6. Windowed Forward+ 960×540 screenshots at arrival, deck (plate + pedestal), bridge (gate open), landing (card reader), east door; full validate 0 failed / 0 SCRIPT ERROR; python builder tests.
+
+## 7. Round 2 decisions (Lead, 2026-11-12, after the Fable review of `ee09082`)
+
+1. **Trench is a hole.** Floor cells (13, 0..15) are removed (`holes` in the `.json`, builder dry run in the handoff). `TrenchVisual` uses palette index 00 or 01 instead of `0f141c`.
+2. **Barrier partition gap = the barrier.** The art gap on x = 16 is the barrier sprite's own span (collision opening y 4.25..5.75). Make `PartitionLowE_barrier_n1` a whole module ending where the barrier sprite starts (Fable: (528,216), y 2..4) and delete `PartitionLowE_barrier_s0_half`. No hole may show beside the closed barrier.
+3. **Bridge mouth art = the opening.** The railing and tactile gaps on x = 13 and x = 14 move from y 6..8 to y 5..7 so the collision opening y 5.25..6.75 lies inside them (halves allowed). The railings leave cluster P for this one change; the bridge, its Blocker and every stand spot stay.
+4. **Shots.** Re-shoot the bridge with the switch held (gate open, bridge extended), add one with the staff barrier open, and one at the gate stand spot (448,208).
+5. **Handoff numbers** match the scene: perimeter polygon, floor 640 × 320, stand-spot tiles, barrier opening.
+6. **TLF-086b (art, Sol/Argon):** transit pass drawn in front of the guard (desk or front layer), card reader W-face on the barrier partition plane, PA speaker N-wall variant. Owner playtest decides dressing of the entry/exit halls and the south third.
