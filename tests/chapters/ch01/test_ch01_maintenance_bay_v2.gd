@@ -560,7 +560,8 @@ func test_real_input_so02_and_pz002_lifecycle() -> void:
 		return
 
 	# Step 3: Walk through hatch aperture (384, 144) to safe_anchor_west (464, 200)
-	await walk_to(player, "walk to hatch aperture", Vector2(384, 144))
+	for point in [Vector2(352, 124), Vector2(384, 124), Vector2(384, 172)]:
+		await walk_to(player, "walk through hatch point %s" % point, point)
 	await walk_to(player, "walk to safe_anchor_west", Vector2(464, 200))
 	_assert_true(player.global_position.distance_to(Vector2(464, 200)) <= 3.0, "reached safe_anchor_west")
 
@@ -576,8 +577,9 @@ func test_real_input_so02_and_pz002_lifecycle() -> void:
 		return
 	_assert_false(shutter.passage_blocked, "fire shutter held open by frozen gear")
 
-	# Step 6: Walk through fire shutter aperture (512, 224) to safe_anchor_east (544, 240)
-	await walk_to(player, "walk through shutter aperture", Vector2(512, 224))
+	# Step 6: Walk through fire shutter aperture to safe_anchor_east (544, 240)
+	for point in [Vector2(512, 210), Vector2(512, 240)]:
+		await walk_to(player, "walk through shutter point %s" % point, point)
 	await walk_to(player, "walk to safe_anchor_east", Vector2(544, 240))
 	_assert_true(player.global_position.distance_to(Vector2(544, 240)) <= 3.0, "reached safe_anchor_east")
 
