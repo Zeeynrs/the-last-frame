@@ -62,6 +62,8 @@
 [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_ticket_validator_n_idle.png" id="cw_val_idle"]
 [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_ticket_validator_n_accepted.png" id="cw_val_acc"]
 [ext_resource type="Texture2D" path="res://assets/props/ch01/ch01_prop_ticket_validator_n_rejecting.png" id="cw_val_rej"]
+[ext_resource type="Script" uid="uid://lhykydaxuebp" path="res://scripts/rendering/lighting/room_lighting.gd" id="lt_lighting"]
+[ext_resource type="Script" uid="uid://cjtuj4pw5cqiw" path="res://scripts/rendering/lighting/room_light.gd" id="lt_light"]
 [sub_resource type="CircleShape2D" id="CircleShape2D_door"]
 radius = 10.0
 
@@ -128,9 +130,15 @@ size = Vector2(12, 8)
 script = ExtResource("room_shape_script")
 outline = PackedVector2Array(0, 0, 28, 0, 28, 16, 0, 16)
 
+[sub_resource type="Resource" id="room_lighting"]
+script = ExtResource("lt_lighting")
+ambient_steps = 2
+exempt_from = 25
+
 [node name="ConcourseWest" type="Node2D"]
 y_sort_enabled = true
 metadata/room_shape = SubResource("room_shape")
+metadata/lighting = SubResource("room_lighting")
 
 [node name="PerimeterWalls" type="StaticBody2D" parent="."]
 collision_layer = 1
@@ -933,3 +941,50 @@ z_as_relative = false
 script = ExtResource("cw_commuter_pres")
 tex_idle = ExtResource("cw_n09_idle")
 tex_read = ExtResource("cw_n09_read")
+
+[node name="Lighting" type="Node2D" parent="."]
+
+[node name="GateFloor" type="Marker2D" parent="Lighting"]
+position = Vector2(316, 194)
+script = ExtResource("lt_light")
+radius = Vector2(64, 32)
+lift_inner = 2
+lift_outer = 1
+inner = 0.55
+only_indices = PackedInt32Array(0, 1, 2, 3, 4, 5)
+
+[node name="GateBody" type="Marker2D" parent="Lighting"]
+position = Vector2(312, 182)
+script = ExtResource("lt_light")
+radius = Vector2(44, 40)
+lift_inner = 2
+lift_outer = 1
+inner = 0.6
+only_indices = PackedInt32Array(11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24)
+
+[node name="EastHelper" type="Marker2D" parent="Lighting"]
+position = Vector2(600, 330)
+script = ExtResource("lt_light")
+radius = Vector2(64, 32)
+lift_inner = 1
+lift_outer = 0
+inner = 0.55
+only_indices = PackedInt32Array(0, 1, 2, 3, 4, 5)
+
+[node name="DialsInfo" type="Marker2D" parent="Lighting"]
+position = Vector2(592, 172)
+script = ExtResource("lt_light")
+shape = 1
+lift_inner = 2
+lift_outer = 0
+quad = PackedVector2Array(-44, -33, 44, 11, 44, 34, -44, -10)
+only_indices = PackedInt32Array(2, 3, 14, 15, 23, 24)
+
+[node name="ValidatorInfo" type="Marker2D" parent="Lighting"]
+position = Vector2(620, 215)
+script = ExtResource("lt_light")
+shape = 1
+lift_inner = 2
+lift_outer = 0
+quad = PackedVector2Array(-4, -6, 6, -1, 6, 6, -4, 1)
+only_indices = PackedInt32Array(2, 3, 14, 15, 23, 24)
