@@ -202,7 +202,11 @@ func test_so02_bell_decoy_and_checkpoint_spawn() -> void:
 	if await select_ability(&"freeze"):
 		await physics_frames(1)
 		_assert_ne(player.pocket_watch.current_target, hatch, "no Freeze on the hatch from the bell plate")
-	# The entry spawn sits in the checkpoint: the autosave was written on entering.
+	# The checkpoint is at (5,5) (320, 144): walk through it to record the autosave.
+	if not await walk_to(player, "bell plate -> checkpoint", Vector2(320, 144)):
+		stop()
+		return
+	await physics_frames(2)
 	if not await continue_from_autosave():
 		stop()
 		return

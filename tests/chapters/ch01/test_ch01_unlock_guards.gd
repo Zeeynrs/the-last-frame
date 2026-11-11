@@ -110,6 +110,9 @@ func test_load_in_bay_before_the_technician_keeps_freeze_locked() -> void:
 	if not await start_at(R3, &"door_entry_west", [&"CH1-SO-01", &"CH1-PZ-001", &"CH1-PZ-006"], [FLAG_REWIND]):
 		stop()
 		return
+	if not await save_at_checkpoint(&"ch01.cp.maintenance_bay", Vector2(320, 144), Vector2(272, 120)):
+		stop()
+		return
 	if not await continue_from_autosave():
 		stop()
 		return
@@ -117,7 +120,7 @@ func test_load_in_bay_before_the_technician_keeps_freeze_locked() -> void:
 	var refused := [0]
 	var seen := await _try_every_selection(refused)
 	_assert_false(seen.has(&"freeze") or seen.has(&"echo"), "R3 after the load: Freeze and Echo never selectable (%s)" % [seen])
-	if not await walk_to(player, "bay -> technician spot", Vector2(352, 128)):
+	if not await walk_to(player, "bay -> technician spot", Vector2(352, 144)):
 		stop()
 		return
 	var tech := resolve(&"ch01.maintenance_bay.n11_hatch_tech")

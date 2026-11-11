@@ -4,15 +4,15 @@ extends Sprite2D
 ## Visual presenter for FireShutter (CH1-PZ-002).
 ## Binds to parent FireShutter and selects closed vs raised texture.
 
-@export var tex_closed: Texture2D = preload("res://assets/props/ch01/ch01_prop_fire_shutter_closed.png")
-@export var tex_raised: Texture2D = preload("res://assets/props/ch01/ch01_prop_fire_shutter_raised.png")
+@export var tex_closed: Texture2D = preload("res://assets/props/ch01/ch01_prop_inner_shutter_closed.png")
+@export var tex_raised: Texture2D = preload("res://assets/props/ch01/ch01_prop_inner_shutter_raised.png")
 
 var _target: FireShutter
 
 
 func _ready() -> void:
 	centered = false
-	offset = Vector2(-32, -56)
+	offset = Vector2(-16, -56)
 	_target = get_parent() as FireShutter
 	_refresh()
 

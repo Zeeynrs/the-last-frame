@@ -16,7 +16,7 @@ extends "res://tests/support/ch01_real_input.gd"
 const MAINTENANCE_BAY := &"ch01.maintenance_bay"
 const ARRIVAL_SPAWN := Vector2(272, 120)
 const EAST_DOOR_SPAWN := Vector2(640, 288)
-const EAST_DOOR_APPROACH := Vector2(624, 280)
+const EAST_DOOR_APPROACH := Vector2(640, 288)
 
 
 func _init() -> void:
@@ -341,52 +341,66 @@ func test_every_stand_spot_reachable_within_2_6_px() -> void:
 		stop()
 		return
 
-	# Canonical stand spots in Maintenance Bay v2
+	session.ability_unlocks.unlock(&"rewind")
+	session.ability_unlocks.unlock(&"freeze")
+
+	# Canonical stand spots in Maintenance Bay v2 walked from safe anchors >= 1 tile away
 	var spots: Array[Dictionary] = [
-		{"name": "checkpoint", "pos": Vector2(272, 120), "target_id": &""},
-		{"name": "safe_anchor_entry", "pos": Vector2(336, 136), "target_id": &""},
-		{"name": "bell_plate_01", "pos": Vector2(272, 168), "target_id": &""},
-		{"name": "hatch_plate_01", "pos": Vector2(320, 160), "target_id": &""},
-		{"name": "doc_hatch_chart", "pos": Vector2(304, 168), "target_id": &"ch01.maintenance_bay.doc_hatch_chart"},
-		{"name": "n11_hatch_tech", "pos": Vector2(352, 144), "target_id": &"ch01.maintenance_bay.n11_hatch_tech"},
-		{"name": "hatch_01 approach", "pos": Vector2(384, 124), "target_id": &""},
-		{"name": "safe_anchor_west", "pos": Vector2(464, 200), "target_id": &""},
-		{"name": "counterweight_gear", "pos": Vector2(488, 188), "target_id": &""},
-		{"name": "fire_shutter", "pos": Vector2(488, 188), "target_id": &""},
-		{"name": "safe_anchor_east", "pos": Vector2(544, 240), "target_id": &""},
-		{"name": "reset_anchor_01", "pos": Vector2(416, 208), "target_id": &"ch01.maintenance_bay.reset_anchor_01"},
-		{"name": "doc_tech_log", "pos": Vector2(416, 256), "target_id": &"ch01.maintenance_bay.doc_tech_log"},
-		{"name": "inner_shutter approach", "pos": Vector2(544, 240), "target_id": &""},
-		{"name": "doc_inner_shutter_plate", "pos": Vector2(608, 240), "target_id": &"ch01.maintenance_bay.doc_inner_shutter_plate"},
-		{"name": "door_exit_east approach", "pos": EAST_DOOR_APPROACH, "target_id": &""}
+		{"name": "SO-02 technician trace (288,112)+H", "pos": Vector2(352, 144), "anchor": Vector2(272, 120), "ability": &"trace", "target_id": &"ch01.maintenance_bay.n11_hatch_tech", "max_dist": 2.6},
+		{"name": "SO-02 chart use (224,128)+H", "pos": Vector2(288, 160), "anchor": Vector2(272, 120), "ability": &"use", "target_id": &"ch01.maintenance_bay.doc_hatch_chart", "max_dist": 2.6},
+		{"name": "SO-02 plate Freeze (256,128)+H", "pos": Vector2(320, 160), "anchor": Vector2(272, 120), "ability": &"freeze", "target_id": &"ch01.maintenance_bay.hatch_01", "max_dist": 2.6},
+		{"name": "SO-02 bell decoy (208,136)+H", "pos": Vector2(272, 168), "anchor": Vector2(272, 120), "ability": &"freeze", "not_target_id": &"ch01.maintenance_bay.hatch_01", "max_dist": 2.6},
+		{"name": "checkpoint (5,5)", "pos": Vector2(320, 144), "anchor": Vector2(272, 120), "ability": &"", "target_id": &"", "max_dist": 2.6},
+		{"name": "safe_anchor_entry (5,4)", "pos": Vector2(336, 136), "anchor": Vector2(272, 120), "ability": &"", "target_id": &"", "max_dist": 2.6},
+		{"name": "PZ-002 casting spot Rewind", "pos": Vector2(480, 208), "anchor": Vector2(432, 216), "ability": &"rewind", "target_id": &"ch01.maintenance_bay.fire_shutter", "max_dist": 2.6},
+		{"name": "PZ-002 casting spot Freeze", "pos": Vector2(480, 208), "anchor": Vector2(432, 216), "ability": &"freeze", "target_id": &"ch01.maintenance_bay.counterweight_gear", "max_dist": 2.6},
+		{"name": "PZ-002 casting spot Trace", "pos": Vector2(480, 208), "anchor": Vector2(432, 216), "ability": &"trace", "target_id": &"ch01.maintenance_bay.gear_residue", "max_dist": 2.6},
+		{"name": "PZ-002 R03 Rewind spot", "pos": Vector2(468, 192), "anchor": Vector2(432, 216), "ability": &"rewind", "target_id": &"ch01.maintenance_bay.fire_shutter", "max_dist": 2.6},
+		{"name": "reset_anchor_01 use", "pos": Vector2(400, 216), "anchor": Vector2(464, 200), "ability": &"use", "target_id": &"ch01.maintenance_bay.reset_anchor_01", "max_dist": 2.6},
+		{"name": "pocket Rewind", "pos": Vector2(544, 240), "anchor": Vector2(560, 236), "ability": &"rewind", "target_id": &"ch01.maintenance_bay.inner_shutter", "max_dist": 2.6},
+		{"name": "pocket Freeze", "pos": Vector2(544, 240), "anchor": Vector2(560, 236), "ability": &"freeze", "target_id": &"ch01.maintenance_bay.counterweight_gear", "max_dist": 2.6},
+		{"name": "plaque use from pocket", "pos": Vector2(592, 232), "anchor": Vector2(544, 240), "ability": &"use", "target_id": &"ch01.maintenance_bay.doc_inner_shutter_plate", "max_dist": 4.0},
+		{"name": "door_exit_east approach", "pos": Vector2(640, 288), "anchor": Vector2(608, 272), "ability": &"", "target_id": &"", "max_dist": 2.6}
 	]
 
 	for entry in spots:
 		var pos: Vector2 = entry["pos"]
+		var anchor: Vector2 = entry["anchor"]
 		var label: String = entry["name"]
+		var max_dist: float = entry["max_dist"]
 
-		# Set player directly near spot to test local reachability with capsule
-		player.global_position = pos + Vector2(2, 2)
+		player.global_position = anchor
 		player.velocity = Vector2.ZERO
-		await physics_frames(1)
+		await physics_frames(3)
 
-		await walk_to(player, "reach spot %s" % label, pos, Callable(), 60, true)
-		for step in 5:
-			if player.global_position.distance_to(pos) <= 2.6:
+		await walk_to(player, "reach spot %s" % label, pos, Callable(), 240, true)
+		for step in 8:
+			if player.global_position.distance_to(pos) <= 1.0:
 				break
 			steer(player, pos)
 			await physics_frames(1)
 		hold_moves([])
+		player.velocity = Vector2.ZERO
+		await physics_frames(2)
 		var dist := player.global_position.distance_to(pos)
-		_assert_true(dist <= 2.6, "spot %s distance %.2f px <= 2.6 px" % [label, dist])
+		_assert_true(dist <= max_dist, "spot %s distance %.2f px <= %.2f px" % [label, dist, max_dist])
 
-		if not String(entry["target_id"]).is_empty():
+		var ab: StringName = entry["ability"]
+		if ab == &"use":
 			var tid: StringName = entry["target_id"]
 			var target_node: Node = resolve(tid)
-			if target_node != null and target_node is Interactable:
-				var focused: Interactable = player.current_target
-				var ok_focus: bool = (focused == target_node or player.pocket_watch.current_target == target_node)
-				_assert_true(ok_focus, "spot %s resolves focus or watch target to %s" % [label, tid])
+			_assert_eq(player.current_target, target_node, "spot %s current_target is %s" % [label, tid])
+		elif ab != &"":
+			var interactables: Array = router.current_room.find_children("*", "Interactable", true, false)
+			var t2: Interactable = PocketWatch.choose_watch_target(player.global_position, interactables, ab)
+			if entry.has("not_target_id"):
+				var not_id: StringName = entry["not_target_id"]
+				var not_node: Node = resolve(not_id)
+				_assert_true(t2 != not_node, "spot %s watch target is not %s" % [label, not_id])
+			else:
+				var tid: StringName = entry["target_id"]
+				var exp_node: Node = resolve(tid) if not tid.is_empty() else null
+				_assert_eq(t2, exp_node, "spot %s watch target is %s" % [label, tid])
 
 	stop()
 
@@ -404,9 +418,9 @@ func test_camera_view_bounds_clamped() -> void:
 	var bounds: Rect2 = router.current_room_bounds()
 	_assert_true(bounds.has_area(), "Maintenance Bay room bounds derived from room_shape: %s" % bounds)
 
-	# Explicit bounds Rect2(48, 0, 688, 408) and center Vector2(392, 204)
-	_assert_eq(bounds, Rect2(48, 0, 688, 408), "explicit maintenance_bay v2 room bounds Rect2(48, 0, 688, 408)")
-	_assert_eq(bounds.get_center(), Vector2(392, 204), "explicit maintenance_bay v2 room bounds center (392, 204)")
+	# Explicit bounds Rect2(48, 0, 704, 416) and center Vector2(400, 208)
+	_assert_eq(bounds, Rect2(48, 0, 704, 416), "explicit maintenance_bay v2 room bounds Rect2(48, 0, 704, 416)")
+	_assert_eq(bounds.get_center(), Vector2(400, 208), "explicit maintenance_bay v2 room bounds center (400, 208)")
 
 	var view: Vector2 = RoomCamera.view_size()
 
@@ -440,8 +454,8 @@ func test_checkpoint_saveload_restores_player_and_camera() -> void:
 		stop()
 		return
 
-	var cp_zone := Vector2(272, 120)
-	var outside := Vector2(320, 144)
+	var cp_zone := Vector2(320, 144)
+	var outside := Vector2(272, 120)
 	if not await save_at_checkpoint(&"ch01.cp.maintenance_bay", cp_zone, outside):
 		stop()
 		return
@@ -477,6 +491,8 @@ func test_rigid_cluster_shifts_and_relative_distances() -> void:
 
 	# Cluster H: Delta (+64, +32) from greybox baseline
 	var cluster_h_nodes := {
+		"checkpoint": [Vector2(256, 112), Vector2(320, 144)],
+		"safe_anchor_entry": [Vector2(272, 104), Vector2(336, 136)],
 		"bell_plate_01": [Vector2(208, 136), Vector2(272, 168)],
 		"doc_hatch_chart": [Vector2(240, 136), Vector2(304, 168)],
 		"hatch_plate_01": [Vector2(256, 128), Vector2(320, 160)],

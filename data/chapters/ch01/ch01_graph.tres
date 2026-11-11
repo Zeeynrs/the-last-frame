@@ -47,7 +47,7 @@ rooms = [{
 }]
 }, {
 "room_id": "ch01.maintenance_bay",
-"width": 25,
+"width": 26,
 "height": 16,
 "doors": [{
 "door_id": "door_entry_west",
@@ -57,7 +57,7 @@ rooms = [{
 }, {
 "door_id": "door_exit_east",
 "side": "E",
-"x": 25,
+"x": 26,
 "y": 4
 }],
 "safe_anchors": [{

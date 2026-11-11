@@ -6,7 +6,9 @@ const SHOTS := [
 	["arrival_960x540", Vector2(272, 120), "idle_se"],
 	["hatch_960x540", Vector2(384, 144), "idle_se"],
 	["gear_bay_960x540", Vector2(512, 176), "idle_ne"],
+	["gear_stand_spot_960x540", Vector2(496, 184), "idle_ne"],
 	["pocket_960x540", Vector2(544, 240), "idle_se"],
+	["pocket_safe_anchor_east_960x540", Vector2(544, 240), "idle_se"],
 	["east_door_960x540", Vector2(640, 288), "idle_se"]
 ]
 

@@ -29,28 +29,28 @@ func _faces_of(shape: RoomShape, kind: StringName) -> Array:
 ## 25 x 16 (Maintenance Bay v2): ADR-003 / ROOM_GRAPH §1 math, and the same tiles, tile positions
 ## and wall-module positions as the room scene in the project.
 func test_rectangle_matches_adr003_math() -> void:
-	var shape := RoomShape.rectangle(25, 16)
-	_assert_eq(shape.floor_cells().size(), 400, "25 x 16 = 400 floor tiles")
-	_assert_eq(shape.perimeter_polygon_px(), PackedVector2Array([Vector2(320, 64), Vector2(720, 264), Vector2(464, 392), Vector2(64, 192)]),
+	var shape := RoomShape.rectangle(26, 16)
+	_assert_eq(shape.floor_cells().size(), 416, "26 x 16 = 416 floor tiles")
+	_assert_eq(shape.perimeter_polygon_px(), PackedVector2Array([Vector2(320, 64), Vector2(736, 272), Vector2(480, 400), Vector2(64, 192)]),
 		"diamond corners: N (320,64), E, S, W")
 	var bounds := shape.bounds_px()
-	_assert_eq(bounds.size.x, (25 + 16) * 16 + 2 * RoomShape.MARGIN_SIDE, "bounds width = (W+H)*16 = 656 + margins")
-	_assert_eq(bounds.size.y, (25 + 16) * 8 + RoomShape.MARGIN_TOP + RoomShape.MARGIN_BOTTOM, "bounds height = (W+H)*8 = 328 + margins")
+	_assert_eq(bounds.size.x, (26 + 16) * 16 + 2 * RoomShape.MARGIN_SIDE, "bounds width = (W+H)*16 = 672 + margins")
+	_assert_eq(bounds.size.y, (26 + 16) * 8 + RoomShape.MARGIN_TOP + RoomShape.MARGIN_BOTTOM, "bounds height = (W+H)*8 = 336 + margins")
 	_assert_eq(bounds.position, Vector2(64 - RoomShape.MARGIN_SIDE, 64 - RoomShape.MARGIN_TOP), "bounds origin")
-	_assert_true(RoomCamera.view_size().x >= bounds.size.x and RoomCamera.view_size().y >= bounds.size.y, "a 25 x 16 room fits the 960 x 540 screen area")
+	_assert_true(RoomCamera.view_size().x >= bounds.size.x and RoomCamera.view_size().y >= bounds.size.y, "a 26 x 16 room fits the 960 x 540 screen area")
 
 	var room: Node = load("res://scenes/chapters/ch01/rooms/maintenance_bay.tscn").instantiate()
 	var floor_layer := room.get_node("TileMapLayer_Floor") as TileMapLayer
 	var used: Array[Vector2i] = floor_layer.get_used_cells()
 	used.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return a.y < b.y or (a.y == b.y and a.x < b.x))
-	_assert_eq(used, shape.floor_cells(), "same 400 tiles as the maintenance bay's floor layer")
-	for t in [Vector2i(0, 0), Vector2i(24, 0), Vector2i(0, 15), Vector2i(24, 15), Vector2i(12, 8)]:
+	_assert_eq(used, shape.floor_cells(), "same 416 tiles as the maintenance bay's floor layer")
+	for t in [Vector2i(0, 0), Vector2i(25, 0), Vector2i(0, 15), Vector2i(25, 15), Vector2i(13, 8)]:
 		_assert_eq(floor_layer.position + floor_layer.map_to_local(t), RoomShape.tile_to_px(Vector2(t) + Vector2(0.5, 0.5)),
 			"tile %s centre: TileMapLayer == tile_to_px(t + 0.5)" % t)
 	var n_walls := shape.wall_segments().filter(func(s: Dictionary) -> bool: return s["kind"] == &"straight" and s["face"] == &"N")
 	_assert_eq(n_walls.size(), 1, "one straight N segment")
-	_assert_eq([n_walls[0]["from"], n_walls[0]["to"]], [Vector2i(0, 0), Vector2i(25, 0)], "N segment along y = 0")
-	for k in 12:
+	_assert_eq([n_walls[0]["from"], n_walls[0]["to"]], [Vector2i(0, 0), Vector2i(26, 0)], "N segment along y = 0")
+	for k in 13:
 		_assert_eq(room.get_node("YSort_Walls/WallN_%d" % k).position, RoomShape.tile_to_px(Vector2(2 * k + 1, 0)),
 			"WallN_%d sits on the middle of its two-tile edge" % k)
 	for j in 8:

@@ -27,7 +27,7 @@ FIXTURES = os.path.join(REPO, "tests", "rooms", "fixtures")
 ROOMS = {
     "arrival_platform": (14, 10, {"strip": (2, ("S", "E")), "doors": [("E", (13, 5))]}),
     "concourse_west": (28, 16, {}),
-    "maintenance_bay": (25, 16, {}),
+    "maintenance_bay": (26, 16, {}),
     "security_crossing": (16, 12, {"holes": B.parse_cells("9,0..11")}),
     "waiting_lounge": (12, 10, {}),
     "signal_control": (16, 12, {}),

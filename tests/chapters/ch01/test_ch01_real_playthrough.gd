@@ -395,7 +395,11 @@ func _play() -> bool:
 	await physics_frames(2)
 	_segment("2b concourse PZ-006")
 
-	# Checkpoint autosave written to the test root (Lead probe: frame 197)
+	# 3. Maintenance bay: checkpoint (5,5), the technician (Freeze unlocks), SO-02 plate + Freeze the hatch, PZ-002
+	if not await walk_to(_player, "bay -> checkpoint (5,5)", Vector2(320, 144)):
+		return false
+
+	# Checkpoint autosave written to the test root
 	var store := _save_service()
 	_assert_true(FileAccess.file_exists(TEST_SAVE_ROOT.path_join("slot_%d.json" % _router.autosave_slot)),
 		"checkpoint autosave written to the test save root")
@@ -405,7 +409,6 @@ func _play() -> bool:
 		_assert_eq(saved["data"].get("checkpoint_id", ""), "ch01.cp.maintenance_bay", "autosave is the bay checkpoint")
 		_assert_eq(saved["data"]["puzzles"].get("CH1-PZ-001", ""), "SOLVED", "autosave records PZ-001 SOLVED")
 
-	# 3. Maintenance bay: the technician (Freeze unlocks), SO-02 plate + Freeze the hatch, PZ-002
 	var hatch := _resolve(&"ch01.maintenance_bay.hatch_01") as PlateLinkedGate
 	if not await walk_to(_player, "bay -> technician spot", Vector2(352, 144)):
 		return false
@@ -450,7 +453,7 @@ func _play() -> bool:
 	if not await walk_to(_player, "bay -> exit_trigger_east_02", Vector2(560, 264), _solved(&"CH1-PZ-002")):
 		return false
 	_assert_true(_session.puzzle_service.is_solved(&"CH1-PZ-002"), "PZ-002 SOLVED behind the inner shutter")
-	if not await walk_to(_player, "bay -> door_exit_east", Vector2(656, 296), _in_room(&"ch01.security_crossing")):
+	if not await walk_to(_player, "bay -> door_exit_east", Vector2(672, 304), _in_room(&"ch01.security_crossing")):
 		return false
 	await physics_frames(2)
 	_segment("3b bay PZ-002")

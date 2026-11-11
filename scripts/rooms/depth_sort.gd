@@ -28,6 +28,7 @@ const UPRIGHT_ASSETS: Array[String] = [
 	"ch01_prop_staff_barrier_",
 	"ch01_prop_service_hatch_",
 	"ch01_prop_fire_shutter_",
+	"ch01_prop_inner_shutter_",
 	"ch01_prop_ticket_validator_",
 	"ch01_env_wall_railing_iron_",
 	"ch01_env_wall_corner_pillar_",

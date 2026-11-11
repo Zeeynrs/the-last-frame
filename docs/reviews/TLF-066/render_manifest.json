@@ -10939,8 +10939,8 @@
           "id": "ch01.maintenance_bay.door_exit_east",
           "node": "door_exit_east",
           "pos": [
-            656.0,
-            296.0
+            672.0,
+            304.0
           ]
         },
         {
@@ -10963,8 +10963,8 @@
           "id": "ch01.maintenance_bay.checkpoint",
           "node": "checkpoint",
           "pos": [
-            272.0,
-            120.0
+            320.0,
+            144.0
           ]
         },
         {

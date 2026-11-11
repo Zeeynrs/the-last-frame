@@ -25,7 +25,7 @@ const HELD := ["visual:YSort_Actors/AtriumBenchE", "visual:YSort_Actors/AtriumBe
 ## shutter and validator in YSort_Actors; the railing and the interior pillar are the audit's
 ## upright bodies (rank 3, 4). Kept separate from DepthSort's own table on purpose.
 const UPRIGHT_ASSETS: Array[String] = ["ch01_prop_platform_gate_", "ch01_prop_release_lever_", "ch01_prop_staff_door_", "ch01_prop_staff_barrier_",
-	"ch01_prop_service_hatch_", "ch01_prop_fire_shutter_", "ch01_prop_ticket_validator_",
+	"ch01_prop_service_hatch_", "ch01_prop_fire_shutter_", "ch01_prop_inner_shutter_", "ch01_prop_ticket_validator_",
 	"ch01_env_wall_railing_iron_", "ch01_env_wall_corner_pillar_"]
 ## Audit probe displacements from the object's contact (room cardinal sides).
 const SIDES := {"N": Vector2(16, -8), "S": Vector2(-16, 8), "E": Vector2(16, 8), "W": Vector2(-16, -8)}
