@@ -137,16 +137,6 @@ shape = SubResource("SegmentShape2D_shutter_n")
 [node name="DividerSouth" type="CollisionShape2D" parent="ShutterDividers"]
 shape = SubResource("SegmentShape2D_shutter_s")
 
-[node name="ArchwayWest" type="Sprite2D" parent="."]
-position = Vector2(240, 104)
-texture = ExtResource("10_archway")
-offset = Vector2(0, -24)
-
-[node name="ArchwayEast" type="Sprite2D" parent="."]
-position = Vector2(656, 296)
-texture = ExtResource("10_archway")
-offset = Vector2(0, -24)
-
 [node name="door_entry_west" type="Area2D" parent="."]
 position = Vector2(240, 104)
 collision_layer = 4
