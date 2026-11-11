@@ -10939,112 +10939,112 @@
           "id": "ch01.maintenance_bay.door_exit_east",
           "node": "door_exit_east",
           "pos": [
-            464.0,
-            200.0
+            656.0,
+            296.0
           ]
         },
         {
           "id": "ch01.maintenance_bay.safe_anchor_west",
           "node": "safe_anchor_west",
           "pos": [
-            336.0,
-            136.0
+            464.0,
+            200.0
           ]
         },
         {
           "id": "ch01.maintenance_bay.safe_anchor_east",
           "node": "safe_anchor_east",
           "pos": [
-            416.0,
-            176.0
+            544.0,
+            240.0
           ]
         },
         {
           "id": "ch01.maintenance_bay.checkpoint",
           "node": "checkpoint",
           "pos": [
-            256.0,
-            112.0
+            320.0,
+            144.0
           ]
         },
         {
           "id": "ch01.maintenance_bay.shutter_threshold_trigger",
           "node": "shutter_threshold_trigger",
           "pos": [
-            384.0,
-            160.0
+            512.0,
+            224.0
           ]
         },
         {
           "id": "ch01.maintenance_bay.exit_trigger_east",
           "node": "exit_trigger_east",
           "pos": [
-            416.0,
-            176.0
+            544.0,
+            240.0
           ]
         },
         {
           "id": "ch01.maintenance_bay.safe_anchor_entry",
           "node": "safe_anchor_entry",
           "pos": [
-            272.0,
-            104.0
+            336.0,
+            136.0
           ]
         },
         {
           "id": "ch01.maintenance_bay.hatch_threshold",
           "node": "hatch_threshold",
           "pos": [
-            320.0,
-            112.0
+            384.0,
+            144.0
           ]
         },
         {
           "id": "ch01.maintenance_bay.exit_trigger_hatch",
           "node": "exit_trigger_hatch",
           "pos": [
-            336.0,
-            120.0
+            400.0,
+            152.0
           ]
         },
         {
           "id": "ch01.maintenance_bay.hatch_residue",
           "node": "hatch_residue",
           "pos": [
-            256.0,
-            128.0
+            320.0,
+            160.0
           ]
         },
         {
           "id": "ch01.maintenance_bay.inner_shutter_threshold",
           "node": "inner_shutter_threshold",
           "pos": [
-            432.0,
-            184.0
+            560.0,
+            248.0
           ]
         },
         {
           "id": "ch01.maintenance_bay.exit_trigger_east_02",
           "node": "exit_trigger_east_02",
           "pos": [
-            448.0,
-            192.0
+            576.0,
+            256.0
           ]
         },
         {
           "id": "ch01.maintenance_bay.gear_residue",
           "node": "gear_residue",
           "pos": [
-            368.0,
-            120.0
+            496.0,
+            184.0
           ]
         }
       ],
       "objects": [
         {
           "anchor": [
-            208.0,
-            136.0
+            272.0,
+            168.0
           ],
           "index": 1,
           "object_id": "ch01.maintenance_bay.bell_plate_01",
@@ -11053,29 +11053,29 @@
             "E": {
               "file": "001_E.png",
               "player": [
-                224.0,
-                144.0
+                288.0,
+                176.0
               ]
             },
             "N": {
               "file": "001_N.png",
               "player": [
-                224.0,
-                128.0
+                288.0,
+                160.0
               ]
             },
             "S": {
               "file": "001_S.png",
               "player": [
-                192.0,
-                144.0
+                256.0,
+                176.0
               ]
             },
             "W": {
               "file": "001_W.png",
               "player": [
-                192.0,
-                128.0
+                256.0,
+                160.0
               ]
             }
           },
@@ -11096,8 +11096,8 @@
                 {
                   "name": "bell_plate_01",
                   "position": [
-                    208.0,
-                    136.0
+                    272.0,
+                    168.0
                   ],
                   "relative": true,
                   "ysort": false,
@@ -11137,8 +11137,8 @@
               "flip_h": false,
               "flip_v": false,
               "global": [
-                208.0,
-                136.0
+                272.0,
+                168.0
               ],
               "kind": "Sprite2D",
               "offset": [
@@ -11204,8 +11204,8 @@
         },
         {
           "anchor": [
-            384.0,
-            112.0
+            512.0,
+            176.0
           ],
           "index": 2,
           "object_id": "ch01.maintenance_bay.counterweight_gear",
@@ -11214,29 +11214,29 @@
             "E": {
               "file": "002_E.png",
               "player": [
-                400.0,
-                120.0
+                528.0,
+                184.0
               ]
             },
             "N": {
               "file": "002_N.png",
               "player": [
-                400.0,
-                104.0
+                528.0,
+                168.0
               ]
             },
             "S": {
               "file": "002_S.png",
               "player": [
-                368.0,
-                120.0
+                496.0,
+                184.0
               ]
             },
             "W": {
               "file": "002_W.png",
               "player": [
-                368.0,
-                104.0
+                496.0,
+                168.0
               ]
             }
           },
@@ -11257,8 +11257,8 @@
                 {
                   "name": "counterweight_gear",
                   "position": [
-                    384.0,
-                    112.0
+                    512.0,
+                    176.0
                   ],
                   "relative": true,
                   "ysort": false,
@@ -11298,8 +11298,8 @@
               "flip_h": false,
               "flip_v": false,
               "global": [
-                384.0,
-                112.0
+                512.0,
+                176.0
               ],
               "kind": "Sprite2D",
               "offset": [
@@ -11363,8 +11363,8 @@
         },
         {
           "anchor": [
-            240.0,
-            136.0
+            304.0,
+            168.0
           ],
           "index": 3,
           "object_id": "ch01.maintenance_bay.doc_hatch_chart",
@@ -11373,29 +11373,29 @@
             "E": {
               "file": "003_E.png",
               "player": [
-                256.0,
-                144.0
+                320.0,
+                176.0
               ]
             },
             "N": {
               "file": "003_N.png",
               "player": [
-                256.0,
-                128.0
+                320.0,
+                160.0
               ]
             },
             "S": {
               "file": "003_S.png",
               "player": [
-                224.0,
-                144.0
+                288.0,
+                176.0
               ]
             },
             "W": {
               "file": "003_W.png",
               "player": [
-                224.0,
-                128.0
+                288.0,
+                160.0
               ]
             }
           },
@@ -11416,8 +11416,8 @@
                 {
                   "name": "doc_hatch_chart",
                   "position": [
-                    240.0,
-                    136.0
+                    304.0,
+                    168.0
                   ],
                   "relative": true,
                   "ysort": false,
@@ -11457,8 +11457,8 @@
               "flip_h": false,
               "flip_v": false,
               "global": [
-                240.0,
-                136.0
+                304.0,
+                168.0
               ],
               "kind": "Sprite2D",
               "offset": [
@@ -11522,8 +11522,8 @@
         },
         {
           "anchor": [
-            480.0,
-            160.0
+            608.0,
+            224.0
           ],
           "index": 4,
           "object_id": "ch01.maintenance_bay.doc_inner_shutter_plate",
@@ -11532,29 +11532,29 @@
             "E": {
               "file": "004_E.png",
               "player": [
-                496.0,
-                168.0
+                624.0,
+                232.0
               ]
             },
             "N": {
               "file": "004_N.png",
               "player": [
-                496.0,
-                152.0
+                624.0,
+                216.0
               ]
             },
             "S": {
               "file": "004_S.png",
               "player": [
-                464.0,
-                168.0
+                592.0,
+                232.0
               ]
             },
             "W": {
               "file": "004_W.png",
               "player": [
-                464.0,
-                152.0
+                592.0,
+                216.0
               ]
             }
           },
@@ -11575,8 +11575,8 @@
                 {
                   "name": "doc_inner_shutter_plate",
                   "position": [
-                    480.0,
-                    160.0
+                    608.0,
+                    224.0
                   ],
                   "relative": true,
                   "ysort": false,
@@ -11616,8 +11616,8 @@
               "flip_h": false,
               "flip_v": false,
               "global": [
-                480.0,
-                160.0
+                608.0,
+                224.0
               ],
               "kind": "Sprite2D",
               "offset": [
@@ -11681,8 +11681,8 @@
         },
         {
           "anchor": [
-            288.0,
-            192.0
+            416.0,
+            256.0
           ],
           "index": 5,
           "object_id": "ch01.maintenance_bay.doc_tech_log",
@@ -11691,29 +11691,29 @@
             "E": {
               "file": "005_E.png",
               "player": [
-                304.0,
-                200.0
+                432.0,
+                264.0
               ]
             },
             "N": {
               "file": "005_N.png",
               "player": [
-                304.0,
-                184.0
+                432.0,
+                248.0
               ]
             },
             "S": {
               "file": "005_S.png",
               "player": [
-                272.0,
-                200.0
+                400.0,
+                264.0
               ]
             },
             "W": {
               "file": "005_W.png",
               "player": [
-                272.0,
-                184.0
+                400.0,
+                248.0
               ]
             }
           },
@@ -11734,8 +11734,8 @@
                 {
                   "name": "doc_tech_log",
                   "position": [
-                    288.0,
-                    192.0
+                    416.0,
+                    256.0
                   ],
                   "relative": true,
                   "ysort": false,
@@ -11775,8 +11775,8 @@
               "flip_h": false,
               "flip_v": false,
               "global": [
-                288.0,
-                192.0
+                416.0,
+                256.0
               ],
               "kind": "Sprite2D",
               "offset": [
@@ -11840,8 +11840,8 @@
         },
         {
           "anchor": [
-            384.0,
-            160.0
+            512.0,
+            224.0
           ],
           "index": 6,
           "object_id": "ch01.maintenance_bay.fire_shutter",
@@ -11850,29 +11850,29 @@
             "E": {
               "file": "006_E.png",
               "player": [
-                400.0,
-                168.0
+                528.0,
+                232.0
               ]
             },
             "N": {
               "file": "006_N.png",
               "player": [
-                400.0,
-                152.0
+                528.0,
+                216.0
               ]
             },
             "S": {
               "file": "006_S.png",
               "player": [
-                368.0,
-                168.0
+                496.0,
+                232.0
               ]
             },
             "W": {
               "file": "006_W.png",
               "player": [
-                368.0,
-                152.0
+                496.0,
+                216.0
               ]
             }
           },
@@ -11893,8 +11893,8 @@
                 {
                   "name": "fire_shutter",
                   "position": [
-                    384.0,
-                    160.0
+                    512.0,
+                    224.0
                   ],
                   "relative": true,
                   "ysort": false,
@@ -11934,8 +11934,8 @@
               "flip_h": false,
               "flip_v": false,
               "global": [
-                384.0,
-                160.0
+                512.0,
+                224.0
               ],
               "kind": "Sprite2D",
               "offset": [
@@ -11999,8 +11999,8 @@
         },
         {
           "anchor": [
-            320.0,
-            112.0
+            384.0,
+            144.0
           ],
           "index": 7,
           "object_id": "ch01.maintenance_bay.hatch_01",
@@ -12009,29 +12009,29 @@
             "E": {
               "file": "007_E.png",
               "player": [
-                336.0,
-                120.0
+                400.0,
+                152.0
               ]
             },
             "N": {
               "file": "007_N.png",
               "player": [
-                336.0,
-                104.0
+                400.0,
+                136.0
               ]
             },
             "S": {
               "file": "007_S.png",
               "player": [
-                304.0,
-                120.0
+                368.0,
+                152.0
               ]
             },
             "W": {
               "file": "007_W.png",
               "player": [
-                304.0,
-                104.0
+                368.0,
+                136.0
               ]
             }
           },
@@ -12052,8 +12052,8 @@
                 {
                   "name": "hatch_01",
                   "position": [
-                    320.0,
-                    112.0
+                    384.0,
+                    144.0
                   ],
                   "relative": true,
                   "ysort": false,
@@ -12093,8 +12093,8 @@
               "flip_h": false,
               "flip_v": false,
               "global": [
-                320.0,
-                112.0
+                384.0,
+                144.0
               ],
               "kind": "Sprite2D",
               "offset": [
@@ -12160,8 +12160,8 @@
         },
         {
           "anchor": [
-            256.0,
-            128.0
+            320.0,
+            160.0
           ],
           "index": 8,
           "object_id": "ch01.maintenance_bay.hatch_plate_01",
@@ -12170,29 +12170,29 @@
             "E": {
               "file": "008_E.png",
               "player": [
-                272.0,
-                136.0
+                336.0,
+                168.0
               ]
             },
             "N": {
               "file": "008_N.png",
               "player": [
-                272.0,
-                120.0
+                336.0,
+                152.0
               ]
             },
             "S": {
               "file": "008_S.png",
               "player": [
-                240.0,
-                136.0
+                304.0,
+                168.0
               ]
             },
             "W": {
               "file": "008_W.png",
               "player": [
-                240.0,
-                120.0
+                304.0,
+                152.0
               ]
             }
           },
@@ -12213,8 +12213,8 @@
                 {
                   "name": "hatch_plate_01",
                   "position": [
-                    256.0,
-                    128.0
+                    320.0,
+                    160.0
                   ],
                   "relative": true,
                   "ysort": false,
@@ -12254,8 +12254,8 @@
               "flip_h": false,
               "flip_v": false,
               "global": [
-                256.0,
-                128.0
+                320.0,
+                160.0
               ],
               "kind": "Sprite2D",
               "offset": [
@@ -12321,8 +12321,8 @@
         },
         {
           "anchor": [
-            432.0,
-            184.0
+            560.0,
+            248.0
           ],
           "index": 9,
           "object_id": "ch01.maintenance_bay.inner_shutter",
@@ -12331,29 +12331,29 @@
             "E": {
               "file": "009_E.png",
               "player": [
-                448.0,
-                192.0
+                576.0,
+                256.0
               ]
             },
             "N": {
               "file": "009_N.png",
               "player": [
-                448.0,
-                176.0
+                576.0,
+                240.0
               ]
             },
             "S": {
               "file": "009_S.png",
               "player": [
-                416.0,
-                192.0
+                544.0,
+                256.0
               ]
             },
             "W": {
               "file": "009_W.png",
               "player": [
-                416.0,
-                176.0
+                544.0,
+                240.0
               ]
             }
           },
@@ -12374,8 +12374,8 @@
                 {
                   "name": "inner_shutter",
                   "position": [
-                    432.0,
-                    184.0
+                    560.0,
+                    248.0
                   ],
                   "relative": true,
                   "ysort": false,
@@ -12415,8 +12415,8 @@
               "flip_h": false,
               "flip_v": false,
               "global": [
-                432.0,
-                184.0
+                560.0,
+                248.0
               ],
               "kind": "Sprite2D",
               "offset": [
@@ -12482,8 +12482,8 @@
         },
         {
           "anchor": [
-            304.0,
-            104.0
+            368.0,
+            136.0
           ],
           "index": 10,
           "object_id": "ch01.maintenance_bay.n11_hatch_tech",
@@ -12492,29 +12492,29 @@
             "E": {
               "file": "010_E.png",
               "player": [
-                320.0,
-                112.0
+                384.0,
+                144.0
               ]
             },
             "N": {
               "file": "010_N.png",
               "player": [
-                320.0,
-                96.0
+                384.0,
+                128.0
               ]
             },
             "S": {
               "file": "010_S.png",
               "player": [
-                288.0,
-                112.0
+                352.0,
+                144.0
               ]
             },
             "W": {
               "file": "010_W.png",
               "player": [
-                288.0,
-                96.0
+                352.0,
+                128.0
               ]
             }
           },
@@ -12535,8 +12535,8 @@
                 {
                   "name": "n11_hatch_tech",
                   "position": [
-                    304.0,
-                    104.0
+                    368.0,
+                    136.0
                   ],
                   "relative": true,
                   "ysort": false,
@@ -12576,8 +12576,8 @@
               "flip_h": false,
               "flip_v": false,
               "global": [
-                304.0,
-                104.0
+                368.0,
+                136.0
               ],
               "kind": "Sprite2D",
               "offset": [
@@ -12669,8 +12669,8 @@
         },
         {
           "anchor": [
-            288.0,
-            144.0
+            416.0,
+            208.0
           ],
           "index": 11,
           "object_id": "ch01.maintenance_bay.reset_anchor_01",
@@ -12679,29 +12679,29 @@
             "E": {
               "file": "011_E.png",
               "player": [
-                304.0,
-                152.0
+                432.0,
+                216.0
               ]
             },
             "N": {
               "file": "011_N.png",
               "player": [
-                304.0,
-                136.0
+                432.0,
+                200.0
               ]
             },
             "S": {
               "file": "011_S.png",
               "player": [
-                272.0,
-                152.0
+                400.0,
+                216.0
               ]
             },
             "W": {
               "file": "011_W.png",
               "player": [
-                272.0,
-                136.0
+                400.0,
+                200.0
               ]
             }
           },
@@ -12722,8 +12722,8 @@
                 {
                   "name": "reset_anchor_01",
                   "position": [
-                    288.0,
-                    144.0
+                    416.0,
+                    208.0
                   ],
                   "relative": true,
                   "ysort": false,
@@ -12763,8 +12763,8 @@
               "flip_h": false,
               "flip_v": false,
               "global": [
-                288.0,
-                144.0
+                416.0,
+                208.0
               ],
               "kind": "Sprite2D",
               "offset": [
@@ -12828,8 +12828,8 @@
         },
         {
           "anchor": [
-            464.0,
-            200.0
+            656.0,
+            296.0
           ],
           "index": 12,
           "object_id": "visual:ArchwayEast",
@@ -12838,29 +12838,29 @@
             "E": {
               "file": "012_E.png",
               "player": [
-                480.0,
-                208.0
+                672.0,
+                304.0
               ]
             },
             "N": {
               "file": "012_N.png",
               "player": [
-                480.0,
-                192.0
+                672.0,
+                288.0
               ]
             },
             "S": {
               "file": "012_S.png",
               "player": [
-                448.0,
-                208.0
+                640.0,
+                304.0
               ]
             },
             "W": {
               "file": "012_W.png",
               "player": [
-                448.0,
-                192.0
+                640.0,
+                288.0
               ]
             }
           },
@@ -12871,8 +12871,8 @@
                 {
                   "name": "ArchwayEast",
                   "position": [
-                    464.0,
-                    200.0
+                    656.0,
+                    296.0
                   ],
                   "relative": true,
                   "ysort": false,
@@ -12912,8 +12912,8 @@
               "flip_h": false,
               "flip_v": false,
               "global": [
-                464.0,
-                200.0
+                656.0,
+                296.0
               ],
               "kind": "Sprite2D",
               "offset": [
@@ -13289,8 +13289,8 @@
         },
         {
           "anchor": [
-            464.0,
-            200.0
+            656.0,
+            296.0
           ],
           "index": 15,
           "object_id": "visual:YSort_Walls/Archway_door_exit_east",
@@ -13299,29 +13299,29 @@
             "E": {
               "file": "015_E.png",
               "player": [
-                480.0,
-                208.0
+                672.0,
+                304.0
               ]
             },
             "N": {
               "file": "015_N.png",
               "player": [
-                480.0,
-                192.0
+                672.0,
+                288.0
               ]
             },
             "S": {
               "file": "015_S.png",
               "player": [
-                448.0,
-                208.0
+                640.0,
+                304.0
               ]
             },
             "W": {
               "file": "015_W.png",
               "player": [
-                448.0,
-                192.0
+                640.0,
+                288.0
               ]
             }
           },
@@ -13332,8 +13332,8 @@
                 {
                   "name": "Archway_door_exit_east",
                   "position": [
-                    464.0,
-                    200.0
+                    656.0,
+                    296.0
                   ],
                   "relative": false,
                   "ysort": false,
@@ -13383,8 +13383,8 @@
               "flip_h": false,
               "flip_v": false,
               "global": [
-                464.0,
-                200.0
+                656.0,
+                296.0
               ],
               "kind": "Sprite2D",
               "offset": [
