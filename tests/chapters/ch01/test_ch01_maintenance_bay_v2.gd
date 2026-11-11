@@ -121,8 +121,8 @@ func test_bulkhead_sweep_mutation_fails_when_shape1_disabled() -> void:
 	shape1.disabled = true
 	await physics_frames(1)
 
-	var start_pos := _tile_to_world(6.2, 3.2)
-	var push_target := _tile_to_world(8.0, 3.2)
+	var start_pos := _tile_to_world(6.2, 1.5)
+	var push_target := _tile_to_world(8.0, 1.5)
 	player.global_position = start_pos
 	player.velocity = Vector2.ZERO
 	await physics_frames(1)
