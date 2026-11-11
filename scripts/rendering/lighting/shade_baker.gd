@@ -32,6 +32,9 @@ const KEY_DIR_TILES := Vector2(1, 0)
 ## Side view: shadows fall to the right of the caster (same key).
 const KEY_DIR_SIDE := 1.0
 const SKIP_META := &"shade_skip"
+## A sprite this close (px) to a footprint already listed is that body's art (e.g. a pillar sprite
+## in YSort_Walls over its collider) and casts nothing more.
+const SAME_BODY_PX := 16.0
 ## Footprints whose centre is closer than this (tiles) to the floor outline, or outside it, cast nothing.
 const EDGE_MARGIN := 0.25
 ## Side view: the AO band where the far wall meets the deck, relative to SideView.floor_y.
@@ -110,7 +113,7 @@ static func iso_shapes(room: Node2D, shape: RoomShape) -> Dictionary:
 
 
 ## Grounded casters of an iso room: [{centre (world px), rx, height, node}]. Footprint colliders
-## first, then actor-layer sprites of objects without one.
+## first, then actor-layer sprites of objects without one (and not within SAME_BODY_PX of one).
 static func grounded(room: Node2D, shape: RoomShape) -> Array:
 	var out: Array = []
 	var with_body := {}
@@ -141,6 +144,8 @@ static func grounded(room: Node2D, shape: RoomShape) -> Array:
 		if not (DepthSort.is_upright_texture(s.texture) or effective_z(s) == DepthSort.ACTOR_Z):
 			continue
 		var c := (s.get_parent() as Node2D).global_position if s.get_parent() is Area2D else s.global_position
+		if out.any(func(g: Dictionary) -> bool: return g["centre"].distance_to(c) <= SAME_BODY_PX):
+			continue
 		var size := s.get_rect().size
 		out.append({"centre": c, "rx": maxf(size.x * 0.35, 6.0), "height": size.y, "node": s})
 	return out

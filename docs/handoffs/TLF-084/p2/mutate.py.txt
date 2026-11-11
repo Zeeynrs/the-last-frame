@@ -1,0 +1,75 @@
+"""TLF-084 Part 2: stub/mutate the implementation in the scratch copy, run test_shadows (and
+test_lighting_pass) per mutation with a 120 s cap, record which tests fail, restore the file."""
+import os, re, subprocess, sys, pathlib
+
+COPY = pathlib.Path(sys.argv[1])
+GODOT = r"D:\Godot\Godot_v4.7.2-stable_win64_console.exe"
+LP = "scripts/rendering/lighting/lighting_pass.gd"
+SB = "scripts/rendering/lighting/shade_baker.gd"
+
+MUTATIONS = [
+    ("shade stubbed to 0", LP, "func _shade(p: Vector2, index: int, terms: Dictionary) -> int:\n",
+     "func _shade(p: Vector2, index: int, terms: Dictionary) -> int:\n\treturn 0\n"),
+    ("receiver mask: every index", LP, "const RECEIVERS := 0b111111", "const RECEIVERS := 0x7fffffff"),
+    ("information regions ignored by shade", LP,
+     "\tif ((RECEIVERS >> index) & 1) == 0 or terms[\"info\"]:\n\t\treturn 0\n\tvar centre",
+     "\tif ((RECEIVERS >> index) & 1) == 0:\n\t\treturn 0\n\tvar centre"),
+    ("ADD: pools do not add the fill", LP,
+     "return maxi(lift, int(terms[\"room_lift\"]) + lighting.fill_lift)", "return maxi(lift, lighting.fill_lift)"),
+    ("ADD: the Elias zone adds the fill", LP,
+     "\t\tif e.get(\"room\", true):\n\t\t\troom_lift = maxi(room_lift, v)", "\t\troom_lift = maxi(room_lift, v)"),
+    ("exempt ignored", LP, "\tif index >= exempt_from or k <= 0:", "\tif k <= 0:"),
+    ("shade added after the clamp", LP,
+     "\tvar k := clampi(lighting.ambient_steps - lift + shade, 0, 3)",
+     "\tvar k := clampi(clampi(lighting.ambient_steps - lift, 0, 3) + shade, 0, 3)"),
+    ("fill never cleared", LP, "clear = clear or (e.get(\"room\", true) and d < clear_at)", "pass"),
+    ("Elias zone clears the fill", LP, "clear = clear or (e.get(\"room\", true) and d < clear_at)",
+     "clear = clear or d < clear_at"),
+    ("map not rebuilt on room change", LP, "\t_drop_shade()\n\t_update_visibility()", "\t_update_visibility()"),
+    ("bake while the setting is off", LP, "\tif not visible or not is_active() or not lighting.shadows:",
+     "\tif not is_active() or not lighting.shadows:"),
+    ("maps leak", LP, "\t_shade_tex = ImageTexture.create_from_image(shade_image)",
+     "\t_shade_tex = ImageTexture.create_from_image(shade_image)\n\t_leak.append(_shade_tex)"),
+    ("Elias contact at his feet", LP, "const ELIAS_CONTACT_OFFSET := Vector2(0, 6)", "const ELIAS_CONTACT_OFFSET := Vector2(0, 0)"),
+    ("rasterizer stubbed (empty map)", SB, "\t# Ascending values, so a later (stronger) write is the maximum.\n",
+     "\treturn img\n"),
+    ("cast toward the key (up-left)", SB, "const KEY_DIR_TILES := Vector2(1, 0)", "const KEY_DIR_TILES := Vector2(-1, 0)"),
+    ("no AO strips", SB, "\t\tfor seg in shape.wall_segments():", "\t\tfor seg in []:"),
+    ("no edge rule (door in the wall casts)", SB, "\t\tif shape != null and not _inside_floor(shape, RoomShape.px_to_tile(inv * c)):",
+     "\t\tif false:"),
+]
+
+
+def run(test: str) -> tuple:
+    env = dict(os.environ, TLF_ONLY=test)
+    try:
+        out = subprocess.run([GODOT, "--headless", "--path", str(COPY), "-s", "res://tests/run_some.gd"],
+                             capture_output=True, text=True, timeout=120, env=env, encoding="utf-8", errors="replace")
+        text = out.stdout + out.stderr
+    except subprocess.TimeoutExpired:
+        return ("TIMEOUT", [])
+    m = re.search(r"TESTS: (\d+) passed, (\d+) failed", text)
+    fails = sorted({re.sub(r"^.*::", "", l.split("]")[0]) for l in text.splitlines() if l.strip().startswith("FAIL:")})
+    errs = text.count("SCRIPT ERROR")
+    return ((m.group(0) if m else "no summary") + f", SCRIPT ERROR lines {errs}", fails)
+
+
+leak_decl = ("var _shade_tex: ImageTexture = null\n", "var _shade_tex: ImageTexture = null\nstatic var _leak: Array = []\n")
+for name, rel, a, b in MUTATIONS:
+    path = COPY / rel
+    orig = path.read_text(encoding="utf-8")
+    assert orig.count(a) == 1, (name, a)
+    mutated = orig.replace(a, b)
+    if name == "maps leak":
+        mutated = mutated.replace(*leak_decl)
+    path.write_text(mutated, encoding="utf-8", newline="\n")
+    try:
+        results = [(t,) + run(t) for t in ("test_shadows", "test_lighting_pass")]
+    finally:
+        path.write_text(orig, encoding="utf-8", newline="\n")
+    print(f"MUTATION {name}")
+    for t, summary, fails in results:
+        print(f"  {t}: {summary}")
+        for f in fails:
+            print(f"    fails: {f}")
+    sys.stdout.flush()

@@ -1,0 +1,20 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+ENTRY dials: bake at room entry 2.91 ms (bake #1), map 736x432 at (48.0, 0.0); scene: A 2, shadows true, fill 1, fill_mode ADD, fill_clear 1.50
+VALIDATE []
+CAPTURED dials_unlit
+MODE dials: shot with fill_mode ADD, fill_clear 1.50
+CAPTURED dials_lit_shadows
+CAPTURED dials_lit_shadows_hud
+CAPTURED dials_setting_off
+CAPTURED dials_lit_adr026
+ELIAS dials: feet at screen (640.0, 270.0)
+CHECK dials: shader vs reference mismatches 0 / 518400 px (13411 ms); off-palette (no HUD) 0; off-palette outside the HUD (2941 HUD px) 0; setting off == unlit true
+UNTOUCHED dials (ADR-026 lit vs ADR-027): information pixels changed 0 of 487; exempt (>= 25) pixels changed 0; non-receiver pixels changed 0
+FLOOR dials: floor pixels lifted (fill) 90603, darkened 138; pixels with shade > 0 in the frame 11766
+ELIAS dials: body pixels 477, darkened 0, lifted 0 (ADR-026 lit vs ADR-027)
+TIMING dials: viewport GPU unlit 0.035 ms, ADR-026 lit 0.122 ms, ADR-027 lit+shadows 0.127 ms (delta vs ADR-026 +0.004 ms)
+TLF-084 P2 SHOT DONE dials
+
+--- stderr ---

@@ -134,6 +134,8 @@ outline = PackedVector2Array(0, 0, 28, 0, 28, 16, 0, 16)
 script = ExtResource("lt_lighting")
 ambient_steps = 2
 exempt_from = 25
+shadows = true
+fill_lift = 1
 
 [node name="ConcourseWest" type="Node2D"]
 y_sort_enabled = true

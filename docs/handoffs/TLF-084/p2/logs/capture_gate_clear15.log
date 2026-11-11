@@ -1,0 +1,20 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+ENTRY gate_clear15: bake at room entry 2.82 ms (bake #1), map 736x432 at (48.0, 0.0); scene: A 2, shadows true, fill 1, fill_mode ADD, fill_clear 1.50
+VALIDATE []
+CAPTURED gate_clear15_unlit
+MODE gate_clear15: shot with fill_mode CLEAR, fill_clear 1.50
+CAPTURED gate_clear15_lit_shadows
+CAPTURED gate_clear15_lit_shadows_hud
+CAPTURED gate_clear15_setting_off
+CAPTURED gate_clear15_lit_adr026
+ELIAS gate_clear15: feet at screen (362.0, 252.0)
+CHECK gate_clear15: shader vs reference mismatches 0 / 518400 px (13291 ms); off-palette (no HUD) 0; off-palette outside the HUD (1354 HUD px) 0; setting off == unlit true
+UNTOUCHED gate_clear15 (ADR-026 lit vs ADR-027): information pixels changed 0 of 488; exempt (>= 25) pixels changed 0; non-receiver pixels changed 0
+FLOOR gate_clear15: floor pixels lifted (fill) 71338, darkened 671; pixels with shade > 0 in the frame 11800
+ELIAS gate_clear15: body pixels 390, darkened 5, lifted 0 (ADR-026 lit vs ADR-027)
+TIMING gate_clear15: viewport GPU unlit 0.035 ms, ADR-026 lit 0.122 ms, ADR-027 lit+shadows 0.127 ms (delta vs ADR-026 +0.005 ms)
+TLF-084 P2 SHOT DONE gate_clear15
+
+--- stderr ---

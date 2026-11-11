@@ -16,6 +16,13 @@ extends Resource
 ## Reserved: Bayer dithering across band edges is not accepted yet (Sol, TLF-082 §4); must stay off.
 @export var dither: bool = false
 
+## How the floor fill meets the room's light pools (ADR-027, owner: "fill, keep the focal").
+## ADD: on the floor a pool adds the fill (lift = pool + fill), so every pool stays one step above
+## the filled floor and nothing gets darker than the fill (no ring). CLEAR: the fill is left out
+## inside `fill_clear` outer radii of every pool, so pools keep their ADR-026 contrast against an
+## unfilled surround (a dark ring between the pool and the filled floor).
+enum FillMode { ADD, CLEAR }
+
 @export_group("Shadows and floor fill (ADR-027)")
 ## Bake the room's shade map at entry (AO strips, contact and cast shadows; ShadeBaker) and draw
 ## Elias's contact shadow. Every lit room has it on (ADR-027); off keeps the ADR-026 look.
@@ -23,8 +30,9 @@ extends Resource
 ## Floor fill: lift on the floor receivers (00-05) over the whole room so the open floor and its
 ## shadows read at A 2 (owner: "fill, keep the focal"). 0 = no fill.
 @export_range(0, 1) var fill_lift: int = 0
-## The fill is cleared inside this many outer radii of every room light pool that lifts the floor,
-## so the focal and helper pools keep their full contrast against the darker floor around them.
+@export var fill_mode: FillMode = FillMode.ADD
+## CLEAR only: the fill is left out inside this many outer radii of every room light pool that
+## lifts the floor, so the focal and helper pools keep their full contrast against the darker floor.
 @export_range(1.0, 3.0, 0.05) var fill_clear: float = 1.5
 
 @export_group("Elias zone")

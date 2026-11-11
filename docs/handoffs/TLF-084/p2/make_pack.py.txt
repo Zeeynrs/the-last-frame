@@ -1,0 +1,71 @@
+"""TLF-084 Part 2 proof pack from the capture_tlf084.gd shots: copies, greyscale copies, x2 crops
+around Elias (ADR-026 lit | ADR-027 lit+shadows), the fill-mode sheet, and an independent palette
+count of every saved frame (no Godot).  python make_pack.py <shots dir> <out dir> <palette .gpl>"""
+import re, shutil, sys, pathlib
+from PIL import Image
+
+shots, out, gpl = map(pathlib.Path, sys.argv[1:4])
+out.mkdir(parents=True, exist_ok=True)
+palette = set()
+for line in gpl.read_text(encoding="utf-8").splitlines():
+    m = re.match(r"\s*(\d+)\s+(\d+)\s+(\d+)\s", line)
+    if m:
+        palette.add(tuple(int(v) for v in m.groups()))
+assert len(palette) == 32, len(palette)
+
+
+def grey(im):
+    g = Image.new("RGB", im.size)
+    px = im.convert("RGB").load()
+    gp = g.load()
+    for y in range(im.height):
+        for x in range(im.width):
+            r, gg, b = px[x, y]
+            l = round(0.2126 * r + 0.7152 * gg + 0.0722 * b)
+            gp[x, y] = (l, l, l)
+    return g
+
+
+def off_palette(im):
+    return sum(1 for c in im.convert("RGB").getdata() if c not in palette)
+
+
+def feet(tag):
+    m = re.search(r"ELIAS %s: feet at screen \(([\d.]+), ([\d.]+)\)" % re.escape(tag), (shots / (tag + ".log")).read_text(encoding="utf-8"))
+    return int(float(m.group(1))), int(float(m.group(2)))
+
+
+report = []
+for tag in ["arrival", "gate", "dials", "east", "side", "gate_clear15", "east_clear15", "gate_clear10", "east_clear10"]:
+    kinds = ["unlit", "lit_adr026", "lit_shadows", "lit_shadows_hud"] if "_clear" not in tag else ["lit_shadows"]
+    for k in kinds:
+        src = shots / f"{tag}_{k}.png"
+        shutil.copyfile(src, out / src.name)
+        im = Image.open(src)
+        if k != "lit_shadows_hud":
+            report.append(f"{src.name}: off-palette {off_palette(im)} of {im.width * im.height}")
+            grey(im).save(out / f"{tag}_{k}_greyscale.png")
+    if "_clear" in tag:
+        continue
+    x, y = feet(tag)
+    box = (max(0, min(960 - 240, x - 120)), max(0, min(540 - 135, y - 100)))
+    box = box + (box[0] + 240, box[1] + 135)
+    pair = [Image.open(shots / f"{tag}_{k}.png").crop(box).resize((480, 270), Image.NEAREST) for k in ("lit_adr026", "lit_shadows")]
+    sheet = Image.new("RGB", (480 * 2 + 4, 270), (255, 255, 255))
+    sheet.paste(pair[0], (0, 0))
+    sheet.paste(pair[1], (484, 0))
+    sheet.save(out / f"{tag}_x2_adr026_vs_shadows.png")
+    report.append(f"{tag}_x2_adr026_vs_shadows.png: crop {box} around Elias' feet ({x}, {y}), left ADR-026 lit, right ADR-027")
+
+# fill modes: rows gate, east; columns ADR-026 | ADD (shipped) | CLEAR 1.5 | CLEAR 1.0
+crops = {"gate": (200, 130, 560, 330), "east": (480, 270, 840, 470)}
+cols = [("lit_adr026", ""), ("lit_shadows", ""), ("lit_shadows", "_clear15"), ("lit_shadows", "_clear10")]
+w, h = 360, 200
+sheet = Image.new("RGB", (w * 4 + 12, h * 2 + 4), (255, 255, 255))
+for r, (shot, box) in enumerate(crops.items()):
+    for c, (k, v) in enumerate(cols):
+        sheet.paste(Image.open(shots / f"{shot}{v}_{k}.png").crop(box), (c * (w + 4), r * (h + 4)))
+sheet.save(out / "fill_modes_gate_east.png")
+report.append("fill_modes_gate_east.png: rows gate, east; columns ADR-026 lit | ADD (shipped) | CLEAR 1.5 | CLEAR 1.0 (native)")
+(out / "palette_recount.txt").write_text("\n".join(report) + "\n", encoding="utf-8", newline="\n")
+print("\n".join(report))

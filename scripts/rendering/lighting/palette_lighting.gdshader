@@ -5,11 +5,12 @@ shader_type canvas_item;
 // material ramp, k = clamp(ambient - lift, 0, 3), with lift = the strongest light covering the
 // pixel. `shift_table[index * 4 + k]` is built by LightingPass.shift_table() (GDScript, tested); the
 // light rules mirror LightingPass.lift_at(). Output is always a palette colour.
-// ADR-027 (TLF-084): floor receivers (bit mask, indices 00-05) also take the room's floor fill,
-// cleared inside `fill_clear` x the outer radius of every room light pool that lifts them, and the
-// shade term (extra ramp steps) from the room's baked shade map plus Elias's contact ellipse.
-// Neither touches a pixel an information region restores. k = clamp(A - lift + shade, 0, 3) with
-// lift = max(lights, fill): mirrors LightingPass.output_index().
+// ADR-027 (TLF-084): floor receivers (bit mask, indices 00-05) also take the room's floor fill
+// (fill_mode 0 ADD: lift = max(Elias zone, room lights + fill); 1 CLEAR: lift = max(lights, fill)
+// except inside `fill_clear` x the outer radius of a room pool that lifts them) and the shade term
+// (extra ramp steps) from the room's baked shade map plus Elias's contact ellipse. Shade never
+// touches a pixel an information region restores (the region's lift is >= the fill).
+// k = clamp(A - lift + shade, 0, 3): mirrors LightingPass.output_index().
 
 uniform sampler2D screen_tex : hint_screen_texture, filter_nearest;
 uniform vec3 palette[32];
@@ -27,6 +28,7 @@ uniform int light_mask[9];      // bit i: index i may be lifted; 0 = every index
 uniform int room_light_count = 0;  // slots below this are room lights (they clear the fill); the Elias zone follows
 uniform int receivers = 63;        // bit i: index i takes the fill and shade
 uniform int fill_lift = 0;
+uniform int fill_mode = 0;         // 0 ADD, 1 CLEAR (RoomLighting.FillMode)
 uniform float fill_clear = 1.5;
 uniform int shade_on = 0;
 uniform sampler2D shade_map : filter_nearest;
@@ -61,6 +63,7 @@ void fragment() {
 	}
 	vec2 p = floor(SCREEN_UV * view_size) + vec2(0.5);
 	int lift = 0;
+	int room_lift = 0;
 	bool info = false;
 	bool clear = false;
 	for (int l = 0; l < 9; l++) {
@@ -81,12 +84,20 @@ void fragment() {
 			info = info || mask != 0;
 		}
 		lift = max(lift, v);
+		if (l < room_light_count) {
+			room_lift = max(room_lift, v);
+		}
 	}
 	int shade = 0;
-	if (!info && ((receivers >> index) & 1) == 1) {
-		if (!clear) {
+	bool receiver = ((receivers >> index) & 1) == 1;
+	if (receiver && fill_lift > 0) {
+		if (fill_mode == 0) {
+			lift = max(lift, room_lift + fill_lift);
+		} else if (!clear) {
 			lift = max(lift, fill_lift);
 		}
+	}
+	if (receiver && !info) {
 		if (shade_on == 1) {
 			ivec2 t = ivec2(floor((p - shade_rect.xy) / shade_rect.zw));
 			if (t.x >= 0 && t.y >= 0 && t.x < shade_size.x && t.y < shade_size.y) {

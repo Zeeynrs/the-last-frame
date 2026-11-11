@@ -50,6 +50,8 @@ func validate() -> PackedStringArray:
 			errors.append("%s: inner outside (0, 1]" % name)
 	elif not is_convex_quad(quad):
 		errors.append("%s: quad needs 4 points around a convex area" % name)
+	elif not only_indices.is_empty() and lift_inner < 1:
+		errors.append("%s: an information region (quad with only_indices) lifts at least 1 (ADR-027: never below the floor fill)" % name)
 	return errors
 
 
