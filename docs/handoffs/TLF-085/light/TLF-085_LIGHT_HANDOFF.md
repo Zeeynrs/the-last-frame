@@ -99,4 +99,19 @@ That is one purposeful cue and two entries. There is no helper and no other ligh
 
 ## Validate
 
-(filled in after the run on the exact commit)
+Capped validate of the exact tree `b7b7ebb`:
+- **Method:** a fresh renamed `git archive`, run with `validate_capped_guarded.py.txt`. That is the TLF-083 capped script plus the Lead's rule: before every Godot call it waits while any other Godot or Pixelorama process runs. Every call is capped at 120 s.
+- **Log:** `logs/validate_capped_b7b7ebb.log` (LF), sha256 `304cf195c753ba229c3f64dc1ccfaf268423eb6b7c4523e64e98b3fc9973c8f6`.
+
+```
+[1/3] import: exit 0, 0 ERROR lines, 13 s
+[2/3] script check: exit 0, Script check: 200 scripts, 0 failed., 0 ERROR lines, leak check: clean, 7 s
+[3/3] tests/chapters/ch01/test_ch01_maintenance_bay_v2.gd exit 0  TESTS: 15 passed, 0 failed | SCRIPT ERROR 0 | leaks clean | 91 s
+[3/3] tests/rendering/test_maintenance_lighting.gd     exit 0  TESTS: 3 passed, 0 failed | SCRIPT ERROR 0 | leaks clean | 1 s
+[3/3] tests/rendering/test_shadows.gd                  exit 0  TESTS: 19 passed, 0 failed | SCRIPT ERROR 0 | leaks clean | 3 s
+=== TOTAL: 68 test files, TESTS: 567 passed, 0 failed, SCRIPT ERROR lines 0, files needing a look: ['test_operator_sighting.gd'] ===
+```
+
+- **`test_operator_sighting.gd`:** passes 7/0 with 2 leak lines at exit, flagged the same way in every validate since TLF-084 Part 2; not touched here.
+- **`test_ch01_unlock_guards.gd`:** 4/0 in this run; it is intermittent (TLF-085 re-review P3-2).
+- **Python:** builder tests 22 OK.
