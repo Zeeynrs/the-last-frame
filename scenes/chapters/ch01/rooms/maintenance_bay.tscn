@@ -1,5 +1,7 @@
 [gd_scene format=3]
 
+[ext_resource type="Script" path="res://scripts/rendering/lighting/room_lighting.gd" id="lt_lighting"]
+[ext_resource type="Script" path="res://scripts/rendering/lighting/room_light.gd" id="lt_light"]
 [ext_resource type="Texture2D" path="res://assets/environments/ch01/ch01_env_archway_frame_e_idle.png" id="10_archway"]
 [ext_resource type="Script" path="res://scripts/narrative/readable_document.gd" id="11_readable"]
 [ext_resource type="Resource" path="res://data/documents/ch01/doc_tech_log.tres" id="12_doc_tech"]
@@ -115,9 +117,19 @@ size = Vector2(12, 8)
 script = ExtResource("room_shape_script")
 outline = PackedVector2Array(0, 0, 26, 0, 26, 16, 0, 16)
 
+[sub_resource type="Resource" id="room_lighting"]
+script = ExtResource("lt_lighting")
+ambient_steps = 2
+exempt_from = 25
+shadows = true
+fill_lift = 1
+elias_lift_inner = 1
+elias_lift_outer = 0
+
 [node name="MaintenanceBay" type="Node2D"]
 y_sort_enabled = true
 metadata/room_shape = SubResource("room_shape")
+metadata/lighting = SubResource("room_lighting")
 
 [node name="PerimeterWalls" type="StaticBody2D" parent="."]
 collision_layer = 1
@@ -831,3 +843,23 @@ z_as_relative = false
 offset = Vector2(-8, -12)
 centered = false
 texture = ExtResource("art_clip")
+
+[node name="Lighting" type="Node2D" parent="."]
+
+[node name="ShutterFloor" type="Marker2D" parent="Lighting"]
+position = Vector2(496, 216)
+script = ExtResource("lt_light")
+radius = Vector2(64, 32)
+lift_inner = 2
+lift_outer = 1
+inner = 0.55
+only_indices = PackedInt32Array(0, 1, 2, 3, 4, 5)
+
+[node name="ShutterGearBody" type="Marker2D" parent="Lighting"]
+position = Vector2(512, 176)
+script = ExtResource("lt_light")
+shape = 1
+lift_inner = 2
+lift_outer = 0
+quad = PackedVector2Array(-34, -58, 34, -58, 34, 58, -34, 58)
+only_indices = PackedInt32Array(11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24)

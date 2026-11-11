@@ -1,0 +1,5 @@
+tests/rendering/test_maintenance_lighting.gd               exit 0  TESTS: 3 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 1 s
+tests/rendering/test_shadows.gd                            exit 0  TESTS: 19 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 3 s
+tests/rendering/test_lighting_pass.gd                      exit 0  TESTS: 15 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 2 s
+tests/chapters/ch01/test_ch01_sort_order.gd                exit 0  TESTS: 3 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 5 s
+tests/chapters/ch01/test_ch01_art_integration.gd           exit 0  TESTS: 6 passed, 0 failed | SCRIPT ERROR 0 | leak lines 0 | 2 s

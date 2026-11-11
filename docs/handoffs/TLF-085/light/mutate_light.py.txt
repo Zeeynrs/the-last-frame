@@ -1,0 +1,63 @@
+"""TLF-085 Maintenance Bay lighting: mutations against tests/rendering/test_maintenance_lighting.gd in the
+scratch copy. Each edits one file (text or bytes), runs the test (one Godot call, 120 s cap, waits while
+any other Godot process runs) and restores the file byte for byte.
+python mutate_light.py <copy dir> <old concrete png>"""
+import re, subprocess, sys, time, pathlib, shutil
+
+COPY = pathlib.Path(sys.argv[1])
+OLD_TILE = pathlib.Path(sys.argv[2])
+GODOT = r"D:\Godot\Godot_v4.7.2-stable_win64_console.exe"
+SCENE = "scenes/chapters/ch01/rooms/maintenance_bay.tscn"
+TILE = "assets/environments/ch01/ch01_env_tile_concrete_service_idle.png"
+TEST = "res://tests/rendering/test_maintenance_lighting.gd"
+
+MUTATIONS = [
+    ("L1 ambient 3", SCENE, "ambient_steps = 2\n", "ambient_steps = 3\n"),
+    ("L2 Elias zone 2/0", SCENE, "elias_lift_inner = 1\n", "elias_lift_inner = 2\n"),
+    ("L3 body region also lifts the wall ramp (07)", SCENE,
+     "only_indices = PackedInt32Array(11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24)",
+     "only_indices = PackedInt32Array(7, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24)"),
+    ("L4 floor pool moved to the inner shutter", SCENE,
+     '[node name="ShutterFloor" type="Marker2D" parent="Lighting"]\nposition = Vector2(496, 216)',
+     '[node name="ShutterFloor" type="Marker2D" parent="Lighting"]\nposition = Vector2(560, 248)'),
+    ("L5 fill 0", SCENE, "shadows = true\nfill_lift = 1\n", "shadows = true\nfill_lift = 0\n"),
+    ("L6 concrete tile back in the steel ramp (old PNG)", TILE, None, None),
+]
+
+
+def busy():
+    out = subprocess.run(["tasklist"], capture_output=True, text=True).stdout.lower()
+    return "godot" in out or "pixelorama" in out
+
+
+def run(args):
+    while busy():
+        time.sleep(15)
+    try:
+        r = subprocess.run([GODOT, "--headless", "--path", str(COPY)] + args, capture_output=True, text=True, timeout=120,
+                           encoding="utf-8", errors="replace")
+        return r.stdout + r.stderr
+    except subprocess.TimeoutExpired:
+        return "TIMEOUT"
+
+
+for name, rel, a, b in MUTATIONS:
+    path = COPY / rel
+    orig = path.read_bytes()
+    try:
+        if a is None:
+            shutil.copyfile(OLD_TILE, path)
+            run(["--import"])
+        else:
+            text = orig.decode("utf-8")
+            assert text.count(a) == 1, (name, text.count(a))
+            path.write_bytes(text.replace(a, b).encode("utf-8"))
+        out = run(["-s", "res://tests/run_tests.gd", "--", TEST])
+    finally:
+        path.write_bytes(orig)
+        if a is None:
+            run(["--import"])
+    m = re.search(r"TESTS: (\d+) passed, (\d+) failed", out)
+    print("MUTATION", name, "->", m.group(0) if m else "no summary", "| SCRIPT ERROR", out.count("SCRIPT ERROR"), flush=True)
+    for l in [x.strip() for x in out.splitlines() if x.strip().startswith("FAIL")][:3]:
+        print("    " + l[:200], flush=True)

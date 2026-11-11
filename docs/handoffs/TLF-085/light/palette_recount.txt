@@ -1,0 +1,31 @@
+arrival_unlit.png: off-palette 0 of 518400
+arrival_lit.png: off-palette 0 of 518400
+arrival_lit_noshadows.png: off-palette 0 of 518400
+arrival_x2_unlit_adr026_lit.png: crop (232, 82, 472, 217) around Elias' feet (352, 182), x2; unlit | ADR-026 look (no shadows, no fill) | lit (A 2, shadows, fill); colour row, greyscale row
+tech_unlit.png: off-palette 0 of 518400
+tech_lit.png: off-palette 0 of 518400
+tech_lit_noshadows.png: off-palette 0 of 518400
+tech_x2_unlit_adr026_lit.png: crop (312, 106, 552, 241) around Elias' feet (432, 206), x2; unlit | ADR-026 look (no shadows, no fill) | lit (A 2, shadows, fill); colour row, greyscale row
+gear_unlit.png: off-palette 0 of 518400
+gear_lit.png: off-palette 0 of 518400
+gear_lit_noshadows.png: off-palette 0 of 518400
+gear_x2_unlit_adr026_lit.png: crop (440, 170, 680, 305) around Elias' feet (560, 270), x2; unlit | ADR-026 look (no shadows, no fill) | lit (A 2, shadows, fill); colour row, greyscale row
+solved_unlit.png: off-palette 0 of 518400
+solved_lit.png: off-palette 0 of 518400
+solved_lit_noshadows.png: off-palette 0 of 518400
+solved_x2_unlit_adr026_lit.png: crop (440, 170, 680, 305) around Elias' feet (560, 270), x2; unlit | ADR-026 look (no shadows, no fill) | lit (A 2, shadows, fill); colour row, greyscale row
+pocket_unlit.png: off-palette 0 of 518400
+pocket_lit.png: off-palette 0 of 518400
+pocket_lit_noshadows.png: off-palette 0 of 518400
+pocket_x2_unlit_adr026_lit.png: crop (504, 202, 744, 337) around Elias' feet (624, 302), x2; unlit | ADR-026 look (no shadows, no fill) | lit (A 2, shadows, fill); colour row, greyscale row
+east_unlit.png: off-palette 0 of 518400
+east_lit.png: off-palette 0 of 518400
+east_lit_noshadows.png: off-palette 0 of 518400
+east_x2_unlit_adr026_lit.png: crop (600, 250, 840, 385) around Elias' feet (720, 350), x2; unlit | ADR-026 look (no shadows, no fill) | lit (A 2, shadows, fill); colour row, greyscale row
+stress_arrival_a3_lit.png: off-palette 0 of 518400
+stress_tech_a3_lit.png: off-palette 0 of 518400
+stress_gear_a3_lit.png: off-palette 0 of 518400
+stress_pocket_a3_lit.png: off-palette 0 of 518400
+stress_east_a3_lit.png: off-palette 0 of 518400
+stress_<shot>_a3_over_a2.png: A 3 (Elias 2/0) over A 2 (shipped), colour then greyscale; stress_<shot>_x2_a3_a2.png: x2 around Elias, A 3 | A 2 | greyscale A 3 | greyscale A 2
+cue_x2_before_after_solve.png: crop (400, 140, 640, 275), x2; lit, gear idle + shutter closed | gear locked + shutter raised; greyscale row

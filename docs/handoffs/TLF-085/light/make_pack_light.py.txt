@@ -1,0 +1,94 @@
+"""TLF-085 Maintenance Bay lighting D.7 pack from capture_tlf085_light.gd shots: copies, greyscale copies,
+x2 crops around Elias (ADR-026 look | ADR-027 lit), the A 3 vs A 2 stress sheets, the puzzle before/after
+sheet, and an independent palette count of every saved frame (no Godot).
+python make_pack_light.py <shots dir> <out dir> <palette .gpl>"""
+import re, shutil, sys, pathlib
+from PIL import Image
+
+shots, out, gpl = map(pathlib.Path, sys.argv[1:4])
+out.mkdir(parents=True, exist_ok=True)
+palette = set()
+for line in gpl.read_text(encoding="utf-8").splitlines():
+    m = re.match(r"\s*(\d+)\s+(\d+)\s+(\d+)\s", line)
+    if m:
+        palette.add(tuple(int(v) for v in m.groups()))
+assert len(palette) == 32
+
+
+def grey(im):
+    im = im.convert("RGB")
+    g = Image.new("RGB", im.size)
+    s, d = im.load(), g.load()
+    for y in range(im.height):
+        for x in range(im.width):
+            r, gg, b = s[x, y]
+            l = round(0.2126 * r + 0.7152 * gg + 0.0722 * b)
+            d[x, y] = (l, l, l)
+    return g
+
+
+def off_palette(im):
+    return sum(1 for c in im.convert("RGB").getdata() if c not in palette)
+
+
+def feet(tag):
+    m = re.search(r"ELIAS %s: feet at screen \(([\d.]+), ([\d.]+)\)" % re.escape(tag), (shots / (tag + ".log")).read_text(encoding="utf-8"))
+    return int(float(m.group(1))), int(float(m.group(2)))
+
+
+def box_around(x, y, w=240, h=135):
+    b = (max(0, min(960 - w, x - w // 2)), max(0, min(540 - h, y - 100)))
+    return b + (b[0] + w, b[1] + h)
+
+
+def row(images, box, k=2, gap=4):
+    cs = [im.convert("RGB").crop(box) for im in images]
+    cs = [c.resize((c.width * k, c.height * k), Image.NEAREST) for c in cs]
+    s = Image.new("RGB", (sum(c.width for c in cs) + gap * (len(cs) - 1), cs[0].height), (255, 255, 255))
+    x = 0
+    for c in cs:
+        s.paste(c, (x, 0)); x += c.width + gap
+    return s
+
+
+def stack(images, gap=6):
+    s = Image.new("RGB", (max(i.width for i in images), sum(i.height for i in images) + gap * (len(images) - 1)), (255, 255, 255))
+    y = 0
+    for i in images:
+        s.paste(i, (0, y)); y += i.height + gap
+    return s
+
+
+report = []
+for tag in ["arrival", "tech", "gear", "solved", "pocket", "east"]:
+    for k in ["unlit", "lit", "lit_hud", "lit_noshadows"]:
+        src = shots / f"{tag}_{k}.png"
+        shutil.copyfile(src, out / src.name)
+        im = Image.open(src)
+        if k != "lit_hud":
+            report.append(f"{src.name}: off-palette {off_palette(im)} of {im.width * im.height}")
+            grey(im).save(out / f"{tag}_{k}_greyscale.png")
+    x, y = feet(tag)
+    bx = box_around(x, y)
+    imgs = [Image.open(shots / f"{tag}_{k}.png") for k in ("unlit", "lit_noshadows", "lit")]
+    stack([row(imgs, bx), row([grey(i) for i in imgs], bx)]).save(out / f"{tag}_x2_unlit_adr026_lit.png")
+    report.append(f"{tag}_x2_unlit_adr026_lit.png: crop {bx} around Elias' feet ({x}, {y}), x2; unlit | ADR-026 look (no shadows, no fill) | lit (A 2, shadows, fill); colour row, greyscale row")
+
+# dark stress test: A 3 (Elias 2/0) vs A 2 (shipped), full frame and x2 around Elias
+for tag in ["arrival", "tech", "gear", "pocket", "east"]:
+    a3 = Image.open(shots / f"{tag}_a3_lit.png")
+    a2 = Image.open(shots / f"{tag}_lit.png")
+    shutil.copyfile(shots / f"{tag}_a3_lit.png", out / f"stress_{tag}_a3_lit.png")
+    report.append(f"stress_{tag}_a3_lit.png: off-palette {off_palette(a3)} of {a3.width * a3.height}")
+    stack([stack([a3.convert("RGB"), a2.convert("RGB")]), stack([grey(a3), grey(a2)])]).save(out / f"stress_{tag}_a3_over_a2.png")
+    x, y = feet(tag)
+    row([a3, a2, grey(a3), grey(a2)], box_around(x, y)).save(out / f"stress_{tag}_x2_a3_a2.png")
+report.append("stress_<shot>_a3_over_a2.png: A 3 (Elias 2/0) over A 2 (shipped), colour then greyscale; stress_<shot>_x2_a3_a2.png: x2 around Elias, A 3 | A 2 | greyscale A 3 | greyscale A 2")
+
+# puzzle before / after (gear idle + shutter closed vs gear locked + shutter raised), lit, x2 on the cue
+cue = (400, 140, 640, 275)
+b, a = Image.open(shots / "gear_lit.png"), Image.open(shots / "solved_lit.png")
+stack([row([b, a], cue), row([grey(b), grey(a)], cue)]).save(out / "cue_x2_before_after_solve.png")
+report.append(f"cue_x2_before_after_solve.png: crop {cue}, x2; lit, gear idle + shutter closed | gear locked + shutter raised; greyscale row")
+(out / "palette_recount.txt").write_text("\n".join(report) + "\n", encoding="utf-8", newline="\n")
+print("\n".join(report))

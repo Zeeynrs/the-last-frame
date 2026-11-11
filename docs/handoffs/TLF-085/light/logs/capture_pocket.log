@@ -1,0 +1,32 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+ENTRY pocket: bake 3.00 ms (bake #2), map 704x416 at (48.0, 0.0); A 2, shadows true, fill 1 (effective 1), Elias zone 1/0 radius (18.0, 28.0) inner 0.85
+VALIDATE []
+CAPTURED pocket_unlit
+CAPTURED pocket_lit
+CAPTURED pocket_lit_hud
+CAPTURED pocket_lit_noshadows
+ELIAS pocket: feet at screen (624.0, 302.0)
+CHECK pocket: shader vs reference mismatches 0 / 518400 px (7788 ms); off-palette (no HUD) 0; off-palette outside the HUD (1354 HUD px) 0; setting off == unlit true
+UNTOUCHED pocket (lit without shadows/fill vs lit): exempt changed 0; non-receiver changed 0; off the floor mask changed 0
+ELIASBODY pocket: body px 567, movable body px below lift A - 1 (k > 1) 0; floor capsule px (zone lifts a floor receiver beyond the room light + fill) 0
+STRESS pocket n11_hatch_tech: 388 px; index 00 unlit 20% -> lit 33% (merged +13 pts); 5 indices left; grey mean 28.6 vs ring 35.7 (contrast -7.0)
+STRESS pocket hatch_01: 1564 px; index 00 unlit 12% -> lit 35% (merged +23 pts); 6 indices left; grey mean 28.0 vs ring 28.1 (contrast -0.0)
+STRESS pocket hatch_plate_01: 266 px; index 00 unlit 31% -> lit 49% (merged +18 pts); 7 indices left; grey mean 28.4 vs ring 40.7 (contrast -12.3)
+STRESS pocket bell_plate_01: 40 px; index 00 unlit 45% -> lit 45% (merged +0 pts); 5 indices left; grey mean 36.3 vs ring 37.2 (contrast -1.0)
+STRESS pocket doc_hatch_chart: 132 px; index 00 unlit 42% -> lit 48% (merged +5 pts); 7 indices left; grey mean 61.4 vs ring 36.9 (contrast +24.5)
+STRESS pocket counterweight_gear: 1926 px; index 00 unlit 27% -> lit 29% (merged +2 pts); 8 indices left; grey mean 64.0 vs ring 34.1 (contrast +29.8)
+STRESS pocket fire_shutter: 1564 px; index 00 unlit 12% -> lit 16% (merged +4 pts); 9 indices left; grey mean 62.3 vs ring 39.1 (contrast +23.1)
+STRESS pocket reset_anchor_01: 682 px; index 00 unlit 13% -> lit 25% (merged +13 pts); 8 indices left; grey mean 34.0 vs ring 35.5 (contrast -1.5)
+STRESS pocket doc_tech_log: 132 px; index 00 unlit 42% -> lit 48% (merged +5 pts); 7 indices left; grey mean 61.4 vs ring 37.1 (contrast +24.3)
+STRESS pocket inner_shutter: 1564 px; index 00 unlit 12% -> lit 26% (merged +14 pts); 9 indices left; grey mean 36.3 vs ring 36.7 (contrast -0.4)
+STRESS pocket doc_inner_shutter_plate: 132 px; index 00 unlit 42% -> lit 48% (merged +5 pts); 7 indices left; grey mean 61.4 vs ring 31.7 (contrast +29.7)
+STRESS pocket YSort_Walls/Archway_door_entry_west: 1568 px; index 00 unlit 14% -> lit 60% (merged +46 pts); 8 indices left; grey mean 25.5 vs ring 28.7 (contrast -3.2)
+STRESS pocket YSort_Walls/Archway_door_exit_east: 1568 px; index 00 unlit 14% -> lit 45% (merged +31 pts); 8 indices left; grey mean 27.4 vs ring 28.6 (contrast -1.3)
+STRESS pocket YSort_Walls/Wall_bulkhead_n0: 1568 px; index 00 unlit 2% -> lit 17% (merged +15 pts); 7 indices left; grey mean 27.7 vs ring 26.5 (contrast +1.2)
+FRAME pocket: lit pixels at index 00 399729 of 518400 (77.1%)
+TIMING pocket: viewport GPU unlit 0.034 ms, lit 0.112 ms
+TLF-085 LIGHT SHOT DONE pocket
+
+--- stderr ---

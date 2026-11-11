@@ -1,0 +1,18 @@
+MUTATION L1 ambient 3 -> TESTS: 2 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_maintenance_lighting.gd::test_maintenance_bay_is_lit_at_the_a2_fallback] A 2: the ADR-026 fallback after the failed A 3 stress test (Expected 2, got 3)
+MUTATION L2 Elias zone 2/0 -> TESTS: 2 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_maintenance_lighting.gd::test_maintenance_bay_is_lit_at_the_a2_fallback] Elias zone 1/0 (body at k 1; no floor capsule against fill 1) (Expected (1, 0), got (2, 0))
+MUTATION L3 body region also lifts the wall ramp (07) -> TESTS: 2 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_maintenance_lighting.gd::test_one_cue_at_the_fire_shutter_and_gear] body region lifts steel/actor indices 11-24 only (Expected [11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+    FAIL: [res://tests/rendering/test_maintenance_lighting.gd::test_one_cue_at_the_fire_shutter_and_gear] the wall ramp index 07 behind the gear is never lifted (no spill on the wall)
+MUTATION L4 floor pool moved to the inner shutter -> TESTS: 2 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_maintenance_lighting.gd::test_one_cue_at_the_fire_shutter_and_gear] the casting spot (480,208) is in the pool's core (1.77)
+    FAIL: [res://tests/rendering/test_maintenance_lighting.gd::test_one_cue_at_the_fire_shutter_and_gear] the fire shutter aperture (512,224) is in the pool
+    FAIL: [res://tests/rendering/test_maintenance_lighting.gd::test_one_cue_at_the_fire_shutter_and_gear] the inner shutter (560,248) is not: one cue only
+MUTATION L5 fill 0 -> TESTS: 2 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_maintenance_lighting.gd::test_maintenance_bay_is_lit_at_the_a2_fallback] fill 1 (Expected 1, got 0)
+    FAIL: [res://tests/rendering/test_maintenance_lighting.gd::test_maintenance_bay_is_lit_at_the_a2_fallback] the fill applies at A 2 (Expected 1, got 0)
+MUTATION L6 concrete tile back in the steel ramp (old PNG) -> TESTS: 2 passed, 1 failed | SCRIPT ERROR 0
+    FAIL: [res://tests/rendering/test_maintenance_lighting.gd::test_the_concrete_floor_takes_the_fill_and_the_shade] concrete_service is drawn in the floor ramp 01/03/04 (TLF-085 recolour; was steel 11/12
+    FAIL: [res://tests/rendering/test_maintenance_lighting.gd::test_the_concrete_floor_takes_the_fill_and_the_shade] concrete index 11 is a floor receiver
+    FAIL: [res://tests/rendering/test_maintenance_lighting.gd::test_the_concrete_floor_takes_the_fill_and_the_shade] concrete index 12 is a floor receiver
