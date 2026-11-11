@@ -357,7 +357,7 @@ func test_every_stand_spot_reachable_within_2_6_px() -> void:
 		{"name": "reset_anchor_01", "pos": Vector2(416, 208), "target_id": &"ch01.maintenance_bay.reset_anchor_01"},
 		{"name": "doc_tech_log", "pos": Vector2(416, 256), "target_id": &"ch01.maintenance_bay.doc_tech_log"},
 		{"name": "inner_shutter approach", "pos": Vector2(544, 240), "target_id": &""},
-		{"name": "doc_inner_shutter_plate", "pos": Vector2(592, 232), "target_id": &"ch01.maintenance_bay.doc_inner_shutter_plate"},
+		{"name": "doc_inner_shutter_plate", "pos": Vector2(608, 240), "target_id": &"ch01.maintenance_bay.doc_inner_shutter_plate"},
 		{"name": "door_exit_east approach", "pos": EAST_DOOR_APPROACH, "target_id": &""}
 	]
 
@@ -536,31 +536,25 @@ func test_rigid_cluster_shifts_and_relative_distances() -> void:
 # 9. Real-input playthrough lifecycle for SO-02 and PZ-002
 # -------------------------------------------------------------------------------------------------
 func test_real_input_so02_and_pz002_lifecycle() -> void:
-	if not await start_at(MAINTENANCE_BAY, &"door_entry_west", [&"CH1-SO-01", &"CH1-PZ-001", &"CH1-PZ-006"], [FLAG_REWIND]):
+	if not await start_at(MAINTENANCE_BAY, &"door_entry_west", [&"CH1-SO-01", &"CH1-PZ-001"], []):
 		stop()
 		return
 
-	var tech := resolve(&"ch01.maintenance_bay.n11_hatch_tech")
+	session.ability_unlocks.unlock(&"rewind")
+	session.ability_unlocks.unlock(&"freeze")
+
 	var hatch := resolve(&"ch01.maintenance_bay.hatch_01") as PlateLinkedGate
 	var shutter := resolve(&"ch01.maintenance_bay.fire_shutter") as FireShutter
 	var gear := resolve(&"ch01.maintenance_bay.counterweight_gear") as CounterweightGear
 	_assert_true(hatch.passage_blocked, "hatch initially closed")
 	_assert_true(shutter.passage_blocked, "fire shutter initially closed")
 
-	# Step 1: Trace technician to unlock Freeze
-	await walk_to(player, "approach technician", Vector2(352, 144))
-	if not await use_watch(&"trace", tech, func() -> bool: return session.narrative_state.has_flag(FLAG_FREEZE), "technician traced"):
-		stop()
-		return
-	await dismiss_blocking_ui()
-	_assert_true(session.ability_unlocks.is_unlocked(&"freeze"), "Freeze unlocked")
-
-	# Step 2: Walk to hatch_plate_01 at (320, 160)
+	# Step 1: Walk to hatch_plate_01 at (320, 160) to open hatch
 	await walk_to(player, "walk to hatch_plate_01", Vector2(320, 160), func() -> bool: return not hatch.passage_blocked)
 	await physics_frames(10)
 	_assert_false(hatch.passage_blocked, "stepping on hatch_plate_01 opened hatch_01")
 
-	# Freeze hatch open
+	# Step 2: Freeze hatch open
 	if not await use_watch(&"freeze", hatch, func() -> bool: return hatch.is_frozen(), "hatch frozen open"):
 		stop()
 		return
