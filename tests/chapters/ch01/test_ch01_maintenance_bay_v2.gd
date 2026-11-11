@@ -84,7 +84,7 @@ func test_divider_sweep_bulkhead_never_passes_x_7_2() -> void:
 		return
 
 	var hatch := resolve(&"ch01.maintenance_bay.hatch_01")
-	_assert_true(hatch != null and hatch.is_blocking(), "hatch closed initially")
+	_assert_true(hatch != null and hatch.passage_blocked, "hatch closed initially")
 
 	var y_steps: Array[float] = []
 	var curr_y := 0.8
@@ -170,7 +170,7 @@ func test_divider_sweep_fire_shutter_never_passes_x_16_2() -> void:
 		return
 
 	var shutter := resolve(&"ch01.maintenance_bay.fire_shutter")
-	_assert_true(shutter != null and shutter.is_blocking(), "fire shutter closed initially")
+	_assert_true(shutter != null and shutter.passage_blocked, "fire shutter closed initially")
 
 	var y_steps: Array[float] = []
 	var curr_y := 0.8
@@ -256,7 +256,7 @@ func test_divider_sweep_inner_divider_never_passes_x_19_2() -> void:
 		return
 
 	var inner_shutter := resolve(&"ch01.maintenance_bay.inner_shutter")
-	_assert_true(inner_shutter != null and inner_shutter.is_blocking(), "inner shutter closed initially")
+	_assert_true(inner_shutter != null and inner_shutter.passage_blocked, "inner shutter closed initially")
 
 	var y_steps: Array[float] = []
 	var curr_y := 0.8
@@ -540,40 +540,38 @@ func test_real_input_so02_and_pz002_lifecycle() -> void:
 		stop()
 		return
 
-	var hatch := resolve(&"ch01.maintenance_bay.hatch_01")
-	var shutter := resolve(&"ch01.maintenance_bay.fire_shutter")
-	var gear := resolve(&"ch01.maintenance_bay.counterweight_gear")
-	_assert_true(hatch.is_blocking(), "hatch initially closed")
-	_assert_true(shutter.is_blocking(), "fire shutter initially closed")
+	var hatch := resolve(&"ch01.maintenance_bay.hatch_01") as PlateLinkedGate
+	var shutter := resolve(&"ch01.maintenance_bay.fire_shutter") as FireShutter
+	var gear := resolve(&"ch01.maintenance_bay.counterweight_gear") as CounterweightGear
+	_assert_true(hatch.passage_blocked, "hatch initially closed")
+	_assert_true(shutter.passage_blocked, "fire shutter initially closed")
 
 	# Step 1: Walk to hatch_plate_01 at (320, 160)
-	await walk_to(player, "walk to hatch_plate_01", Vector2(320, 160))
+	await walk_to(player, "walk to hatch_plate_01", Vector2(320, 160), func() -> bool: return not hatch.passage_blocked)
 	await physics_frames(10)
-	_assert_false(hatch.is_blocking(), "stepping on hatch_plate_01 opened hatch_01")
+	_assert_false(hatch.passage_blocked, "stepping on hatch_plate_01 opened hatch_01")
+
+	# Freeze hatch open
+	if not await use_watch(&"freeze", hatch, func() -> bool: return hatch.is_frozen(), "hatch frozen open"):
+		stop()
+		return
 
 	# Step 2: Walk through hatch aperture (384, 144) to safe_anchor_west (464, 200)
-	await walk_to(player, "walk through hatch", Vector2(384, 144))
+	await walk_to(player, "walk to hatch aperture", Vector2(384, 144))
 	await walk_to(player, "walk to safe_anchor_west", Vector2(464, 200))
 	_assert_true(player.global_position.distance_to(Vector2(464, 200)) <= 3.0, "reached safe_anchor_west")
 
-	# Step 3: Rewind fire_shutter from stand spot (476, 208)
-	await walk_to(player, "approach shutter rewinder", Vector2(476, 208))
-	player.pocket_watch.selected_ability = &"rewind"
-	player.pocket_watch.update_targeting()
-	await physics_frames(1)
-	_assert_eq(player.pocket_watch.current_target, shutter, "rewind targets fire_shutter")
-	press_action(&"use_ability")
-	await physics_frames(10)
+	# Step 3: Rewind fire_shutter from within range (488, 188)
+	await walk_to(player, "approach shutter rewinder", Vector2(488, 188))
+	if not await use_watch(&"rewind", shutter, func() -> bool: return not shutter.passage_blocked, "shutter raised after Rewind"):
+		stop()
+		return
 
 	# Step 4: Freeze counterweight_gear at (512, 176)
-	await walk_to(player, "walk to gear spot", Vector2(512, 176))
-	player.pocket_watch.selected_ability = &"freeze"
-	player.pocket_watch.update_targeting()
-	await physics_frames(1)
-	_assert_eq(player.pocket_watch.current_target, gear, "freeze targets counterweight_gear")
-	press_action(&"use_ability")
-	await physics_frames(10)
-	_assert_false(shutter.is_blocking(), "fire shutter held open by frozen gear")
+	if not await use_watch(&"freeze", gear, func() -> bool: return gear.is_frozen(), "gear frozen"):
+		stop()
+		return
+	_assert_false(shutter.passage_blocked, "fire shutter held open by frozen gear")
 
 	# Step 5: Walk through fire shutter aperture (512, 224) to safe_anchor_east (544, 240)
 	await walk_to(player, "walk through shutter aperture", Vector2(512, 224))
