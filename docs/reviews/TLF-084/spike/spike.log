@@ -38,3 +38,19 @@ BAKE east_fill: 17 polygons, 12 ellipses, 30.5 ms (GDScript rasterizer), map 736
 CHECK east_fill: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
 SHADE east_fill: pixels darker than lit 10591; information pixels changed 0 of 488; exempt (>=25) pixels changed 0
 TIMING east_fill: viewport GPU lit 0.116 ms, lit+shadows 0.120 ms, delta 0.004 ms
+BAKE arrival_fill_key315: 17 polygons, 12 ellipses, 40.4 ms (GDScript rasterizer), map 736x432
+CHECK arrival_fill_key315: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE arrival_fill_key315: pixels darker than lit 10335; information pixels changed 0 of 488; exempt (>=25) pixels changed 0
+TIMING arrival_fill_key315: viewport GPU lit 0.116 ms, lit+shadows 0.120 ms, delta 0.004 ms
+BAKE gate_fill_key315: 17 polygons, 12 ellipses, 30.9 ms (GDScript rasterizer), map 736x432
+CHECK gate_fill_key315: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE gate_fill_key315: pixels darker than lit 10407; information pixels changed 0 of 488; exempt (>=25) pixels changed 0
+TIMING gate_fill_key315: viewport GPU lit 0.116 ms, lit+shadows 0.120 ms, delta 0.004 ms
+BAKE dials_fill_key315: 17 polygons, 12 ellipses, 30.2 ms (GDScript rasterizer), map 736x432
+CHECK dials_fill_key315: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE dials_fill_key315: pixels darker than lit 10317; information pixels changed 0 of 487; exempt (>=25) pixels changed 0
+TIMING dials_fill_key315: viewport GPU lit 0.116 ms, lit+shadows 0.120 ms, delta 0.004 ms
+BAKE east_fill_key315: 17 polygons, 12 ellipses, 30.5 ms (GDScript rasterizer), map 736x432
+CHECK east_fill_key315: shader vs reference (shaded) mismatches 0 / 518400 px; off-palette 0; lighting off == unlit true
+SHADE east_fill_key315: pixels darker than lit 10432; information pixels changed 0 of 488; exempt (>=25) pixels changed 0
+TIMING east_fill_key315: viewport GPU lit 0.116 ms, lit+shadows 0.120 ms, delta 0.004 ms

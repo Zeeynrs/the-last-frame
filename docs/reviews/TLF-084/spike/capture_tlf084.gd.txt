@@ -175,6 +175,10 @@ func _bake_iso(room: Node2D, shape: RoomShape, key: Vector2) -> Dictionary:
 		var foot_t := RoomShape.px_to_tile(c)
 		if h >= 28.0 and foot_t.distance_to(key_t) > 0.5:
 			var dir := (foot_t - key_t).normalized()
+			if OS.get_environment("TLF_KEY") == "global":
+				# ART_BIBLE key light 315 deg (top-left of the screen): shadows fall to screen
+				# bottom-right, i.e. along +x in tile space, for every object in every room.
+				dir = Vector2(1, 0)
 			var perp := Vector2(-dir.y, dir.x)
 			var w := clampf(rx / 16.0, 0.3, 0.6)
 			var tip := foot_t + dir * (h / 32.0)
@@ -350,7 +354,7 @@ func _run() -> void:
 			fill.only_indices = PackedInt32Array([0, 1, 2, 3, 4, 5])
 			room.get_node("Lighting").add_child(fill)
 			_router._apply_lighting()
-			shot_tag = shot + "_fill"
+			shot_tag = shot + "_fill" + ("_key315" if OS.get_environment("TLF_KEY") == "global" else "")
 		bake = _bake_iso(room, room.get_meta(&"room_shape") as RoomShape, key)
 		if shot == "sprites":
 			_blobs(room)
