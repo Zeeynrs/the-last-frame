@@ -10,7 +10,10 @@ shader_type canvas_item;
 // except inside `fill_clear` x the outer radius of a room pool that lifts them) and the shade term
 // (extra ramp steps) from the room's baked shade map plus Elias's contact ellipse. Shade never
 // touches a pixel an information region restores (the region's lift is >= the fill).
-// k = clamp(A - lift + shade, 0, 3): mirrors LightingPass.output_index().
+// TLF-084 round 2: receivers must also lie on the room's floor mask (floor_map, baked with the shade
+// map: iso floor polygon / side platform strip); fill_lift is RoomLighting.effective_fill() (at most
+// A - 1); k = clamp(max(A - lift, 0) + shade, 0, 3), so shadows read inside pools brighter than A.
+// Mirrors LightingPass.output_index().
 
 uniform sampler2D screen_tex : hint_screen_texture, filter_nearest;
 uniform vec3 palette[32];
@@ -33,7 +36,9 @@ uniform float fill_clear = 1.5;
 uniform int shade_on = 0;
 uniform sampler2D shade_map : filter_nearest;
 uniform vec4 shade_rect = vec4(0.0, 0.0, 1.0, 1.0);  // screen xy of texel (0,0); screen px per texel
-uniform ivec2 shade_size = ivec2(0);
+uniform ivec2 shade_size = ivec2(0);   // size of both maps (texels)
+uniform int floor_on = 0;
+uniform sampler2D floor_map : filter_nearest;  // 1 = room floor (same texels as shade_map)
 uniform vec4 actor_shade = vec4(-9999.0, -9999.0, 1.0, 1.0);  // Elias contact: screen centre, radius
 
 float edge(vec2 a, vec2 b, vec2 p) {
@@ -89,7 +94,10 @@ void fragment() {
 		}
 	}
 	int shade = 0;
-	bool receiver = ((receivers >> index) & 1) == 1;
+	ivec2 t = ivec2(floor((p - shade_rect.xy) / shade_rect.zw));
+	bool in_map = t.x >= 0 && t.y >= 0 && t.x < shade_size.x && t.y < shade_size.y;
+	bool on_floor = floor_on == 1 && in_map && texelFetch(floor_map, t, 0).r > 0.002;
+	bool receiver = on_floor && ((receivers >> index) & 1) == 1;
 	if (receiver && fill_lift > 0) {
 		if (fill_mode == 0) {
 			lift = max(lift, room_lift + fill_lift);
@@ -99,15 +107,12 @@ void fragment() {
 	}
 	if (receiver && !info) {
 		if (shade_on == 1) {
-			ivec2 t = ivec2(floor((p - shade_rect.xy) / shade_rect.zw));
-			if (t.x >= 0 && t.y >= 0 && t.x < shade_size.x && t.y < shade_size.y) {
-				shade = int(round(texelFetch(shade_map, t, 0).r * 255.0));
-			}
+			shade = int(round(texelFetch(shade_map, t, 0).r * 255.0));
 			if (length((p - actor_shade.xy) / actor_shade.zw) < 1.0) {
 				shade = max(shade, 1);
 			}
 		}
 	}
-	int k = clamp(ambient_steps - lift + shade, 0, 3);
+	int k = clamp(max(ambient_steps - lift, 0) + shade, 0, 3);
 	COLOR = vec4(palette[shift_table[index * 4 + k]], 1.0);
 }

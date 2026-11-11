@@ -6,6 +6,9 @@ extends "res://tests/support/base_test.gd"
 ## exempt indices untouched, k = clamp(A - max(lights, fill) + shade, 0, 3), the fill cleared around
 ## room pools but not around the Elias zone), Elias's contact ellipse below his body, the setting
 ## (off: no bake, pass hidden), and the router hook (map rebuilt on every room change, no leaks).
+## Round 2 (Fable P2-1, P2-3, P3): k = clamp(max(A - lift, 0) + shade, 0, 3) (shadows read inside
+## pools), receivers only on the baked floor mask, the fill at most A - 1, and a rebake when a
+## blocker opens or closes in the room.
 ## The shader runs only in a windowed build: tools/capture_tlf084.gd compares it pixel by pixel
 ## with LightingPass.output_index().
 
@@ -36,7 +39,8 @@ static func _quad(p: Array, lift: int, mask: int) -> Dictionary:
 
 
 ## A LightingPass (not in the tree) lighting a dummy room at A `ambient`, with a constant shade map
-## of `shade` over (0,0)-(200,200) when `shade` >= 0 (shadows on).
+## of `shade` over (0,0)-(200,200) when `shade` >= 0 (shadows on), and a floor mask covering
+## (0,0)-(600,400) whenever there is a map or a fill.
 func _pass(ambient: int, shade: int = -1, fill: int = 0) -> Dictionary:
 	var room := Node2D.new()
 	var lit := RoomLighting.new()
@@ -49,6 +53,11 @@ func _pass(ambient: int, shade: int = -1, fill: int = 0) -> Dictionary:
 		var img := Image.create(200, 200, false, Image.FORMAT_L8)
 		img.fill(Color8(shade, shade, shade))
 		pass_node.shade_image = img
+		pass_node.shade_origin = Vector2.ZERO
+	if shade >= 0 or fill > 0:
+		var mask := Image.create(600, 400, false, Image.FORMAT_L8)
+		mask.fill(Color8(1, 1, 1))
+		pass_node.floor_image = mask
 		pass_node.shade_origin = Vector2.ZERO
 	return {"pass": pass_node, "room": room, "lit": lit}
 
@@ -268,13 +277,121 @@ func test_shade_is_added_after_the_lift() -> void:
 	var rig := _pass(1, 1)
 	var p: LightingPass = rig["pass"]
 	var pool: Array[Dictionary] = [_ellipse(Vector2(100.5, 100.5), Vector2(60, 30), 2, 2)]
-	_assert_eq(p.output_index(Vector2(100, 100), 4, pool), 4, "A 1, lift 2, shade 1: k = clamp(1 - 2 + 1) = 0, not clamp(1 - 2) + 1")
+	_assert_eq(p.output_index(Vector2(100, 100), 4, pool), 3,
+		"A 1, lift 2, shade 1: k = max(1 - 2, 0) + 1 = 1 (r2: the lift is capped at A, the shadow still reads; was k 0)")
 	rig["lit"].ambient_steps = 2
 	_assert_eq(p.output_index(Vector2(100, 100), 4, pool), 3, "A 2, lift 2, shade 1: k 1 (a shadow reads inside the pool)")
 	_assert_eq(p.output_index(Vector2(190, 100), 4, pool), 1, "A 2 outside the pool, shade 1: k 3 (04 -> 01)")
 	rig["lit"].ambient_steps = 3
 	_assert_eq(p.output_index(Vector2(190, 100), 4, pool), 1, "A 3 + shade 1: k clamps at 3")
+	rig["lit"].ambient_steps = 0
+	_assert_eq(p.output_index(Vector2(190, 100), 4, pool), 3, "A 0 + shade 1: k 1 (a shadow on unlit-value floor)")
 	_free_pass(rig)
+
+
+func test_shadows_read_inside_the_focal_and_helper_pools() -> void:
+	# Fable P2-1: under ADD the focal core is lifted 2 + fill 1 = 3 > A 2, which swallowed shade 1.
+	for shade in [1, 2]:
+		var rig := _pass(2, shade, 1)
+		var p: LightingPass = rig["pass"]
+		var floor_mask := 0b111111
+		var focal: Array[Dictionary] = [_ellipse(Vector2(100.5, 100.5), Vector2(64, 32), 2, 1, floor_mask)]
+		var helper: Array[Dictionary] = [_ellipse(Vector2(100.5, 100.5), Vector2(64, 32), 1, 0, floor_mask)]
+		var want := LightingPass.shifted_index(4, shade, 25)
+		_assert_eq(p.output_index(Vector2(100, 100), 4, focal), want,
+			"focal core (lift 2 + fill 1 = 3) with shade %d: k = max(2 - 3, 0) + %d = %d (was 0, the shadow vanished)" % [shade, shade, shade])
+		_assert_eq(p.output_index(Vector2(140, 100), 4, focal), want, "focal band (1 + fill 1 = 2) with shade %d: k %d" % [shade, shade])
+		_assert_eq(p.output_index(Vector2(100, 100), 4, helper), want, "helper core (1 + fill 1 = 2) with shade %d: k %d" % [shade, shade])
+		_assert_eq(p.output_index(Vector2(100, 100), 8, focal), 6, "wall 08 under a floor pool: k 2, no shade (not a receiver)")
+		rig["lit"].shadows = false
+		_assert_eq(p.output_index(Vector2(100, 100), 4, focal), 4, "shadows off: the focal core keeps its art value (k 0)")
+		_free_pass(rig)
+
+
+func test_fill_and_shade_only_on_the_floor_mask() -> void:
+	# Fable P2-3: receivers are floor indices on the room's floor, not every 00-05 pixel on screen.
+	var rig := _pass(2, 1, 1)
+	var p: LightingPass = rig["pass"]
+	p.floor_image.fill_rect(Rect2i(0, 0, 100, 400), Color8(0, 0, 0))
+	var e: Array[Dictionary] = []
+	_assert_false(p.on_floor(Vector2(50, 50)), "x < 100: off the floor mask")
+	_assert_true(p.on_floor(Vector2(150, 50)), "x >= 100: on the floor mask")
+	_assert_eq(p.fill_at(Vector2(50, 50), 4, e), 0, "index 04 off the floor: no fill")
+	_assert_eq(p.shade_at(Vector2(50, 50), 4, e), 0, "index 04 off the floor: no shade")
+	_assert_eq(p.output_index(Vector2(50, 50), 4, e), 2, "index 04 off the floor (a wall dark, an arch window): the ADR-026 k 2")
+	_assert_eq(p.fill_at(Vector2(150, 50), 4, e), 1, "index 04 on the floor: fill 1")
+	_assert_eq(p.shade_at(Vector2(150, 50), 4, e), 1, "index 04 on the floor: shade 1")
+	rig["lit"].shadows = false
+	_assert_eq(p.output_index(Vector2(50, 50), 4, e), 2, "fill only, off the floor: k 2")
+	_assert_eq(p.output_index(Vector2(150, 50), 4, e), 3, "fill only, on the floor: k 1")
+	p.floor_image = null
+	_assert_eq(p.output_index(Vector2(150, 50), 4, e), 2, "no floor mask: nothing is a receiver (no fill)")
+	_free_pass(rig)
+
+
+func test_the_fill_never_returns_the_floor_to_its_unlit_value() -> void:
+	# Fable P2-3: at A 1 a fill of 1 left no step between the open floor and a pool.
+	var lit := RoomLighting.new()
+	lit.fill_lift = 1
+	var want := [0, 0, 1, 1]
+	for a in 4:
+		lit.ambient_steps = a
+		_assert_eq(lit.effective_fill(), want[a], "A %d, fill_lift 1: effective fill %d (at most A - 1)" % [a, want[a]])
+	lit.fill_lift = 0
+	lit.ambient_steps = 3
+	_assert_eq(lit.effective_fill(), 0, "fill_lift 0: no fill at any A")
+	var rig := _pass(1, -1, 1)
+	var p: LightingPass = rig["pass"]
+	var helper: Array[Dictionary] = [_ellipse(Vector2(300.5, 200.5), Vector2(64, 32), 1, 0, 0b111111)]
+	_assert_eq(p.output_index(Vector2(450, 200), 4, helper), 3, "A 1, fill 1: open floor stays k 1 (no fill)")
+	_assert_eq(p.output_index(Vector2(300, 200), 4, helper), 4, "A 1: the pool core is k 0, one step above the floor")
+	_assert_eq(p.fill_at(Vector2(450, 200), 4, helper), 0, "A 1: fill_at 0")
+	rig["lit"].ambient_steps = 3
+	_assert_eq(p.output_index(Vector2(450, 200), 4, helper), 2, "A 3, fill 1: open floor k 2")
+	_assert_eq(p.output_index(Vector2(300, 200), 4, helper), 3, "A 3: helper core 1 + 1 -> k 1")
+	_free_pass(rig)
+
+
+func test_baked_floor_mask_iso_polygon_and_side_strip() -> void:
+	var s := make_session()
+	var room := _concourse(s)
+	var shape := room.get_meta(&"room_shape") as RoomShape
+	var r := ShadeBaker.bake(room)
+	var mask: Image = r["floor"]
+	var o: Vector2 = r["origin"]
+	_assert_eq(mask.get_format(), Image.FORMAT_L8, "L8 mask")
+	_assert_eq(Vector2(mask.get_width(), mask.get_height()), Vector2(r["image"].get_width(), r["image"].get_height()), "same size as the shade map")
+	var at := func(world: Vector2) -> int:
+		var t := Vector2i((world - o).floor())
+		return mask.get_pixel(t.x, t.y).r8
+	_assert_eq(at.call(RoomShape.tile_to_px(Vector2(14, 0.2))), 1, "floor just inside the N wall base")
+	_assert_eq(at.call(RoomShape.tile_to_px(Vector2(14, -0.3))), 0, "the N wall above the floor edge: not floor")
+	_assert_eq(at.call(RoomShape.tile_to_px(Vector2(-0.3, 8))), 0, "the W wall: not floor")
+	_assert_eq(at.call(RoomShape.tile_to_px(Vector2(8, 8))), 1, "mid floor")
+	var count := 0
+	var data := mask.get_data()
+	for v in data:
+		count += v
+	var area := shape.floor_cells().size() * 256
+	_assert_true(absf(count - area) < 0.02 * area, "mask area %d px vs %d floor cells x 256 px" % [count, shape.floor_cells().size()])
+	free_session(s)
+	var side_root := (load(FIXTURE) as PackedScene).instantiate() as Node2D
+	var side := ViewMode.side_view_of(side_root)
+	var rs := ShadeBaker.bake(side_root)
+	var sm: Image = rs["floor"]
+	var so: Vector2 = rs["origin"]
+	var row := func(y: float) -> int:
+		return sm.get_pixel(int(200 - so.x), int(y - so.y)).r8
+	var fy := side.floor_y
+	# ASSET_METADATA 13.1: the 960 x 72 platform floor strip sits at screen y 378 with the floor line at 394.
+	_assert_eq(fy, 394.0, "fixture floor line at y 394")
+	_assert_eq(row.call(377), 0, "side: y 377, above the platform floor strip (wall, arches): not floor")
+	_assert_eq(row.call(378), 1, "side: y 378, the strip's top row")
+	_assert_eq(row.call(fy), 1, "side: the floor line")
+	_assert_eq(row.call(449), 1, "side: y 449, the strip's last row (rail trench)")
+	_assert_eq(row.call(450), 0, "side: y 450, the letterbox below: not floor")
+	_assert_eq(rs["image"].get_pixel(int(600 - so.x), int(fy - 10.5 - so.y)).r8, ShadeBaker.AO, "side AO band lies on the strip")
+	side_root.free()
 
 
 func test_fill_adds_to_room_pools_but_not_to_the_elias_zone() -> void:
@@ -347,7 +464,10 @@ func test_every_lit_ch01_room_has_shadows_and_the_fill() -> void:
 				var lit := state.get_node_property_value(0, p) as RoomLighting
 				lit_rooms += 1
 				_assert_true(lit.shadows, "%s: shadows on (ADR-027)" % file)
-				_assert_eq(lit.fill_lift, 1, "%s: floor fill 1 (owner: fill, keep the focal)" % file)
+				if lit.ambient_steps >= 2:
+					_assert_eq(lit.fill_lift, 1, "%s: A %d, floor fill 1 (owner: fill, keep the focal)" % [file, lit.ambient_steps])
+				else:
+					_assert_eq(lit.effective_fill(), 0, "%s: A %d, the fill is not applied (r2: at most A - 1), fill_lift is free" % [file, lit.ambient_steps])
 	_assert_true(lit_rooms >= 1, "at least Concourse West is lit (%d)" % lit_rooms)
 
 
@@ -409,8 +529,74 @@ func test_setting_off_skips_the_bake_and_hides_the_pass() -> void:
 	settings.lighting_enabled = true
 	_assert_eq(pass_node.bake_count, 1, "toggling the setting in the same room does not bake again")
 	_assert_eq(room.find_children("*", "", true, false).size(), nodes, "the room's nodes are untouched")
+	var fill_only := (room.get_meta(&"lighting") as RoomLighting).duplicate() as RoomLighting
+	fill_only.shadows = false
+	pass_node.apply_room(room, fill_only, null)
+	_assert_true(pass_node.floor_active() and not pass_node.shadows_active(), "fill without shadows: the floor mask is baked, no shade")
+	_assert_eq(pass_node.bake_count, 2, "fill without shadows: one bake (the mask)")
 	pass_node.apply_room(room, null, null)
 	_assert_true(pass_node.shade_image == null and not pass_node.shadows_active(), "unlit room: map dropped")
+	settings.lighting_enabled = was_enabled
+	pass_node.free()
+	free_session(s)
+
+
+func _connections_to(sig: Signal, target: Object) -> int:
+	var n := 0
+	for c in sig.get_connections():
+		if (c["callable"] as Callable).get_object() == target:
+			n += 1
+	return n
+
+
+func test_opening_the_concourse_gate_rebakes_the_map() -> void:
+	# Fable P3: the turnstile's Blocker collider is disabled when it opens; the map follows at once.
+	var settings := _tree().root.get_node_or_null("Settings")
+	var was_enabled: bool = settings.lighting_enabled
+	settings.lighting_enabled = true
+	var s := make_session()
+	var room := _concourse(s)
+	var pass_node := LightingPass.new()
+	_tree().root.add_child(pass_node)
+	pass_node.apply_room(room, room.get_meta(&"lighting") as RoomLighting, null)
+	await physics_frames(2)
+	var gate := room.get_node("turnstile_gate") as TurnstileGate
+	var blocker := room.get_node("turnstile_gate/Blocker/CollisionShape2D") as CollisionShape2D
+	_assert_eq(_connections_to(gate.passage_changed, pass_node), 1, "the pass watches the gate's passage_changed")
+	_assert_false(blocker.disabled, "the gate starts closed (Blocker on)")
+	var bakes := pass_node.bake_count
+	var closed := pass_node.shade_image.get_data()
+	var c := blocker.global_position - pass_node.shade_origin
+	var rim := Vector2i(int(c.x - 13), int(c.y))
+	_assert_eq(pass_node.shade_image.get_pixel(rim.x, rim.y).r8, ShadeBaker.CONTACT_RIM, "closed: the Blocker's contact rim 13 px left of the post")
+	gate.apply_state({"arm_state": &"open", "passage_blocked": false})
+	_assert_eq(pass_node.bake_count, bakes, "no bake before the collider has changed (set_deferred)")
+	await physics_frames(1)
+	_assert_true(blocker.disabled, "open: Blocker off")
+	_assert_eq(pass_node.bake_count, bakes + 1, "open: the map is rebaked once")
+	_assert_eq(pass_node.shade_image.get_pixel(rim.x, rim.y).r8, 0, "open: the Blocker's contact rim is gone")
+	var fresh := ShadeBaker.bake(room)
+	_assert_true(pass_node.shade_image.get_data() == fresh["image"].get_data(), "open: the map equals a fresh bake (as on entering the solved room)")
+	_assert_true(pass_node.shade_image.get_data() != closed, "open: the map changed")
+	print("  INFO: post centre after opening: shade %d (the open post's own contact from its sprite)" % pass_node.shade_image.get_pixel(int(c.x), int(c.y)).r8)
+	for i in 3:
+		gate.apply_state({"arm_state": &"open", "passage_blocked": false})
+	await physics_frames(2)
+	_assert_eq(pass_node.bake_count, bakes + 1, "the same state again (a rewind re-applies it every tick): no bake")
+	gate.apply_state({"arm_state": &"collapsed", "passage_blocked": true})
+	await physics_frames(1)
+	_assert_eq(pass_node.bake_count, bakes + 2, "closed again (reset): rebaked")
+	_assert_true(pass_node.shade_image.get_data() == closed, "closed again: the first map back, texel for texel")
+	settings.lighting_enabled = false
+	gate.apply_state({"arm_state": &"open", "passage_blocked": false})
+	await physics_frames(1)
+	_assert_eq(pass_node.bake_count, bakes + 2, "setting off: a toggle drops the map but bakes nothing")
+	_assert_true(pass_node.shade_image == null, "setting off: the stale map is dropped")
+	settings.lighting_enabled = true
+	_assert_eq(pass_node.bake_count, bakes + 3, "setting on again: one bake, of the open gate")
+	_assert_true(pass_node.shade_image.get_data() == fresh["image"].get_data(), "setting on again: the open-gate map")
+	pass_node.apply_room(null, null, null)
+	_assert_eq(_connections_to(gate.passage_changed, pass_node), 0, "leaving the room disconnects the gate")
 	settings.lighting_enabled = was_enabled
 	pass_node.free()
 	free_session(s)

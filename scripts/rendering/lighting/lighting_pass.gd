@@ -13,10 +13,17 @@ extends CanvasLayer
 ##
 ## ADR-027 (TLF-084): a room with `shadows` gets a shade map baked when it is applied (ShadeBaker,
 ## world space, rebuilt on every room change, only while the pass is shown) and a contact ellipse
-## under Elias that sits below his body. Floor receivers (RECEIVERS, indices 00-05) take the
-## room's floor fill (RoomLighting.fill_mode: added to its light pools, or cleared around them) and
-## the shade; the rule is k = clamp(A - lift + shade, 0, 3) (`output_index`). Information regions and indices
-## from `exempt_from` up never take either.
+## under Elias that sits below his body. Floor receivers (RECEIVERS, indices 00-05, on the room's
+## floor mask) take the room's floor fill (RoomLighting.fill_mode: added to its light pools, or
+## cleared around them) and the shade. Information regions and indices from `exempt_from` up never
+## take either.
+## TLF-084 round 2 (Fable P2-1, P2-3, P3):
+##  - k = clamp(max(A - lift, 0) + shade, 0, 3) (`output_index`): the lift is capped at A before the
+##    shade is added, so contact and cast shadows still read inside the focal and helper pools;
+##  - receivers are floor indices on the floor mask baked with the shade map (iso floor polygon, side
+##    platform strip), and the fill is at most A - 1 (RoomLighting.effective_fill);
+##  - a blocker that opens or closes in the room (PuzzleObject.passage_changed) rebakes the map once
+##    its colliders have changed, so a solved gate looks the same as on a fresh entry.
 
 const LAYER := 1
 const MAX_LIGHTS := 8
@@ -41,12 +48,20 @@ var lights: Array[RoomLight] = []
 ## The current room's shade map (L8, one texel per world pixel) or null; its world origin.
 var shade_image: Image = null
 var shade_origin := Vector2.ZERO
+## The current room's floor mask (L8, 1 = room floor; same size and origin as the shade map) or null.
+var floor_image: Image = null
 ## The last bake: time in ms, and how many maps this pass has baked.
 var bake_ms := 0.0
 var bake_count := 0
 
 var _shade_tex: ImageTexture = null
+var _floor_tex: ImageTexture = null
 var _shade_room_id := 0
+## Room objects whose blockers can open or close (PuzzleObject.passage_changed), the blocker
+## collider state the current map was baked with, and a pending deferred check.
+var _watched: Array[Node] = []
+var _baked_blockers := PackedByteArray()
+var _rebake_queued := false
 var _rect: ColorRect
 var _material: ShaderMaterial
 var _table_exempt := -1
@@ -145,6 +160,7 @@ static func validate_room(root: Node, room_lighting: RoomLighting, bounds: Rect2
 
 ## Lights `p_room` with `p_lighting` (null: unlit, the pass hides). Called by RoomRouter on entry.
 func apply_room(p_room: Node, p_lighting: RoomLighting, p_player: Node2D) -> void:
+	_unwatch()
 	room = p_room
 	lighting = p_lighting
 	player = p_player
@@ -156,6 +172,7 @@ func apply_room(p_room: Node, p_lighting: RoomLighting, p_player: Node2D) -> voi
 		for light in found:
 			if lights.size() < MAX_LIGHTS:
 				lights.append(light)
+		_watch()
 	_drop_shade()
 	_update_visibility()
 	if visible:
@@ -181,6 +198,20 @@ func settings_enabled() -> bool:
 ## True when the current room's shade map is in use.
 func shadows_active() -> bool:
 	return is_active() and lighting.shadows and shade_image != null
+
+
+## True when the current room's floor mask is baked (rooms with shadows or a fill).
+func floor_active() -> bool:
+	return is_active() and floor_image != null
+
+
+## True when view pixel `p` lies on the current room's floor mask (false without a mask).
+func on_floor(p: Vector2) -> bool:
+	if not floor_active():
+		return false
+	var t := _texel(p)
+	return t.x >= 0 and t.y >= 0 and t.x < floor_image.get_width() and t.y < floor_image.get_height() \
+		and floor_image.get_pixel(t.x, t.y).r8 > 0
 
 
 ## The shade map's texel (0,0) in view pixels and the view pixels per texel.
@@ -274,54 +305,59 @@ func light_terms(p: Vector2, index: int, entries: Array[Dictionary] = []) -> Dic
 
 
 ## What the floor fill adds to the light lift at view pixel `p` for palette `index` (0 off the
-## receivers). ADD: lift becomes max(lift, room lights + fill); CLEAR: max(lift, fill) outside every
-## pool's clear area. (An information region lifts its own indices by at least 1, so the fill never
-## changes one of its pixels.)
+## receivers: other indices, or off the floor mask). ADD: lift becomes max(lift, room lights + fill);
+## CLEAR: max(lift, fill) outside every pool's clear area; fill = RoomLighting.effective_fill().
+## (An information region lifts its own indices by at least 1, so the fill never changes one of its
+## pixels.)
 func fill_at(p: Vector2, index: int, entries: Array[Dictionary] = []) -> int:
 	if not is_active():
 		return 0
 	var terms := light_terms(p, index, entries)
-	return _lift_with_fill(terms, index) - int(terms["lift"])
+	return _lift_with_fill(terms, index, on_floor(p)) - int(terms["lift"])
 
 
 ## The shade (extra ramp steps) at view pixel `p` for palette `index`: the shade map texel under it,
-## at least 1 inside Elias's contact ellipse; 0 off the receivers or inside an information region.
+## at least 1 inside Elias's contact ellipse; 0 off the receivers (other indices, off the floor mask)
+## or inside an information region.
 func shade_at(p: Vector2, index: int, entries: Array[Dictionary] = []) -> int:
 	if not shadows_active():
 		return 0
-	return _shade(p, index, light_terms(p, index, entries))
+	return _shade(p, index, light_terms(p, index, entries), on_floor(p))
 
 
 ## The palette index the pass outputs at view pixel `p` for an input pixel of palette `index`:
-## k = clamp(A - max(light lift, fill) + shade, 0, 3) steps down its ramp.
+## k = clamp(max(A - max(light lift, fill), 0) + shade, 0, 3) steps down its ramp. The lift is
+## capped at A before the shade is added (TLF-084 r2, Fable P2-1): a pool brighter than the ambient
+## no longer swallows the shadows in it.
 func output_index(p: Vector2, index: int, entries: Array[Dictionary] = []) -> int:
 	if not is_active():
 		return index
 	var terms := light_terms(p, index, entries)
-	var lift := _lift_with_fill(terms, index)
-	var shade := _shade(p, index, terms) if shadows_active() else 0
-	var k := clampi(lighting.ambient_steps - lift + shade, 0, 3)
+	var floor := on_floor(p)
+	var lift := _lift_with_fill(terms, index, floor)
+	var shade := _shade(p, index, terms, floor) if shadows_active() else 0
+	var k := clampi(maxi(lighting.ambient_steps - lift, 0) + shade, 0, 3)
 	return shifted_index(index, k, lighting.exempt_from)
 
 
-func _lift_with_fill(terms: Dictionary, index: int) -> int:
+func _lift_with_fill(terms: Dictionary, index: int, floor: bool) -> int:
 	var lift: int = terms["lift"]
-	if lighting.fill_lift <= 0 or ((RECEIVERS >> index) & 1) == 0:
+	var fill := lighting.effective_fill()
+	if fill <= 0 or not floor or ((RECEIVERS >> index) & 1) == 0:
 		return lift
 	if lighting.fill_mode == RoomLighting.FillMode.ADD:
-		return maxi(lift, int(terms["room_lift"]) + lighting.fill_lift)
-	return lift if terms["clear"] else maxi(lift, lighting.fill_lift)
+		return maxi(lift, int(terms["room_lift"]) + fill)
+	return lift if terms["clear"] else maxi(lift, fill)
 
 
-func _shade(p: Vector2, index: int, terms: Dictionary) -> int:
-	if ((RECEIVERS >> index) & 1) == 0 or terms["info"]:
+func _shade(p: Vector2, index: int, terms: Dictionary, floor: bool) -> int:
+	if not floor or ((RECEIVERS >> index) & 1) == 0 or terms["info"]:
 		return 0
 	var centre := p.floor() + Vector2(0.5, 0.5)
-	var r := shade_screen_rect()
-	var t := ((centre - Vector2(r.x, r.y)) / Vector2(r.z, r.w)).floor()
+	var t := _texel(p)
 	var s := 0
 	if t.x >= 0 and t.y >= 0 and t.x < shade_image.get_width() and t.y < shade_image.get_height():
-		s = shade_image.get_pixel(int(t.x), int(t.y)).r8
+		s = shade_image.get_pixel(t.x, t.y).r8
 	var c := elias_contact()
 	if ((centre - Vector2(c.x, c.y)) / Vector2(c.z, c.w)).length() < 1.0:
 		s = maxi(s, 1)
@@ -329,6 +365,13 @@ func _shade(p: Vector2, index: int, terms: Dictionary) -> int:
 
 
 # --- internals -----------------------------------------------------------------------------
+
+## The map texel under view pixel `p` (shade map and floor mask share it).
+func _texel(p: Vector2) -> Vector2i:
+	var centre := p.floor() + Vector2(0.5, 0.5)
+	var r := shade_screen_rect()
+	return Vector2i(((centre - Vector2(r.x, r.y)) / Vector2(r.z, r.w)).floor())
+
 
 func _refresh() -> void:
 	if not is_active():
@@ -368,41 +411,105 @@ func _refresh() -> void:
 			room_count += 1
 	_material.set_shader_parameter("room_light_count", room_count)
 	_material.set_shader_parameter("receivers", RECEIVERS)
-	_material.set_shader_parameter("fill_lift", lighting.fill_lift)
+	_material.set_shader_parameter("fill_lift", lighting.effective_fill())
 	_material.set_shader_parameter("fill_clear", lighting.fill_clear)
 	_material.set_shader_parameter("fill_mode", int(lighting.fill_mode))
 	_material.set_shader_parameter("shade_on", 1 if shadows_active() else 0)
-	if shadows_active():
+	_material.set_shader_parameter("floor_on", 1 if floor_active() else 0)
+	if floor_active():
 		_material.set_shader_parameter("shade_rect", shade_screen_rect())
-		_material.set_shader_parameter("shade_size", Vector2i(shade_image.get_width(), shade_image.get_height()))
+		_material.set_shader_parameter("shade_size", Vector2i(floor_image.get_width(), floor_image.get_height()))
+	if shadows_active():
 		_material.set_shader_parameter("actor_shade", elias_contact())
 	if is_inside_tree():
 		_material.set_shader_parameter("view_size", get_viewport().get_visible_rect().size)
 
 
-## Bakes the current room's shade map once per room, only while the pass is shown (a hidden pass,
-## e.g. the setting off, costs nothing at room entry).
+## Bakes the current room's shade map and floor mask once per room (and again after a blocker
+## changed), only while the pass is shown (a hidden pass, e.g. the setting off, costs nothing at room
+## entry). Rooms without shadows and without a fill need neither.
 func _ensure_shade() -> void:
-	if not visible or not is_active() or not lighting.shadows:
+	if not visible or not is_active() or not (lighting.shadows or lighting.fill_lift > 0):
 		return
-	if shade_image != null and _shade_room_id == room.get_instance_id():
+	if floor_image != null and _shade_room_id == room.get_instance_id():
 		return
+	_baked_blockers = _blocker_state()
 	var r := ShadeBaker.bake(room as Node2D)
 	shade_image = r["image"]
+	floor_image = r["floor"]
 	shade_origin = r["origin"]
 	bake_ms = r["ms"]
 	bake_count += 1
 	_shade_room_id = room.get_instance_id()
 	_shade_tex = ImageTexture.create_from_image(shade_image)
+	_floor_tex = ImageTexture.create_from_image(floor_image)
 	_material.set_shader_parameter("shade_map", _shade_tex)
+	_material.set_shader_parameter("floor_map", _floor_tex)
 
 
 func _drop_shade() -> void:
 	shade_image = null
+	floor_image = null
 	_shade_tex = null
+	_floor_tex = null
 	_shade_room_id = 0
 	_material.set_shader_parameter("shade_map", null)
+	_material.set_shader_parameter("floor_map", null)
 	_material.set_shader_parameter("shade_on", 0)
+	_material.set_shader_parameter("floor_on", 0)
+
+
+## Connects to every object in the room that can open or close a passage (P3: a gate opening while
+## Elias is in the room drops its blocker's contact and cast shadow).
+func _watch() -> void:
+	for node in room.find_children("*", "", true, false):
+		if node.has_signal(&"passage_changed") and node.get_node_or_null("Blocker") is CollisionObject2D:
+			node.connect(&"passage_changed", _on_passage_changed)
+			_watched.append(node)
+
+
+func _unwatch() -> void:
+	for node in _watched:
+		if is_instance_valid(node) and node.is_connected(&"passage_changed", _on_passage_changed):
+			node.disconnect(&"passage_changed", _on_passage_changed)
+	_watched.clear()
+	_baked_blockers = PackedByteArray()
+	_rebake_queued = false
+
+
+## The `disabled` flag of every collider under the watched objects' Blockers (what the baker sees).
+func _blocker_state() -> PackedByteArray:
+	var out := PackedByteArray()
+	for node in _watched:
+		if not is_instance_valid(node):
+			continue
+		var blocker := node.get_node_or_null("Blocker")
+		if blocker == null:
+			continue
+		for child in blocker.get_children():
+			if child is CollisionShape2D or child is CollisionPolygon2D:
+				out.append(1 if child.disabled else 0)
+	return out
+
+
+## PuzzleObject.set_passage_blocked() toggles its colliders with set_deferred and then emits, so the
+## check is deferred too (it runs after them). Rewinds re-emit the same state every tick: those only
+## compare the collider flags and bake nothing.
+func _on_passage_changed(_blocked: bool) -> void:
+	if not _rebake_queued:
+		_rebake_queued = true
+		_rebake_if_changed.call_deferred()
+
+
+func _rebake_if_changed() -> void:
+	_rebake_queued = false
+	if not is_active() or floor_image == null:
+		return
+	if _blocker_state() != _baked_blockers:
+		_drop_shade()
+		_ensure_shade()
+		if visible:
+			_refresh()
 
 
 func _update_visibility() -> void:

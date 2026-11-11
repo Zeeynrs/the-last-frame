@@ -1,0 +1,17 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+BAKE ch01.arrival_platform: first 3.32 ms, median 3.31 ms, max 5.39 ms of 20 more; 14 polygons, 8 ellipses, map 800x384, floor mask 92160 px
+BAKE ch01.concourse_west: first 3.38 ms, median 3.31 ms, max 4.13 ms of 20 more; 16 polygons, 10 ellipses, map 736x432, floor mask 114688 px
+BAKE ch01.maintenance_bay: first 1.69 ms, median 1.63 ms, max 1.85 ms of 20 more; 12 polygons, 6 ellipses, map 640x360, floor mask 230400 px
+BAKE ch01.security_crossing: first 2.13 ms, median 2.12 ms, max 3.52 ms of 20 more; 19 polygons, 15 ellipses, map 640x360, floor mask 230400 px
+BAKE ch01.waiting_lounge: first 0.73 ms, median 0.66 ms, max 0.75 ms of 20 more; 1 polygons, 1 ellipses, map 640x360, floor mask 230400 px
+BAKE ch01.signal_control: first 2.87 ms, median 1.93 ms, max 3.34 ms of 20 more; 19 polygons, 17 ellipses, map 640x360, floor mask 230400 px
+BAKE ch01.upper_vestibule: first 1.47 ms, median 1.08 ms, max 1.89 ms of 20 more; 6 polygons, 6 ellipses, map 640x360, floor mask 230400 px
+BAKE ch01.vestibule_niche: first 0.94 ms, median 1.17 ms, max 1.22 ms of 20 more; 1 polygons, 1 ellipses, map 640x360, floor mask 230400 px
+BAKE ch01.station_atrium: first 0.93 ms, median 0.89 ms, max 1.51 ms of 20 more; 3 polygons, 3 ellipses, map 640x360, floor mask 230400 px
+BAKE ch01.street_exit: first 1.20 ms, median 0.58 ms, max 0.98 ms of 20 more; 0 polygons, 0 ellipses, map 640x360, floor mask 230400 px
+BAKE ch01.side_mira_memory: first 0.63 ms, median 0.27 ms, max 0.74 ms of 20 more; 6 polygons, 6 ellipses, map 1440x540, floor mask 103680 px
+TLF-084 R2 SHOT DONE bake
+
+--- stderr ---
