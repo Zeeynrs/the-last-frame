@@ -97,7 +97,7 @@ If Sol prefers the clock, the swap is two nodes: move the focal pair onto the N 
 
 **Targeted runs** (dev copy, each ≤ 120 s): `test_lighting_pass` 15/0 (`lit rooms … 1`), `test_ch01_concourse_west_v2` 12/0, `test_ch01_sort_order` 3/0, `test_ch01_art_integration` 6/0.
 
-**Full validate of `2a1daa5`:** fresh renamed `git archive` ("TLF Verify 2a1daa5", `project.godot` without BOM), the same capped procedure as Part 1 (`p2/validate_capped.py.txt`; every Godot call ≤ 120 s: import, the embedded script checker, then each test file in its own call). Log `p2/validate_capped_2a1daa5.log`, sha256 `59fb8ea34836a4f1b22fa92d9db84f0f2fd0a84a2f27cc876cfda6cb5969ec19`:
+**Full validate of `2a1daa5`:** fresh renamed `git archive` ("TLF Verify 2a1daa5", `project.godot` without BOM), the same capped procedure as Part 1 (`p2/validate_capped.py.txt`; every Godot call ≤ 120 s: import, the embedded script checker, then each test file in its own call). Log `p2/validate_capped_2a1daa5.log`, sha256 `ce1dc1562724b1d65e5fbeb0c152306805c9bdef106119a9d845cf5595fff73d` as committed (LF; the CRLF original in scratch was `59fb8ea3…69ec19`):
 
 ```
 [1/3] import: exit 0, 0 ERROR lines, 13 s
