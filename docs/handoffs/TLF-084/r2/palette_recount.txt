@@ -1,0 +1,39 @@
+arrival_unlit.png: off-palette 0 of 518400
+arrival_lit_shadows.png: off-palette 0 of 518400
+arrival: the round 1 CPU rebuild equals P2 arrival_lit_shadows.png pixel for pixel: True
+arrival_x2_r1_vs_r2.png: crop (168, 98, 408, 233) around Elias' feet (288, 198), x2; left round 1 (8f7cb2d), right round 2
+arrival_change_r1_to_r2.png: over a dimmed round 1, 511 px darker in round 2 (magenta: shade that now shows in a pool, or fill removed off the floor / at A 1), 0 px brighter (green: shade removed off the floor)
+gate_unlit.png: off-palette 0 of 518400
+gate_lit_shadows.png: off-palette 0 of 518400
+gate: the round 1 CPU rebuild equals P2 gate_lit_shadows.png pixel for pixel: True
+gate_x2_r1_vs_r2.png: crop (242, 152, 482, 287) around Elias' feet (362, 252), x2; left round 1 (8f7cb2d), right round 2
+gate_change_r1_to_r2.png: over a dimmed round 1, 516 px darker in round 2 (magenta: shade that now shows in a pool, or fill removed off the floor / at A 1), 0 px brighter (green: shade removed off the floor)
+dials_unlit.png: off-palette 0 of 518400
+dials_lit_shadows.png: off-palette 0 of 518400
+dials: the round 1 CPU rebuild equals P2 dials_lit_shadows.png pixel for pixel: True
+dials_x2_r1_vs_r2.png: crop (520, 170, 760, 305) around Elias' feet (640, 270), x2; left round 1 (8f7cb2d), right round 2
+dials_change_r1_to_r2.png: over a dimmed round 1, 511 px darker in round 2 (magenta: shade that now shows in a pool, or fill removed off the floor / at A 1), 0 px brighter (green: shade removed off the floor)
+east_unlit.png: off-palette 0 of 518400
+east_lit_shadows.png: off-palette 0 of 518400
+east: the round 1 CPU rebuild equals P2 east_lit_shadows.png pixel for pixel: True
+east_x2_r1_vs_r2.png: crop (552, 290, 792, 425) around Elias' feet (672, 390), x2; left round 1 (8f7cb2d), right round 2
+east_change_r1_to_r2.png: over a dimmed round 1, 511 px darker in round 2 (magenta: shade that now shows in a pool, or fill removed off the floor / at A 1), 0 px brighter (green: shade removed off the floor)
+side_unlit.png: off-palette 0 of 518400
+side_lit_shadows.png: off-palette 0 of 518400
+side: the round 1 CPU rebuild equals P2 side_lit_shadows.png pixel for pixel: True
+side_x2_r1_vs_r2.png: crop (300, 294, 540, 429) around Elias' feet (420, 394), x2; left round 1 (8f7cb2d), right round 2
+side_change_r1_to_r2.png: over a dimmed round 1, 75574 px darker in round 2 (magenta: shade that now shows in a pool, or fill removed off the floor / at A 1), 0 px brighter (green: shade removed off the floor)
+side_a2_unlit.png: off-palette 0 of 518400
+side_a2_lit_shadows.png: off-palette 0 of 518400
+side_a2_lit_r1_cpu.png: off-palette 0 of 518400
+side_a2_x2_r1_vs_r2.png: crop (300, 294, 540, 429) around Elias' feet (420, 394), x2; left round 1 (8f7cb2d), right round 2
+side_a2_change_r1_to_r2.png: over a dimmed round 1, 2798 px darker in round 2 (magenta: shade that now shows in a pool, or fill removed off the floor / at A 1), 0 px brighter (green: shade removed off the floor)
+gate_open_unlit.png: off-palette 0 of 518400
+gate_open_lit_shadows.png: off-palette 0 of 518400
+gate_open_lit_r1_cpu.png: off-palette 0 of 518400
+gate_open_x2_r1_vs_r2.png: crop (242, 152, 482, 287) around Elias' feet (362, 252), x2; left round 1 (8f7cb2d), right round 2
+gate_open_change_r1_to_r2.png: over a dimmed round 1, 501 px darker in round 2 (magenta: shade that now shows in a pool, or fill removed off the floor / at A 1), 0 px brighter (green: shade removed off the floor)
+gate_core_x4_r1_vs_r2.png: crop (320, 206, 440, 274) (the GateFloor core around the post and Elias), x4; left round 1, right round 2
+gate_closed_vs_open_x3.png: crop (314, 196, 454, 276), x3; left the gate closed (Blocker contact), right opened in the room (rebaked)
+side_r1_over_r2.png: top round 1, bottom round 2 (full frame)
+side_a2_r1_over_r2.png: top round 1, bottom round 2 (full frame)

@@ -1,0 +1,65 @@
+MUTATION R1 rule: shade added before the cap (k = clamp(A - lift + shade))
+  test_shadows.gd: TESTS: 17 passed, 2 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/rendering/test_shadows.gd::test_shade_is_added_after_the_lift] A 1, lift 2, shade 1: k = max(1 - 2, 0) + 1 = 1 (r2: the lift is capped at A, the shadow still reads; was k 0) (Expect
+    FAIL: [res://tests/rendering/test_shadows.gd::test_shadows_read_inside_the_focal_and_helper_pools] focal core (lift 2 + fill 1 = 3) with shade 1: k = max(2 - 3, 0) + 1 = 1 (was 0, the shadow vanished)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_shadows_read_inside_the_focal_and_helper_pools] focal core (lift 2 + fill 1 = 3) with shade 2: k = max(2 - 3, 0) + 2 = 2 (was 0, the shadow vanished)
+MUTATION R2 fill ignores the floor mask
+  test_shadows.gd: TESTS: 18 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/rendering/test_shadows.gd::test_fill_and_shade_only_on_the_floor_mask] index 04 off the floor: no fill (Expected 0, got 1)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_fill_and_shade_only_on_the_floor_mask] index 04 off the floor (a wall dark, an arch window): the ADR-026 k 2 (Expected 2, got 3)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_fill_and_shade_only_on_the_floor_mask] fill only, off the floor: k 2 (Expected 2, got 3)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_fill_and_shade_only_on_the_floor_mask] no floor mask: nothing is a receiver (no fill) (Expected 2, got 3)
+MUTATION R3 shade ignores the floor mask
+  test_shadows.gd: TESTS: 18 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/rendering/test_shadows.gd::test_fill_and_shade_only_on_the_floor_mask] index 04 off the floor: no shade (Expected 0, got 1)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_fill_and_shade_only_on_the_floor_mask] index 04 off the floor (a wall dark, an arch window): the ADR-026 k 2 (Expected 2, got 1)
+MUTATION R4 effective_fill = fill_lift (no A - 1 cap)
+  test_shadows.gd: TESTS: 18 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/rendering/test_shadows.gd::test_the_fill_never_returns_the_floor_to_its_unlit_value] A 0, fill_lift 1: effective fill 0 (at most A - 1) (Expected 0, got 1)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_the_fill_never_returns_the_floor_to_its_unlit_value] A 1, fill_lift 1: effective fill 0 (at most A - 1) (Expected 0, got 1)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_the_fill_never_returns_the_floor_to_its_unlit_value] A 1, fill 1: open floor stays k 1 (no fill) (Expected 3, got 4)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_the_fill_never_returns_the_floor_to_its_unlit_value] A 1: fill_at 0 (Expected 0, got 1)
+MUTATION R5 side floor strip starts 60 px above the floor line
+  test_shadows.gd: TESTS: 19 passed, 0 failed, SCRIPT ERROR lines 0
+MUTATION R6 iso floor mask = the whole map
+  test_shadows.gd: TESTS: 18 passed, 1 failed, SCRIPT ERROR lines 8
+    FAIL: [res://tests/rendering/test_shadows.gd::test_baked_floor_mask_iso_polygon_and_side_strip] the N wall above the floor edge: not floor (Expected 0, got 1)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_baked_floor_mask_iso_polygon_and_side_strip] the W wall: not floor (Expected 0, got 1)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_baked_floor_mask_iso_polygon_and_side_strip] mask area 317952 px vs 448 floor cells x 256 px
+MUTATION R7 no mask baked for fill-only rooms
+  test_shadows.gd: TESTS: 18 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/rendering/test_shadows.gd::test_setting_off_skips_the_bake_and_hides_the_pass] fill without shadows: the floor mask is baked, no shade
+    FAIL: [res://tests/rendering/test_shadows.gd::test_setting_off_skips_the_bake_and_hides_the_pass] fill without shadows: one bake (the mask) (Expected 2, got 1)
+MUTATION P1 blockers not watched
+  test_shadows.gd: TESTS: 18 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] the pass watches the gate's passage_changed (Expected 1, got 0)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] open: the map is rebaked once (Expected 2, got 1)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] open: the Blocker's contact rim is gone (Expected 0, got 1)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] open: the map equals a fresh bake (as on entering the solved room)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] open: the map changed
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] the same state again (a rewind re-applies it every tick): no bake (Expected 2, got 1)
+MUTATION P2 rebake on every emission (no state compare)
+  test_shadows.gd: TESTS: 18 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] the same state again (a rewind re-applies it every tick): no bake (Expected 2, got 3)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] closed again (reset): rebaked (Expected 3, got 4)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] setting off: a toggle drops the map but bakes nothing (Expected 3, got 4)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] setting on again: one bake, of the open gate (Expected 4, got 5)
+MUTATION P3 rebake immediately on the signal (before set_deferred)
+  test_shadows.gd: TESTS: 18 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] open: the map is rebaked once (Expected 2, got 1)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] open: the Blocker's contact rim is gone (Expected 0, got 1)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] open: the map equals a fresh bake (as on entering the solved room)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] open: the map changed
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] closed again (reset): rebaked (Expected 3, got 2)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] closed again: the first map back, texel for texel
+MUTATION P4 not disconnected on room change
+  test_shadows.gd: TESTS: 18 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/rendering/test_shadows.gd::test_opening_the_concourse_gate_rebakes_the_map] leaving the room disconnects the gate (Expected 0, got 1)
+MUTATION T1 Concourse West fill_lift 0
+  test_shadows.gd: TESTS: 17 passed, 2 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/rendering/test_shadows.gd::test_every_lit_ch01_room_has_shadows_and_the_fill] concourse_west.tscn: A 2, floor fill 1 (owner: fill, keep the focal) (Expected 1, got 0)
+    FAIL: [res://tests/rendering/test_shadows.gd::test_setting_off_skips_the_bake_and_hides_the_pass] fill without shadows: the floor mask is baked, no shade
+    FAIL: [res://tests/rendering/test_shadows.gd::test_setting_off_skips_the_bake_and_hides_the_pass] fill without shadows: one bake (the mask) (Expected 2, got 1)
+MUTATION R5 side floor strip starts 60 px above the floor line
+  test_shadows.gd: TESTS: 18 passed, 1 failed, SCRIPT ERROR lines 0
+    FAIL: [res://tests/rendering/test_shadows.gd::test_baked_floor_mask_iso_polygon_and_side_strip] side: y 377, above the platform floor strip (wall, arches): not floor (Expected 0, got 1)

@@ -27,8 +27,10 @@ enum FillMode { ADD, CLEAR }
 ## Bake the room's shade map at entry (AO strips, contact and cast shadows; ShadeBaker) and draw
 ## Elias's contact shadow. Every lit room has it on (ADR-027); off keeps the ADR-026 look.
 @export var shadows: bool = false
-## Floor fill: lift on the floor receivers (00-05) over the whole room so the open floor and its
-## shadows read at A 2 (owner: "fill, keep the focal"). 0 = no fill.
+## Floor fill: lift on the floor receivers (indices 00-05 inside the room's floor: the iso floor
+## polygon or the side platform strip, ShadeBaker.floor_shapes) so the open floor and its shadows
+## read at A 2 (owner: "fill, keep the focal"). 0 = no fill. The fill never lifts the open floor
+## back to its unlit value: at A 1 or 0 it is not applied (effective_fill), so a pool keeps a step.
 @export_range(0, 1) var fill_lift: int = 0
 @export var fill_mode: FillMode = FillMode.ADD
 ## CLEAR only: the fill is left out inside this many outer radii of every room light pool that
@@ -50,6 +52,12 @@ enum FillMode { ADD, CLEAR }
 @export_range(0, 3) var elias_lift_inner: int = 1
 @export_range(0, 3) var elias_lift_outer: int = 0
 @export_range(0.05, 1.0) var elias_inner: float = 0.85
+
+
+## The fill the pass applies: `fill_lift`, at most A - 1 (TLF-084 r2, Fable P2-3: at A 1 a fill of
+## 1 would return every floor pixel to its unlit value and leave no step for a light pool).
+func effective_fill() -> int:
+	return mini(fill_lift, maxi(ambient_steps - 1, 0))
 
 
 ## Empty when the values are inside the ADR-026 ranges; otherwise one message per problem.

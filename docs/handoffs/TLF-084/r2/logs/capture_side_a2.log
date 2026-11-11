@@ -1,0 +1,22 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+ENTRY side_a2: bake at room entry 0.78 ms (bake #1), map 1440x540 at (0.0, 0.0); scene: A 2, shadows true, fill 1 (effective 1), fill_mode ADD
+VALIDATE []
+CAPTURED side_a2_unlit
+CAPTURED side_a2_lit_shadows
+CAPTURED side_a2_lit_shadows_hud
+CAPTURED side_a2_setting_off
+CAPTURED side_a2_lit_adr026
+CAPTURED side_a2_lit_r1_cpu
+ELIAS side_a2: feet at screen (420.0, 394.0)
+CHECK side_a2: shader vs reference mismatches 0 / 518400 px (17353 ms); off-palette (no HUD) 0; off-palette outside the HUD (1254 HUD px) 0; setting off == unlit true
+UNTOUCHED side_a2 (ADR-026 lit vs round 2): information pixels changed 0 of 0; exempt (>= 25) changed 0; non-receiver changed 0; off the floor mask changed 0
+FLOOR side_a2: floor pixels lifted 16385, darkened 77 (ADR-026 lit vs round 2)
+FILL side_a2: pixels the fill changes: round 1 20981 (2798 off the floor mask), round 2 18183 (0 off the floor mask)
+SHADE side_a2: pixels where the shade shows: round 1 2871, round 2 2871
+POOL side_a2 MiraFocal: core shaded 42, showing r1 36 / r2 36; band shaded 318, showing r1 279 / r2 279
+TIMING side_a2: viewport GPU unlit 0.033 ms, ADR-026 lit 0.109 ms, round 2 lit+shadows 0.110 ms (delta vs ADR-026 +0.001 ms)
+TLF-084 R2 SHOT DONE side_a2
+
+--- stderr ---

@@ -1,0 +1,23 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060
+
+ENTRY dials: bake at room entry 3.41 ms (bake #1), map 736x432 at (48.0, 0.0); scene: A 2, shadows true, fill 1 (effective 1), fill_mode ADD
+VALIDATE []
+CAPTURED dials_unlit
+CAPTURED dials_lit_shadows
+CAPTURED dials_lit_shadows_hud
+CAPTURED dials_setting_off
+CAPTURED dials_lit_adr026
+CAPTURED dials_lit_r1_cpu
+ELIAS dials: feet at screen (640.0, 270.0)
+CHECK dials: shader vs reference mismatches 0 / 518400 px (21210 ms); off-palette (no HUD) 0; off-palette outside the HUD (2941 HUD px) 0; setting off == unlit true
+UNTOUCHED dials (ADR-026 lit vs round 2): information pixels changed 0 of 487; exempt (>= 25) changed 0; non-receiver changed 0; off the floor mask changed 0
+FLOOR dials: floor pixels lifted 90323, darkened 364 (ADR-026 lit vs round 2)
+FILL dials: pixels the fill changes: round 1 92538 (280 off the floor mask), round 2 92027 (0 off the floor mask)
+SHADE dials: pixels where the shade shows: round 1 10061, round 2 10287
+POOL dials GateFloor: core shaded 339, showing r1 9 / r2 235; band shaded 379, showing r1 298 / r2 298
+POOL dials EastHelper: core shaded 0, showing r1 0 / r2 0; band shaded 197, showing r1 148 / r2 148
+TIMING dials: viewport GPU unlit 0.037 ms, ADR-026 lit 0.128 ms, round 2 lit+shadows 0.129 ms (delta vs ADR-026 +0.001 ms)
+TLF-084 R2 SHOT DONE dials
+
+--- stderr ---

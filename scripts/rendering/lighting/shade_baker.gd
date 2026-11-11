@@ -16,6 +16,9 @@ extends RefCounted
 ## meets the deck, contact ellipses on the floor line and short casts to the right.
 ## The rasterizer is a scanline fill (convex polygons and ellipses, pixel centres), written row
 ## by row with Image.fill_rect in ascending value order, so the map holds the maximum value.
+## TLF-084 r2 (Fable P2-3): the bake also returns a floor mask over the same bounds (1 = room floor:
+## the iso floor polygon, or the side platform floor strip). Only receiver indices on it take the
+## fill and the shade, so wall darks, arch windows and the void above the deck are left alone.
 
 const AO := 1
 const AO_TALL := 0.5
@@ -43,17 +46,48 @@ const SIDE_AO_BOTTOM := -9.0
 ## Side view: contact ellipse half height and the smallest caster width.
 const SIDE_CONTACT_RY := 3.0
 const SIDE_MIN_WIDTH := 12.0
+## Side view: the floor mask is the platform floor strip of ASSET_METADATA 13.1 (960 x 72 px, top
+## at floor_y - 16: deck, tactile strip, curb and rail trench), relative to SideView.floor_y.
+const SIDE_FLOOR_TOP := -16.0
+const SIDE_FLOOR_BOTTOM := 56.0
 
 
-## Bakes `room`'s shade map. Returns {image (L8), origin (world position of texel 0,0), ms,
-## polys, ellipses}. An empty room still gets a map (all zeros) over its bounds.
+## Bakes `room`'s shade map. Returns {image (L8), floor (L8 mask, 1 = room floor, same size), origin
+## (world position of texel 0,0), ms, polys, ellipses}. An empty room still gets a map (all zeros)
+## over its bounds.
 static func bake(room: Node2D) -> Dictionary:
 	var t0 := Time.get_ticks_usec()
 	var shapes := shapes_for(room)
 	var bounds: Rect2 = shapes["bounds"]
 	var img := rasterize(bounds, shapes["polys"], shapes["ellipses"])
-	return {"image": img, "origin": bounds.position, "ms": (Time.get_ticks_usec() - t0) / 1000.0,
+	var floor_img := rasterize(bounds, floor_shapes(room), [])
+	return {"image": img, "floor": floor_img, "origin": bounds.position, "ms": (Time.get_ticks_usec() - t0) / 1000.0,
 		"polys": shapes["polys"].size(), "ellipses": shapes["ellipses"].size()}
+
+
+## The room floor in world pixels as [[convex PackedVector2Array, 1]]: the iso floor polygon
+## (RoomShape.perimeter_polygon_px, split into convex parts) or the side platform floor strip. A room
+## without a valid RoomShape (legacy) counts its whole bounds as floor (the index rule alone).
+static func floor_shapes(room: Node2D) -> Array:
+	var xf := room.global_transform
+	var side := ViewMode.side_view_of(room) if ViewMode.of(room) == ViewMode.SIDE else null
+	if side != null:
+		var b := side.bounds_px()
+		var y0 := side.floor_y + SIDE_FLOOR_TOP
+		var y1 := side.floor_y + SIDE_FLOOR_BOTTOM
+		return [[PackedVector2Array([xf * Vector2(b.position.x, y0), xf * Vector2(b.end.x, y0), xf * Vector2(b.end.x, y1),
+			xf * Vector2(b.position.x, y1)]), 1]]
+	var shape: RoomShape = room.get_meta(&"room_shape") as RoomShape if room.has_meta(&"room_shape") else null
+	if shape == null or not shape.is_valid():
+		var r := _world_rect(xf, RoomCamera.LEGACY_SCREEN)
+		return [[PackedVector2Array([r.position, Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y)]), 1]]
+	var world := PackedVector2Array()
+	for q in shape.perimeter_polygon_px():
+		world.append(xf * q)
+	var out: Array = []
+	for part in Geometry2D.decompose_polygon_in_convex(world):
+		out.append([part, 1])
+	return out
 
 
 ## The shapes of `room` in world pixels: {bounds: Rect2 (whole pixels), polys: [[PackedVector2Array

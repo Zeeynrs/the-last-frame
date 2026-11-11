@@ -1,0 +1,74 @@
+"""Opus TLF-084 r2: mutations in the scratch copy. Each one edits one file, runs the named test files
+(one Godot call each, hard 120 s cap) and restores the file byte for byte.
+Usage: python mutate_r2.py <copy dir> [name prefixes...]"""
+import re, subprocess, sys, pathlib
+
+COPY = pathlib.Path(sys.argv[1])
+GODOT = r"D:\Godot\Godot_v4.7.2-stable_win64_console.exe"
+LP = "scripts/rendering/lighting/lighting_pass.gd"
+SB = "scripts/rendering/lighting/shade_baker.gd"
+RL = "scripts/rendering/lighting/room_lighting.gd"
+CW = "scenes/chapters/ch01/rooms/concourse_west.tscn"
+SH = "res://tests/rendering/test_shadows.gd"
+
+MUTATIONS = [
+    ("R1 rule: shade added before the cap (k = clamp(A - lift + shade))", LP,
+     "var k := clampi(maxi(lighting.ambient_steps - lift, 0) + shade, 0, 3)",
+     "var k := clampi(lighting.ambient_steps - lift + shade, 0, 3)", [SH]),
+    ("R2 fill ignores the floor mask", LP,
+     "if fill <= 0 or not floor or ((RECEIVERS >> index) & 1) == 0:",
+     "if fill <= 0 or ((RECEIVERS >> index) & 1) == 0:", [SH]),
+    ("R3 shade ignores the floor mask", LP,
+     "if not floor or ((RECEIVERS >> index) & 1) == 0 or terms[\"info\"]:",
+     "if ((RECEIVERS >> index) & 1) == 0 or terms[\"info\"]:", [SH]),
+    ("R4 effective_fill = fill_lift (no A - 1 cap)", RL,
+     "return mini(fill_lift, maxi(ambient_steps - 1, 0))", "return fill_lift", [SH]),
+    ("R5 side floor strip starts 60 px above the floor line", SB,
+     "const SIDE_FLOOR_TOP := -16.0", "const SIDE_FLOOR_TOP := -60.0", [SH]),
+    ("R6 iso floor mask = the whole map", SB,
+     "\tif shape == null or not shape.is_valid():\n\t\tvar r := _world_rect(xf, RoomCamera.LEGACY_SCREEN)",
+     "\tif true:\n\t\tvar r := _world_rect(xf, shape.bounds_px())", [SH]),
+    ("R7 no mask baked for fill-only rooms", LP,
+     "if not visible or not is_active() or not (lighting.shadows or lighting.fill_lift > 0):",
+     "if not visible or not is_active() or not lighting.shadows:", [SH]),
+    ("P1 blockers not watched", LP, "\t\t_watch()\n", "", [SH]),
+    ("P2 rebake on every emission (no state compare)", LP,
+     "\tif _blocker_state() != _baked_blockers:\n\t\t_drop_shade()",
+     "\tif true:\n\t\t_drop_shade()", [SH]),
+    ("P3 rebake immediately on the signal (before set_deferred)", LP,
+     "\t\t_rebake_if_changed.call_deferred()", "\t\t_rebake_if_changed()", [SH]),
+    ("P4 not disconnected on room change", LP, "\t_unwatch()\n\troom = p_room", "\troom = p_room", [SH]),
+    ("T1 Concourse West fill_lift 0", CW, "fill_lift = 1\n", "fill_lift = 0\n", [SH]),
+]
+
+
+def run(test):
+    try:
+        out = subprocess.run([GODOT, "--headless", "--path", str(COPY), "-s", "res://tests/run_tests.gd", "--", test],
+                             capture_output=True, text=True, timeout=120, encoding="utf-8", errors="replace")
+        text = out.stdout + out.stderr
+    except subprocess.TimeoutExpired:
+        return "TIMEOUT (120 s cap)", []
+    m = re.search(r"TESTS: (\d+) passed, (\d+) failed", text)
+    fails = [l.strip()[:200] for l in text.splitlines() if l.strip().startswith("FAIL")]
+    return (m.group(0) if m else "no summary") + ", SCRIPT ERROR lines %d" % text.count("SCRIPT ERROR"), fails
+
+
+only = sys.argv[2:]
+for name, rel, a, b, tests in MUTATIONS:
+    if only and not any(name.startswith(o) for o in only):
+        continue
+    path = COPY / rel
+    orig = path.read_bytes()
+    text = orig.decode("utf-8")
+    assert text.count(a) == 1, (name, text.count(a), a)
+    path.write_bytes(text.replace(a, b).encode("utf-8"))
+    try:
+        results = [(t,) + run(t) for t in tests]
+    finally:
+        path.write_bytes(orig)
+    print("MUTATION", name, flush=True)
+    for t, summary, fails in results:
+        print("  %s: %s" % (t.rsplit("/", 1)[1], summary), flush=True)
+        for f in fails[:6]:
+            print("    " + f, flush=True)
