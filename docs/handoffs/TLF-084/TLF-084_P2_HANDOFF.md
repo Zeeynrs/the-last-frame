@@ -3,8 +3,9 @@
 **Branch:** `agent/opus-core-tlf084`, on top of Part 1 (`2bc6983`, from `origin/main` `1388d6d`). Not merged.
 
 **Commits:**
-- WIP: `ee78a39`, `95e64be`;
-- the final commit is this handoff and the validate log (SHA in the report to the Lead).
+- WIP: `ee78a39`, `95e64be`, `1129515`;
+- validated code: `1129515`;
+- the final commit adds this handoff text and the validate log (SHA in the report to the Lead).
 
 **Decision implemented:** ADR-027 (`origin/lead/tlf-084-plan` `ac78c11`):
 - option C, a runtime bake at room entry, with C′ (offline bake) as the fallback;
@@ -207,7 +208,23 @@ The 15 existing `test_lighting_pass` tests are unchanged and pass.
 
 ## 6. Validate
 
-VALIDATE_PLACEHOLDER
+Capped procedure (`docs/handoffs/TLF-083/p2/validate_capped.py.txt`) on a fresh renamed `git archive` of **`1129515`**. This is the final code: the commit after it adds only this handoff text and the log.
+
+Log: `p2/logs/validate_capped_1129515.log` (LF), sha256 `f5c4b27b79cfbc60b8692c2d2d2017c93c7eb2684badeff281fc1ac11b69ad4c`:
+
+```
+[1/3] import: exit 0, 0 ERROR lines, 13 s
+[2/3] script check: exit 0, Script check: 194 scripts, 0 failed., 0 ERROR lines, leak check: clean, 6 s
+[3/3] tests/rendering/test_lighting_pass.gd  exit 0  TESTS: 15 passed, 0 failed | SCRIPT ERROR 0 | leaks clean
+[3/3] tests/rendering/test_shadows.gd        exit 0  TESTS: 14 passed, 0 failed | SCRIPT ERROR 0 | leaks clean
+=== TOTAL: 66 test files, TESTS: 544 passed, 0 failed, SCRIPT ERROR lines 0, files needing a look: ['test_operator_sighting.gd'] ===
+```
+
+**Result:** 544 = the 530 on main plus the 14 new tests. The flagged file is the same pre-existing operator leak as on main.
+
+**Python tests:** not affected; no builder or art tool changed.
+
+**Real save:** untouched (`slot_0.json` 11306 bytes, 2026-11-07 16:46).
 
 ## 7. Open points
 
