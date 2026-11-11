@@ -1,0 +1,14 @@
+INDEX25 ArchwayWest (ch01_env_archway_frame_e_idle.png): 30
+INDEX25 ArchwayEast (ch01_env_archway_frame_e_idle.png): 30
+INDEX25 reset_anchor_01/ConsoleSprite (ch01_prop_reset_console_idle.png): 3
+INDEX25 doc_evac_notice/DocSprite (ch01_prop_document_clipboard_idle.png): 2
+INDEX25 YSort_Walls/Archway_door_entry_west (ch01_env_archway_frame_e_idle.png): 30
+INDEX25 YSort_Walls/Archway_door_exit_east (ch01_env_archway_frame_e_idle.png): 30
+INDEX25 Wall_Fixtures/Clock_3 (ch01_prop_digital_clock_2359_n_idle.png): 18
+INDEX25 conduit_01/Presenter (ch01_prop_conduit_fallen.png): 2
+INDEX25 dial_line/Presenter (ch01_prop_flap_dial_line_n_idle.png): 4
+INDEX25 dial_time/Presenter (ch01_prop_flap_dial_time_n_idle.png): 1
+INDEX25 staff_door/Presenter (ch01_prop_staff_door_closed.png): 12
+INDEX25 TOTAL drawn sprites in ConcourseWest: 162
+INDEX25 TOTAL drawn sprites in ConcourseWest: 668
+(last line: before the change, 2a1daa5)

@@ -1,0 +1,24 @@
+design/art/mockups/ch01_arrival_platform_mockup.png True 160 {((235, 138, 40), (204, 78, 30)): 160}
+design/art/mockups/ch01_concourse_west_mockup.png True 177 {((235, 138, 40), (204, 78, 30)): 177}
+design/art/mockups/ch01_operator_sighting_platform_mockup.png True 128 {((235, 138, 40), (204, 78, 30)): 128}
+design/art/mockups/ch01_security_crossing_mockup.png True 160 {((235, 138, 40), (204, 78, 30)): 160}
+design/art/mockups/ch01_signal_control_mockup.png True 166 {((235, 138, 40), (204, 78, 30)): 166}
+design/art/mockups/ch01_step1_room_statues_greyscale_proof.png True 1440 {((156, 156, 156), (110, 110, 110)): 1440}
+design/art/mockups/ch01_step1_room_statues_mockup.png True 160 {((235, 138, 40), (204, 78, 30)): 160}
+design/art/mockups/ch01_step1_room_statues_x3_proof.png True 1440 {((235, 138, 40), (204, 78, 30)): 1440}
+design/art/mockups/ch01_tlf063_story_props_greyscale_proof.png True 520 {((235, 138, 40), (204, 78, 30)): 260, ((156, 156, 156), (110, 110, 110)): 260}
+design/art/mockups/ch01_tlf063_story_props_room_mockup.png True 169 {((235, 138, 40), (204, 78, 30)): 169}
+design/art/mockups/ch01_tlf068_endpoint_join_proof.png True 424 {((235, 138, 40), (204, 78, 30)): 424}
+design/art/mockups/ch01_tlf068_l_room_shape_kit_mockup.png True 317 {((235, 138, 40), (204, 78, 30)): 317}
+design/art/mockups/ch01_tlf068_shape_kit_greyscale_proof.png True 2534 {((235, 138, 40), (204, 78, 30)): 1267, ((156, 156, 156), (110, 110, 110)): 1267}
+design/art/mockups/ch01_tlf073_departure_board_w_wall_mockup.png True 235 {((235, 138, 40), (204, 78, 30)): 235}
+design/art/mockups/ch01_tlf073_notice_closed_track_n_wall_mockup.png True 200 {((235, 138, 40), (204, 78, 30)): 200}
+design/art/mockups/ch01_tlf073_sheared_plaques_greyscale_proof.png True 870 {((235, 138, 40), (204, 78, 30)): 435, ((156, 156, 156), (110, 110, 110)): 435}
+design/art/mockups/ch01_tlf077_clocks_2359_wall_mockup.png True 368 {((235, 138, 40), (204, 78, 30)): 368}
+design/art/mockups/ch01_tlf077_selectors_n_wall_mockup.png True 109 {((235, 138, 40), (204, 78, 30)): 109}
+design/art/mockups/ch01_tlf077_selectors_w_wall_mockup.png True 669 {((235, 138, 40), (204, 78, 30)): 669}
+design/art/mockups/ch01_tlf077_wall_fixtures_greyscale_proof.png True 954 {((235, 138, 40), (204, 78, 30)): 477, ((156, 156, 156), (110, 110, 110)): 477}
+docs/handoffs/TLF-081/tlf081_modules_1x.png True 256 {((235, 138, 40), (204, 78, 30)): 256}
+docs/handoffs/TLF-081/tlf081_modules_greyscale_1x.png True 256 {((156, 156, 156), (110, 110, 110)): 256}
+docs/handoffs/TLF-081/tlf081_modules_greyscale_x2.png True 1024 {((156, 156, 156), (110, 110, 110)): 1024}
+docs/handoffs/TLF-081/tlf081_modules_x2.png True 1024 {((235, 138, 40), (204, 78, 30)): 1024}

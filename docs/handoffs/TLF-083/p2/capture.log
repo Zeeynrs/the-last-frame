@@ -1,10 +1,10 @@
-== arrival exit 0 9s
+== arrival exit 0 8s
 VALIDATE []
 PASS layer 1, HUD layer 2, room lights 6, visible true, A 2, exempt 25
 CHECK arrival: shader vs reference mismatches 0 / 518400 px; off-palette (no HUD) 0; off-palette outside the HUD (HUD frame, 1354 HUD px) 0; setting off == unlit true
 SPILL arrival: wall/partition pixels (ramp 06-10) lifted by a room light 0 of 27893
 INFO arrival: dial/validator information pixels kept 488 of 488; other indices lifted inside the info regions 0
-TIMING arrival: viewport GPU 0.111 ms with the pass, 0.035 ms without (setting off), delta 0.076 ms
+TIMING arrival: viewport GPU 0.110 ms with the pass, 0.035 ms without (setting off), delta 0.075 ms
 TLF-083 P2 SHOT DONE arrival
 == gate exit 0 8s
 VALIDATE []
@@ -20,15 +20,15 @@ PASS layer 1, HUD layer 2, room lights 6, visible true, A 2, exempt 25
 CHECK dials: shader vs reference mismatches 0 / 518400 px; off-palette (no HUD) 0; off-palette outside the HUD (HUD frame, 2309 HUD px) 0; setting off == unlit true
 SPILL dials: wall/partition pixels (ramp 06-10) lifted by a room light 0 of 27846
 INFO dials: dial/validator information pixels kept 487 of 487; other indices lifted inside the info regions 0
-TIMING dials: viewport GPU 0.111 ms with the pass, 0.035 ms without (setting off), delta 0.076 ms
+TIMING dials: viewport GPU 0.110 ms with the pass, 0.035 ms without (setting off), delta 0.075 ms
 TLF-083 P2 SHOT DONE dials
-== east exit 0 8s
+== east exit 0 7s
 VALIDATE []
 PASS layer 1, HUD layer 2, room lights 6, visible true, A 2, exempt 25
 CHECK east: shader vs reference mismatches 0 / 518400 px; off-palette (no HUD) 0; off-palette outside the HUD (HUD frame, 1354 HUD px) 0; setting off == unlit true
 SPILL east: wall/partition pixels (ramp 06-10) lifted by a room light 0 of 27956
 INFO east: dial/validator information pixels kept 488 of 488; other indices lifted inside the info regions 0
-TIMING east: viewport GPU 0.111 ms with the pass, 0.035 ms without (setting off), delta 0.076 ms
+TIMING east: viewport GPU 0.110 ms with the pass, 0.035 ms without (setting off), delta 0.075 ms
 TLF-083 P2 SHOT DONE east
 == solved exit 0 8s
 VALIDATE []
@@ -36,17 +36,17 @@ PASS layer 1, HUD layer 2, room lights 6, visible true, A 2, exempt 25
 CHECK solved: shader vs reference mismatches 0 / 518400 px; off-palette (no HUD) 0; off-palette outside the HUD (HUD frame, 1354 HUD px) 0; setting off == unlit true
 SPILL solved: wall/partition pixels (ramp 06-10) lifted by a room light 0 of 27462
 INFO solved: dial/validator information pixels kept 480 of 480; other indices lifted inside the info regions 0
-TIMING solved: viewport GPU 0.111 ms with the pass, 0.035 ms without (setting off), delta 0.076 ms
+TIMING solved: viewport GPU 0.110 ms with the pass, 0.035 ms without (setting off), delta 0.075 ms
 TLF-083 P2 SHOT DONE solved
-== echo exit 0 7s
+== echo exit 0 8s
 VALIDATE []
 PASS layer 1, HUD layer 2, room lights 6, visible true, A 2, exempt 25
 CHECK echo: shader vs reference mismatches 0 / 518400 px; off-palette (no HUD) 0; off-palette outside the HUD (HUD frame, 1354 HUD px) 0; setting off == unlit true
 SPILL echo: wall/partition pixels (ramp 06-10) lifted by a room light 0 of 27982
 INFO echo: dial/validator information pixels kept 488 of 488; other indices lifted inside the info regions 0
-TIMING echo: viewport GPU 0.110 ms with the pass, 0.035 ms without (setting off), delta 0.075 ms
+TIMING echo: viewport GPU 0.111 ms with the pass, 0.035 ms without (setting off), delta 0.076 ms
 TLF-083 P2 SHOT DONE echo
-== targets exit 0 5s
+== targets exit 0 4s
 VALIDATE []
 PASS layer 1, HUD layer 2, room lights 6, visible true, A 2, exempt 25
 TARGET ROW 0 call_box_09: Elias at (280.0, 100.0), crop [P: (280, 86), S: (128, 96)]

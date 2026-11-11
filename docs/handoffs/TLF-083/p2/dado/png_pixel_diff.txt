@@ -1,0 +1,13 @@
+ch01_env_wall_corner_pillar_idle.png                      26 px changed, all 25->24: True, index 25 left: 0
+ch01_env_wall_partition_low_corner_inner_idle.png         16 px changed, all 25->24: True, index 25 left: 0
+ch01_env_wall_partition_low_corner_outer_idle.png         15 px changed, all 25->24: True, index 25 left: 0
+ch01_env_wall_partition_low_e_idle.png                    32 px changed, all 25->24: True, index 25 left: 0
+ch01_env_wall_subterranean_corner_n_turn_inner_idle.png   14 px changed, all 25->24: True, index 25 left: 0
+ch01_env_wall_subterranean_corner_n_turn_outer_idle.png   17 px changed, all 25->24: True, index 25 left: 0
+ch01_env_wall_subterranean_corner_nw_inner_idle.png       15 px changed, all 25->24: True, index 25 left: 0
+ch01_env_wall_subterranean_corner_nw_outer_idle.png       16 px changed, all 25->24: True, index 25 left: 0
+ch01_env_wall_subterranean_corner_w_turn_inner_idle.png   16 px changed, all 25->24: True, index 25 left: 0
+ch01_env_wall_subterranean_corner_w_turn_outer_idle.png   17 px changed, all 25->24: True, index 25 left: 0
+ch01_env_wall_subterranean_w_endcap_low_idle.png          32 px changed, all 25->24: True, index 25 left: 0
+ch01_env_wall_subterranean_w_idle.png                     32 px changed, all 25->24: True, index 25 left: 0
+TOTAL 248

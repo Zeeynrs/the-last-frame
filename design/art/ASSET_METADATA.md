@@ -147,7 +147,7 @@
 - **Pixel Dimensions & In-Game Scale:** **`32 × 64 px`** (`48 px` vertical wall height + `16 px` isometric run; `1.0×` scale)
 - **Pivot / Origin & Sorting Layer:** Pivot **`(16, 56)`** · `YSort_Walls` (`z_index = 5`)
 - **Animation Frame Count, FPS & Tags:** `1` frame (`static`), `3` layers (`Wall_Cornice_Backing`, `Ceramic_Tile_Course`, `Dado_And_Skirting`)
-- **Palette ID & Color Constraints:** `TLF-CH01-32` (`8` colors used: indices `00, 07, 08, 09, 10, 12, 13, 25`; `0` off-palette; `0` semi-transparent pixels)
+- **Palette ID & Color Constraints:** `TLF-CH01-32` (`8` colors used: indices `00, 07, 08, 09, 10, 12, 13, 24`; `0` off-palette; dado `25` → `24` in TLF-083 Part 2, see §15; `0` semi-transparent pixels)
 - **Collision / Interaction Footprint:** Static boundary wall (`StaticBody2D` polygon along the `32 × 16 px` base edge `(0, 63) → (31, 48)`)
 - **Source & Export Paths:**
   - Source: `assets/source/ch01/ch01_env_wall_subterranean_w_idle.pxo`
@@ -318,7 +318,7 @@ Common to all entries: **License / Attribution:** original production art by the
 ### `ch01.env.wall.corner_pillar`
 - **Filename:** `ch01_env_wall_corner_pillar_idle.pxo` / `ch01_env_wall_corner_pillar_idle.png` · **Category / use:** Environment (Wall Module) · All rooms (convex corner post)
 - **Pixel dimensions:** `32 × 64 px` (`1.0×`) · **Pivot / sorting:** `(16, 56)` · `YSort_Walls` (`z_index = 5`)
-- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,06,07,08,11,12,13,14,15,24,25`
+- **Frames / FPS / tags:** `1` frame, static, no tags · **Palette:** `TLF-CH01-32`, indices `00,06,07,08,11,12,13,14,15,24` (stripe `25` → `24` in TLF-083 Part 2, see §15)
 - **Source / export:** `assets/source/ch01/ch01_env_wall_corner_pillar_idle.pxo` → `assets/environments/ch01/ch01_env_wall_corner_pillar_idle.png`
 
 ### `ch01.env.archway.frame_n`
@@ -900,7 +900,7 @@ The two colour + luminance-greyscale proof sheets (`design/art/mockups/ch01_oper
 - **1. Tall N/W Corner Pieces (`32 × 64 px`, pivot `(16, 56)`, `offset = Vector2(-16, -56)`, `YSort_Walls (z_index = 5)`):**
   - Anchored directly at the polygon vertex `RoomShape.tile_to_px(v)` where `v = s["from"] == s["to"]`.
   - Covers the 6 tall-wall vertex configurations emitted by `RoomShape.wall_segments()`:
-    - `ch01_env_wall_subterranean_corner_nw_outer_idle` (`kind = &"outer_corner"`, `faces = [&"W", &"N"]`): convex room top apex joining a `W` run (`Step 0` Mid-Light, `08` ceramic / `25` amber dado) on the left and an `N` run (`Step -1` Mid-Dark, `07` ceramic / `24` amber dado) on the right with a recessed interior steel corner angle and mitered cornice cap.
+    - `ch01_env_wall_subterranean_corner_nw_outer_idle` (`kind = &"outer_corner"`, `faces = [&"W", &"N"]`): convex room top apex joining a `W` run (`Step 0` Mid-Light, `08` ceramic / `24` amber dado; `25` until TLF-083 Part 2, see §15) on the left and an `N` run (`Step -1` Mid-Dark, `07` ceramic / `24` amber dado) on the right with a recessed interior steel corner angle and mitered cornice cap.
     - `ch01_env_wall_subterranean_corner_nw_inner_idle` (`kind = &"inner_corner"`, `faces = [&"N", &"W"]`): concave room vertex protruding toward the camera, joining an `N` run on the left and a `W` run on the right with a chamfered exterior steel/ceramic bullnose quoin (`13..14` top-left highlight, `26` amber corner chevron).
     - `ch01_env_wall_subterranean_corner_n_turn_outer_idle` (`kind = &"outer_corner"`, `faces = [&"N", &"low_E"]`): N-turn East apex where a tall `N` run terminates in a `6 px` `2:1` isometric steel bulkhead return cap (`x = 16..21`) and turns down-left into a `low_E` partition (`16 px` tall) through a corner bollard at `(16, 56)`.
     - `ch01_env_wall_subterranean_corner_n_turn_inner_idle` (`kind = &"inner_corner"`, `faces = [&"low_E", &"N"]`): N-turn NE concave cut (`Rule R2b`) where an incoming `low_E` partition turns at `(16, 56)` into a tall `N` run, stepping up from a `16 px` corner bollard (`x = 16..20`) through a `32 px` steel bulkhead step (`x = 21..25`) to full `48 px` tall `N` wall height (`x = 26..31`) so `x = 31` joins seamlessly with `ch01_env_wall_subterranean_n_idle`.
@@ -908,7 +908,7 @@ The two colour + luminance-greyscale proof sheets (`design/art/mockups/ch01_oper
     - `ch01_env_wall_subterranean_corner_w_turn_inner_idle` (`kind = &"inner_corner"`, `faces = [&"W", &"low_S"]`): W-turn SW concave cut (`Rule R2b`) where an incoming `low_S` partition turns at `(16, 56)` into a tall `W` run, stepping up from a `16 px` corner bollard (`x = 11..18`) through a `32 px` steel bulkhead step (`x = 6..10`) to full `48 px` tall `W` wall height (`x = 0..5`) so `x = 0` joins seamlessly with `ch01_env_wall_subterranean_w_idle`.
 - **2. Low Partition Pieces for `low_S` and `low_E` (`Rule R2`: `16 px` vertical height `<= 20 px`, `32 × 32 px` canvas, pivot `(16, 24)`, `offset = Vector2(-16, -24)`, `YSort_Walls (z_index = 5)`):**
   - Because the vertical parapet height is `16 px` (`z_down = 0..16`, `<= 20 px`), Elias (`32 × 48 px`) is never hidden when walking along south/east boundaries or inside concave L/T cuts.
-  - Shares the station architectural language: steel coping cap (`08..10`), ceramic parapet course (`07/06` on `low_S`, `08/07` on `low_E`), continuous `24/25` amber safety dado band (`z_down = 4..6`), riveted steel stanchions (`x = 7..8, 23..24`), and dark steel/obsidian floor skirting (`11/12/00` at `z_down = 14..16`).
+  - Shares the station architectural language: steel coping cap (`08..10`), ceramic parapet course (`07/06` on `low_S`, `08/07` on `low_E`), continuous `24` amber safety dado band (`z_down = 4..6`; the `low_E` face was `25` until TLF-083 Part 2, see §15), riveted steel stanchions (`x = 7..8, 23..24`), and dark steel/obsidian floor skirting (`11/12/00` at `z_down = 14..16`).
   - Comprises `ch01_env_wall_partition_low_s_idle` (straight `low_S` 2-tile run), `ch01_env_wall_partition_low_e_idle` (straight `low_E` 2-tile run), `ch01_env_wall_partition_low_corner_inner_idle` (concave `[low_S, low_E]` SE L-cut corner per `Rule R2b`), and `ch01_env_wall_partition_low_corner_outer_idle` (convex `[low_E, low_S]` South apex corner).
 - **3. Low End Cap Pieces for Tall N/W Wall Terminations & Odd 1-Tile Ends (`Rule R2b`, `32 × 64 px`, pivot `(16, 56)`, `offset = Vector2(-16, -56)`):**
   - `ch01_env_wall_subterranean_n_endcap_low_idle` and `ch01_env_wall_subterranean_w_endcap_low_idle` terminate a tall `48 px` `N` or `W` wall at a doorway/corridor opening, concave corner, or odd-length 1-tile end (`odd_ends` in `tools/content/build_room_from_shape.py`), stepping from full `48 px` wall height down through a `30 px` riveted steel bulkhead to a `16 px` low partition end-cap bollard.
@@ -1275,3 +1275,22 @@ The new bank proof uses actual proposed target offsets: TIME top-left `(608,166)
 - `gen_all.py --sheet` also writes these proofs; `verify_regen.py` verifies them. `python tools/art/test_tlf081.py` checks exact delivery, actual wall-alpha containment, preserved phone feature projection, greyscale state differences, N-bank overlap, the joint W-pair overlap/door clearance and new Lead target/recipe arithmetic. TLF-080 must separately assert the real builder output as required in section 14.2.
 - Existing frontal exports/sources, fallen conduit, N clock, bench, reset console, palette, scene files and state wiring stay unchanged. Jammed/ringing/rejecting are support-state art only where runtime does not yet select them.
 - Gate logs, authorship boundaries and visual limitations are recorded in `docs/handoffs/TLF-081/TLF-081_HANDOFF.md`. Small native glyphs are category/state cues; reading exact dial values depends on the HUD. Final room composition, HUD, lighting and gameplay need TLF-080 integration review.
+
+## 15. Wall dado / trim index rule (`TLF-083` Part 2, `ADR-026`)
+
+**Rule:** the amber safety dado / trim stripe is index **`24`** on **every** wall face: tall `N` and `W` walls, endcaps, corners, low `S`/`E` partitions, partition corners and the corner pillar. Index **`25`** is reserved for **emissive cores** (the `23:59` clock core, the watch, tactile amber cells, archway threshold lamps, powered-state lights, accepted/indicator marks). `ADR-026` exempts `25..31` from the lighting pass, so a `25` trim never darkens and draws a glowing line through a lit room.
+
+**Change (owner decision 2026-11-11, Opus):** until then the `W`/`low_E`-facing dado was `25` and the `N`/`low_S`-facing dado `24`. Exactly those pixels were recoloured `25` → `24`, nothing else (248 px in 12 assets):
+
+| Asset | Pixels `25` → `24` | How |
+|---|---:|---|
+| `ch01_env_wall_subterranean_w_idle` | 32 | Argon batch 1 (no generator): `.pxo` cel `layer_3` + composite, PNG re-exported with Pixelorama |
+| `ch01_env_wall_subterranean_w_endcap_low_idle` | 32 | `tlf068_shape_kit.py` (`DADO_W`) |
+| `ch01_env_wall_partition_low_e_idle` | 32 | `tlf068_shape_kit.py` |
+| `ch01_env_wall_partition_low_corner_inner_idle` / `_outer_idle` | 16 / 15 | `tlf068_shape_kit.py` |
+| `ch01_env_wall_subterranean_corner_nw_inner_idle` / `_outer_idle` | 15 / 16 | `tlf068_shape_kit.py` |
+| `ch01_env_wall_subterranean_corner_n_turn_inner_idle` / `_outer_idle` | 14 / 17 | `tlf068_shape_kit.py` |
+| `ch01_env_wall_subterranean_corner_w_turn_inner_idle` / `_outer_idle` | 16 / 17 | `tlf068_shape_kit.py` |
+| `ch01_env_wall_corner_pillar_idle` | 26 | `props.corner_pillar` |
+
+**Kept at `25` on purpose:** archway frames `e`/`n` (threshold lamps, the same on both faces), `railing_iron` (2 px), `tile_cable_conduit_on` (powered), `tile_tactile_amber` (tactile), the `26` corner-join highlights, every prop and the side-view kit. New wall art must follow the rule; the generators use `DADO_W = 24`. Gates after the change: `verify_regen.py` ALL REPRODUCIBLE, `verify_pxo.py --only ch01_env_wall_` 17/17 identical, `check_assets.py` ALL PASS; logs in `docs/handoffs/TLF-083/p2/dado/`.

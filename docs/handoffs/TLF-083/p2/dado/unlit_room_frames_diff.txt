@@ -1,0 +1,11 @@
+arrival_platform.png       changed   379 px  pairs {((235, 138, 40), (204, 78, 30)): 379}
+concourse_west.png         changed   467 px  pairs {((235, 138, 40), (204, 78, 30)): 467}
+maintenance_bay.png        changed   128 px  pairs {((235, 138, 40), (204, 78, 30)): 128}
+security_crossing.png      changed   160 px  pairs {((235, 138, 40), (204, 78, 30)): 160}
+side_mira_memory.png       changed     0 px  pairs {}
+signal_control.png         changed   148 px  pairs {((235, 138, 40), (204, 78, 30)): 148}
+station_atrium.png         changed   230 px  pairs {((235, 138, 40), (204, 78, 30)): 224, ((125, 97, 79), (10, 13, 20)): 3, ((89, 68, 56), (125, 97, 79)): 2, ((35, 27, 24), (10, 13, 20)): 1}
+street_exit.png            changed   160 px  pairs {((235, 138, 40), (204, 78, 30)): 160}
+upper_vestibule.png        changed   192 px  pairs {((235, 138, 40), (204, 78, 30)): 192}
+vestibule_niche.png        changed    64 px  pairs {((235, 138, 40), (204, 78, 30)): 64}
+waiting_lounge.png         changed   128 px  pairs {((235, 138, 40), (204, 78, 30)): 128}
