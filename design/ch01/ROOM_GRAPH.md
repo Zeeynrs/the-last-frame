@@ -33,7 +33,7 @@
 | **1** | `ch01.arrival_platform` | Beat 01 | Awakening, movement & inspect tutorial, pocket watch pickup (`global.pocket_watch`) | `30 × 18`<br>(`768 × 368 px`) | Follow `640×360` | • `door_exit_east` (**E**, `(29, 4)`) | — | **Yes**<br>`ch01.cp.arrival` | • `ch01.arrival_platform.safe_anchor_spawn` @ `(5, 15)` `(160, 224)` |
 | **2** | `ch01.concourse_west` | Beat 02,<br>Beat 03 | Pocket-watch tutorial (`Trace` + `Rewind`) at Turnstile threshold; Call Box 09 dialogue with The Operator | `28 × 16`<br>(`720 × 360 px`) | Follow `640×360` | • `door_entry_west` (**W**, `(0, 8)`)<br>• `door_exit_east` (**E**, `(28, 8)`) | `CH1-PZ-001` | **Yes**<br>`ch01.cp.concourse_west` | • `ch01.concourse_west.safe_anchor_east` @ `(7, 8)` `(304, 184)` *(entry side)*<br>• `ch01.concourse_west.safe_anchor_west` @ `(10, 8)` `(352, 208)` *(concourse side)* |
 | **3** | `ch01.maintenance_bay` | Beat 04 | Teach `Freeze`; test `Rewind` + `Freeze` on dropped fire shutter & counterweight gear | `26 × 16`<br>(`672 × 336 px`) | Fixed `960×540` | • `door_entry_west` (**W**, `(0, 5)`)<br>• `door_exit_east` (**E**, `(26, 4)`) | `CH1-PZ-002` | **Yes**<br>`ch01.cp.maintenance_bay` | • `ch01.maintenance_bay.safe_anchor_west` @ `(13, 4)` `(464, 200)`<br>• `ch01.maintenance_bay.safe_anchor_east` @ `(18, 4)` `(544, 240)`<br>• `ch01.maintenance_bay.safe_anchor_entry` @ `(5, 4)` `(336, 136)` |
-| **4** | `ch01.security_crossing` | Beat 05 | Teach `Echo` record/replay/reset and persistent trigger occupancy on pressure switch | `16 × 12`<br>(`448 × 224 px`) | Fixed `640×360` | • `door_entry_west` (**W**, `(0, 6)`)<br>• `door_exit_east` (**E**, `(15, 6)`) | `CH1-PZ-003` | **Yes**<br>`ch01.cp.security_crossing` | • `ch01.security_crossing.safe_anchor_west` @ `(6, 6)` `(320, 160)`<br>• `ch01.security_crossing.safe_anchor_east` @ `(13, 6)` `(432, 216)` |
+| **4** | `ch01.security_crossing` | Beat 05 | Teach `Echo` record/replay/reset and persistent trigger occupancy on pressure switch | `24 × 16`<br>(`640 × 320 px`) | Fixed `960×540` | • `door_entry_west` (**W**, `(0, 6)`)<br>• `door_exit_east` (**E**, `(24, 6)`) | `CH1-PZ-003` | **Yes**<br>`ch01.cp.security_crossing` | • `ch01.security_crossing.safe_anchor_west` @ `(10, 6)` `(384, 192)`<br>• `ch01.security_crossing.safe_anchor_east` @ `(17, 6)` `(496, 248)` |
 | **5** | `ch01.waiting_lounge` | Beat 06 | Recorded character presence (Mira `Trace` silhouette, audio log, memory fragment `ch01.fragment.mira_departure`) | `12 × 10`<br>(`352 × 176 px`) | Fixed `640×360` | • `door_entry_west` (**W**, `(0, 5)`)<br>• `door_exit_north` (**N**, `(6, 0)`) | — | **Yes**<br>`ch01.cp.waiting_lounge` | • `ch01.waiting_lounge.safe_anchor_center` @ `(6, 5)` `(336, 152)` |
 | **6** | `ch01.signal_control` | Beat 07 | Two-step synthesis puzzle (`Rewind`+`Freeze` on capacitor, then `Echo` on dual breakers); Operator intercom warning | `16 × 12`<br>(`448 × 224 px`) | Fixed `640×360` | • `door_entry_south` (**S**, `(8, 11)`)<br>• `door_exit_north` (**N**, `(8, 0)`) | `CH1-PZ-004` | **Yes**<br>`ch01.cp.signal_control` | • `ch01.signal_control.safe_anchor_center` @ `(8, 6)` `(352, 176)` |
 | **7** | `ch01.upper_vestibule` | Beat 08 | Spatial foreshadow hub (`SpatialGraph` doorway reassignment via two junction relay levers + `Trace`) | `14 × 14`<br>(`448 × 224 px`) | Fixed `640×360` | • `door_south` (**S**, `(7, 13)`)<br>• `door_west` (**W**, `(0, 7)`)<br>• `door_east` (**E**, `(13, 7)`)<br>• `door_north` (**N**, `(7, 0)`) | `CH1-PZ-005` | **Yes**<br>`ch01.cp.upper_vestibule` | • `ch01.upper_vestibule.safe_anchor_center` @ `(7, 7)` `(320, 176)` |
@@ -52,7 +52,7 @@ flowchart TD
     R1["1. ch01.arrival_platform<br/>(Beat 01 · 14x10)"]
     R2["2. ch01.concourse_west<br/>(Beats 02-03 · CH1-PZ-001 · 28x16)"]
     R3["3. ch01.maintenance_bay<br/>(Beat 04 · CH1-PZ-002 · 26x16)"]
-    R4["4. ch01.security_crossing<br/>(Beat 05 · CH1-PZ-003 · 16x12)"]
+    R4["4. ch01.security_crossing<br/>(Beat 05 · CH1-PZ-003 · 24x16)"]
     R5["5. ch01.waiting_lounge<br/>(Beat 06 · Mira Trace · 12x10)"]
     R6["6. ch01.signal_control<br/>(Beat 07 · CH1-PZ-004 · 16x12)"]
     R7["7. ch01.upper_vestibule<br/>(Beat 08 · CH1-PZ-005 · 14x14)"]
@@ -83,7 +83,7 @@ Every declared doorway across all 10 rooms sits on its room boundary and is pair
 | **E1** | Static | `ch01.arrival_platform:door_exit_east` (**E** `@ (29,4)`) | `ch01.concourse_west:door_entry_west` (**W** `@ (0,8)`) | **E ↔ W** | `true` | Requires picking up `global.pocket_watch` in Beat 01. |
 | **E2** | Static | `ch01.concourse_west:door_exit_east` (**E** `@ (28,8)`) | `ch01.maintenance_bay:door_entry_west` (**W** `@ (0,5)`) | **E ↔ W** | `true` | Reachable after opening `turnstile_gate` (`CH1-PZ-001`) and answering `call_box_09` + inspecting `doc_evac_notice` (Beat 03). |
 | **E3** | Static | `ch01.maintenance_bay:door_exit_east` (**E** `@ (26,4)`) | `ch01.security_crossing:door_entry_west` (**W** `@ (0,6)`) | **E ↔ W** | `true` | Gated inside room by `fire_shutter` (`CH1-PZ-002`). |
-| **E4** | Static | `ch01.security_crossing:door_exit_east` (**E** `@ (15,6)`) | `ch01.waiting_lounge:door_entry_west` (**W** `@ (0,5)`) | **E ↔ W** | `true` | Gated inside room by `security_gate_01` + `bridge_platform_01` (`CH1-PZ-003`). |
+| **E4** | Static | `ch01.security_crossing:door_exit_east` (**E** `@ (24,6)`) | `ch01.waiting_lounge:door_entry_west` (**W** `@ (0,5)`) | **E ↔ W** | `true` | Gated inside room by `security_gate_01` + `bridge_platform_01` (`CH1-PZ-003`). |
 | **E5** | Static | `ch01.waiting_lounge:door_exit_north` (**N** `@ (6,0)`) | `ch01.signal_control:door_entry_south` (**S** `@ (8,11)`) | **N ↔ S** | `true` | Unlocked after inspecting Mira's `Trace` / audio log in Beat 06. |
 | **E6** | Static | `ch01.signal_control:door_exit_north` (**N** `@ (8,0)`) | `ch01.upper_vestibule:door_south` (**S** `@ (7,13)`) | **N ↔ S** | `true` | Gated by `vestibule_door` (`CH1-PZ-004`). Preserved as Edge 1 in `CH1-PZ-005` `SpatialGraph`. |
 | **E7** | Static | `ch01.station_atrium:door_exit_north` (**N** `@ (8,0)`) | `ch01.street_exit:door_entry_south` (**S** `@ (6,9)`) | **N ↔ S** | `true` | Gated by `dispatch_terminal` `Trace` interaction in Beat 09. |
@@ -108,7 +108,7 @@ Every declared doorway across all 10 rooms sits on its room boundary and is pair
 
 ### 4.2 Optional Routes & Discoveries
 - **Maintenance Bay Clipboard (`Beat 04`):** `ch01.maintenance_bay.doc_tech_log` on the workbench `(3, 2)` in `ch01.maintenance_bay`.
-- **Security Booth Pickup (`Beat 05`):** `ch01.security_crossing.transit_pass_pickup` (`progression = true`) on the side desk `(3, 2)` in `ch01.security_crossing`.
+- **Security Booth Pickup (`Beat 05`):** `ch01.security_crossing.transit_pass_pickup` (`progression = true`) on the side desk `(7, 2)` in `ch01.security_crossing`.
 - **Vestibule Inspection Niche (`Beat 08`):** Entering `ch01.vestibule_niche` via `door_east` (in `State 0`, **E → W**) or `door_north` (in `State 1`) before completing `CH1-PZ-005` lets the player read the ELYSIUM threshold-indexing plaque (`ch01.vestibule_niche.doc_index_plaque`) and peer through the barred iron grille (`door_out`, `traversable = false`) into the Station Atrium.
 
 ### 4.3 Backtracking Verification (`ch01.station_atrium` → `ch01.arrival_platform`)
@@ -155,15 +155,15 @@ Below are the exact tile and pixel coordinates for every puzzle object and inten
 | **South Pipe Spot `(11, 8)`** *(for `unsupported` test on shutter)* | `(11, 8)` | `(368, 216)` | — | Distance to `fire_shutter` = **`58.2 px`** (`≤ 96 px` ✅); distance to `counterweight_gear` = **`105.2 px`** (`> 96 px`). Using `Freeze` here targets `fire_shutter` and teaches `&"unsupported"`. |
 | `ch01.maintenance_bay.reset_anchor_01` (`&"reset"`) | `(4, 6)` | `(288, 144)` | `64.0 px` (**`17.9 px`** when approached at `(4, 5)` `(304, 136)` `≤ 36 px` ✅) | Pneumatic release valve on west wall. |
 
-### 5.3 `CH1-PZ-003` — *The Delayed Platform* (`ch01.security_crossing`, `16 × 12`)
+### 5.3 `CH1-PZ-003` — *The Delayed Platform* (`ch01.security_crossing`, `24 × 16`)
 
-| Object / Spot | Tile `(x, y)` | Pixel `(px_x, px_y)` | Distance from Switch `(5, 9)` `(256, 176)` | Targeting & Disambiguation (`ADR-015`) |
+| Object / Spot | Tile `(x, y)` | Pixel `(px_x, px_y)` | Distance from Switch `(9, 9)` `(320, 208)` | Targeting & Disambiguation (`ADR-015`) |
 |---|---|---|---|---|
-| `ch01.security_crossing.echo_recorder_pedestal` | `(4, 8)` | `(256, 160)` | `16.0 px` (`≤ 36 px` ✅) | Adjacent to the south pressure switch deck. |
-| `ch01.security_crossing.pressure_switch_01` (`Area2D`) | `(5, 9)` | `(256, 176)` | `0.0 px` (step-on plate) | `160.0 px` from `security_gate_01` (`1.33 s` / `80 ticks` walk at `120 px/s`). |
-| `ch01.security_crossing.security_gate_01` (`NONE`) | `(10, 4)` | `(416, 176)` | `160.0 px` (`> 96 px`) | Standing at `(9, 4)` `(400, 168)` puts `security_gate_01` at **`17.9 px`** (`≤ 36 px` ✅, `≤ 96 px` ✅) for testing `&"locked"` / `&"unsupported"`. |
-| `ch01.security_crossing.transit_pass_pickup` (`progression`) | `(3, 2)` | `(336, 104)` | **`107.6 px`** (`> 96 px`) | Isolated on north-west security desk (`d = 17.9 px` from `(3, 3)` `(320, 112)`). |
-| `ch01.security_crossing.reset_anchor_01` (`&"reset"`) | `(7, 6)` | `(336, 168)` | `80.4 px` | Central west-deck console (`d = 17.9 px` from `(6, 6)` `(320, 160)`). |
+| `ch01.security_crossing.echo_recorder_pedestal` | `(8, 8)` | `(320, 192)` | `16.0 px` (`≤ 36 px` ✅) | Adjacent to the south pressure switch deck. |
+| `ch01.security_crossing.pressure_switch_01` (`Area2D`) | `(9, 9)` | `(320, 208)` | `0.0 px` (step-on plate) | `160.0 px` from `security_gate_01` (`1.33 s` / `80 ticks` walk at `120 px/s`). |
+| `ch01.security_crossing.security_gate_01` (`NONE`) | `(14, 4)` | `(480, 208)` | `160.0 px` (`> 96 px`) | Standing at `(13, 4)` `(464, 200)` puts `security_gate_01` at **`17.9 px`** (`≤ 36 px` ✅, `≤ 96 px` ✅) for testing `&"locked"` / `&"unsupported"`. |
+| `ch01.security_crossing.transit_pass_pickup` (`progression`) | `(7, 2)` | `(400, 136)` | **`107.6 px`** (`> 96 px`) | Isolated on north-west security desk (`d = 17.9 px` from `(7, 3)` `(384, 144)`). |
+| `ch01.security_crossing.reset_anchor_01` (`&"reset"`) | `(11, 6)` | `(400, 200)` | `80.4 px` | Central west-deck console (`d = 17.9 px` from `(10, 6)` `(384, 192)`). |
 
 ### 5.4 `CH1-PZ-004` — *The Synchronized Substation* (`ch01.signal_control`, `16 × 12`)
 
@@ -207,7 +207,7 @@ Every puzzle room entrance (plus chapter start and outro) has an auto-save check
 | `&"ch01.cp.arrival"` | `ch01.arrival_platform` | `(5, 15)` | `&"ch01.arrival_platform.safe_anchor_spawn"` | Initial chapter start (`tick = 0`) and on picking up `global.pocket_watch`. |
 | `&"ch01.cp.concourse_west"` | `ch01.concourse_west` | `(3, 8)` | `&"ch01.concourse_west.safe_anchor_east"` | Entering `ch01.concourse_west` (`CH1-PZ-001` entrance) and again upon `CH1-PZ-001` `SOLVED`. |
 | `&"ch01.cp.maintenance_bay"` | `ch01.maintenance_bay` | `(5, 5)` | `&"ch01.maintenance_bay.safe_anchor_entry"` | Entering `ch01.maintenance_bay` (`CH1-PZ-002` entrance) and upon `CH1-PZ-002` `SOLVED`. |
-| `&"ch01.cp.security_crossing"` | `ch01.security_crossing` | `(1, 6)` | `&"ch01.security_crossing.safe_anchor_west"` | Entering `ch01.security_crossing` (`CH1-PZ-003` entrance) and upon `CH1-PZ-003` `SOLVED`. |
+| `&"ch01.cp.security_crossing"` | `ch01.security_crossing` | `(4, 6)` | `&"ch01.security_crossing.safe_anchor_west"` | Entering `ch01.security_crossing` (`CH1-PZ-003` entrance) and upon `CH1-PZ-003` `SOLVED`. |
 | `&"ch01.cp.waiting_lounge"` | `ch01.waiting_lounge` | `(1, 5)` | `&"ch01.waiting_lounge.safe_anchor_center"` | Entering `ch01.waiting_lounge` and upon collecting `ch01.fragment.mira_departure`. |
 | `&"ch01.cp.signal_control"` | `ch01.signal_control` | `(8, 10)` | `&"ch01.signal_control.safe_anchor_center"` | Entering `ch01.signal_control` (`CH1-PZ-004` entrance) and upon `CH1-PZ-004` `SOLVED`. |
 | `&"ch01.cp.upper_vestibule"` | `ch01.upper_vestibule` | `(7, 12)` | `&"ch01.upper_vestibule.safe_anchor_center"` | Entering `ch01.upper_vestibule` (`CH1-PZ-005` entrance) and upon `CH1-PZ-005` `SOLVED`. |
@@ -315,7 +315,7 @@ To keep all 10 rooms producible within the vertical slice, ~85% of the environme
 | **R1** `arrival_platform` | `n01_conductor (10,8) (352,208)` · `n02_student (5,8) (272,168)` · `n03_old_man (4,2) (352,112)` · `n04_cleaner (12,7) (400,216)` · `doc_last_service (1,3) (288,96)` · `selector_line (7,1) (416,128)` · `selector_platform (9,1) (448,144)` · `selector_car (11,1) (480,160)` · `release_lever (13,2) (496,184)` · `release_lock` (logic) · `platform_gate` (east aperture `(13,5) (448,208)`) | 4 statue footprints 12x8; `platform_gate/Blocker` 24x24 |
 | **R2** `concourse_west` | `n05_courier (1,6) (240,120)` · `conduit_01 (2,9) (208,152)` · `dial_line (9,1) (448,144)` · `dial_platform (11,1) (480,160)` · `dial_time (13,1) (512,176)` · `ticket_validator (14,2) (512,192)` · `staff_door` (east aperture `(15,5) (480,224)`) · `reset_anchor_02 (8,1) (432,136)` · `doc_ticket_terms (9,9) (320,208)` · `n06_red_coat (13,6) (432,216)` · `n07_briefcase (13,8) (400,232)` · `n08_father (13,10) (368,248)` · `n09_teen (11,9) (352,224)` | 4 statue footprints (n05 footprint removed for rewind clearance); `staff_door/Blocker` 24x24; `ticket_validator` console 16x8 |
 | **R3** `maintenance_bay` | `n11_hatch_tech (2,3) (304,104)` · `hatch_01 (3,3) (320,112)` · `hatch_plate_01 (2,6) (256,128)` · `hatch_residue (2,6)` · `bell_plate_01 (1,8) (208,136)` · `hatch_threshold (3,3)` · `exit_trigger_hatch (4,3) (336,120)` · `doc_hatch_chart (2,7) (240,136)` · `safe_anchor_entry (1,4) (272,104)` · `inner_shutter (11,4) (432,184)` · `inner_shutter_threshold (11,4)` · `exit_trigger_east_02 (12,4) (448,192)` · `doc_inner_shutter_plate (11,1) (480,160)` · `gear_residue (5,2) (368,120)` | `Bulkhead`: `(368,88)→(332,106)`, `(308,118)→(224,160)`; `hatch_01/Blocker`; `InnerDivider`: `(496,152)→(444,178)`, `(420,190)→(352,224)`; `inner_shutter/Blocker`; statue footprint |
-| **R4** `security_crossing` | `echo_recorder_pedestal (4,8) (256,160)` · `n13_guard (4,3) (336,120)` · `doc_guard_log (2,4) (288,112)` · `alarm_plate_01 (5,3) (352,128)` · `card_reader_01 (11,7) (384,208)` · `staff_barrier_01 (12,5) (432,200)` | `StaffBarrier`: `(512,160)→(444,194)`, `(420,206)→(336,248)`; `staff_barrier_01/Blocker`; statue footprint |
+| **R4** `security_crossing` | `echo_recorder_pedestal (8,8) (320,192)` · `n13_guard (8,3) (400,152)` · `doc_guard_log (6,4) (352,144)` · `alarm_plate_01 (9,3) (416,160)` · `card_reader_01 (15,7) (448,240)` · `staff_barrier_01 (16,5) (496,232)` | `StaffBarrier`: `(576,192)→(508,226)`, `(484,238)→(316,322)`; `staff_barrier_01/Blocker`; statue footprint |
 | **R6** `signal_control` | `breaker_c (0,6) (224,112)` · `doc_bus_chart (0,3) (272,88)` · `n20_engineer (6,7) (304,168)` | statue footprint |
 | **R7** `upper_vestibule` | `standby_plate_01 (2,11) (176,168)` · `junction_lever_c (6,2) (384,128)` · `doc_relay_memo (13,3) (480,192)` · `n21_tourist (5,4) (336,136)` | statue footprint |
 

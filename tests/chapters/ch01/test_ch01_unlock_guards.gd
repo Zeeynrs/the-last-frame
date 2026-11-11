@@ -46,8 +46,9 @@ func _try_every_selection(refused: Array) -> Array:
 		hold_moves(moves)
 		_assert_true(await until(func() -> bool: return wheel.current_aimed_segment == i, 30), "aimed at wheel slot %d" % i)
 		release(&"ability_wheel")
-		await until(func() -> bool: return not wheel.is_open, 30)
 		hold_moves([])
+		await until(func() -> bool: return not wheel.is_open, 30)
+		player.velocity = Vector2.ZERO
 		await physics_frames(2)
 		if not seen.has(watch.selected_ability):
 			seen.append(watch.selected_ability)
@@ -141,6 +142,9 @@ func test_load_in_bay_before_the_technician_keeps_freeze_locked() -> void:
 func test_load_rederives_unlocks_from_the_flags() -> void:
 	if not await start_at(R4, &"door_entry_west", [&"CH1-SO-01", &"CH1-PZ-001", &"CH1-PZ-006", &"CH1-SO-02", &"CH1-PZ-002"],
 			[FLAG_REWIND, FLAG_FREEZE, FLAG_ECHO]):
+		stop()
+		return
+	if not await walk_to(player, "crossing -> checkpoint", Vector2(288, 144)):
 		stop()
 		return
 	if not await continue_from_autosave():

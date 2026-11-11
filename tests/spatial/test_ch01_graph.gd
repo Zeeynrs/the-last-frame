@@ -66,7 +66,7 @@ func test_every_door_sits_on_its_boundary_wall() -> void:
 			match door["side"]:
 				"W": ok = x == 0 and y >= 1 and y <= h - 2
 				"E":
-					if StringName(room["room_id"]) in [&"ch01.concourse_west", &"ch01.maintenance_bay"]:
+					if StringName(room["room_id"]) in [&"ch01.concourse_west", &"ch01.maintenance_bay", &"ch01.security_crossing"]:
 						ok = (x == w or x == w - 1) and y >= 1 and y <= h - 2
 					else:
 						ok = x == w - 1 and y >= 1 and y <= h - 2
@@ -77,9 +77,9 @@ func test_every_door_sits_on_its_boundary_wall() -> void:
 
 func test_every_room_fits_the_fixed_camera() -> void:
 	for room in _def().rooms:
-		if StringName(room["room_id"]) in [ARRIVAL, &"ch01.concourse_west", &"ch01.maintenance_bay"]:
+		if StringName(room["room_id"]) in [ARRIVAL, &"ch01.concourse_west", &"ch01.maintenance_bay", &"ch01.security_crossing"]:
 			# ADR-023: arrival_platform v2 (30x18) and concourse_west v2 (28x16) use RoomCamera follow framing;
-			# maintenance_bay v2 (26x16) fits 960x540 (camera fixed, not follow; tested explicitly in probe suite, not legacy 640x360).
+			# maintenance_bay v2 (26x16) and security_crossing v2 (24x16) fit 960x540 (camera fixed, not follow; tested explicitly in probe suite, not legacy 640x360).
 			continue
 		var w: int = room["width"]
 		var h: int = room["height"]

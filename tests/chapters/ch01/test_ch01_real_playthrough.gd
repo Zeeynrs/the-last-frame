@@ -459,13 +459,13 @@ func _play() -> bool:
 	_segment("3b bay PZ-002")
 
 	# 4. Security crossing: the pedestal (Echo unlocks), the pass, an Echo onto the plate, the reader
-	if not await _use_at(Vector2(256, 144), _resolve(&"ch01.security_crossing.echo_recorder_pedestal"), "crossing -> echo pedestal"):
+	if not await _use_at(Vector2(320, 176), _resolve(&"ch01.security_crossing.echo_recorder_pedestal"), "crossing -> echo pedestal"):
 		return false
 	await dismiss_blocking_ui()
 	if not await _expect_unlock(&"echo"):
 		return false
-	# (348,100): the pass (12.6 px) is nearer than the guard statue (23.3 px; a tie at (320,112)).
-	if not await _use_at(Vector2(348, 100), _resolve(&"ch01.security_crossing.transit_pass_pickup"), "crossing -> transit pass"):
+	# (412,132): the pass (12.6 px) is nearer than the guard statue (23.3 px; a tie at (384,144)).
+	if not await _use_at(Vector2(412, 132), _resolve(&"ch01.security_crossing.transit_pass_pickup"), "crossing -> transit pass"):
 		return false
 	_assert_true(await until(_flag(&"ch01.flag.transit_pass"), 10), "transit pass taken")
 	var bridge := _resolve(&"ch01.security_crossing.bridge_platform_01") as RetractableBridge
@@ -475,30 +475,30 @@ func _play() -> bool:
 	var echo := _session.echo_service
 	await tap(&"watch")
 	_assert_eq(echo.state, EchoService.State.RECORDING, "watch starts recording")
-	if not await walk_to(_player, "crossing -> pressure plate", Vector2(256, 176)):
+	if not await walk_to(_player, "crossing -> pressure plate", Vector2(320, 208)):
 		return false
 	await tap(&"watch")
 	_assert_eq(echo.state, EchoService.State.READY, "watch stops recording on the plate")
-	if not await walk_to(_player, "crossing -> off the plate", Vector2(300, 168)):
+	if not await walk_to(_player, "crossing -> off the plate", Vector2(364, 200)):
 		return false
 	await physics_frames(2)
 	_assert_false(bridge.walkable, "bridge retracts when the player leaves the plate")
 	await tap(&"watch")
 	if not _assert_true(await until(func() -> bool: return bridge.walkable, 600), "bridge extends while the Echo holds the plate"):
 		return false
-	# Straight down across the bridge gap (trench barriers end at (380,178) and (356,190)).
-	if not await walk_to(_player, "crossing -> above the bridge", Vector2(368, 170)):
+	# Straight down across the bridge gap (trench barriers end at (444,210) and (420,222)).
+	if not await walk_to(_player, "crossing -> above the bridge", Vector2(432, 202)):
 		return false
-	if not await walk_to(_player, "crossing -> across the bridge", Vector2(368, 198)):
+	if not await walk_to(_player, "crossing -> across the bridge", Vector2(432, 230)):
 		return false
 	var barrier := _resolve(&"ch01.security_crossing.staff_barrier_01") as PoweredDoor
-	if not await _use_at(Vector2(400, 200), _resolve(&"ch01.security_crossing.card_reader_01"), "crossing -> card reader"):
+	if not await _use_at(Vector2(464, 232), _resolve(&"ch01.security_crossing.card_reader_01"), "crossing -> card reader"):
 		return false
 	if not _assert_true(await until(func() -> bool: return not barrier.passage_blocked, 10), "staff barrier lifts after the reader"):
 		return false
-	if not await walk_to(_player, "crossing -> above the barrier", Vector2(432, 186)):
+	if not await walk_to(_player, "crossing -> above the barrier", Vector2(496, 218)):
 		return false
-	if not await walk_to(_player, "crossing -> exit_trigger_lounge", Vector2(432, 216), _solved(&"CH1-PZ-003")):
+	if not await walk_to(_player, "crossing -> exit_trigger_lounge", Vector2(496, 248), _solved(&"CH1-PZ-003")):
 		return false
 	_assert_true(_session.puzzle_service.is_solved(&"CH1-PZ-003"), "PZ-003 SOLVED behind the staff barrier")
 
@@ -506,7 +506,7 @@ func _play() -> bool:
 	var door := _resolve(&"ch01.security_crossing.door_exit_east") as DoorwayPresenter
 	door.traversed.connect(func(_actor: StringName, destination: Dictionary) -> void: _traversals.append(destination))
 	var arrived := func() -> bool: return _router.current_room_id == LOUNGE or not _traversals.is_empty()
-	if not await walk_to(_player, "crossing -> door_exit_east", Vector2(464, 232), arrived):
+	if not await walk_to(_player, "crossing -> door_exit_east", Vector2(608, 304), arrived):
 		return false
 	_assert_false(_traversals.is_empty(), "walking into the east door traverses it")
 	if not _traversals.is_empty():

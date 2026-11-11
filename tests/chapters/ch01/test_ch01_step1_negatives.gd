@@ -278,11 +278,11 @@ func test_pz003_bridge_cannot_be_crossed_without_echo() -> void:
 		stop()
 		return
 	var bridge := resolve(&"ch01.security_crossing.bridge_platform_01") as RetractableBridge
-	if not await walk_to(player, "crossing -> pressure plate", Vector2(256, 176), func() -> bool: return bridge.walkable):
+	if not await walk_to(player, "crossing -> pressure plate", Vector2(320, 208), func() -> bool: return bridge.walkable):
 		stop()
 		return
-	var crossed := func() -> bool: return player.global_position.y > 196.0 and player.global_position.x > 352.0
-	await push_for([Vector2(300, 168), Vector2(368, 170), Vector2(368, 204)], 600, crossed)
+	var crossed := func() -> bool: return player.global_position.y > 228.0 and player.global_position.x > 416.0
+	await push_for([Vector2(364, 200), Vector2(432, 202), Vector2(432, 236)], 600, crossed)
 	_assert_false(crossed.call(), "600 ticks without Echo: the trench is not crossed (player at %s)" % player.global_position)
 	_assert_false(bridge.walkable, "the bridge is retracted")
 	stop()
@@ -303,30 +303,30 @@ func test_pz003_reader_without_the_pass() -> void:
 		stop()
 		return
 	await tap(&"watch")
-	if not await walk_to(player, "crossing -> pressure plate", Vector2(256, 176)):
+	if not await walk_to(player, "crossing -> pressure plate", Vector2(320, 208)):
 		stop()
 		return
 	await tap(&"watch")
-	if not await walk_to(player, "crossing -> off the plate", Vector2(300, 168)):
+	if not await walk_to(player, "crossing -> off the plate", Vector2(364, 200)):
 		stop()
 		return
 	await tap(&"watch")
 	if not _assert_true(await until(func() -> bool: return bridge.walkable, 600), "the Echo holds the plate"):
 		stop()
 		return
-	for point in [Vector2(368, 170), Vector2(368, 198)]:
+	for point in [Vector2(432, 202), Vector2(432, 230)]:
 		if not await walk_to(player, "crossing -> across the bridge", point):
 			stop()
 			return
 	_assert_false(bool(session.narrative_state.get_flag(&"ch01.flag.transit_pass")), "no pass taken")
-	if not await use_at(Vector2(400, 200), reader, "crossing -> card reader (no pass)"):
+	if not await use_at(Vector2(464, 232), reader, "crossing -> card reader (no pass)"):
 		stop()
 		return
 	await physics_frames(2)
 	var refusal := last_refusal(reader)
 	_assert_true(not refusal.is_empty() and refusal[2] == &"no_pass", "reader without the pass: no_pass (%s)" % [refusal])
 	_assert_true(barrier.passage_blocked, "the barrier stays closed")
-	await push_for([Vector2(432, 186), Vector2(432, 216)], 300, func() -> bool: return is_solved(&"CH1-PZ-003"))
+	await push_for([Vector2(496, 218), Vector2(496, 248)], 300, func() -> bool: return is_solved(&"CH1-PZ-003"))
 	_assert_false(is_solved(&"CH1-PZ-003"), "300 ticks at the barrier: PZ-003 still UNSOLVED")
 	_assert_ne(echo.state, EchoService.State.IDLE, "the Echo was used (sanity)")
 	stop()

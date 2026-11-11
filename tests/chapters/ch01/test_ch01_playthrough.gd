@@ -426,17 +426,17 @@ func test_interior_apertures_walkable_with_real_player_capsule() -> void:
 	var barrier_blocker := barrier.get_node("Blocker/CollisionShape2D") as CollisionShape2D
 
 	# Staff barrier closed: Blocker stops the player capsule
-	player.global_position = Vector2(432, 175)
+	player.global_position = Vector2(496, 207)
 	await physics_frames(2)
-	var barrier_closed_blocked := not (await walk_to(player, "barrier_closed", Vector2(432, 225), Callable(), 60, true))
+	var barrier_closed_blocked := not (await walk_to(player, "barrier_closed", Vector2(496, 257), Callable(), 60, true))
 	_assert_true(barrier_closed_blocked, "staff barrier closed: 24x12 blocker stops real player capsule")
 
 	# Staff barrier open: player capsule walks straight through the 26.8 px widened gap
 	barrier_blocker.disabled = true
-	player.global_position = Vector2(432, 175)
+	player.global_position = Vector2(496, 207)
 	await physics_frames(2)
-	var barrier_open_walked := await walk_to(player, "barrier_open", Vector2(432, 225), Callable(), 120, false)
-	_assert_true(barrier_open_walked, "staff barrier open: real player capsule walks through widened aperture (444,194)-(420,206)")
+	var barrier_open_walked := await walk_to(player, "barrier_open", Vector2(496, 257), Callable(), 120, false)
+	_assert_true(barrier_open_walked, "staff barrier open: real player capsule walks through widened aperture (508,226)-(484,238)")
 
 	s.remove_child(crossing)
 	crossing.free()
@@ -955,9 +955,9 @@ func test_scripted_playthrough_rooms_1_to_4() -> void:
 	session.interaction_service.trigger_enter(&"player", &"ch01.maintenance_bay.door_exit_east")
 	router.process_pending()
 
-	# 4. Security Crossing: arrived at door_entry_west spawn (240, 120)
+	# 4. Security Crossing: arrived at door_entry_west spawn (256, 128)
 	_assert_eq(router.current_room_id, &"ch01.security_crossing", "transitioned to security_crossing")
-	_assert_true((player.global_position - Vector2(240, 120)).length() < 2.0, "spawned at crossing door_entry_west")
+	_assert_true((player.global_position - Vector2(256, 128)).length() < 2.0, "spawned at crossing door_entry_west")
 
 	# Use echo_recorder_pedestal to unlock Echo
 	session.interaction_service.request(&"player", &"ch01.security_crossing.echo_recorder_pedestal", &"use")

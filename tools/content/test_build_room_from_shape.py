@@ -28,7 +28,7 @@ ROOMS = {
     "arrival_platform": (14, 10, {"strip": (2, ("S", "E")), "doors": [("E", (13, 5))]}),
     "concourse_west": (28, 16, {}),
     "maintenance_bay": (26, 16, {}),
-    "security_crossing": (16, 12, {"holes": B.parse_cells("9,0..11")}),
+    "security_crossing": (24, 16, {}),
     "waiting_lounge": (12, 10, {}),
     "signal_control": (16, 12, {}),
     "upper_vestibule": (14, 14, {}),
@@ -102,17 +102,24 @@ class TenRoomsRoundTrip(unittest.TestCase):
                     path = os.path.join(ROOMS_DIR, "maintenance_bay.tscn")
                     old = read(path)
                     new, _ = B.build(old, poly, outset=0.25, room_path=path)
+                elif name == "security_crossing":
+                    shape_path = os.path.join(REPO, "design", "ch01", "rooms_v2", "security_crossing.json")
+                    with open(shape_path, encoding="utf-8") as fh:
+                        spec = json.load(fh)
+                    poly = B.canonical(spec["outline"])
+                    path = os.path.join(ROOMS_DIR, "security_crossing.tscn")
+                    old = read(path)
+                    new, _ = B.build(old, poly, outset=0.25, room_path=path)
                 else:
                     old, (new, _) = build_room(name)
                 self.assertEqual(floor_data(new), floor_data(old), "floor tile_map_data (cells, sources, order)")
                 self.assertEqual(re.findall(WALL_RE, new), re.findall(WALL_RE, old), "WallN_* / WallW_* nodes")
 
-    def test_security_crossing_needs_the_trench_hole(self):
-        old, (new, notes) = build_room("security_crossing", holes=())
+    def test_security_crossing_floor_has_no_holes_in_v2(self):
+        old, (new, notes) = build_room("security_crossing")
         cells = B.decode_tiles(floor_data(new))
-        self.assertEqual(len(cells), 192)
-        self.assertEqual({cells[(9, y)][0] for y in range(12)}, {4}, "without --holes the trench is filled with the room's base source")
-        self.assertIn("12 new with source 4", notes[0])
+        self.assertEqual(len(cells), 384)
+        self.assertEqual(set(cells.keys()), {(x, y) for x in range(24) for y in range(16)}, "all 384 floor cells present with no holes")
 
     def test_new_tiles_use_the_room_default_source(self):
         self.assertEqual({r: B.default_tile_source(r + ".tscn") for r in ROOMS},
@@ -173,7 +180,7 @@ class Doors(unittest.TestCase):
         self.assertTrue(any("left to the archway Archway_door_entry_west" in n for n in notes))
 
     def test_archway_across_two_modules_is_reported_not_cut(self):
-        old, (new, notes) = build_room("security_crossing", doors=[("W", (0, 6)), ("E", (15, 6))])
+        old, (new, notes) = build_room("security_crossing", doors=[("W", (0, 6)), ("E", (23, 6))])
         self.assertEqual(re.findall(WALL_RE, new), re.findall(WALL_RE, old))
         self.assertTrue(any(n.startswith("door W (0, 6): NOT CUT") and "(240, 104), (208, 120)" in n for n in notes), notes)
 
