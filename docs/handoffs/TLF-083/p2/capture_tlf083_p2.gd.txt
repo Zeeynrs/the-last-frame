@@ -1,0 +1,307 @@
+extends SceneTree
+
+## TLF-083 Part 2 proof (ADR-026 D.7) for ch01.concourse_west. Scratch copy with a renamed
+## config/name only (Chapter01 writes a playtest log and autosaves):
+##   TLF_OUT=<dir> TLF_SHOT=<arrival|gate|dials|east|solved> godot --path . --resolution 960x540 -s <this>
+## The lighting comes from the room scene (metadata/lighting + RoomLight nodes); nothing is lit at
+## runtime here. For one shot it saves lit (HUD on), lit / setting-off / unlit (HUD hidden), greyscale
+## copies of lit and unlit, a nearest x2 crop around Elias, and prints:
+##  - shader output vs LightingPass.output_index() on the unlit frame, every pixel;
+##  - off-palette pixels in the lit no-HUD frame and outside the HUD in the HUD frame;
+##  - setting off == unlit (bytes);
+##  - spill: ceramic wall/partition pixels (ramp 06-10: brick, caps, cornices) lifted by a room light;
+##  - info regions: dial / validator information pixels kept, other indices lifted inside them;
+##  - viewport GPU time with and without the pass.
+
+const ROOM := &"ch01.concourse_west"
+const SHOTS := {
+	"arrival": [Vector2(224, 144), "idle_se"],
+	"gate": [Vector2(298, 198), "idle_e"],
+	"dials": [Vector2(576, 216), "idle_ne"],
+	"east": [Vector2(608, 336), "idle_se"],
+	"solved": [Vector2(298, 198), "idle_e"],
+	"targets": [],
+	"echo": [Vector2(298, 198), "idle_e"],
+}
+## The Echo ghost placeholder (PocketWatch: a translucent ColorRect, the only non-palette world
+## visual in ch01) is shown here, inside the gate pool and outside it.
+const ECHO_AT := [Vector2(352, 210), Vector2(456, 248)]
+## Every selectable target with Elias on its stand spot (positions of test_ch01_concourse_west_v2),
+## facing it: [label, Elias position, animation].
+const TARGETS := [
+	["call_box_09", Vector2(280, 100), "idle_n"],
+	["doc_ticket_terms", Vector2(104, 196), "idle_w"],
+	["courier_gate_conduit", Vector2(298, 198), "idle_e"],
+	["reset_console_01", Vector2(312, 224), "idle_w"],
+	["dial_line", Vector2(544, 200), "idle_ne"],
+	["dial_platform", Vector2(576, 216), "idle_ne"],
+	["dial_time", Vector2(608, 232), "idle_ne"],
+	["ticket_validator", Vector2(608, 248), "idle_ne"],
+	["doc_evac_notice", Vector2(400, 280), "idle_w"],
+	["n09_teen", Vector2(432, 336), "idle_e"],
+	["n08_father", Vector2(480, 360), "idle_w"],
+	["n07_briefcase", Vector2(512, 344), "idle_w"],
+	["n06_red_coat", Vector2(544, 328), "idle_w"],
+	["east_door", Vector2(608, 336), "idle_se"],
+]
+
+var _ch01: Node2D
+var _router: RoomRouter
+var _player: Player
+var _hud: CanvasLayer
+var _settings: Node
+var _palette := {}
+var _out := ""
+
+
+func _initialize() -> void:
+	create_timer(110.0).timeout.connect(func():
+		printerr("TIMEOUT: capture_tlf083_p2 exceeded 110 s")
+		quit(1))
+	call_deferred("_run")
+
+
+func _frames(n: int) -> void:
+	for i in n:
+		await process_frame
+
+
+func _grab() -> Image:
+	await _frames(3)
+	await RenderingServer.frame_post_draw
+	var img := root.get_texture().get_image()
+	img.convert(Image.FORMAT_RGBA8)
+	return img
+
+
+func _save(img: Image, name: String) -> void:
+	img.save_png(_out.path_join(name + ".png"))
+	print("CAPTURED %s" % name)
+
+
+func _grey(img: Image) -> Image:
+	var g := img.duplicate() as Image
+	for y in g.get_height():
+		for x in g.get_width():
+			var c: Color = g.get_pixel(x, y)
+			var l: float = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b
+			g.set_pixel(x, y, Color(l, l, l, 1.0))
+	return g
+
+
+func _gpu_ms(frames: int = 90) -> float:
+	var rid := root.get_viewport_rid()
+	RenderingServer.viewport_set_measure_render_time(rid, true)
+	await _frames(10)
+	var total := 0.0
+	for i in frames:
+		await process_frame
+		total += RenderingServer.viewport_get_measured_render_time_gpu(rid)
+	return total / frames
+
+
+func _key(c: Color) -> int:
+	return (c.r8 << 16) | (c.g8 << 8) | c.b8
+
+
+func _index(c: Color) -> int:
+	return _palette.get(_key(c), -1) as int
+
+
+func _quad_screen(name: String) -> PackedVector2Array:
+	var light := _router.current_room.get_node("Lighting/" + name) as RoomLight
+	var xf := root.get_canvas_transform()
+	var out := PackedVector2Array()
+	for q in light.quad:
+		out.append((xf * (light.global_transform * q)).round())
+	return out
+
+
+func _check(unlit: Image, lit: Image, hud: Image, pass_node: LightingPass) -> Dictionary:
+	var entries := pass_node.screen_lights()
+	var room_entries: Array[Dictionary] = entries.slice(0, pass_node.lights.size())
+	var info_entries: Array[Dictionary] = []
+	for e in room_entries:
+		if e["kind"] == 1:
+			info_entries.append(e)
+	var dials := _quad_screen("DialsInfo")
+	var validator := _quad_screen("ValidatorInfo")
+	var info_idx := [2, 3, 14, 15, 23, 24]
+	var A: int = pass_node.lighting.ambient_steps
+	var r := {"mismatch": 0, "off_palette": 0, "off_palette_outside_hud": 0, "hud_px": 0, "wall_lifted": 0,
+		"wall_px": 0, "info_kept": 0, "info_px": 0, "info_other_lifted": 0}
+	for y in unlit.get_height():
+		for x in unlit.get_width():
+			var src := _index(unlit.get_pixel(x, y))
+			if src < 0:
+				src = TlfPalette.nearest_index(unlit.get_pixel(x, y))
+			var got := _index(lit.get_pixel(x, y))
+			if got < 0:
+				r["off_palette"] += 1
+			var on_hud := hud.get_pixel(x, y) != lit.get_pixel(x, y)
+			if on_hud:
+				r["hud_px"] += 1
+			elif _index(hud.get_pixel(x, y)) < 0:
+				r["off_palette_outside_hud"] += 1
+			var p := Vector2(x, y)
+			if got != pass_node.output_index(p, src, entries):
+				r["mismatch"] += 1
+			if src >= 6 and src <= 10:
+				r["wall_px"] += 1
+				if pass_node.lift_at(p, src, room_entries) > 0:
+					r["wall_lifted"] += 1
+			var centre := p + Vector2(0.5, 0.5)
+			var in_info := Geometry2D.is_point_in_polygon(centre, dials) or Geometry2D.is_point_in_polygon(centre, validator)
+			if in_info and src < 25:
+				if src in info_idx:
+					r["info_px"] += 1
+					if pass_node.lift_at(p, src, info_entries) >= A:
+						r["info_kept"] += 1
+				elif pass_node.lift_at(p, src, info_entries) > 0:
+					r["info_other_lifted"] += 1
+	return r
+
+
+## Sol D.7: every target in range with the HUD and marker hidden. One row per target: lit, unlit and
+## lit greyscale, 128 x 96 native crops around Elias and the target; the rows are listed in the log.
+func _target_sheet(pass_node: LightingPass) -> void:
+	var w := 128
+	var h := 96
+	var sheet := Image.create(w * 3, h * TARGETS.size(), false, Image.FORMAT_RGBA8)
+	_hud.visible = false
+	_player.set_physics_process(false)
+	var mismatches := 0
+	var off_palette := 0
+	for i in TARGETS.size():
+		var t: Array = TARGETS[i]
+		_player.global_position = t[1]
+		_router.camera.snap_now()
+		_player.sprite.play(t[2])
+		_player.sprite.pause()
+		_player.sprite.frame = 0
+		_router._apply_lighting()
+		var lit := await _grab()
+		var entries := pass_node.screen_lights()
+		var at := (root.get_canvas_transform() * (_player.global_position + Vector2(0, -20))).round()
+		var rect := Rect2i(clampi(int(at.x) - w / 2, 0, 960 - w), clampi(int(at.y) - h / 2, 0, 540 - h), w, h)
+		pass_node.apply_room(null, null, null)
+		var unlit := await _grab()
+		_router._apply_lighting()
+		for y in range(rect.position.y, rect.end.y):
+			for x in range(rect.position.x, rect.end.x):
+				var src := _index(unlit.get_pixel(x, y))
+				if src < 0:
+					src = TlfPalette.nearest_index(unlit.get_pixel(x, y))
+				var got := _index(lit.get_pixel(x, y))
+				if got < 0:
+					off_palette += 1
+				if got != pass_node.output_index(Vector2(x, y), src, entries):
+					mismatches += 1
+		sheet.blit_rect(lit, rect, Vector2i(0, i * h))
+		sheet.blit_rect(unlit, rect, Vector2i(w, i * h))
+		sheet.blit_rect(_grey(lit.get_region(rect)), Rect2i(0, 0, w, h), Vector2i(2 * w, i * h))
+		print("TARGET ROW %d %s: Elias at %s, crop %s" % [i, t[0], t[1], rect])
+	_save(sheet, "targets_in_range")
+	print("CHECK targets: shader vs reference mismatches %d, off-palette %d over %d crops" % [mismatches, off_palette, TARGETS.size()])
+	_hud.visible = true
+
+
+func _solve_state() -> void:
+	var room := _router.current_room
+	(room.get_node("conduit_01") as ConduitProp).apply_state({"conduit_state": &"mounted"})
+	(room.get_node("turnstile_gate") as TurnstileGate).apply_state({"arm_state": &"open", "passage_blocked": false})
+	room.get_node("ticket_validator").set("accepted", true)
+
+
+func _run() -> void:
+	assert(DisplayServer.get_name() != "headless", "windowed Forward+ only")
+	_out = OS.get_environment("TLF_OUT")
+	var shot := OS.get_environment("TLF_SHOT")
+	if _out.is_empty() or not SHOTS.has(shot):
+		printerr("set TLF_OUT and TLF_SHOT (%s)" % ", ".join(SHOTS.keys()))
+		quit(2)
+		return
+	for i in TlfPalette.SIZE:
+		_palette[_key(TlfPalette.COLORS[i])] = i
+	var save = root.get_node_or_null("SaveService")
+	if save != null:
+		save.save_root = "user://tlf083p2_capture_saves"
+	_settings = root.get_node_or_null("Settings")
+	_settings.lighting_enabled = true
+	_ch01 = (load("res://scenes/chapters/ch01/Chapter01.tscn") as PackedScene).instantiate() as Node2D
+	root.add_child(_ch01)
+	await _frames(30)
+	_router = _ch01.get_node("RoomRouter") as RoomRouter
+	_player = _ch01.get_node("Player") as Player
+	_hud = _player.hud
+	var diag := _ch01.call("get_dialogue_box") as DialogueBox
+	if diag != null and diag.is_active:
+		diag.finish_sequence()
+	_router.enter_room(ROOM, &"door_entry_west")
+	await _frames(10)
+	if diag != null and diag.is_active:
+		diag.finish_sequence()
+	var pass_node := _router.lighting_pass
+	var errors := LightingPass.validate_room(_router.current_room, _router.current_room_lighting(), _router.current_room_bounds())
+	print("VALIDATE %s" % [errors])
+	print("PASS layer %d, HUD layer %d, room lights %d, visible %s, A %d, exempt %d" % [pass_node.layer, _hud.layer,
+		pass_node.lights.size(), pass_node.visible, pass_node.lighting.ambient_steps, pass_node.lighting.exempt_from])
+	if shot == "solved":
+		_solve_state()
+	if shot == "targets":
+		await _target_sheet(pass_node)
+		quit(0)
+		return
+	var row: Array = SHOTS[shot]
+	_player.set_physics_process(false)
+	_player.global_position = row[0]
+	_router.camera.snap_now()
+	_player.sprite.play(row[1])
+	_player.sprite.pause()
+	_player.sprite.frame = 0
+	_hud.hide_feedback()
+	if shot == "echo":
+		var pw: PocketWatch = _player.pocket_watch
+		pw.set_physics_process(false)
+		var ghost := pw.get("_ghost_node") as Node2D
+		var second := ghost.duplicate() as Node2D
+		ghost.get_parent().add_child(second)
+		ghost.global_position = ECHO_AT[0]
+		second.global_position = ECHO_AT[1]
+		ghost.visible = true
+		second.visible = true
+	await _frames(5)
+	_hud.visible = true
+	var hud := await _grab()
+	_save(hud, "%s_lit" % shot)
+	_hud.visible = false
+	var lit := await _grab()
+	_save(lit, "%s_lit_nohud" % shot)
+	_settings.lighting_enabled = false
+	var setting_off := await _grab()
+	_save(setting_off, "%s_setting_off_nohud" % shot)
+	var ms_off := await _gpu_ms()
+	_settings.lighting_enabled = true
+	var ms_on := await _gpu_ms()
+	pass_node.apply_room(null, null, null)
+	var unlit := await _grab()
+	_save(unlit, "%s_unlit_nohud" % shot)
+	_router._apply_lighting()
+	await _frames(2)
+	_save(_grey(lit), "%s_lit_nohud_greyscale" % shot)
+	_save(_grey(unlit), "%s_unlit_nohud_greyscale" % shot)
+	var at := (root.get_canvas_transform() * _player.global_position).round()
+	var crop := Rect2i(clampi(int(at.x) - 120, 0, 720), clampi(int(at.y) - 90, 0, 405), 240, 135)
+	var x2 := lit.get_region(crop)
+	x2.resize(480, 270, Image.INTERPOLATE_NEAREST)
+	_save(x2, "%s_lit_x2" % shot)
+	var r := _check(unlit, lit, hud, pass_node)
+	print("CHECK %s: shader vs reference mismatches %d / %d px; off-palette (no HUD) %d; off-palette outside the HUD (HUD frame, %d HUD px) %d; setting off == unlit %s" % [
+		shot, r["mismatch"], lit.get_width() * lit.get_height(), r["off_palette"], r["hud_px"], r["off_palette_outside_hud"],
+		setting_off.get_data() == unlit.get_data()])
+	print("SPILL %s: wall/partition pixels (ramp 06-10) lifted by a room light %d of %d" % [shot, r["wall_lifted"], r["wall_px"]])
+	print("INFO %s: dial/validator information pixels kept %d of %d; other indices lifted inside the info regions %d" % [
+		shot, r["info_kept"], r["info_px"], r["info_other_lifted"]])
+	print("TIMING %s: viewport GPU %.3f ms with the pass, %.3f ms without (setting off), delta %.3f ms" % [shot, ms_on, ms_off, ms_on - ms_off])
+	print("TLF-083 P2 SHOT DONE %s" % shot)
+	quit(0)

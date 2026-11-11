@@ -1,0 +1,18 @@
+index-25 pixels in the lit no-HUD frames (2a1daa5 pack, commit 8c78da0 -> 8c62cb7 pack)
+arrival  before  539  after   72
+gate     before  530  after   72
+dials    before  537  after   70
+east     before  539  after   72
+solved   before  542  after   80
+echo     before  530  after   72
+
+gate_lit_nohud.png (8c62cb7): 72 index-25 px, by source rect:
+  west archway threshold lamps       30
+  east archway + staff door lamps    12
+  23:59 clock core                   18
+  reset console button               3
+  evac notice clipboard              2
+  fallen conduit tip                 0
+  dial line/time amber marks         5
+  unattributed 2 [(364, 234), (365, 233)]
+index-24 px kept at 24 in the lit gate frame (lifted >= 2): 13, x range 354..395, y range 232..252

@@ -1,0 +1,80 @@
+extends SceneTree
+
+## TLF-083 P2 dado check: one unlit (lighting setting off) frame of every ch01 room, HUD hidden, so
+## the same script in the archive before and after the 25 -> 24 dado change can be diffed. For
+## Concourse West it also counts index-25 texels per drawn sprite (texture based).
+## Scratch copy only:  TLF_OUT=<dir> godot --path . --resolution 960x540 -s <this>
+
+const ROOMS := [&"ch01.arrival_platform", &"ch01.concourse_west", &"ch01.maintenance_bay", &"ch01.security_crossing",
+	&"ch01.waiting_lounge", &"ch01.signal_control", &"ch01.upper_vestibule", &"ch01.vestibule_niche",
+	&"ch01.station_atrium", &"ch01.street_exit", &"ch01.side_mira_memory"]
+const C25 := Color8(235, 138, 40)
+
+
+func _initialize() -> void:
+	create_timer(110.0).timeout.connect(func():
+		printerr("TIMEOUT: room_frames exceeded 110 s")
+		quit(1))
+	call_deferred("_run")
+
+
+func _frames(n: int) -> void:
+	for i in n:
+		await process_frame
+
+
+func _count_25(room: Node) -> void:
+	var total := 0
+	for node in room.find_children("*", "Sprite2D", true, false):
+		var s := node as Sprite2D
+		if s.texture == null or not s.is_visible_in_tree():
+			continue
+		var img := s.texture.get_image()
+		if img.is_compressed():
+			img.decompress()
+		var r := s.get_rect()
+		if s.region_enabled:
+			img = img.get_region(Rect2i(s.region_rect))
+		var n := 0
+		for y in img.get_height():
+			for x in img.get_width():
+				var c := img.get_pixel(x, y)
+				if c.a > 0.5 and c.r8 == 235 and c.g8 == 138 and c.b8 == 40:
+					n += 1
+		if n > 0:
+			total += n
+			print("INDEX25 %s (%s): %d" % [room.get_path_to(s), s.texture.resource_path.get_file(), n])
+	print("INDEX25 TOTAL drawn sprites in %s: %d" % [room.name, total])
+
+
+func _run() -> void:
+	var out := OS.get_environment("TLF_OUT")
+	var save = root.get_node_or_null("SaveService")
+	if save != null:
+		save.save_root = "user://tlf083p2_frames_saves"
+	var settings = root.get_node_or_null("Settings")
+	settings.lighting_enabled = false
+	var ch01 := (load("res://scenes/chapters/ch01/Chapter01.tscn") as PackedScene).instantiate() as Node2D
+	root.add_child(ch01)
+	await _frames(30)
+	var router := ch01.get_node("RoomRouter") as RoomRouter
+	var player := ch01.get_node("Player") as Player
+	player.set_physics_process(false)
+	var diag := ch01.call("get_dialogue_box") as DialogueBox
+	for id in ROOMS:
+		router.enter_room(id)
+		await _frames(8)
+		if diag != null and diag.is_active:
+			diag.finish_sequence()
+		player.hud.visible = false
+		router.camera.snap_now()
+		await _frames(4)
+		await RenderingServer.frame_post_draw
+		var img := root.get_texture().get_image()
+		img.convert(Image.FORMAT_RGBA8)
+		img.save_png(out.path_join(String(id).trim_prefix("ch01.") + ".png"))
+		print("FRAME %s view %s" % [id, router.current_view_mode()])
+		if id == &"ch01.concourse_west":
+			_count_25(router.current_room)
+	print("ROOM FRAMES DONE")
+	quit(0)
